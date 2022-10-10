@@ -1,10 +1,13 @@
 module ours where
 
-open import Function hiding (Morphism; id)
-open import Data.Product
 open import Agda.Builtin.Unit
 open import Agda.Builtin.Nat
 open import Agda.Builtin.Int hiding (pos)
+open import Function hiding (Morphism; id)
+open import Data.Product
+open import Relation.Binary.PropositionalEquality
+-- open Eq(_≡_)
+
 
 
 -- NFP: Note for presentation
@@ -35,6 +38,15 @@ _∙_ : {p1 p2 p3 : Poly} -> Morphism p2 p3 ->  Morphism p1 p2  -> Morphism p1 p
 p2p3 ∙ p1p2 = 
   Morph (sendOnPosition p2p3 ∘ sendOnPosition p1p2) 
         (\p1pos -> sendOnDecision p1p2 p1pos ∘ sendOnDecision p2p3 (sendOnPosition p1p2 p1pos) )
+
+leftUnit : (src trg : Poly) (morphism : Morphism src trg) -> identity (trg) ∙ morphism ≡ morphism
+leftUnit src trg (Morph sendOnPosition sendOnDecision) = refl
+
+rightUnit : (src trg : Poly) (morphism : Morphism src trg) ->  morphism ∙ identity src ≡ morphism
+rightUnit src trg (Morph sendOnPosition sendOnDecision) = refl
+
+assoc : {a b c d : Poly} (a : Morphism a b) (b : Morphism b c) (c : Morphism c d) -> c ∙ (b ∙ a) ≡ (c ∙ b) ∙ a
+assoc (Morph sendOnPosition₁ sendOnDecision₁) b c = refl
 
 
 --- Interpretation: Dynamical systems
@@ -93,7 +105,7 @@ run d e s = outp :: (run d e next)
               outp : pos (interface d)
               outp = sendOnPosition (dynamics d) s
               next : stateSpace d
-              next = sendOnDecision (dynamics d) s $ sendOnDecision e outp {!   !}
+              next = sendOnDecision (dynamics d) s $ sendOnDecision e outp tt
 
 
 id : {A : Set} → A → A
@@ -154,25 +166,36 @@ snd : {a b : Set} -> (a × b) -> b
 snd (_ , de) = de
 
 fibwd : Morphism (interface Prefib) (Emitter Nat)
-fibwd = Morph sendOnPos {!   !} 
-          where
-            sendOnPos : (Nat × Nat) -> Nat
-            sendOnPos (pl , de) = de
-            sendOnDec : (p : (Nat × Nat)) -> (a : Set) -> decision (interface Prefib) p
-            sendOnDec (pl , de) _ = ((de , pl) , pl)
+fibwd = Morph observe interpret
+  where
+    observe = λ _ → tt
+    interpret = λ p z → (z , z) , z
+  
+
+-- Morph sendOnPos {!   !} 
+--           where
+--             sendOnPos : (Nat × Nat) -> Nat
+--             sendOnPos (pl , de) = de
+--             sendOnDec : (p : (Nat × Nat)) -> (a : Set) -> decision (interface Prefib) p
+--             sendOnDec (pl , de) _ = ((de , pl) , pl)
 
 
--- install : (d : DynSystemIdr) -> (a : Poly) -> Morphism (interface d) a -> DynSystemIdr
--- install d a l = MkDynSystem (stateSpace d) a (l ∘ (dynamics d))
+install : (d : DynSystemIdr) -> (a : Poly) -> Morphism (interface d) a -> DynSystemIdr
+install d a l = MkDynSystem (stateSpace d) a (l ∙ (dynamics d))
 
--- encloseFunction : {t u : Set} -> (t -> u) -> Morphism (PolyConstr u (\ _ -> t)) (⊤ (\_ -> t))
--- encloseFunction {t} {u} f = Morph (\_ -> ⊤) (\d -> \_ -> f d)
+encloseFunction : {t u : Set} -> (t -> u) -> Morphism (PolyIO u t) Closed
+encloseFunction {t} {u} f = Morph (\_ -> tt) (\d -> \_ -> f d)
 
--- auto : {m : Set} -> enclose (Emitter m)
--- auto {m} = encloseFunction $ \_ -> ⊤
+-- Closed : Poly
+-- Closed = PolyConstr ⊤ (\_ -> ⊤)
 
--- Fibonacci : DynSystemIdr
--- Fibonacci = install Prefib (Emitter Int) fibwd
+-- enclose : (aa : Poly) ->  Set
+-- enclose a = Morphism a Closed
+-- auto : {m : Set } -> enclose (Emitter m)
+-- auto {m} = encloseFunction (\_ -> tt) 
+
+Fibonacci : DynSystemIdr
+Fibonacci = install Prefib (Emitter Nat) fibwd
 
 -- FibSeq : Stream Int
--- FibSeq = run Fibonacci auto (1 , 1)     
+FibSeq = run Fibonacci {!  enclose interface Fibonacci !} {!   !} -- (1 , 1)     
