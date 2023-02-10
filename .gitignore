@@ -1,3 +1,5 @@
 # interpreter files
 *.agdai
 *.ibc
+
+.vscode

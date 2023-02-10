@@ -1,12 +1,18 @@
-open import Relation.Binary.PropositionalEquality
-open import Agda.Builtin.Nat hiding (_+_)
-import Agda.Builtin.Nat
+{-# OPTIONS --cubical #-}
 
-module Poly where
+module AgdaCategoriesCubicalPoly.Category where
+
+open import Relation.Binary.PropositionalEquality as Eq
+open import Agda.Builtin.Nat hiding (_+_ ; _*_ )
+import Agda.Builtin.Nat
+open import Level
+open import Categories.Category
+import Cubical.Foundations.Prelude as Cubical
 
 module StandardDefs where
     data True : Set where
         tt : True
+        -- slets gooo
         
     data False : Set where
 
@@ -57,16 +63,80 @@ compose : Arrow B C -> Arrow A B -> Arrow A C
 compose (MkArrow bToCPos cToBDir) (MkArrow aToBPos bToADir) = MkArrow (bToCPos ∘ aToBPos) (λ fromPos z → bToADir fromPos (cToBDir (aToBPos fromPos) z))  -- Can be autosolved.
                                                             -- MkArrow (comp bToCPos aToBPos) (\xPosA -> λ dirC → bToADir xPosA (cToBDir (aToBPos xPosA) dirC))
 
-composeLeftIdentity : (bToC : Arrow B C) -> compose idArrow bToC ≡ bToC
-composeLeftIdentity (MkArrow mapPosition mapDirection) = refl -- Can be autosolved.
+_*_ : Arrow B C -> Arrow A B -> Arrow A C
+_*_ = compose
 
-composeRightIdentity : (cToB : Arrow C B) -> compose cToB idArrow ≡ cToB
-composeRightIdentity (MkArrow mapPosition mapDirection) = refl -- Can be autosolved.
+compose2 : Arrow A B -> Arrow B C -> Arrow A C
+compose2 (MkArrow aToBPos bToADir) (MkArrow bToCPos cToBDir) = MkArrow (bToCPos ∘ aToBPos) (λ fromPos z → bToADir fromPos (cToBDir (aToBPos fromPos) z))  -- Can be autosolved.
+                                                            -- MkArrow (comp bToCPos aToBPos) (\xPosA -> λ dirC → bToADir xPosA (cToBDir (aToBPos xPosA) dirC))
 
-composeIsAssoc : (AToB : Arrow A B) (BToC : Arrow B C) (CToD : Arrow C D) -> compose CToD (compose BToC AToB) ≡ compose (compose CToD BToC) AToB
-composeIsAssoc (MkArrow mapPosition mapDirection) (MkArrow mapPosition₁ mapDirection₁) (MkArrow mapPosition₂ mapDirection₂) = refl -- Can be autosolved.
+composeLeftIdentity : (bToC : Arrow B C) -> compose idArrow bToC Eq.≡ bToC
+composeLeftIdentity (MkArrow mapPosition mapDirection) = Eq.refl -- Can be autosolved.
 
--- Thus we have a category!
+composeRightIdentity : (cToB : Arrow C B) -> compose cToB idArrow Eq.≡ cToB
+composeRightIdentity (MkArrow mapPosition mapDirection) = Eq.refl -- Can be autosolved.
+
+composeIsAssoc : {f : Arrow A B} {g : Arrow B C} {h : Arrow C D} -> compose h (compose g f) Eq.≡ compose (compose h g) f
+composeIsAssoc = Eq.refl -- Can be autosolved.
+
+composeIsAssocCub : ∀ {A B C D} -> {f : Arrow A B} {g : Arrow B C} {h : Arrow C D} -> ((h * g) * f) Cubical.≡ (h * (g * f))
+composeIsAssocCub = Cubical.refl -- Can be autosolved.
+
+
+-- Got from here https://www.cse.chalmers.se/~abela/bigproof17/CubicalSolution.agda
+-- trans : ∀{a}{A : Set a} {x y z : A} (p : x ≡ y) (q : y ≡ z) → x ≡ z
+-- trans {x = x} p q = drive (λ i → x ≡ q i) p
+-- subst B p pa = transport (λ i → B (p i)) pa
+
+transitivity : ∀ {a} {A : Set a} {x y z : A} (p : x Cubical.≡ y) -> (q : y Cubical.≡ z) -> x Cubical.≡ z
+transitivity {x = x} p q =  Cubical.transport (λ i → x Cubical.≡ q i) p
+
+transitivity2 : ∀ {a} {A : Set a} {x y z : A} (p : x Cubical.≡ y) -> (q : y Cubical.≡ z) -> x Cubical.≡ z
+transitivity2 {x = x} p q =  Cubical.subst (Cubical._≡_ x) q p
+
+-- We want B to be explicit in subst
+-- subst : (B : A → Type ℓ') (p : x ≡ y) → B x → B y
+-- subst B p pa = transport (λ i → B (p i)) pa
+
+equiv-resp : {A B C : Polynomial} {f h : Arrow B C} {g i : Arrow A B} → f Cubical.≡ h → g Cubical.≡ i → (f * g) Cubical.≡ (h * i)
+equiv-resp {f = f} {h = h} {g = g} {i = i} p q = let
+  proofThatF*I=H*I : (f * i) Cubical.≡ (h * i)
+  proofThatF*I=H*I = Cubical.subst (λ x → x * i Cubical.≡ x * i) p {!   !}
+  in
+    {!  !}
+
+polyCategory : ∀ {l1 l2 l3 : Level} -> Category (Level.suc Level.zero) Level.zero Level.zero
+polyCategory = record
+    { Obj = Polynomial
+    ; _⇒_ = Arrow
+    ; _≈_ = Cubical._≡_
+    ; id = idArrow
+    ; _∘_ = _*_
+    ; assoc = Cubical.refl
+    ; sym-assoc = Cubical.refl
+    ; identityˡ = Cubical.refl
+    ; identityʳ = Cubical.refl
+    ; identity² = Cubical.refl
+    ; equiv = record { refl = Cubical.refl ; sym = Cubical.sym ; trans = transitivity2 }
+    ; ∘-resp-≈ = equiv-resp
+    }
+
+
+-- isSetRing : (R : Ring ℓ) → isSet ⟨ P ⟩
+-- isSetRing R = R .snd .RingStr.isRing .IsRing.·IsMonoid .IsMonoid.isSemigroup .IsSemigroup.is-set
+
+-- groupHom : (G : Group) (H : Group) → Set (Level.zero)
+-- groupHom G H = Σ[ f ∈ (G .fst → H .fst) ] IsGroupHom (G .snd) f (H .snd)
+-- 
+-- isSetGroupHom : isSet (groupHom G H)
+-- isSetGroupHom {G = G} {H = H} =
+--   isSetΣ (isSetΠ λ _ → is-set (snd H)) λ _ → isProp→isSet (isPropIsGroupHom G H)
+
+
+-- isSetPolyArrow : (x y : Polynomial) -> isSet (Arrow x y)
+-- isSetPolyArrow (MkPolynomial position₁ direction₁) (MkPolynomial position₂ direction₂) = λ x y x₁ y₁ i i₁ → {! !}
+
+
 -- Now to some (monoidal) operators on polynomials.
 
 -- Sum between two polynomials.
@@ -124,10 +194,10 @@ record DynamicalSystem : Set₁ where
         dynamics : Arrow (selfMonomial state) interface -- S*Y^S -> p
 
 functionToDynamicalSystem : (A B : Set) -> (A -> B) -> DynamicalSystem
-functionToDynamicalSystem A B f = MkDynamicalSystem B (monomial B A) (MkArrow id (\_ -> f))
+functionToDynamicalSystem A B f = MkDynamicalSystem B (monomial B A) (MkArrow StandardDefs.id (\_ -> f))
 
 delay : (A : Set) -> DynamicalSystem
-delay A = functionToDynamicalSystem A A id
+delay A = functionToDynamicalSystem A A StandardDefs.id
 
 plus : DynamicalSystem
 plus = functionToDynamicalSystem (And Nat Nat) Nat (uncurry Agda.Builtin.Nat._+_)
@@ -195,3 +265,6 @@ last (x :: xs) = last xs
 
 fibList : List Nat
 fibList = take 50 FibSeq
+
+
+     
