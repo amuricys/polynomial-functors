@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module AgdaCategoriesCubicalPoly.Category where
+module AgdaCategories.CubicalPoly where
 
 open import Relation.Binary.PropositionalEquality as Eq
 open import Agda.Builtin.Nat hiding (_+_ ; _*_ )
@@ -100,8 +100,8 @@ transitivity2 {x = x} p q =  Cubical.subst (Cubical._≡_ x) q p
 
 equiv-resp : {A B C : Polynomial} {f h : Arrow B C} {g i : Arrow A B} → f Cubical.≡ h → g Cubical.≡ i → (f * g) Cubical.≡ (h * i)
 equiv-resp {f = f} {h = h} {g = g} {i = i} p q = let
-  proofThatF*I=H*I : (f * i) Cubical.≡ (h * i)
-  proofThatF*I=H*I = Cubical.subst (λ x → x * i Cubical.≡ x * i) p {!   !}
+  proofThatF*I=H*I : compose h i Cubical.≡ compose h g
+  proofThatF*I=H*I = Cubical.subst (λ x → x * i Cubical.≡ x * g) p q
   in
     {!  !}
 
