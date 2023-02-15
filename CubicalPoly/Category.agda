@@ -9,6 +9,7 @@ open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.HLevels
 open import Cubical.Categories.Limits.Terminal
 open import Cubical.Foundations.Isomorphism
+open import Cubical.Data.Sigma.Properties
 
 hSetZero : Type₁
 hSetZero = hSet ℓ-zero
@@ -16,7 +17,7 @@ hSetZero = hSet ℓ-zero
 record Polynomial : Type₁ where
     constructor MkPolynomial
     field
-        position : Type -- hSetZero
+        position : Type
         positionIsHSet : isSet position
 
         direction : position -> Type -- hSetZero
@@ -59,9 +60,6 @@ record Arrow (from to : Polynomial) : Type where
         mapPosition : position from -> position to
         mapDirection : (fromPos : position from) -> direction to (mapPosition fromPos) -> direction from fromPos
 
-data Hej : Type where
-    ttt : Hej
-
 ArrowAsSigma : Polynomial -> Polynomial -> Type
 ArrowAsSigma A B = Σ[ mapPosition ∈ (Polynomial.position A -> Polynomial.position B) ] 
     ((fromPos : Polynomial.position A) -> Polynomial.direction B (mapPosition fromPos) -> Polynomial.direction A fromPos)
@@ -76,7 +74,9 @@ isoArrowSigma : {A B : Polynomial} -> Iso (Arrow A B) (ArrowAsSigma A B)
 isoArrowSigma = iso arrowToSigma sigmaToArrow (λ b → refl) (λ a → refl)
 
 isSetArrowSigma : {A B : Polynomial} -> isSet (ArrowAsSigma A B)
-isSetArrowSigma {B = B} = isSetΣ (isSetΠ (λ x → Polynomial.positionIsHSet B)) λ posMap -> {!   !}
+isSetArrowSigma {A = A} {B = B} = isSetΣ (isSetΠ (λ x → Polynomial.positionIsHSet B)) λ posMap -> isSetΠ λ posA → isSetΠ λ _ → A.directionIsHSet posA
+    where
+        module A = Polynomial A
 
 arrowIsSet : {A B : Polynomial} -> isSet (Arrow A B)
 arrowIsSet {A = A} {B = B}= isOfHLevelRetractFromIso 2 isoArrowSigma (isSetArrowSigma {A} {B})
@@ -120,8 +120,8 @@ isZeroInitial : isInitial Poly Zero
 isZeroInitial p = arrowFromZero p , λ {(MkArrow mapPosition mapDirection) → {!  !}}
 
 -- arrowEqual : {A B : Polynomial} -> (f g : Arrow A B) -> (p : Arrow.mapPosition f ≡ Arrow.mapPosition g) -> (Arrow.mapDirection f) ≡ (Arrow.mapDirection g) -> f ≡ g
-arrowEqual : {A B : Polynomial} -> {!   !}
-arrowEqual = {!   !}
+arrowEqual : {A B : Polynomial} {f g : ArrowAsSigma A B} -> fst f ≡ fst g -> ΣPathTransport f g
+arrowEqual p1 = p1 , {!   !}
 
 polyHasInitial : hasInitialOb Poly
 polyHasInitial = Zero , isZeroInitial
@@ -137,6 +137,51 @@ One = MkPolynomial True isSetTrue (λ tt → False) (λ p x ())
 
 arrowToOne : (p : Polynomial) -> Arrow p One
 arrowToOne p = MkArrow (λ {x → tt}) λ {fromPos ()}
+
+test : {A : Type} -> (f g : A -> True) -> f ≡ g
+test f g = {!   !}
+
+
+arrowToOneUnique : {p : Polynomial} {f : ArrowAsSigma p One} -> f ≡ arrowToSigma (arrowToOne p)
+arrowToOneUnique {p = p} {f = f} = ΣPathTransport→PathΣ f (arrowToSigma (arrowToOne p)) hej
+    where
+
+        isPropUnit : (x y : True) -> x ≡ y
+        isPropUnit tt tt = refl
+
+        helper : fst f ≡ fst (arrowToSigma (arrowToOne p))
+        helper i x = isPropUnit (fst f x) (fst (arrowToSigma (arrowToOne p)) x) i -- funExt λ x i → {! a x   !} -- λ i x → {! fst f x  !} -- funExt λ pPos → {!   !} -- λ pos i → {!   !}
+
+        hej : ΣPathTransport f (arrowToSigma (arrowToOne p))
+        hej =  helper , λ {i fromPos ()} -- helper , helper2 -- helper , helper2
+
+
+
+arrowToOneUnique2 : {p : Polynomial} {f : Arrow p One} -> f ≡ arrowToOne p
+arrowToOneUnique2 = {!   !}
+
+
+arrowFromZeroUnique : {p : Polynomial} {f : ArrowAsSigma Zero p} -> f ≡ arrowToSigma (arrowFromZero p)
+arrowFromZeroUnique {p = p} {f = f} = ΣPathTransport→PathΣ f (arrowToSigma (arrowFromZero p)) hej
+    where
+
+        helper : fst f ≡ fst (arrowToSigma (arrowFromZero p))
+        helper i () 
+
+        helper2 : transport
+            (λ i →
+                (fromPos : Polynomial.position Zero) →
+                Polynomial.direction p (helper i fromPos) →
+                Polynomial.direction Zero fromPos)
+            (snd f)
+            ≡ snd (arrowToSigma (arrowFromZero p))
+        helper2 = funExt λ {()} -- funExt λ {()}
+
+
+        hej : ΣPathTransport f (arrowToSigma (arrowFromZero p))
+        hej = helper , helper2
+
+
 
 isOneFinal : isFinal Poly One
 isOneFinal p = {!   !}
