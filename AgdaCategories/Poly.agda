@@ -76,13 +76,19 @@ composeRightIdentity (MkArrow mapPosition mapDirection) = Eq.refl -- Can be auto
 composeIsAssoc : {f : Arrow A B} {g : Arrow B C} {h : Arrow C D} -> h * (g * f) Eq.≡ (h * g) * f
 composeIsAssoc = Eq.refl -- Can be autosolved.
 
+-- equiv-resp : {A B C : Polynomial} {f h : Arrow B C} {g i : Arrow A B} → f ≡ h → g ≡ i → (f * g) ≡ (h * i)
+-- equiv-resp {f = f} {h = h} {g = g} {i = i} p q = {!  !}
 
--- We want B to be explicit in subst
--- subst : (B : A → Type ℓ') (p : x ≡ y) → B x → B y
--- subst B p pa = transport (λ i → B (p i)) pa
+open import Relation.Binary.PropositionalEquality as ≡ using (_≡_)
 
-equiv-resp : {A B C : Polynomial} {f h : Arrow B C} {g i : Arrow A B} → f ≡ h → g ≡ i → (f * g) ≡ (h * i)
-equiv-resp {f = f} {h = h} {g = g} {i = i} p q = {!  !}
+resp2 : ∀ {o} -> ∀ {A B C : Set o} {f h : B → C} {g i : A → B} → ({x : B} → f x ≡ h x) → ({x : A} → g x ≡ i x) → {x : A} → f (g x) ≡ h (i x)
+resp2 {h = h} eq₁ eq₂ = ≡.trans eq₁ (≡.cong h eq₂)
+
+applyArrow : {B : Polynomial} -> (A : Polynomial) -> Arrow A B -> B
+applyArrow a f = {!   !}
+
+-- respForPoly : ∀ {o} -> ∀ {A B C : Polynomial} {f h : Arrow B C} {g i : Arrow A B} → ({x : B} → f x ≡ h x) → ({x : A} → g x ≡ i x) → {x : A} → f (g x) ≡ h (i x)
+-- respForPoly {h = h} eq₁ eq₂ = ≡.trans eq₁ (≡.cong h eq₂)
 
 polyCategory : ∀ {l1 l2 l3 : Level} -> Category (Level.suc Level.zero) Level.zero Level.zero
 polyCategory = record
@@ -97,7 +103,7 @@ polyCategory = record
     ; identityʳ = refl
     ; identity² = refl
     ; equiv = record { refl = refl ; sym = sym ; trans = trans }
-    ; ∘-resp-≈ = equiv-resp
+    ; ∘-resp-≈ = {!   !}
     }
 
 
@@ -246,4 +252,4 @@ fibList : List Nat
 fibList = take 50 FibSeq
 
 
-     
+       

@@ -93,8 +93,8 @@ f ∘ g = λ x -> f (g x)
 compose : {x y z : Polynomial} -> Arrow x y -> Arrow y z -> Arrow x z
 compose (MkArrow bToCPos cToBDir) (MkArrow aToBPos bToADir) = MkArrow (λ z → aToBPos (bToCPos z)) λ fromPos z → cToBDir fromPos (bToADir (bToCPos fromPos) z) -- MkArrow (bToCPos ∘ aToBPos) (λ fromPos z → bToADir fromPos (cToBDir (aToBPos fromPos) z))  -- Can be autosolved.
 
-Poly : Category (Level.suc 0ℓ) 0ℓ
-Poly = record
+polyCategory : Category (Level.suc 0ℓ) 0ℓ
+polyCategory = record
     { ob = Polynomial
     ; Hom[_,_] = Arrow
     ; id = IdArrow
@@ -116,7 +116,7 @@ Zero = MkPolynomial False (λ x ()) (λ ()) λ ()
 arrowFromZero : (p : Polynomial) -> Arrow Zero p
 arrowFromZero p = MkArrow (λ ()) (λ ())
 
-isZeroInitial : isInitial Poly Zero
+isZeroInitial : isInitial polyCategory Zero
 isZeroInitial p = arrowFromZero p , λ {(MkArrow mapPosition mapDirection) → {!  !}}
 
 -- arrowEqual : {A B : Polynomial} -> (f g : Arrow A B) -> (p : Arrow.mapPosition f ≡ Arrow.mapPosition g) -> (Arrow.mapDirection f) ≡ (Arrow.mapDirection g) -> f ≡ g
@@ -183,7 +183,7 @@ arrowFromZeroUnique {p = p} {f = f} = ΣPathTransport→PathΣ f (arrowToSigma (
 
 
 
-isOneFinal : isFinal Poly One
+isOneFinal : isFinal polyCategory One
 isOneFinal p = {!   !}
 
 polyHasFinal : hasFinalOb Poly
