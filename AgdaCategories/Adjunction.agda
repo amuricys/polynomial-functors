@@ -5,6 +5,8 @@ module AgdaCategories.Adjunction where
 open import Relation.Binary.PropositionalEquality as Eq
 open import Agda.Builtin.Nat hiding (_+_ ; _*_ )
 import Agda.Builtin.Nat
+open import Agda.Builtin.Unit
+open import Data.Empty
 open import Level
 open import Categories.Category
 import Categories.Object.Initial
@@ -15,6 +17,7 @@ import Cubical.Foundations.Prelude as Cubical
 open import Cubical.Data.Sigma.Properties
 open import Common.CategoryData
 open import Cubical.Proofs
+open import Function
 open import AgdaCategories.CubicalPoly
 
 -- ∀ {X Y Z} {f : X -> Y} {g : Y -> Z} →
@@ -37,7 +40,7 @@ impfunExt2 p i x = p {x} i
 -- Functor sending a set A to the constant polynomial Ay^0 = A
 constantPolynomial : Functor (Sets Level.zero) Poly 
 constantPolynomial = record
-    { F₀ = λ x → MkPolynomial x λ _ → False
+    { F₀ = λ x → MkPolynomial x λ _ → ⊥
     ; F₁ = λ f → MkArrow (λ x → f x) λ fromPos ()
     ; identity = λ i → MkArrow id λ fromPos x → {!   !}
     ; homomorphism = \{x y z} {f g} i -> MkArrow (g ∘ f) (λ fromPos ())
@@ -47,7 +50,7 @@ constantPolynomial = record
 -- -- Functor sending a polynomial the zero set "plugging in 0"
 -- plugIn0 : Functor Poly  (Sets Level.zero)
 -- plugIn0 = record
---     { F₀ = λ _ -> False
+--     { F₀ = λ _ -> ⊥
 --     ; F₁ = λ f ()
 --     ; identity = {!   !}
 --     ; homomorphism = {!   !}
@@ -84,7 +87,7 @@ constantPolynomial = record
 -- -- Functor sending a set A to the linear polynomial Ay^1 = Ay
 -- linearPolynomial : Functor (Sets Level.zero) Poly
 -- linearPolynomial = record
---     { F₀ = λ x → MkPolynomial x λ _ → True
+--     { F₀ = λ x → MkPolynomial x λ _ → ⊤
 --     ; F₁ = λ f → MkArrow f \ _ _ -> tt
 --     ; identity = {!   !}
 --     ; homomorphism = {!   !}

@@ -4,32 +4,11 @@
 module Common.CategoryData where
 
 import Agda.Builtin.Nat as N
-
-data True : Set where
-    tt : True
-    -- slets gooo
-    
-data False : Set where
-
-data Either A B : Set where
-    inL : A -> Either A B
-    inR : B -> Either A B
-
-data And A B : Set where
-    and : A -> B -> And A B
-
-uncurry : {A B C : Set} -> (A -> B -> C) -> (And A B -> C)
-uncurry f (and a b) = f a b
-
-data List A : Set where
-    [] : List A
-    _::_ : A -> List A -> List A
-
-id : {A : Set} -> A -> A
-id x = x
-
-_∘_ : {A B C : Set} -> (B -> C) -> (A -> B) -> A -> C
-f ∘ g = λ x -> f (g x)
+open import Agda.Builtin.Unit
+open import Data.Empty
+open import Data.Sum
+open import Data.Product
+open import Function
 
 record Polynomial : Set₁ where
     constructor MkPolynomial
@@ -52,43 +31,41 @@ variable
 idArrow : Arrow A A
 idArrow = MkArrow id (λ fromPos toDir → toDir)
 
-compose : Arrow B C -> Arrow A B -> Arrow A C
-compose (MkArrow bToCPos cToBDir) (MkArrow aToBPos bToADir) = MkArrow (bToCPos ∘ aToBPos) (λ fromPos z → bToADir fromPos (cToBDir (aToBPos fromPos) z))
-
-_*_ : Arrow B C -> Arrow A B -> Arrow A C
-_*_ = compose
+_∘p_ : Arrow B C -> Arrow A B -> Arrow A C
+_∘p_ (MkArrow bToCPos cToBDir) (MkArrow aToBPos bToADir) = MkArrow (bToCPos ∘ aToBPos) (λ fromPos z → bToADir fromPos (cToBDir (aToBPos fromPos) z))
 
 -- Zero polynomial: p(y) = 0
 Zero : Polynomial
-Zero = MkPolynomial False (λ ())
+Zero = MkPolynomial ⊥ (λ ())
 
 arrowFromZero : {p : Polynomial} -> Arrow Zero p
 arrowFromZero {p} = MkArrow (λ ()) (λ ())
 
 -- One polynomial: p(y) = 1
 One : Polynomial
-One = MkPolynomial True (λ tt → False)
+One = MkPolynomial ⊤ (λ tt → ⊥)
 
 arrowToOne : (p : Polynomial) -> Arrow p One
 arrowToOne p = MkArrow (λ {x → tt}) λ {fromPos ()}
 
 _+_ : Polynomial -> Polynomial -> Polynomial
-MkPolynomial posA dirA + MkPolynomial posB dirB = MkPolynomial (Either posA posB) (λ {(inL posA) → dirA posA
-                                                                                    ; (inR posB) → dirB posB})
+MkPolynomial posA dirA + MkPolynomial posB dirB = MkPolynomial (posA ⊎ posB) (λ {(inj₁ posA) → dirA posA
+                                                                                    ; (inj₂ posB) → dirB posB})
+                                                                                    
 
 -- Product between two polynomials.
 -- Pair of position. Each pair of positions has one direction, either from the left or the right polynomial.
-_×_ : Polynomial -> Polynomial -> Polynomial
-MkPolynomial posA dirA × MkPolynomial posB dirB = MkPolynomial (And posA posB) \{(and posA posB) → Either (dirA posA) (dirB posB)}
+_*_ : Polynomial -> Polynomial -> Polynomial
+MkPolynomial posA dirA * MkPolynomial posB dirB = MkPolynomial (posA × posB) \{ (posA , posB)→ (dirA posA) ⊎ (dirB posB)}
 
 -- Tensor between two polynomials. Parallel product.
 -- Pair of position. Each pair of position has one direction for each component.
 _⊗_ : Polynomial -> Polynomial -> Polynomial
-MkPolynomial posA dirA ⊗ MkPolynomial posB dirB = MkPolynomial (And posA posB) (λ {(and posA posB) → And (dirA posA) (dirB posB)})
+MkPolynomial posA dirA ⊗ MkPolynomial posB dirB = MkPolynomial (posA × posB) (λ {(posA , posB) → (dirA posA) ⊎ (dirB posB)})
 
 -- Unit for tensor is Y. 1 position with 1 direction.
 Y : Polynomial
-Y = MkPolynomial True (λ _ → True)
+Y = MkPolynomial ⊤ (λ _ → ⊤)
 
 -- Composition of polynomials (composition of polynomial functors, which happen to be new polynomial functor!).
 _◂_ : Polynomial -> Polynomial -> Polynomial

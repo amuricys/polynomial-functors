@@ -14,20 +14,21 @@ import Cubical.Foundations.Prelude as Cubical
 open import Cubical.Data.Sigma.Properties
 open import Common.CategoryData
 open import Cubical.Proofs
+open import Cubical.Foundations.Prelude
 
 -- Definition of Poly category: integration point between agda-categories and cubical
 Poly  : ∀ {l1 l2 l3 : Level} -> Category (Level.suc Level.zero) Level.zero Level.zero
 Poly  = record
     { Obj = Polynomial
     ; _⇒_ = Arrow
-    ; _≈_ = Cubical._≡_
+    ; _≈_ = _≡_
     ; id = idArrow
-    ; _∘_ = _*_
-    ; assoc = Cubical.refl
-    ; sym-assoc = Cubical.refl
-    ; identityˡ = Cubical.refl
-    ; identityʳ = Cubical.refl
-    ; identity² = Cubical.refl
-    ; equiv = record { refl = Cubical.refl ; sym = Cubical.sym ; trans = transitivity }
+    ; _∘_ = _∘p_
+    ; assoc = refl
+    ; sym-assoc = refl
+    ; identityˡ = refl
+    ; identityʳ = refl
+    ; identity² = refl
+    ; equiv = record { refl = refl ; sym = sym ; trans = transitivity }
     ; ∘-resp-≈ = equiv-resp
     }
