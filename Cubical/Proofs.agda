@@ -73,10 +73,10 @@ arrowToOneUnique {p = p} {f = f} = ΣPathTransport→PathΣ f (arrowToSigma (arr
         isPropUnit tt tt = refl
 
         helper : fst f ≡ fst (arrowToSigma (arrowToOne p))
-        helper i x = isPropUnit (fst f x) (fst (arrowToSigma (arrowToOne p)) x) i -- funExt λ x i → {! a x   !} -- λ i x → {! fst f x  !} -- funExt λ pPos → {!   !} -- λ pos i → {!   !}
+        helper i x = isPropUnit (fst f x) (fst (arrowToSigma (arrowToOne p)) x) i
 
         hej : ΣPathTransport f (arrowToSigma (arrowToOne p))
-        hej =  helper , λ {i fromPos ()} -- helper , helper2 -- helper , helper2
+        hej =  helper , λ {i fromPos ()}
 
 arrowFromZeroUnique : {p : Polynomial} {f : ArrowAsSigma Zero p} -> f ≡ arrowToSigma (arrowFromZero {p})
 arrowFromZeroUnique {p = p} {f = f} = ΣPathTransport→PathΣ f (arrowToSigma (arrowFromZero {p})) hej
@@ -84,7 +84,6 @@ arrowFromZeroUnique {p = p} {f = f} = ΣPathTransport→PathΣ f (arrowToSigma (
 
         helper : fst f ≡ fst (arrowToSigma (arrowFromZero {p}))
         helper i () 
-
 
         hej : ΣPathTransport f (arrowToSigma (arrowFromZero {p}))
         hej = helper , funExt λ {()}

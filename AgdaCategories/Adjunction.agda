@@ -30,21 +30,17 @@ open import AgdaCategories.CubicalPoly
 
 impfunExt2 : {A B : Set} {f g : A → B} →
            ({x : A} → f x ≡ g x) → f ≡ g
-impfunExt2 p i x = p {x} i
+impfunExt2 = {!   !}
 
--- identity     : ∀ {A} → D [ F₁ (C.id {A}) ≈ D.id ]
--- homomorphism : ∀ {X Y Z} {f : C [ X , Y ]} {g : C [ Y , Z ]} →
---                     D [ F₁ (C [ g ∘ f ]) ≈ D [ F₁ g ∘ F₁ f ] ]
--- F-resp-≈     : ∀ {A B} {f g : C [ A , B ]} → C [ f ≈ g ] → D [ F₁ f ≈ F₁ g ]
 
 -- Functor sending a set A to the constant polynomial Ay^0 = A
 constantPolynomial : Functor (Sets Level.zero) Poly 
 constantPolynomial = record
     { F₀ = λ x → MkPolynomial x λ _ → ⊥
-    ; F₁ = λ f → MkArrow (λ x → f x) λ fromPos ()
-    ; identity = λ i → MkArrow id λ fromPos x → {!   !}
+    ; F₁ = λ f → MkArrow f λ fromPos ()
+    ; identity = \{A} i ->  MkArrow id λ fromPos x -> {!   !}
     ; homomorphism = \{x y z} {f g} i -> MkArrow (g ∘ f) (λ fromPos ())
-    ; F-resp-≈ = λ {A B} {f g} p i → MkArrow (impfunExt2 {A = A} {B = B} {f = f} {g = g} {!   !} {!   !}) (λ fromPos ())
+    ; F-resp-≈ = λ {A B} {f g} p i → MkArrow (Cubical.implicitFunExt {!   !} {!   !}) {!   !}
     }
 
 -- -- Functor sending a polynomial the zero set "plugging in 0"
