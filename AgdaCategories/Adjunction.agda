@@ -4,7 +4,7 @@ module AgdaCategories.Adjunction where
 
 open import Agda.Builtin.Nat hiding (_+_ ; _*_ )
 import Agda.Builtin.Nat
-import Agda.Builtin.Equality as Eq
+import Relation.Binary.PropositionalEquality as Eq
 open import Agda.Builtin.Unit
 open import Data.Empty
 open import Level
@@ -19,6 +19,7 @@ open import Common.CategoryData
 open import Cubical.Proofs
 open import Function
 open import AgdaCategories.CubicalPoly
+open import Cubical.Data.Equality using (ctop ; ptoc)
 
 
 -- ∀ {X Y Z} {f : X -> Y} {g : Y -> Z} →
@@ -29,27 +30,12 @@ open import AgdaCategories.CubicalPoly
 --   MkArrow (λ x → g (f x)) (λ fromPos z → (λ ()) ((λ ()) z))
 -- constHomomorph {f = f} {g = g} i = MkArrow (g ∘ f) (λ fromPos ())
 
-
-
--- idProof : {A : Set} -> {f g : Arrow (Constant {A}) (Constant {A})} -> (λ x → x) -> MkArrow (λ x → x) (λ fromPos ()) ≡ MkArrow (λ x → x) (λ fromPos toDir → toDir)
--- idProof = refl
-
--- equiv-resp : {A B C : Polynomial} {f h : Arrow B C} {g i : Arrow A B} → f ≡ h → g ≡ i → (f ∘p g) ≡ (h ∘p i)
--- equiv-resp  p q ii = (p ii) ∘p (q ii)
-
-eqsEq : ∀ {A : Set} -> ∀ {x y : A} -> x Eq.≡ y -> x ≡ y
-eqsEq Eq.refl = refl
-
 pwiseToExt : {A B : Set} {f g : A → B} -> ({x : A} → f x Eq.≡ g x) -> f ≡ g
 pwiseToExt {A = A} {f = f} {g = g} p = let
   yaaa : {x : A} → f x ≡ g x
-  yaaa = eqsEq p
+  yaaa = ptoc p
   in
   funExt (λ x → yaaa)
-
--- pwise : {A B : Set} {f g : A -> B} -> {x : A} → f x Eq.≡ g x -> f ≡ g
--- pwise p = funExt {!   !}
---   where pcubical = eqsEq {! !}
 
 arrowsEq : {A B : Set} -> {f g : A -> B} -> {w z : A -> ⊥ -> ⊥} -> (f ≡ g) -> (w ≡ z) -> MkArrow f w ≡ MkArrow g z
 arrowsEq p q ii = MkArrow (p ii) (q ii)
@@ -67,57 +53,74 @@ constantPolynomial = record
     ; F-resp-≈ = λ x → arrowsEq (pwiseToExt x) fromAnythingToFalseToFalseEqual
     }
 
--- -- Functor sending a polynomial the zero set "plugging in 0"
--- plugIn0 : Functor Poly  (Sets Level.zero)
--- plugIn0 = record
---     { F₀ = λ _ -> ⊥
---     ; F₁ = λ f ()
---     ; identity = {!   !}
---     ; homomorphism = {!   !}
---     ; F-resp-≈ = {!   !}
---     }
+-- Functor sending a polynomial the zero set "plugging in 0"
+plugIn0 : Functor Poly (Sets Level.zero)
+plugIn0 = record
+    { F₀ = λ _ -> ⊥
+    ; F₁ = λ f ()
+    ; identity = \{A} -> λ {}
+    ; homomorphism = \{X Y Z f g} -> λ {}
+    ; F-resp-≈ = λ _ {}
+    }
 
--- -- The two above are adjoints
--- polyAdjoint : Adjoint constantPolynomial plugIn0
--- polyAdjoint = record 
---     { unit = {!   !}
---     ; counit = {!   !}
+-- The two above are adjoints
+-- constantPolynomial⊢plugIn0 : Adjoint constantPolynomial plugIn0
+-- constantPolynomial⊢plugIn0 = record 
+--     { unit = record { η = λ X x → {!   !} ; commute = λ f → {!   !} ; sym-commute = {!   !} }
+--     ; counit = record { η = λ X → MkArrow (λ ()) (λ fromPos _ → fromPos) ; commute = {!   !} ; sym-commute = {!   !} }
 --     ; zig = {!   !}
 --     ; zag = {!   !} }
+
+positionArrowsEqual : {f g : Arrow A B} -> f ≡ g -> Arrow.mapPosition f ≡ Arrow.mapPosition g
+positionArrowsEqual p i = Arrow.mapPosition (p i)
+
+positionArrowsEqualPwise : {f g : Arrow A B} {z : Polynomial.position A} → f ≡ g -> Arrow.mapPosition f z ≡ Arrow.mapPosition g z
+positionArrowsEqualPwise {z = z} p i = let
+  posEq = positionArrowsEqual p i
+  in posEq z
+
+positionArrowsEqualPwiseEq : {A B : Polynomial} {f g : Arrow A B} →
+      f ≡ g →
+      {x : Polynomial.position A} →
+      Arrow.mapPosition f x Eq.≡ Arrow.mapPosition g x
+positionArrowsEqualPwiseEq p = ctop (positionArrowsEqualPwise p)
 
 -- -- Functor sending a polynomial to its set of positions "plugging in 1"
--- plugIn1 : Functor Poly  (Sets Level.zero)
--- plugIn1 = record
---     { F₀ = Polynomial.position
---     ; F₁ = Arrow.mapPosition
---     ; identity = {!   !}
---     ; homomorphism = {!   !}
---     ; F-resp-≈ = {!   !}
---     }
+plugIn1 : Functor Poly (Sets Level.zero)
+plugIn1 = record
+    { F₀ = Polynomial.position
+    ; F₁ = Arrow.mapPosition
+    ; identity = Eq.refl
+    ; homomorphism = Eq.refl
+    ; F-resp-≈ = positionArrowsEqualPwiseEq
+    }
 
--- -- The two above are adjoints "in the other direction"; i.e. plugIn1 is a RIGHT adjoint to constantPolynomial,
--- -- which itself is a left adjoint to plugIn0
--- polyAdjoint2 : Adjoint plugIn1 constantPolynomial
--- polyAdjoint2 = record 
+-- -- The two above are adjoints in the other direction
+-- plugIn1⊢constantPolynomial : Adjoint plugIn1 constantPolynomial
+-- plugIn1⊢constantPolynomial = record 
 --     { unit = {!   !}
 --     ; counit = {!   !}
 --     ; zig = {!   !}
 --     ; zag = {!   !} }
 
--- -- Functor sending a set A to the linear polynomial Ay^1 = Ay
--- linearPolynomial : Functor (Sets Level.zero) Poly
--- linearPolynomial = record
---     { F₀ = λ x → MkPolynomial x λ _ → ⊤
---     ; F₁ = λ f → MkArrow f \ _ _ -> tt
---     ; identity = {!   !}
---     ; homomorphism = {!   !}
---     ; F-resp-≈ = {!   !}
---     }
+-- Functor sending a set A to the linear polynomial Ay^1 = Ay
+linearPolynomial : Functor (Sets Level.zero) Poly
+linearPolynomial = record
+    { F₀ = λ x → MkPolynomial x λ _ → ⊤
+    ; F₁ = λ f → MkArrow f \ _ _ -> tt
+    ; identity = λ i → MkArrow id (λ fromPos x → x)
+    ; homomorphism = λ {x y z} {f g} i → MkArrow (g ∘ f) λ fromPos k → k
+    ; F-resp-≈ = λ {A B} {f g} x i → let
+      cubic : f ≡ g
+      cubic = pwiseToExt x
+      in
+        MkArrow (cubic i) λ fromPos x₁ → x₁
+    }
 
--- polyAdjoint3 : Adjoint linearPolynomial plugIn1
--- polyAdjoint3 = record 
+-- linearPolynomial⊢plugIn1 : Adjoint linearPolynomial plugIn1
+-- linearPolynomial⊢plugIn1 = record 
 --     { unit = {!   !}
 --     ; counit = {!   !}
 --     ; zig = {!   !}
 --     ; zag = {!   !} }
-    
+      
