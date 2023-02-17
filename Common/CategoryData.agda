@@ -61,7 +61,7 @@ MkPolynomial posA dirA * MkPolynomial posB dirB = MkPolynomial (posA × posB) \{
 -- Tensor between two polynomials. Parallel product.
 -- Pair of position. Each pair of position has one direction for each component.
 _⊗_ : Polynomial -> Polynomial -> Polynomial
-MkPolynomial posA dirA ⊗ MkPolynomial posB dirB = MkPolynomial (posA × posB) (λ {(posA , posB) → (dirA posA) ⊎ (dirB posB)})
+MkPolynomial posA dirA ⊗ MkPolynomial posB dirB = MkPolynomial (posA × posB) (λ {(posA , posB) → (dirA posA) × (dirB posB)})
 
 -- Unit for tensor is Y. 1 position with 1 direction.
 Y : Polynomial
