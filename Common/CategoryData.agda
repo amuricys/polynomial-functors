@@ -48,6 +48,10 @@ One = MkPolynomial ⊤ (λ tt → ⊥)
 arrowToOne : (p : Polynomial) -> Arrow p One
 arrowToOne p = MkArrow (λ {x → tt}) λ {fromPos ()}
 
+-- Constant polynomial: p(y) = A
+Constant : {A : Set} -> Polynomial
+Constant {A} = MkPolynomial A (λ _ → ⊥)
+
 _+_ : Polynomial -> Polynomial -> Polynomial
 MkPolynomial posA dirA + MkPolynomial posB dirB = MkPolynomial (posA ⊎ posB) (λ {(inj₁ posA) → dirA posA
                                                                                     ; (inj₂ posB) → dirB posB})

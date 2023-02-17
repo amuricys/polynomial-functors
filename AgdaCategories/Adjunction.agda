@@ -2,9 +2,9 @@
 
 module AgdaCategories.Adjunction where
 
-open import Relation.Binary.PropositionalEquality as Eq
 open import Agda.Builtin.Nat hiding (_+_ ; _*_ )
 import Agda.Builtin.Nat
+import Agda.Builtin.Equality as Eq
 open import Agda.Builtin.Unit
 open import Data.Empty
 open import Level
@@ -13,12 +13,13 @@ import Categories.Object.Initial
 open import Categories.Adjoint
 open import Categories.Category.Instance.Sets
 open import Categories.Functor using (Functor; _∘F_) renaming (id to idF)
-import Cubical.Foundations.Prelude as Cubical
+open import Cubical.Foundations.Prelude
 open import Cubical.Data.Sigma.Properties
 open import Common.CategoryData
 open import Cubical.Proofs
 open import Function
 open import AgdaCategories.CubicalPoly
+
 
 -- ∀ {X Y Z} {f : X -> Y} {g : Y -> Z} →
 --   D [ F₁ (C [ g ∘ f ]) ≈ D [ F₁ g ∘ F₁ f ] ]
@@ -28,19 +29,42 @@ open import AgdaCategories.CubicalPoly
 --   MkArrow (λ x → g (f x)) (λ fromPos z → (λ ()) ((λ ()) z))
 -- constHomomorph {f = f} {g = g} i = MkArrow (g ∘ f) (λ fromPos ())
 
-impfunExt2 : {A B : Set} {f g : A → B} →
-           ({x : A} → f x ≡ g x) → f ≡ g
-impfunExt2 = {!   !}
 
+
+-- idProof : {A : Set} -> {f g : Arrow (Constant {A}) (Constant {A})} -> (λ x → x) -> MkArrow (λ x → x) (λ fromPos ()) ≡ MkArrow (λ x → x) (λ fromPos toDir → toDir)
+-- idProof = refl
+
+-- equiv-resp : {A B C : Polynomial} {f h : Arrow B C} {g i : Arrow A B} → f ≡ h → g ≡ i → (f ∘p g) ≡ (h ∘p i)
+-- equiv-resp  p q ii = (p ii) ∘p (q ii)
+
+eqsEq : ∀ {A : Set} -> ∀ {x y : A} -> x Eq.≡ y -> x ≡ y
+eqsEq Eq.refl = refl
+
+pwiseToExt : {A B : Set} {f g : A → B} -> ({x : A} → f x Eq.≡ g x) -> f ≡ g
+pwiseToExt {A = A} {f = f} {g = g} p = let
+  yaaa : {x : A} → f x ≡ g x
+  yaaa = eqsEq p
+  in
+  funExt (λ x → yaaa)
+
+-- pwise : {A B : Set} {f g : A -> B} -> {x : A} → f x Eq.≡ g x -> f ≡ g
+-- pwise p = funExt {!   !}
+--   where pcubical = eqsEq {! !}
+
+arrowsEq : {A B : Set} -> {f g : A -> B} -> {w z : A -> ⊥ -> ⊥} -> (f ≡ g) -> (w ≡ z) -> MkArrow f w ≡ MkArrow g z
+arrowsEq p q ii = MkArrow (p ii) (q ii)
+
+fromAnythingToFalseToFalseEqual : {A : Set} {w z : A -> ⊥ -> ⊥} -> w ≡ z
+fromAnythingToFalseToFalseEqual i x ()
 
 -- Functor sending a set A to the constant polynomial Ay^0 = A
 constantPolynomial : Functor (Sets Level.zero) Poly 
 constantPolynomial = record
     { F₀ = λ x → MkPolynomial x λ _ → ⊥
     ; F₁ = λ f → MkArrow f λ fromPos ()
-    ; identity = \{A} i ->  MkArrow id λ fromPos x -> {!   !}
+    ; identity = arrowsEq refl fromAnythingToFalseToFalseEqual
     ; homomorphism = \{x y z} {f g} i -> MkArrow (g ∘ f) (λ fromPos ())
-    ; F-resp-≈ = λ {A B} {f g} p i → MkArrow (Cubical.implicitFunExt {!   !} {!   !}) {!   !}
+    ; F-resp-≈ = λ x → arrowsEq (pwiseToExt x) fromAnythingToFalseToFalseEqual
     }
 
 -- -- Functor sending a polynomial the zero set "plugging in 0"
@@ -96,3 +120,4 @@ constantPolynomial = record
 --     ; counit = {!   !}
 --     ; zig = {!   !}
 --     ; zag = {!   !} }
+    

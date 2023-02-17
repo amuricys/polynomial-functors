@@ -17,8 +17,8 @@ open import Cubical.Proofs
 open import Cubical.Foundations.Prelude
 
 -- Definition of Poly category: integration point between agda-categories and cubical
-Poly  : ∀ {l1 l2 l3 : Level} -> Category (Level.suc Level.zero) Level.zero Level.zero
-Poly  = record
+Poly : Category (Level.suc Level.zero) Level.zero Level.zero
+Poly = record
     { Obj = Polynomial
     ; _⇒_ = Arrow
     ; _≈_ = _≡_
