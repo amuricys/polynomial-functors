@@ -2,8 +2,13 @@
 
 module AgdaCategories.Initial where
 
--- zeroArrowUnique : (f : Arrow Zero A) -> arrowFromZero Cubical.≡ f
--- zeroArrowUnique {A = A} f@(MkArrow mapPosition mapDirection) = {! arrowEqual {A = Zero} {B = A} { f = arrowFromZero} {g = f} (zeroMapPositionsUnique f) !} -- arrowEqual {A = Zero} {B = A} { f = arrowFromZero} {g = f} (?)  -- {! arrowEqual (zeroMapPositionsUnique ? ?) !} -- {! arrowEqual {f = arrowFromZero} {g = f} zeroMapPositionsUnique arrowFromZero f !}
+open import Common.CategoryData
+open import AgdaCategories.CubicalPoly
+open import Cubical.Proofs
+open import Categories.Object.Initial Poly
 
--- isInitial : IsInitial Zero 
--- isInitial = record { ! = arrowFromZero ; !-unique = zeroArrowUnique }
+zeroIsInitial : IsInitial Zero 
+zeroIsInitial = record { ! = arrowFromZero ; !-unique = arrowFromZeroUnique }
+
+initialZero : Initial
+initialZero = record { ⊥ = Zero ; ⊥-is-initial = zeroIsInitial }
