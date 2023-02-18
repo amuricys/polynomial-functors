@@ -45,8 +45,8 @@ arrowFromZero {p} = MkArrow (λ ()) (λ ())
 One : Polynomial
 One = MkPolynomial ⊤ (λ tt → ⊥)
 
-arrowToOne : (p : Polynomial) -> Arrow p One
-arrowToOne p = MkArrow (λ {x → tt}) λ {fromPos ()}
+arrowToOne : {p : Polynomial} -> Arrow p One
+arrowToOne = MkArrow (λ {x → tt}) λ {fromPos ()}
 
 -- Constant polynomial: p(y) = A
 Constant : {A : Set} -> Polynomial

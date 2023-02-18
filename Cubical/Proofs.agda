@@ -63,27 +63,38 @@ isContrTrue = tt , λ {tt → refl}
 isSetTrue : isSet ⊤
 isSetTrue = isContr→isOfHLevel 2 isContrTrue
 
+arrowSigmasEqual : {p q : Polynomial} {f g : Arrow p q}
+    -> (mapPosEq : Arrow.mapPosition f ≡ Arrow.mapPosition g)
+    -> transport -- Basically "assuming map on positions is equal, then proof that map on directions is equal"
+            (λ i →
+                (fromPos : Polynomial.position p) →
+                Polynomial.direction q (mapPosEq i fromPos) →
+                Polynomial.direction p fromPos)
+            (snd (arrowToSigma f))
+            ≡ snd (arrowToSigma g)
+    -> arrowToSigma f ≡ arrowToSigma g
+arrowSigmasEqual {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathTransport→PathΣ (arrowToSigma f) (arrowToSigma g) (mapPosEq , mapDirEq)
 
+arrowsEqual : {p q : Polynomial} {f g : Arrow p q}
+    -> (mapPosEq : Arrow.mapPosition f ≡ Arrow.mapPosition g)
+    -> transport -- Basically "assuming map on positions is equal, then proof that map on directions is equal"
+            (λ i →
+                (fromPos : Polynomial.position p) →
+                Polynomial.direction q (mapPosEq i fromPos) →
+                Polynomial.direction p fromPos)
+            (snd (arrowToSigma f))
+            ≡ snd (arrowToSigma g)
+    -> f ≡ g
+arrowsEqual {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq i = sigmaToArrow (arrowSigmasEqual {f = f} {g = g} mapPosEq mapDirEq i)
 
-arrowToOneUnique : {p : Polynomial} {f : ArrowAsSigma p One} -> f ≡ arrowToSigma (arrowToOne p)
-arrowToOneUnique {p = p} {f = f} = ΣPathTransport→PathΣ f (arrowToSigma (arrowToOne p)) hej
+arrowFromZeroUnique : {p : Polynomial} (f : Arrow Zero p) -> arrowFromZero ≡ f
+arrowFromZeroUnique f = arrowsEqual (λ {i ()}) (funExt λ {()})
+
+arrowToOneUnique : {p : Polynomial} (f : Arrow p One) ->  arrowToOne ≡ f
+arrowToOneUnique {p = p} f = arrowsEqual mapPosEq (λ {i fromPos ()} )
     where
-
         isPropUnit : (x y : ⊤) -> x ≡ y
         isPropUnit tt tt = refl
-
-        helper : fst f ≡ fst (arrowToSigma (arrowToOne p))
-        helper i x = isPropUnit (fst f x) (fst (arrowToSigma (arrowToOne p)) x) i
-
-        hej : ΣPathTransport f (arrowToSigma (arrowToOne p))
-        hej =  helper , λ {i fromPos ()}
-
-arrowFromZeroUnique : {p : Polynomial} {f : ArrowAsSigma Zero p} -> f ≡ arrowToSigma (arrowFromZero {p})
-arrowFromZeroUnique {p = p} {f = f} = ΣPathTransport→PathΣ f (arrowToSigma (arrowFromZero {p})) hej
-    where
-
-        helper : fst f ≡ fst (arrowToSigma (arrowFromZero {p}))
-        helper i () 
-
-        hej : ΣPathTransport f (arrowToSigma (arrowFromZero {p}))
-        hej = helper , funExt λ {()}
+        
+        mapPosEq : (λ x → tt) ≡ (λ x → tt)
+        mapPosEq = funExt λ x i → isPropUnit (Arrow.mapPosition f x) (Arrow.mapPosition (arrowToOne {p}) x) i
