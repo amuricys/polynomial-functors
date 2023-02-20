@@ -17,7 +17,8 @@ record Polynomial : Set₁ where
         direction : position -> Set
 
 record Arrow (from to : Polynomial) : Set where
-    constructor MkArrow
+    -- constructor MkArrow
+    constructor _⇄_
     open Polynomial
     field
         mapPosition : position from -> position to
@@ -29,24 +30,24 @@ variable
 -- | For each polynomial we have the identity arrow.
 -- | Positions are mapped to itself. The direction is taken as itself.
 idArrow : Arrow A A
-idArrow = MkArrow id (λ fromPos toDir → toDir)
+idArrow = id ⇄ λ _ → id
 
 _∘p_ : Arrow B C -> Arrow A B -> Arrow A C
-_∘p_ (MkArrow bToCPos cToBDir) (MkArrow aToBPos bToADir) = MkArrow (bToCPos ∘ aToBPos) (λ fromPos z → bToADir fromPos (cToBDir (aToBPos fromPos) z))
+_∘p_ (bToCPos ⇄ cToBDir) (aToBPos ⇄ bToADir) = (bToCPos ∘ aToBPos) ⇄ (λ fromPos z → bToADir fromPos (cToBDir (aToBPos fromPos) z))
 
 -- Zero polynomial: p(y) = 0
 Zero : Polynomial
 Zero = MkPolynomial ⊥ (λ ())
 
 arrowFromZero : {p : Polynomial} -> Arrow Zero p
-arrowFromZero {p} = MkArrow (λ ()) (λ ())
+arrowFromZero {p} = (λ ()) ⇄ (λ ())
 
 -- One polynomial: p(y) = 1
 One : Polynomial
-One = MkPolynomial ⊤ (λ tt → ⊥)
+One = MkPolynomial ⊤ (λ {tt → ⊥})
 
 arrowToOne : {p : Polynomial} -> Arrow p One
-arrowToOne = MkArrow (λ {x → tt}) λ {fromPos ()}
+arrowToOne = (λ _ → tt) ⇄ λ {_ ()}
 
 -- Constant polynomial: p(y) = A
 Constant : {A : Set} -> Polynomial

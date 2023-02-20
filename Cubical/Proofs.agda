@@ -17,10 +17,10 @@ open import Cubical.Data.Sigma.Properties
 
 -- Categorical axioms
 composeLeftIdentity : (bToC : Arrow B C) -> idArrow ∘p bToC ≡ bToC
-composeLeftIdentity (MkArrow mapPosition mapDirection) = refl
+composeLeftIdentity (_ ⇄ _) = refl
 
 composeRightIdentity : (cToB : Arrow C B) -> cToB ∘p idArrow ≡ cToB
-composeRightIdentity (MkArrow mapPosition mapDirection) = refl
+composeRightIdentity (_ ⇄ _) = refl
 
 composeIsAssoc : ∀ {A B C D} -> {f : Arrow A B} {g : Arrow B C} {h : Arrow C D} -> ((h ∘p g) ∘p f) ≡ (h ∘p (g ∘p f))
 composeIsAssoc = refl
@@ -49,10 +49,10 @@ ArrowAsSigma A B = Σ[ mapPosition ∈ (Polynomial.position A -> Polynomial.posi
     ((fromPos : Polynomial.position A) -> Polynomial.direction B (mapPosition fromPos) -> Polynomial.direction A fromPos)
     
 sigmaToArrow : {A B : Polynomial} -> ArrowAsSigma A B -> Arrow A B
-sigmaToArrow (mapPosition , mapDirection) = MkArrow mapPosition mapDirection
+sigmaToArrow (mapPosition , mapDirection) = mapPosition ⇄ mapDirection
 
 arrowToSigma : {A B : Polynomial} -> Arrow A B -> ArrowAsSigma A B
-arrowToSigma  (MkArrow mapPosition mapDirection) = mapPosition , mapDirection
+arrowToSigma  (mapPosition ⇄ mapDirection) = mapPosition , mapDirection
 
 isoArrowSigma : {A B : Polynomial} -> Iso (Arrow A B) (ArrowAsSigma A B)
 isoArrowSigma = iso arrowToSigma sigmaToArrow (λ b → refl) (λ a → refl)
@@ -70,8 +70,8 @@ arrowSigmasEqual : {p q : Polynomial} {f g : Arrow p q}
                 (fromPos : Polynomial.position p) →
                 Polynomial.direction q (mapPosEq i fromPos) →
                 Polynomial.direction p fromPos)
-            (snd (arrowToSigma f))
-            ≡ snd (arrowToSigma g)
+            (Arrow.mapDirection f)
+            ≡ Arrow.mapDirection g
     -> arrowToSigma f ≡ arrowToSigma g
 arrowSigmasEqual {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathTransport→PathΣ (arrowToSigma f) (arrowToSigma g) (mapPosEq , mapDirEq)
 
@@ -82,8 +82,8 @@ arrowsEqual : {p q : Polynomial} {f g : Arrow p q}
                 (fromPos : Polynomial.position p) →
                 Polynomial.direction q (mapPosEq i fromPos) →
                 Polynomial.direction p fromPos)
-            (snd (arrowToSigma f))
-            ≡ snd (arrowToSigma g)
+            (Arrow.mapDirection f)
+            ≡ Arrow.mapDirection g
     -> f ≡ g
 arrowsEqual {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq i = sigmaToArrow (arrowSigmasEqual {f = f} {g = g} mapPosEq mapDirEq i)
 

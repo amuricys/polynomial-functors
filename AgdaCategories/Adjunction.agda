@@ -14,6 +14,7 @@ open import Cubical.Foundations.Prelude
 open import Common.CategoryData
 open import Function
 open import AgdaCategories.CubicalPoly
+open import Cubical.Proofs
 
 
 ------- Helpers -------
@@ -24,12 +25,6 @@ pwiseToExt {A = A} {f = f} {g = g} p = let
   yaaa = ptoc p
   in
   funExt (λ x → yaaa)
-
-arrowsEq : {A B : Set} -> {f g : A -> B} -> {w z : A -> ⊥ -> ⊥} -> (f ≡ g) -> (w ≡ z) -> MkArrow f w ≡ MkArrow g z
-arrowsEq p q ii = MkArrow (p ii) (q ii)
-
-fromAnythingToFalseToFalseEqual : {A : Set} {w z : A -> ⊥ -> ⊥} -> w ≡ z
-fromAnythingToFalseToFalseEqual i x ()
 
 positionArrowsEqual : {f g : Arrow A B} -> f ≡ g -> Arrow.mapPosition f ≡ Arrow.mapPosition g
 positionArrowsEqual p i = Arrow.mapPosition (p i)
@@ -51,10 +46,10 @@ positionArrowsEqualPwiseEq p = ctop (positionArrowsEqualPwise p)
 constantPolynomial : Functor (Sets Level.zero) Poly 
 constantPolynomial = record
     { F₀ = λ x → MkPolynomial x λ _ → ⊥
-    ; F₁ = λ f → MkArrow f λ fromPos ()
-    ; identity = arrowsEq refl fromAnythingToFalseToFalseEqual
-    ; homomorphism = \{x y z} {f g} i -> MkArrow (g ∘ f) (λ fromPos ())
-    ; F-resp-≈ = λ x → arrowsEq (pwiseToExt x) fromAnythingToFalseToFalseEqual
+    ; F₁ = λ f → f ⇄ λ fromPos → id
+    ; identity = refl
+    ; homomorphism = refl
+    ; F-resp-≈ = λ p → arrowsEqual (funExt λ x → ptoc p) refl
     }
 
 -- Functor sending a polynomial the zero set "plugging in 0"
@@ -97,14 +92,14 @@ plugIn1 = record
 linearPolynomial : Functor (Sets Level.zero) Poly
 linearPolynomial = record
     { F₀ = λ x → MkPolynomial x λ _ → ⊤
-    ; F₁ = λ f → MkArrow f \ _ _ -> tt
-    ; identity = λ i → MkArrow id (λ fromPos x → x)
-    ; homomorphism = λ {x y z} {f g} i → MkArrow (g ∘ f) λ fromPos k → k
+    ; F₁ = λ f → f ⇄ \ _ _ -> tt
+    ; identity = λ i → id ⇄ (λ fromPos x → x)
+    ; homomorphism = λ {x y z} {f g} i → (g ∘ f) ⇄ λ fromPos k → k
     ; F-resp-≈ = λ {A B} {f g} x i → let
       cubic : f ≡ g
       cubic = pwiseToExt x
       in
-        MkArrow (cubic i) λ fromPos x₁ → x₁
+        (cubic i) ⇄ λ fromPos x₁ → x₁
     }
 
 -- linearPolynomial⊢plugIn1 : Adjoint linearPolynomial plugIn1
