@@ -23,8 +23,8 @@ open import Data.Bool
 arrowsEq : {A B : Set} -> {f g : A -> B} -> {w z : A -> ⊥ -> ⊥} -> (f ≡ g) -> (w ≡ z) -> f ⇄ w ≡ g ⇄ z
 arrowsEq p q ii = (p ii) ⇄ (q ii) 
 
-fromAnythingToFalseToFalseEqual : {A : Set} {w z : A -> ⊥ -> ⊥} -> w ≡ z
-fromAnythingToFalseToFalseEqual i x ()
+fromAnythingToFalseToAnythingEqual : {A B : Set} {w z : A -> ⊥ -> B} -> w ≡ z
+fromAnythingToFalseToAnythingEqual i x ()
 
 -- Fully faithful functor sending a set A to the constant polynomial Ay^0 = A
 constantPolynomial : Functor (Sets Level.zero) Poly 
@@ -41,7 +41,7 @@ full = record
     { from = record 
         { _⟨$⟩_ = Arrow.mapPosition
         ; cong = positionArrowsEqualPwiseEq } 
-    ; right-inverse-of = \_ -> arrowsEq refl fromAnythingToFalseToFalseEqual
+    ; right-inverse-of = \_ -> arrowsEq refl fromAnythingToFalseToAnythingEqual
     }
 
 faithful : Faithful constantPolynomial
