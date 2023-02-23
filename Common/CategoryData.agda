@@ -8,6 +8,7 @@ open import Agda.Builtin.Unit
 open import Data.Empty
 open import Data.Sum
 open import Data.Product
+open import Data.Bool
 open import Function
 
 record Polynomial : Set₁ where
@@ -53,6 +54,10 @@ arrowToOne = (λ _ → tt) ⇄ λ {_ ()}
 Constant : {A : Set} -> Polynomial
 Constant {A} = MkPolynomial A (λ _ → ⊥)
 
+-- Plug in a set: say you have p(y) = y^2 + 3. applyPoly(2) should return 2^2 + 3 ≅ 7
+applyPoly : Polynomial → Set → Set
+applyPoly (MkPolynomial position direction) Y = Σ position λ x → (direction x → Y)
+
 _+_ : Polynomial -> Polynomial -> Polynomial
 MkPolynomial posA dirA + MkPolynomial posB dirB = MkPolynomial (posA ⊎ posB) (λ {(inj₁ posA) → dirA posA
                                                                                     ; (inj₂ posB) → dirB posB})
@@ -83,3 +88,4 @@ Identity = Y
 compositePower : Polynomial -> N.Nat -> Polynomial
 compositePower p N.zero = Identity
 compositePower p (N.suc n) = p ◂ (compositePower p n) 
+ 

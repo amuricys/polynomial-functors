@@ -9,12 +9,14 @@ open import Level
 open import Categories.Adjoint
 open import Categories.Category.Instance.Sets
 open import Categories.Functor using (Functor; _∘F_) renaming (id to idF)
+open import Categories.NaturalTransformation renaming ( id to idN )
 open import Cubical.Data.Equality using (ctop ; ptoc)
 open import Cubical.Foundations.Prelude
 open import Common.CategoryData
 open import Function
 open import AgdaCategories.CubicalPoly
 open import Cubical.Proofs
+open import Data.Bool
 
 
 ------- Helpers -------
@@ -52,37 +54,90 @@ constantPolynomial = record
     ; F-resp-≈ = λ p → arrowsEqual (funExt λ x → ptoc p) refl
     }
 
+fromArrowInPolyToFunction : {A B : Polynomial} -> Arrow A B -> applyPoly A ⊥ -> applyPoly B ⊥
+fromArrowInPolyToFunction {(MkPolynomial pos dir)} {B} (mapPosition ⇄ mapDirection) = \x → let
+  positionAirquotes = fst x
+  directionAirquoteslol = snd x
+  in mapPosition positionAirquotes , λ {x₁ → directionAirquoteslol (mapDirection positionAirquotes x₁)}
+
+fromArrowInPolyToFunction2 : {A B : Polynomial} -> Arrow A B -> applyPoly A ⊤ -> applyPoly B ⊤
+fromArrowInPolyToFunction2 {(MkPolynomial pos dir)} {B} (mapPosition ⇄ mapDirection) = \x → let
+  positionAirquotes = fst x
+  directionAirquoteslol = snd x
+  in mapPosition positionAirquotes , λ {x₁ → directionAirquoteslol (mapDirection positionAirquotes x₁)}
+
+idFunction : (A : Polynomial) -> fromArrowInPolyToFunction {A} {A} idArrow Eq.≡ id
+idFunction (MkPolynomial pos dir) = ctop λ i x → let
+  positionairquotes = fst x
+  directionairquotesLOLLL = snd x
+  in
+  positionairquotes , directionairquotesLOLLL
+
+appliedPolyArrowsEq : {f g : Arrow A B} -> f ≡ g -> fromArrowInPolyToFunction f ≡ fromArrowInPolyToFunction g
+appliedPolyArrowsEq p i = fromArrowInPolyToFunction (p i)
+
+appliedPolyArrowsEqPwise : {f g : Arrow A B} {z : applyPoly A ⊥} → f ≡ g -> fromArrowInPolyToFunction f z ≡ fromArrowInPolyToFunction g z
+appliedPolyArrowsEqPwise {z = z} p i = let
+  posEq = appliedPolyArrowsEq p i
+  in posEq z
+
+appliedPolyArrowsEqPwiseEq : {A B : Polynomial}
+      {f g : Arrow A B} →
+      f ≡ g →
+      {z : applyPoly A ⊥} →
+      fromArrowInPolyToFunction f z Eq.≡ fromArrowInPolyToFunction g z
+appliedPolyArrowsEqPwiseEq p {z} = ctop (appliedPolyArrowsEqPwise {z = z} p)
+
+appliedPolyArrowsEq2 : {f g : Arrow A B} -> f ≡ g -> fromArrowInPolyToFunction2 f ≡ fromArrowInPolyToFunction2 g
+appliedPolyArrowsEq2 p i = fromArrowInPolyToFunction2 (p i)
+
+appliedPolyArrowsEqPwise2 : {f g : Arrow A B} {z : applyPoly A ⊤} → f ≡ g -> fromArrowInPolyToFunction2 f z ≡ fromArrowInPolyToFunction2 g z
+appliedPolyArrowsEqPwise2 {z = z} p i = let
+  posEq = appliedPolyArrowsEq2 p i
+  in posEq z
+
+appliedPolyArrowsEqPwiseEq2 : {A B : Polynomial}
+      {f g : Arrow A B} →
+      f ≡ g →
+      {z : applyPoly A ⊤} →
+      fromArrowInPolyToFunction2 f z Eq.≡ fromArrowInPolyToFunction2 g z
+appliedPolyArrowsEqPwiseEq2 p {z} = ctop (appliedPolyArrowsEqPwise2 {z = z} p)
+
+
+
+-- ∀ {A B} {f g : C [ A , B ]} → C [ f ≈ g ] → D [ F₁ f ≈ F₁ g ]
+
 -- Functor sending a polynomial the zero set "plugging in 0"
 plugIn0 : Functor Poly (Sets Level.zero)
 plugIn0 = record
-    { F₀ = λ _ -> ⊥
-    ; F₁ = λ f ()
-    ; identity = \{A} -> λ {}
-    ; homomorphism = \{X Y Z f g} -> λ {}
-    ; F-resp-≈ = λ _ {}
+    { F₀ = λ x → applyPoly x ⊥
+    ; F₁ = fromArrowInPolyToFunction
+    ; identity = Eq.refl
+    ; homomorphism = Eq.refl
+    ; F-resp-≈ = appliedPolyArrowsEqPwiseEq
     }
 
 -- The two above are adjoints
--- constantPolynomial⊢plugIn0 : Adjoint constantPolynomial plugIn0
--- constantPolynomial⊢plugIn0 = record 
---     { unit = record { η = λ X x → {!   !} ; commute = λ f → {!   !} ; sym-commute = {!   !} }
---     ; counit = record { η = λ X → MkArrow (λ ()) (λ fromPos _ → fromPos) ; commute = {!   !} ; sym-commute = {!   !} }
+-- constantPolynomial⊣plugIn0 : constantPolynomial ⊣ plugIn0 
+-- constantPolynomial⊣plugIn0 = record 
+--     { unit = {!   !}
+--     ; counit = {!   !}
 --     ; zig = {!   !}
 --     ; zag = {!   !} }
 
 -- -- Functor sending a polynomial to its set of positions "plugging in 1"
 plugIn1 : Functor Poly (Sets Level.zero)
 plugIn1 = record
-    { F₀ = Polynomial.position
-    ; F₁ = Arrow.mapPosition
+    { F₀ = λ x → applyPoly x ⊤
+    ; F₁ = fromArrowInPolyToFunction2
     ; identity = Eq.refl
     ; homomorphism = Eq.refl
-    ; F-resp-≈ = positionArrowsEqualPwiseEq
+    ; F-resp-≈ = appliedPolyArrowsEqPwiseEq2
     }
 
 -- -- The two above are adjoints in the other direction
--- plugIn1⊢constantPolynomial : Adjoint plugIn1 constantPolynomial
--- plugIn1⊢constantPolynomial = record 
+-- plugIn1⊣constantPolynomial : plugIn1 ⊣ constantPolynomial
+-- plugIn1⊣constantPolynomial = record 
 --     { unit = {!   !}
 --     ; counit = {!   !}
 --     ; zig = {!   !}
@@ -102,10 +157,10 @@ linearPolynomial = record
         (cubic i) ⇄ λ fromPos x₁ → x₁
     }
 
--- linearPolynomial⊢plugIn1 : Adjoint linearPolynomial plugIn1
--- linearPolynomial⊢plugIn1 = record 
+-- linearPolynomial⊣plugIn1 : linearPolynomial ⊣ plugIn1
+-- linearPolynomial⊣plugIn1 = record 
 --     { unit = {!   !}
 --     ; counit = {!   !}
 --     ; zig = {!   !}
 --     ; zag = {!   !} }
-      
+       
