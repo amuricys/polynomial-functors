@@ -10,6 +10,7 @@ open import Data.Sum
 open import Data.Product
 open import Data.Bool
 open import Function
+open import Cubical.Data.Sigma.Properties
 
 record Polynomial : Set₁ where
     constructor MkPolynomial
@@ -89,3 +90,6 @@ compositePower : Polynomial -> N.Nat -> Polynomial
 compositePower p N.zero = Identity
 compositePower p (N.suc n) = p ◂ (compositePower p n) 
  
+fromArrowInPolyToFunctionBetweenAppliedPolys : {A B : Polynomial} {S : Set} -> Arrow A B -> applyPoly A S -> applyPoly B S
+fromArrowInPolyToFunctionBetweenAppliedPolys {(MkPolynomial pos dir)} {B} (mapPosition ⇄ mapDirection) (f , s) =
+  mapPosition f , λ {x₁ → s (mapDirection f x₁)}
