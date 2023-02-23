@@ -15,10 +15,16 @@ open import Cubical.Data.Equality using (ctop ; ptoc)
 open import Cubical.Foundations.Prelude
 open import Common.CategoryData
 open import Function
-open import Function.Surjection hiding (id)
 open import AgdaCategories.CubicalPoly
 open import Cubical.Proofs
 open import Data.Bool
+
+
+arrowsEq : {A B : Set} -> {f g : A -> B} -> {w z : A -> ⊥ -> ⊥} -> (f ≡ g) -> (w ≡ z) -> f ⇄ w ≡ g ⇄ z
+arrowsEq p q ii = (p ii) ⇄ (q ii) 
+
+fromAnythingToFalseToFalseEqual : {A : Set} {w z : A -> ⊥ -> ⊥} -> w ≡ z
+fromAnythingToFalseToFalseEqual i x ()
 
 -- Fully faithful functor sending a set A to the constant polynomial Ay^0 = A
 constantPolynomial : Functor (Sets Level.zero) Poly 
@@ -30,18 +36,16 @@ constantPolynomial = record
     ; F-resp-≈ = λ p → arrowsEqual (funExt λ x → ptoc p) refl
     }
 
-why : {posA posB : Set} (f : Arrow (MkPolynomial posA (λ _ → ⊥)) (MkPolynomial posB (λ _ → ⊥))) → (Arrow.mapPosition f ⇄ (λ fromPos x₁ → x₁)) ≡ f
-why {posA} {posB} (mapPosition ⇄ mapDirection) = λ i → mapPosition ⇄ λ fromPos -> {!   !}
-
 full : Full constantPolynomial
 full = record 
     { from = record 
         { _⟨$⟩_ = Arrow.mapPosition
         ; cong = positionArrowsEqualPwiseEq } 
-    ; right-inverse-of = why
+    ; right-inverse-of = \_ -> arrowsEq refl fromAnythingToFalseToFalseEqual
     }
 
 faithful : Faithful constantPolynomial
 faithful = λ f g x → ctop (positionArrowsEqualPwise x)
+
 ffcp : FullyFaithful constantPolynomial
 ffcp = full , faithful
