@@ -32,3 +32,17 @@ linearPolynomial = record
       in
         (cubic i) ⇄ λ fromPos x₁ → x₁
     }
+
+full : Full linearPolynomial
+full = record 
+    { from = record 
+        { _⟨$⟩_ = Arrow.mapPosition
+        ; cong = positionArrowsEqualPwiseEq } 
+    ; right-inverse-of = λ x → refl
+    }
+
+faithful : Faithful linearPolynomial
+faithful = λ f g x → ctop (positionArrowsEqualPwise x)
+
+ffcp : FullyFaithful linearPolynomial
+ffcp = full , faithful
