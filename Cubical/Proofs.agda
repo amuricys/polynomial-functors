@@ -49,6 +49,9 @@ equiv-resp  p q ii = (p ii) ∘p (q ii)
 fromFalseFunctionsEqual : {A : Type} (f : ⊥ -> A) -> (g : ⊥ -> A) -> f ≡ g
 fromFalseFunctionsEqual f g = funExt λ {()}
 
+-- fromFalseFunctionsEqualAny : {A B : Type} (f : ⊥ -> A) -> (g : ⊥ -> B) -> f ≡ g
+-- fromFalseFunctionsEqualAny f g = {!   !}
+
 ------- Helper conversions and isomorphism between converted representations
 ---------------------------------------
 ArrowAsSigma : Polynomial -> Polynomial -> Type

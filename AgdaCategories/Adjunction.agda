@@ -11,10 +11,12 @@ open import Cubical.Proofs
 open import Function
 open import Common.CategoryData
 open import Data.Unit
+open import Data.Empty
 open import AgdaCategories.Functor.Constant
 open import AgdaCategories.Functor.Linear
 open import AgdaCategories.Functor.PlugInOne
 open import AgdaCategories.Functor.PlugInZero
+open import Level
 
 
 -- Quadruple adjunction
@@ -41,8 +43,18 @@ constantPolynomial⊣plugIn0 = record
 plugin1unit : NaturalTransformation idF (constantPolynomial ∘F plugIn1)
 plugin1unit = record { 
     η = λ X → (λ x → x , λ _ → tt) ⇄ λ fromPos () ;
-    commute = λ f@(aa ⇄ bb) -> arrowsEqual refl {!   !} ; -- λ i fromPos x → fromAnythingToFalseToAnythingEqual i fromPos {!   !};
-    sym-commute = λ f → arrowsEqual refl {!   !} } -- λ i fromPos x → fromAnythingToFalseToAnythingEqual i fromPos x }
+    commute = λ {A} {B} f@(aa ⇄ bb) -> let
+      help : (fromPos : Polynomial.position A) → ⊥ → Polynomial.direction A fromPos
+      help f = λ ()
+      help2 : ((λ x → Arrow.mapPosition f x , (λ _ → tt)) ⇄
+               (λ fromPos z → Arrow.mapDirection f fromPos ((λ ()) z)))
+              ≡
+              ((λ x → Arrow.mapPosition f x , (λ x₁ → tt)) ⇄
+               (λ fromPos z → (λ ()) z))
+      help2 = sym (arrowsEqual refl λ i → help)
+      in
+        help2 ; 
+    sym-commute = λ f → arrowsEqual refl {!   !} }
 
 plugin1counit : NaturalTransformation (plugIn1 ∘F constantPolynomial) idF
 plugin1counit = record { 
@@ -75,4 +87,4 @@ linearPolynomial⊣plugIn1 = record
     ; counit = linearcounit
     ; zig = refl
     ; zag = ctop refl }
-               
+                

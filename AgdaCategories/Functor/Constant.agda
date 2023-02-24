@@ -23,8 +23,14 @@ open import Data.Bool
 arrowsEq : {A B : Set} -> {f g : A -> B} -> {w z : A -> ⊥ -> ⊥} -> (f ≡ g) -> (w ≡ z) -> f ⇄ w ≡ g ⇄ z
 arrowsEq p q ii = (p ii) ⇄ (q ii) 
 
+arrowsEqDep : {A : Set} {B : A -> Set} {a : A} {f g : A -> B a} {w z : A -> ⊥ -> B a} -> f ≡ g -> w ≡ z -> f ⇄ w ≡ g ⇄ z
+arrowsEqDep p q ii = (p ii) ⇄ (q ii)
+
 fromAnythingToFalseToAnythingEqual : {A B : Set} {w z : A -> ⊥ -> B} -> w ≡ z
 fromAnythingToFalseToAnythingEqual i x ()
+
+fromAnythingToFalseToAnythingEqualDep : {A : Set} {B : A -> Set} {a : A} {w z : A -> ⊥ -> B a} -> w ≡ z
+fromAnythingToFalseToAnythingEqualDep i x ()
 
 -- Fully faithful functor sending a set A to the constant polynomial Ay^0 = A
 constantPolynomial : Functor (Sets Level.zero) Poly 
