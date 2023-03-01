@@ -60,8 +60,7 @@ applyPoly : Polynomial → Set → Set
 applyPoly (MkPolynomial position direction) Y = Σ position λ x → (direction x → Y)
 
 _+_ : Polynomial -> Polynomial -> Polynomial
-MkPolynomial posA dirA + MkPolynomial posB dirB = MkPolynomial (posA ⊎ posB) (λ {(inj₁ posA) → dirA posA
-                                                                                    ; (inj₂ posB) → dirB posB})
+MkPolynomial posA dirA + MkPolynomial posB dirB = MkPolynomial (posA ⊎ posB) [ dirA , dirB ]
                                                                                     
 
 -- Product between two polynomials.
@@ -93,3 +92,8 @@ compositePower p (N.suc n) = p ◂ (compositePower p n)
 fromArrowInPolyToFunctionBetweenAppliedPolys : {A B : Polynomial} {S : Set} -> Arrow A B -> applyPoly A S -> applyPoly B S
 fromArrowInPolyToFunctionBetweenAppliedPolys {(MkPolynomial pos dir)} {B} (mapPosition ⇄ mapDirection) (f , s) =
   mapPosition f , λ {x₁ → s (mapDirection f x₁)}
+
+enclose : Polynomial -> Set
+enclose p = Arrow p Y
+
+
