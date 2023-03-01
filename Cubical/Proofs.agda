@@ -125,6 +125,22 @@ fromFunctionToMapOnDirections {p@(MkPolynomial pos dir)} {q} f = \x -> let
 
 plugIn1IsoToMapDirection : {p q : Polynomial} -> Iso (applyPoly p ⊤ -> applyPoly q ⊤) (Polynomial.position p → Polynomial.position q)
 plugIn1IsoToMapDirection = iso fromFunctionToMapOnDirections fromMapInDirectionToFunction (λ b -> refl) (λ a → refl)
+
+-- Proposition Not sure if this maybe is so similar
+-- Proposition 3.40 in the book. (page 85)
+enclosePoly≡depFuncToDirections : {p : Polynomial} -> enclose p ≡ ((i : Polynomial.position p) -> Polynomial.direction p i)
+enclosePoly≡depFuncToDirections = isoToPath isoEnclosePolydepFuncToDirections
+  where
+
+    isoEnclosePolydepFuncToDirections : {p : Polynomial} -> Iso (enclose p) ((i : Polynomial.position p) -> Polynomial.direction p i)
+    isoEnclosePolydepFuncToDirections = iso toRight toLeft (λ _ → refl) (λ _ → refl)
+      where
+        toRight : {p : Polynomial} -> enclose p → ((i : Polynomial.position p) -> Polynomial.direction p i)
+        toRight (mapPosition ⇄ mapDirection) pos = mapDirection pos tt
+
+        toLeft : {p : Polynomial} -> ((i : Polynomial.position p) -> Polynomial.direction p i) → enclose p
+        toLeft p1 = (λ x → tt) ⇄ λ fromPos x → p1 fromPos
+
 ---------------------------------------
 
 
