@@ -150,3 +150,23 @@ positionArrowsEqualPwiseEq : {A B : Polynomial} {f g : Arrow A B} →
       {x : Polynomial.position A} →
       Arrow.mapPosition f x Eq.≡ Arrow.mapPosition g x
 positionArrowsEqualPwiseEq p = ctop (positionArrowsEqualPwise p)
+--  
+-- Proof that for any polynomal p with index set I, p(1) ≡ I
+-- Proposition 2.43 in the book
+I≡pOfOne : {A : Polynomial} → apply A ⊤ ≡ position A
+I≡pOfOne = isoToPath isoI≡pOfOne
+  where
+    isoI≡pOfOne : {A : Polynomial} → Iso (apply A ⊤) (position A)
+    isoI≡pOfOne = iso toRight toLeft inv1 inv2
+      where
+        toRight : apply A ⊤ → position A
+        toRight = fst
+
+        toLeft : position A → apply A ⊤ 
+        toLeft x = x , λ x₁ → tt
+
+        inv1 = λ b → refl
+        inv2 = λ {(fst₁ , snd₁) → refl}
+
+-- derivative : Polynomial → Polynomial
+-- derivative (MkPolynomial pos dir) = MkPolynomial (Σ pos dir) (λ {(i , a) → {! dir i - a  !}})
