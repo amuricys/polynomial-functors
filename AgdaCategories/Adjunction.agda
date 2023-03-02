@@ -61,23 +61,26 @@ when checking the definition of eq2
 
 plugin1unit : NaturalTransformation idF (constantPolynomial ∘F plugIn1)
 plugin1unit = record { 
-    η =  λ X → (λ x → x , λ x₁ → tt) ⇄ λ fromPos () ;
-    -- commute : ∀ {X Y} (f : C [ X , Y ]) → η Y ∘ F₁ f ≈ G.F₁ f ∘ η X
-    commute = λ { {X} {Y} (mp ⇄ md) → let
-      -- t = (fromPos : Polynomial.position X) -> ⊥ -> Polynomial.direction X fromPos
-      pathToEq : {t : Type} {A B : t} -> Path t A B -> A ≡ B
-      pathToEq {t} {A} {B} p = p
-      summin : {fromPos : Polynomial.position X} -> ⊥ -> Polynomial.direction Y (mp fromPos)
-      summin = \()
-      summin2 : {fromPos : Polynomial.position X} -> ⊥ -> Polynomial.direction X fromPos
-      summin2 = \()
-    --   summin3 : (fromPos : Polynomial.position X) -> ⊥ -> Polynomial.direction X fromPos
-    --   summin3 f = {!   !}
-      thereIsPath : Path (((fromPos : Polynomial.position X) -> ⊥ -> Polynomial.direction X fromPos)) (λ fromPos z → md fromPos (summin z)) (λ fromPos z → summin2 z)
-      thereIsPath = cong′ (\x -> {!   !}) refl
-      in
-      arrowsEqual refl {!   !} } ;
-    sym-commute =  {!   !}
+    -- η =  λ X → (λ x → x , λ x₁ → tt) ⇄ λ fromPos () ;
+    -- -- commute : ∀ {X Y} (f : C [ X , Y ]) → η Y ∘ F₁ f ≈ G.F₁ f ∘ η X
+    -- commute = λ { {X} {Y} (mp ⇄ md) → let
+    --   -- t = (fromPos : Polynomial.position X) -> ⊥ -> Polynomial.direction X fromPos
+    --   pathToEq : {t : Type} {A B : t} -> Path t A B -> A ≡ B
+    --   pathToEq {t} {A} {B} p = p
+    --   summin : {fromPos : Polynomial.position X} -> ⊥ -> Polynomial.direction Y (mp fromPos)
+    --   summin = \()
+    --   summin2 : {fromPos : Polynomial.position X} -> ⊥ -> Polynomial.direction X fromPos
+    --   summin2 = \()
+    -- --   summin3 : (fromPos : Polynomial.position X) -> ⊥ -> Polynomial.direction X fromPos
+    -- --   summin3 f = {!   !}
+    --   thereIsPath : Path (((fromPos : Polynomial.position X) -> ⊥ -> Polynomial.direction X fromPos)) (λ fromPos z → md fromPos (summin z)) (λ fromPos z → summin2 z)
+    --   thereIsPath = cong′ (\x -> {!   !}) refl
+    --   in
+    --   arrowsEqual refl {!   !} } ;
+    -- sym-commute =  {!   !}
+    η = λ X → (λ x → x , λ _ → tt) ⇄ λ fromPos () ;
+    commute = λ f → arrowsEqual3 refl λ {x ()} ;
+    sym-commute = λ f → arrowsEqual3 refl λ {x ()}
     }
 
 plugin1counit : NaturalTransformation (plugIn1 ∘F constantPolynomial) idF

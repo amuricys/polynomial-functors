@@ -100,9 +100,15 @@ open Polynomial
 
 arrowsEqual2 : {p q : Polynomial} {f g : Arrow p q}
     -> (mapPosEq : mapPosition f ≡ mapPosition g)
-    -> ((x : position p) -> (y : direction q (mapPosition f x)) -> mapDirection f x y ≡ mapDirection g x (subst (λ mapPos → direction q (mapPos x)) mapPosEq y) )
+    -> ((x : position p) -> (y : direction q (mapPosition f x)) -> mapDirection f x y ≡ mapDirection g x (subst (λ mapPos → direction q (mapPos x)) mapPosEq y) ) -- (subst (λ mapPos → direction q (mapPos x)) mapPosEq y)
     -> f ≡ g
-arrowsEqual2 a b = {!   !} 
+arrowsEqual2 a b = arrowsEqual a (funExt λ x → funExt λ y → {!   !}) -- λ i → transp {!   !} i {!   !})
+
+arrowsEqual3 : {p q : Polynomial} {f g : Arrow p q}
+    -> (mapPosEq : mapPosition f ≡ mapPosition g)
+    -> ((x : position p) -> (y : direction q (mapPosition g x)) -> mapDirection f x  (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y) -- mapDirection f x (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y  ) -- (subst (λ mapPos → direction q (mapPos x)) mapPosEq y)
+    -> f ≡ g
+arrowsEqual3 a b = arrowsEqual a (funExt λ x → funExt λ y → {!  b x y !}) -- λ i → transp {!   !} i {!   !})
 
 ---------------------------------------
 
@@ -197,3 +203,4 @@ I≡pOfOne = isoToPath isoI≡pOfOne
 
 -- derivative : Polynomial → Polynomial
 -- derivative (MkPolynomial pos dir) = MkPolynomial (Σ pos dir) (λ {(i , a) → {! dir i - a  !}})
+

@@ -38,10 +38,27 @@ coprod {A = A} {B = B} = record
         -- -- helper2 : {p : Polynomial} {h : Arrow (A + B) p} → (Arrow.mapDirection [ h ∘p i₁ , h ∘p i₂ ]p ) ≡ Arrow.mapDirection h
         -- helper2 = {!   !}
 
+        open Arrow
+        open Polynomial
+
         helper : {p : Polynomial} {h : Arrow (A + B) p} -> [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
-        helper {p = p} {h = h} = arrowsEqual2 (λ {i (inj₁ x) → Arrow.mapPosition h (inj₁ x)
-                                                ; i (inj₂ y) → Arrow.mapPosition h (inj₂ y)}) λ {(inj₁ x) y → {! substRefl !}
-                                                                                               ; (inj₂ y₁) y → {!   !}} -- {! subst   !} {! transport   !} -- (λ i → λ { (inj₁ x) → ? ; (inj₂ y) → ? }) {!   !} -- h(λ i →  λ {(inj₁ x) → ?
+        helper {p = p} {h = h} = arrowsEqual2 (funExt λ {(inj₁ x) → refl
+                                                       ; (inj₂ y) → refl}) λ {(inj₁ x) y → cong (λ zz → mapDirection h (inj₁ x) zz) (lemma1 x y) -- subst (λ zz → {! mapDirection h (inj₁ x) zz   !}) (lemma1 x y) {!   !}
+                                                                            ; (inj₂ y₁) y → cong (λ zz → mapDirection h (inj₂ y₁) zz) (sym (transportRefl y)) }
+            where
+                lemma1 : (x : position A) → (y : direction p (mapPosition h (inj₁ x))) → y ≡ (transp (λ i → direction p (mapPosition h (inj₁ x))) i0 y)
+                lemma1 x y = sym (transportRefl y)
+
+        -- mapDirection h (inj₁ x) y ≡
+      -- mapDirection h (inj₁ x)
+      -- (transp (λ i → direction p (mapPosition h (inj₁ x))) i0 y)
+                                                                            
+        -- helper {p = p} {h = h} = arrowsEqual (funExt λ {(inj₁ x) → refl
+        --                                               ; (inj₂ y) → refl}) (funExt λ {(inj₁ x) i → {!    !}
+        --                                                                            ; (inj₂ y) → {!   !}})
+        -- helper {p = p} {h = h} = arrowsEqual2 (λ {i (inj₁ x) → Arrow.mapPosition h (inj₁ x)
+        --                                         ; i (inj₂ y) → Arrow.mapPosition h (inj₂ y)}) λ {(inj₁ x) y → transp {!   !} i {!   !} -- sym  λ i → transp (λ i₃ → {! Polynomial.direction p (Arrow.mapPosition h (inj₂ y))  !}) i (Arrow.mapDirection h (inj₁ x) y)
+        --                                                                                        ; (inj₂ y₁) y → sym {! subst  !}} -- {! subst   !} {! transport   !} -- (λ i → λ { (inj₁ x) → ? ; (inj₂ y) → ? }) {!   !} -- h(λ i →  λ {(inj₁ x) → ?
                                                         --  ; (inj₂ y) → ? }) {!   !} -- (funExt λ {(inj₁ x) → refl
                                                     --  ; (inj₂ y) → refl}) {!   !}
         -- helper {p = p} {h = h} = arrowsEqual (funExt λ {(inj₁ x) → refl

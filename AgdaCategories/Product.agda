@@ -37,8 +37,8 @@ prod {A = A} {B = B} = record
 
         helper : {p : Polynomial} {h : Arrow p (A * B)} -> ⟨ π₁ ∘p h , π₂ ∘p h ⟩ ≡ h
         -- helper {h = h} = arrowsEqual refl {! transportRefl helper2 !} -- λ i fromPos x → {!   !} -- (transportRefl {!   !} {!   !})
-        helper {h = h} = arrowsEqual2 refl λ { x (inj₁ x₁) → {! !}
-                                            ;  x (inj₂ y) → {! subst  !} } -- λ i fromPos x → {!   !} -- (transportRefl {!   !} {!   !})
+        helper {h = h} = arrowsEqual2 refl λ { x (inj₁ x1) → cong (λ zz → Arrow.mapDirection h x (inj₁ zz)) (sym (transportRefl  x1))
+                                            ;  x (inj₂ y) → cong (λ zz → Arrow.mapDirection h x (inj₂ zz))  (sym (transportRefl y)) } -- λ i fromPos x → {!   !} -- (transportRefl {!   !} {!   !})
 
         helper22 : {p q : Polynomial} {f : Arrow p q} -> f ≡ f
         helper22 {f = f} = arrowsEqual refl (transportRefl (Arrow.mapDirection f))
