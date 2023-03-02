@@ -9,6 +9,7 @@ open import Data.Empty
 open import Data.Sum
 open import Data.Product
 open import Data.Bool
+-- open import 
 open import Function
 open import Cubical.Data.Sigma.Properties
 
@@ -55,9 +56,32 @@ arrowToOne = (λ _ → tt) ⇄ λ {_ ()}
 Constant : {A : Set} -> Polynomial
 Constant {A} = MkPolynomial A (λ _ → ⊥)
 
--- Plug in a set: say you have p(y) = y^2 + 3. applyPoly(2) should return 2^2 + 3 ≅ 7
-applyPoly : Polynomial → Set → Set
-applyPoly (MkPolynomial position direction) Y = Σ position λ x → (direction x → Y)
+ex : Polynomial
+ex = MkPolynomial Bool λ {false → Bool
+                        ; true → ⊤}
+
+f1 : ⊤ -> Bool
+f1 _ = true
+
+f2 : ⊤ -> Bool
+f2 _ = false
+
+-- Plug in a set: say you have p(y) = y^2 + 3. apply p 2 should return 2^2 + 3 ≅ 7
+-- This is the action on objects (sets) of polynomials! They're (endo)functors after all.
+apply : Polynomial → Set → Set
+apply (MkPolynomial position direction) Y = Σ position λ x → (direction x → Y)
+
+some : apply ex ⊤
+some = false , (λ{ false → tt
+                 ; true → tt })
+
+some2 : apply ex ⊤
+some2 = true , id
+
+-- Plug in a function: say you have p(y) = y^2 + 3 and f : 2 → 3. applyFn p f should return a function from 
+-- the type 2^2 + 3 ≅ 7 to the type 3^2 + 3 ≅ = 12. This is the action on morphisms (functions) of polynomials.
+applyFn : {A B : Set} -> (p : Polynomial) -> (A -> B) -> (apply p A) -> (apply p B)
+applyFn (MkPolynomial position direction) f (fst , snd) = fst , λ x → f (snd x)
 
 _+_ : Polynomial -> Polynomial -> Polynomial
 MkPolynomial posA dirA + MkPolynomial posB dirB = MkPolynomial (posA ⊎ posB) [ dirA , dirB ]
@@ -89,7 +113,7 @@ compositePower : Polynomial -> N.Nat -> Polynomial
 compositePower p N.zero = Identity
 compositePower p (N.suc n) = p ◂ (compositePower p n) 
  
-fromArrowInPolyToFunctionBetweenAppliedPolys : {A B : Polynomial} {S : Set} -> Arrow A B -> applyPoly A S -> applyPoly B S
+fromArrowInPolyToFunctionBetweenAppliedPolys : {A B : Polynomial} {S : Set} -> Arrow A B -> apply A S -> apply B S
 fromArrowInPolyToFunctionBetweenAppliedPolys {(MkPolynomial pos dir)} {B} (mapPosition ⇄ mapDirection) (f , s) =
   mapPosition f , λ {x₁ → s (mapDirection f x₁)}
 

@@ -123,18 +123,18 @@ arrowToOneUnique {p = p} f = arrowsEqual mapPosEq (λ {i fromPos ()} )
 
 ------- Proofs related to plugging in 0
 ---------------------------------------
-fromMapInDirectionToFunction : {p q : Polynomial} -> (Polynomial.position p → Polynomial.position q) → applyPoly p ⊤ → applyPoly q ⊤
+fromMapInDirectionToFunction : {p q : Polynomial} -> (Polynomial.position p → Polynomial.position q) → apply p ⊤ → apply q ⊤
 fromMapInDirectionToFunction {p} {q} f = \x ->
   f (fst x) , λ _ → tt
 
-fromFunctionToMapOnDirections : {p q : Polynomial} -> (applyPoly p ⊤ -> applyPoly q ⊤) -> (Polynomial.position p → Polynomial.position q)
+fromFunctionToMapOnDirections : {p q : Polynomial} -> (apply p ⊤ -> apply q ⊤) -> (Polynomial.position p → Polynomial.position q)
 fromFunctionToMapOnDirections {p@(MkPolynomial pos dir)} {q} f = \x -> let
-  y : applyPoly q ⊤
+  y : apply q ⊤
   y = f (x , λ x₁ → tt)
   in
   fst y
 
-plugIn1IsoToMapDirection : {p q : Polynomial} -> Iso (applyPoly p ⊤ -> applyPoly q ⊤) (Polynomial.position p → Polynomial.position q)
+plugIn1IsoToMapDirection : {p q : Polynomial} -> Iso (apply p ⊤ -> apply q ⊤) (Polynomial.position p → Polynomial.position q)
 plugIn1IsoToMapDirection = iso fromFunctionToMapOnDirections fromMapInDirectionToFunction (λ b -> refl) (λ a → refl)
 
 -- Proposition Not sure if this maybe is so similar
@@ -180,16 +180,16 @@ positionArrowsEqualPwiseEq p = ctop (positionArrowsEqualPwise p)
 --  
 -- Proof that for any polynomal p with index set I, p(1) ≡ I
 -- Proposition 2.43 in the book
-I≡pOfOne : {A : Polynomial} → applyPoly A ⊤ ≡ position A
+I≡pOfOne : {A : Polynomial} → apply A ⊤ ≡ Polynomial.position A
 I≡pOfOne = isoToPath isoI≡pOfOne
   where
-    isoI≡pOfOne : {A : Polynomial} → Iso (applyPoly A ⊤) (position A)
+    isoI≡pOfOne : {A : Polynomial} → Iso (apply A ⊤) (Polynomial.position A)
     isoI≡pOfOne = iso toRight toLeft inv1 inv2
       where
-        toRight : applyPoly A ⊤ → position A
+        toRight : apply A ⊤ → Polynomial.position A
         toRight = fst
 
-        toLeft : position A → applyPoly A ⊤ 
+        toLeft : Polynomial.position A → apply A ⊤ 
         toLeft x = x , λ x₁ → tt
 
         inv1 = λ b → refl

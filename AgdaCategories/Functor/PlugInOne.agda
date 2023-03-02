@@ -20,7 +20,7 @@ open import AgdaCategories.CubicalPoly
 open import Cubical.Proofs
 open import Data.Bool
 
-fromArrowInPolyToFunction2 : {A B : Polynomial} -> Arrow A B -> applyPoly A ⊤ -> applyPoly B ⊤
+fromArrowInPolyToFunction2 : {A B : Polynomial} -> Arrow A B -> apply A ⊤ -> apply B ⊤
 fromArrowInPolyToFunction2 {(MkPolynomial pos dir)} {B} (mapPosition ⇄ mapDirection) = \x → let
   positionAirquotes = fst x
   directionAirquoteslol = snd x
@@ -29,7 +29,7 @@ fromArrowInPolyToFunction2 {(MkPolynomial pos dir)} {B} (mapPosition ⇄ mapDire
 appliedPolyArrowsEq2 : {f g : Arrow A B} -> f ≡ g -> fromArrowInPolyToFunction2 f ≡ fromArrowInPolyToFunction2 g
 appliedPolyArrowsEq2 p i = fromArrowInPolyToFunction2 (p i)
 
-appliedPolyArrowsEqPwise2 : {f g : Arrow A B} {z : applyPoly A ⊤} → f ≡ g -> fromArrowInPolyToFunction2 f z ≡ fromArrowInPolyToFunction2 g z
+appliedPolyArrowsEqPwise2 : {f g : Arrow A B} {z : apply A ⊤} → f ≡ g -> fromArrowInPolyToFunction2 f z ≡ fromArrowInPolyToFunction2 g z
 appliedPolyArrowsEqPwise2 {z = z} p i = let
   posEq = appliedPolyArrowsEq2 p i
   in posEq z
@@ -37,14 +37,14 @@ appliedPolyArrowsEqPwise2 {z = z} p i = let
 appliedPolyArrowsEqPwiseEq2 : {A B : Polynomial}
       {f g : Arrow A B} →
       f ≡ g →
-      {z : applyPoly A ⊤} →
+      {z : apply A ⊤} →
       fromArrowInPolyToFunction2 f z Eq.≡ fromArrowInPolyToFunction2 g z
 appliedPolyArrowsEqPwiseEq2 p {z} = ctop (appliedPolyArrowsEqPwise2 {z = z} p)
 
 -- -- Functor sending a polynomial to its set of positions "plugging in 1"
 plugIn1 : Functor Poly (Sets Level.zero)
 plugIn1 = record
-    { F₀ = λ x → applyPoly x ⊤
+    { F₀ = λ x → apply x ⊤
     ; F₁ = fromArrowInPolyToFunctionBetweenAppliedPolys
     ; identity = Eq.refl
     ; homomorphism = Eq.refl
