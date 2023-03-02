@@ -1,4 +1,4 @@
-{-# OPTIONS --cubical #-}
+{-# OPTIONS --cubical --allow-unsolved-metas #-}
 
 module Cubical.Proofs where
 
@@ -15,6 +15,7 @@ open import Cubical.Foundations.HLevels
 open import Cubical.Categories.Limits.Terminal
 open import Cubical.Foundations.Isomorphism
 open import Cubical.Data.Sigma.Properties
+open import Data.Product hiding (Σ-syntax)
 
 ------- Categorical axioms
 ---------------------------------------
@@ -93,6 +94,16 @@ arrowsEqual : {p q : Polynomial} {f g : Arrow p q}
             ≡ Arrow.mapDirection g
     -> f ≡ g
 arrowsEqual {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq i = sigmaToArrow (arrowSigmasEqual {f = f} {g = g} mapPosEq mapDirEq i)
+
+open Arrow
+open Polynomial
+
+arrowsEqual2 : {p q : Polynomial} {f g : Arrow p q}
+    -> (mapPosEq : mapPosition f ≡ mapPosition g)
+    -> ((x : position p) -> (y : direction q (mapPosition f x)) -> mapDirection f x y ≡ mapDirection g x (subst (λ mapPos → direction q (mapPos x)) mapPosEq y) )
+    -> f ≡ g
+arrowsEqual2 a b = {!   !} 
+
 ---------------------------------------
 
 ------- Proofs related to uniqueness of arrows from and to certain polynomials
@@ -169,16 +180,16 @@ positionArrowsEqualPwiseEq p = ctop (positionArrowsEqualPwise p)
 --  
 -- Proof that for any polynomal p with index set I, p(1) ≡ I
 -- Proposition 2.43 in the book
-I≡pOfOne : {A : Polynomial} → apply A ⊤ ≡ position A
+I≡pOfOne : {A : Polynomial} → applyPoly A ⊤ ≡ position A
 I≡pOfOne = isoToPath isoI≡pOfOne
   where
-    isoI≡pOfOne : {A : Polynomial} → Iso (apply A ⊤) (position A)
+    isoI≡pOfOne : {A : Polynomial} → Iso (applyPoly A ⊤) (position A)
     isoI≡pOfOne = iso toRight toLeft inv1 inv2
       where
-        toRight : apply A ⊤ → position A
+        toRight : applyPoly A ⊤ → position A
         toRight = fst
 
-        toLeft : position A → apply A ⊤ 
+        toLeft : position A → applyPoly A ⊤ 
         toLeft x = x , λ x₁ → tt
 
         inv1 = λ b → refl

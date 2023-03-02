@@ -24,26 +24,36 @@ coprod {A = A} {B = B} = record
     }
     where
 
+        i₁ : Arrow A (A + B)
         i₁ = inj₁ ⇄ λ _ → id
+
+        i₂ : Arrow B (A + B)
         i₂ = inj₂ ⇄ λ _ → id
 
         [_,_]p : {C : Polynomial} → Arrow A C → Arrow B C → Arrow (A + B) C
         [_,_]p = λ {(f ⇄ f♯) (g ⇄ g♯) → [ f , g ] ⇄ [ f♯ , g♯ ]}
 
-        helper : {p : Polynomial} {h : Arrow (A + B) p} -> [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
-        helper {p = p} {h = h} = arrowsEqual (funExt λ {(inj₁ x) → refl
-                                      ; (inj₂ x) → refl}) {!   !}
-        
-            -- where
+        -- helper2 : {p : Polynomial} {h : Arrow (A + B) p} → {! Arrow.mapDirection [ h ∘p i₁ , h ∘p i₂ ] ≡ Arrow.mapDirection h !} -- (Arrow.mapDirection ⟨ π₁ ∘p h , π₂ ∘p h ⟩) ≡ Arrow.mapDirection h -- (λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h --  {! λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h  !} helper2 = {!   !}
+        -- helper2 : {p : Polynomial} {h : Arrow (A + B) p} → (Arrow.mapDirection [ h ∘p i₁ , h ∘p i₂ ]p) ≡ Arrow.mapDirection h
+        -- -- helper2 : {p : Polynomial} {h : Arrow (A + B) p} → (Arrow.mapDirection [ h ∘p i₁ , h ∘p i₂ ]p ) ≡ Arrow.mapDirection h
+        -- helper2 = {!   !}
 
-                -- yo : PathP (λ i → (fromPos : Polynomial.position p) → Polynomial.direction ? (mapPosEq i fromPos) → Polynomial.direction p fromPos) (Arrow.mapDirection [ h ∘p i₁ , h ∘p i₂ ]p) (Arrow.mapDirection h)
-                -- yo = ?
+        helper : {p : Polynomial} {h : Arrow (A + B) p} -> [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
+        helper {p = p} {h = h} = arrowsEqual2 (λ {i (inj₁ x) → Arrow.mapPosition h (inj₁ x)
+                                                ; i (inj₂ y) → Arrow.mapPosition h (inj₂ y)}) λ {(inj₁ x) y → {! substRefl !}
+                                                                                               ; (inj₂ y₁) y → {!   !}} -- {! subst   !} {! transport   !} -- (λ i → λ { (inj₁ x) → ? ; (inj₂ y) → ? }) {!   !} -- h(λ i →  λ {(inj₁ x) → ?
+                                                        --  ; (inj₂ y) → ? }) {!   !} -- (funExt λ {(inj₁ x) → refl
+                                                    --  ; (inj₂ y) → refl}) {!   !}
+        -- helper {p = p} {h = h} = arrowsEqual (funExt λ {(inj₁ x) → refl
+        --                                               ; (inj₂ y) → refl}) {!   !} -- (funExt λ {(inj₁ x) → {! refl   !}
+        --                                                       -- ; (inj₂ y) → {! refl  !}}) -- ? arrowsEqual (funExt λ {(inj₁ x) → refl
+        -- helper {p = p} {h = h} = arrowsEqual (λ i → λ {x → {!   !}}) {!   !} 
 
         unique : {F : Polynomial} {h : Arrow (A + B) F} {f₁ : Arrow A F} {f₂ : Arrow B F} 
             → (h ∘p i₁) ≡ f₁
             → (h ∘p i₂) ≡ f₂
             → [ f₁ , f₂ ]p ≡ h
-        unique p₁ p₂ = transitivity (λ i → [ sym p₁ i , sym p₂ i ]p) helper
+        unique p₁ p₂ = (λ i → [ sym p₁ i , sym p₂ i ]p) ∙ helper
 
 
 --         helper2 : {F : Polynomial} {h : Arrow F (A * B)} → (Arrow.mapDirection ⟨ π₁ ∘p h , π₂ ∘p h ⟩) ≡ Arrow.mapDirection h -- (λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h --  {! λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h  !} helper2 = {!   !}
