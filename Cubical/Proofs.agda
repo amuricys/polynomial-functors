@@ -104,11 +104,28 @@ arrowsEqual2 : {p q : Polynomial} {f g : Arrow p q}
     -> f ≡ g
 arrowsEqual2 a b = arrowsEqual a (funExt λ x → funExt λ y → {!   !}) -- λ i → transp {!   !} i {!   !})
 
+arrowSigmasEqual3 : {p q : Polynomial} {f g : Arrow p q}
+    -> (mapPosEq : Arrow.mapPosition f ≡ Arrow.mapPosition g)
+    -> ((x : position p) -> (y : direction q (mapPosition g x)) -> mapDirection f x  (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y) -- mapDirection f x (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y  ) -- (subst (λ mapPos → direction q (mapPos x)) mapPosEq y)
+    -> arrowToSigma f ≡ arrowToSigma g
+arrowSigmasEqual3 {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathTransport→PathΣ (arrowToSigma f) (arrowToSigma g) (mapPosEq , funExt λ x  → funExt λ y → transitivity (lemma x y) (mapDirEq x y))  -- {! ΣPathTransport→PathΣ (arrowToSigma f) (arrowToSigma g) (mapPosEq , mapDirEq) !} -- ΣPathTransport→PathΣ (arrowToSigma f) (arrowToSigma g) (mapPosEq , mapDirEq)
+  where
+    lemma : (x : position p) -> (y : direction q (mapPosition g x)) -> transport
+      (λ i →
+         (mapPos : position p) →
+         direction q (mapPosEq i mapPos) → direction p mapPos)
+      (mapDirection f) x y
+      ≡
+      mapDirection f x
+      (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y)
+    lemma x y = {!   !}
+
 arrowsEqual3 : {p q : Polynomial} {f g : Arrow p q}
     -> (mapPosEq : mapPosition f ≡ mapPosition g)
     -> ((x : position p) -> (y : direction q (mapPosition g x)) -> mapDirection f x  (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y) -- mapDirection f x (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y  ) -- (subst (λ mapPos → direction q (mapPos x)) mapPosEq y)
     -> f ≡ g
-arrowsEqual3 a b = arrowsEqual a (funExt λ x → funExt λ y → {!  b x y !}) -- λ i → transp {!   !} i {!   !})
+arrowsEqual3 {f = f} {g = g} a b i = sigmaToArrow (arrowSigmasEqual3 {f = f} {g = g} a b i)
+
 
 ---------------------------------------
 
