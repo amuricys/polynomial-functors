@@ -53,8 +53,8 @@ arrowToOne : {p : Polynomial} -> Arrow p One
 arrowToOne = (λ _ → tt) ⇄ λ {_ ()}
 
 -- Constant polynomial: p(y) = A
-Constant : {A : Set} -> Polynomial
-Constant {A} = MkPolynomial A (λ _ → ⊥)
+Constant : (A : Set) -> Polynomial
+Constant A = MkPolynomial A (λ _ → ⊥)
 
 ex : Polynomial
 ex = MkPolynomial Bool λ {false → Bool
@@ -103,7 +103,12 @@ Y = MkPolynomial ⊤ (λ _ → ⊤)
 
 -- Composition of polynomials (composition of polynomial functors, which happen to be new polynomial functor!).
 _◂_ : Polynomial -> Polynomial -> Polynomial
-MkPolynomial posA dirA ◂ MkPolynomial posB dirB = MkPolynomial ((i : posA) -> (dirA i) -> posB) (λ pos → (p : posA) -> (d : dirA p) -> dirB (pos p d))
+MkPolynomial posA dirA ◂ MkPolynomial posB dirB = 
+  MkPolynomial (Σ[ a⁺ ∈ posA ](dirA a⁺ → posB)) λ (_ , bs) → ∃ (dirB ∘ bs)
+
+_◂2_ : Polynomial -> Polynomial -> Polynomial
+MkPolynomial posA dirA ◂2 MkPolynomial posB dirB =
+  MkPolynomial (Σ[ a⁺ ∈ posA ](dirA a⁺ → posB)) λ (_ , bs) → ∃ (dirB ∘ bs)
 
 -- Unit for composition is also Y.
 Identity : Polynomial
