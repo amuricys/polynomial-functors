@@ -106,10 +106,6 @@ _◂_ : Polynomial -> Polynomial -> Polynomial
 MkPolynomial posA dirA ◂ MkPolynomial posB dirB = 
   MkPolynomial (Σ[ a⁺ ∈ posA ](dirA a⁺ → posB)) λ (_ , bs) → ∃ (dirB ∘ bs)
 
-_◂2_ : Polynomial -> Polynomial -> Polynomial
-MkPolynomial posA dirA ◂2 MkPolynomial posB dirB =
-  MkPolynomial (Σ[ a⁺ ∈ posA ](dirA a⁺ → posB)) λ (_ , bs) → ∃ (dirB ∘ bs)
-
 -- Unit for composition is also Y.
 Identity : Polynomial
 Identity = Y
