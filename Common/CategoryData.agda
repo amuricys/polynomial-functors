@@ -9,7 +9,6 @@ open import Data.Empty
 open import Data.Sum
 open import Data.Product
 open import Data.Bool
--- open import 
 open import Function
 open import Cubical.Data.Sigma.Properties
 
@@ -102,9 +101,18 @@ Y : Polynomial
 Y = MkPolynomial ⊤ (λ _ → ⊤)
 
 -- Composition of polynomials (composition of polynomial functors, which happen to be new polynomial functor!).
+-- Proposition 5.2, page 158. Note: not same definition used.
 _◂_ : Polynomial -> Polynomial -> Polynomial
-MkPolynomial posA dirA ◂ MkPolynomial posB dirB = 
-  MkPolynomial (Σ[ a⁺ ∈ posA ](dirA a⁺ → posB)) λ (_ , bs) → ∃ (dirB ∘ bs)
+p ◂ q = MkPolynomial pos dir
+  where
+    module p = Polynomial p
+    module q = Polynomial q
+
+    pos : Set
+    pos = (Σ[ i ∈ p.position ] (p.direction i → q.position))
+
+    dir : pos → Set
+    dir (i , j) = Σ[ a ∈ p.direction i ] q.direction (j a)
 
 -- Unit for composition is also Y.
 Identity : Polynomial
@@ -120,5 +128,3 @@ fromArrowInPolyToFunctionBetweenAppliedPolys {(MkPolynomial pos dir)} {B} (mapPo
 
 enclose : Polynomial -> Set
 enclose p = Arrow p Y
-
-
