@@ -14,6 +14,7 @@ open import Data.Unit
 open import Data.Empty
 open import AgdaCategories.Product
 open import Categories.Object.Product Poly
+import Categories.Category.CartesianClosed.Canonical as Canonical
 
 open Polynomial
 depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
@@ -22,25 +23,6 @@ depProd (ind , polyAt) = MkPolynomial ((i : ind) → position (polyAt i))
 
 rtoq : (r : Polynomial) -> (q : Polynomial) -> Polynomial
 rtoq r (MkPolynomial posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
-
--- Theorem 4.30
--- step1 : {p r q : Polynomial} -> Iso (Arrow p (rtoq r q)) (Arrow (p * q) r)
--- step1 {p} {r} {q} = iso one two three four
---   where -- dumbFunction : ((i₁ : position r) → direction r i₁ → ⊤ ⊎ direction q i) -> position r
---         -- dumbFunction f = ?
---         one : Arrow p (rtoq r q) → Arrow (p * q) r
---         one (mapPos ⇄ mapDir) = (λ { (fst₁ , snd₁) → let
---            xxx = mapPos fst₁ snd₁
---            yyy = mapDir fst₁
---            jeb : ((i : position r) → direction r i → ⊤ ⊎ direction q snd₁) -> position r
---            jeb f = {!   !}
---            in jeb xxx }) ⇄ {!   !}
---         two : Arrow (p * q) r → Arrow p (rtoq r q)
---         two (mapPos ⇄ mapDir) = (λ x i i₁ x₁ → {!   !}) ⇄ {!   !}
---         three : section one two
---         three = {!   !}
---         four : retract one two
---         four = {!   !}
 
 ev : {A B : Polynomial} -> Arrow (rtoq B A * A) B
 ev {A} {B} = mp ⇄ md
@@ -54,22 +36,24 @@ ev {A} {B} = mp ⇄ md
                       help p rewrite p = tt
 
 λg : {X A B : Polynomial} -> (X×A : Product X A) → Arrow (Product.A×B X×A) B → Arrow X (rtoq B A)  
-λg {X} {A} {B} p (mp ⇄ md) = let
+λg {X} {A} {B} record { A×B = A×B ; π₁ = π₁ ; π₂ = π₂ ; ⟨_,_⟩ = ⟨_,_⟩ ; project₁ = project₁ ; project₂ = project₂ ; unique = unique } (mp ⇄ md) = let
   emp ⇄ emd = ev {A} {B}
   -- MkPolynomial h m = Product.A×B p
-  hmm : position X -> position A -> position (X * A)
-  hmm posX posA = posX , posA
-  hmmm : position (X * A) -> position (Product.A×B (prod {X} {A}))
-  hmmm p = {!   !} , {!   !}
+  -- hmm : position X -> position A -> position (X * A)
+  -- hmm posX posA = posX , posA
+  -- hmmm : position (X * A) -> position (Product.A×B (prod {X} {A}))
+  -- hmmm p = p
+  help : position A×B
+  help = {!  !}
   in
-  (\ x i → mp {!  !} , {!   !}) ⇄ {!   !} 
+  (\ x i → mp help , {!   !}) ⇄ {!   !} 
 
 exp : {A B : Polynomial} -> Exponential A B
 exp {A} {B} = record
     { B^A = rtoq B A
     ; product = prod
     ; eval = ev
-    ; λg = λg
+    ; λg = \{X} X×A x → {!   !}
     ; β = {!   !}
     ; λ-unique = {!   !}
-    }          
+    }
