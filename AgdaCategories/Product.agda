@@ -11,6 +11,9 @@ open import Cubical.Proofs
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Transport
 open import Data.Product
+open import Categories.Category.Monoidal
+open import AgdaCategories.Terminal
+import Categories.Category.Cartesian as Cartesian
 
 prod : {A B : Polynomial} -> Product A B
 prod {A = A} {B = B} = record
@@ -48,3 +51,12 @@ prod {A = A} {B = B} = record
             (π₂ ∘p h) ≡ f₂ → 
             ⟨ f₁ , f₂ ⟩ ≡ h
         unique {F = F} {h = h} p₁ p₂ = transitivity (λ i → ⟨ sym p₁ i , sym p₂ i ⟩) (helper {p = F} {h = h})
+
+binaryProducts : Cartesian.BinaryProducts Poly
+binaryProducts = record { product = prod }
+
+cartesian : Cartesian.Cartesian Poly
+cartesian = record { terminal = terminalOne ; products = binaryProducts }
+
+productMonoidal : Monoidal Poly
+productMonoidal = Cartesian.CartesianMonoidal.monoidal Poly cartesian
