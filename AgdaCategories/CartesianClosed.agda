@@ -57,7 +57,7 @@ canonical {A = A} {B = B} = let
     ; ⟨,⟩-unique = λ x x₁ → {!  !}
     ; _^_ = rtoq
     ; eval = ev
-    ; curry = {!   !}
+    ; curry = curry
         -- λ {f → (λ x i → Arrow.mapPosition f (x , i) , λ { x₁ → {!   !} } ) ⇄ {!   !}}
     ; eval-comp = {!   !}
     ; curry-resp-≈ = {!   !}
@@ -88,20 +88,41 @@ canonical {A = A} {B = B} = let
             ⟨ f₁ , f₂ ⟩ ≡ h
         unique {F = F} {h = h} p₁ p₂ = transitivity (λ i → ⟨ sym p₁ i , sym p₂ i ⟩) (helper {p = F} {h = h})
 
-        curry : {C : Polynomial} {A = A₁ : Polynomial} {B = B₁ : Polynomial} → Arrow (C * A₁) B₁ → Arrow C (rtoq B₁ A₁)
-        curry {C} {A₁} {B₁} f = let
-            md = Arrow.mapDirection f
-            mp = Arrow.mapPosition f
-            in (λ x i → mp (x , i) , (λ x₁ →
-            {!   !} )) 
-            ⇄ 
-            λ {fromPos (fst₁ , fst₂ , snd₁) → let
-                aa = md (fromPos , fst₁) fst₂
---                bb = md (fromPos , {!   !})
-                in k fromPos fst₁ aa}
-                  where k : (fp : position C) (fst₁ : position A₁) -> direction (C * A₁) (fp , fst₁) -> direction C fp
-                        k fp fst₁ d with d 
-                        ... | inj₁ xx = xx
-                        ... | inj₂ xx = {!   !}
+        curry : {C : Polynomial} {A : Polynomial} {B : Polynomial} → Arrow (C * A) B → Arrow C (rtoq B A)
+        curry {C} {A} {B} f = mapPos ⇄ mapDir
+            where
+                module f = Arrow f
+
+                mapPos : position C → position (rtoq B A)
+                mapPos posC posA =  f.mapPosition (posC , posA) , lemma (f.mapDirection (posC , posA))
+                    where
+                        lemma : (direction B (f.mapPosition (posC , posA)) → direction (C * A) (posC , posA) ) → direction B (f.mapPosition (posC , posA)) → position (Y + Constant (direction A posA))
+                        lemma f x with f x
+                        ... | inj₁ x₁ = inj₁ tt
+                        ... | inj₂ y = inj₂ y
+
+                mapDir : (fromPos : position C) → direction (rtoq B A) (mapPos fromPos) → direction C fromPos
+                mapDir posC (posA , fst , snd) with res <- (f.mapDirection (posC , posA) fst) in eq with res with snd 
+                ... | inj₁ x | tt = x
+                ... | inj₂ y | ()
+
+                
+
+
+--         curry : {C : Polynomial} {A = A₁ : Polynomial} {B = B₁ : Polynomial} → Arrow (C * A₁) B₁ → Arrow C (rtoq B₁ A₁)
+--         curry {C} {A₁} {B₁} f = let
+--             md = Arrow.mapDirection f
+--             mp = Arrow.mapPosition f
+--             in (λ x i → mp (x , i) , (λ x₁ →
+--             {!   !} )) 
+--             ⇄ 
+--             λ {fromPos (fst₁ , fst₂ , snd₁) → let
+--                 aa = md (fromPos , fst₁) fst₂
+-- --                bb = md (fromPos , {!   !})
+--                 in k fromPos fst₁ aa}
+--                   where k : (fp : position C) (fst₁ : position A₁) -> direction (C * A₁) (fp , fst₁) -> direction C fp
+--                         k fp fst₁ d with d 
+--                         ... | inj₁ xx = xx
+--                         ... | inj₂ xx = {!   !}
                 
    
