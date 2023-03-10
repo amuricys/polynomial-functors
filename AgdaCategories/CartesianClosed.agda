@@ -58,10 +58,9 @@ canonical {A = A} {B = B} = let
     ; _^_ = rtoq
     ; eval = ev
     ; curry = curry
-        -- λ {f → (λ x i → Arrow.mapPosition f (x , i) , λ { x₁ → {!   !} } ) ⇄ {!   !}}
     ; eval-comp = {!   !}
-    ; curry-resp-≈ = {!   !}
-    ; curry-unique = {!   !}
+    ; curry-resp-≈ = λ x → cong (λ a → curry a) x
+    ; curry-unique = λ x → {!   !}
     }
     where
         π₁ = fst ⇄ λ _ → inj₁
