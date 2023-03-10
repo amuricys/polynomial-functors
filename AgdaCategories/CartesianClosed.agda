@@ -89,5 +89,19 @@ canonical {A = A} {B = B} = let
         unique {F = F} {h = h} p₁ p₂ = transitivity (λ i → ⟨ sym p₁ i , sym p₂ i ⟩) (helper {p = F} {h = h})
 
         curry : {C : Polynomial} {A = A₁ : Polynomial} {B = B₁ : Polynomial} → Arrow (C * A₁) B₁ → Arrow C (rtoq B₁ A₁)
-        curry f = (λ x i → Arrow.mapPosition f (x , i) , λ { x₁ → {!   !} } ) ⇄ {!   !}
-  
+        curry {C} {A₁} {B₁} f = let
+            md = Arrow.mapDirection f
+            mp = Arrow.mapPosition f
+            in (λ x i → mp (x , i) , (λ x₁ →
+            {!   !} )) 
+            ⇄ 
+            λ {fromPos (fst₁ , fst₂ , snd₁) → let
+                aa = md (fromPos , fst₁) fst₂
+--                bb = md (fromPos , {!   !})
+                in k fromPos fst₁ aa}
+                  where k : (fp : position C) (fst₁ : position A₁) -> direction (C * A₁) (fp , fst₁) -> direction C fp
+                        k fp fst₁ d with d 
+                        ... | inj₁ xx = xx
+                        ... | inj₂ xx = {!   !}
+                
+   
