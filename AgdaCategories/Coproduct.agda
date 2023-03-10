@@ -3,6 +3,7 @@
 module AgdaCategories.Coproduct where
 
 open import AgdaCategories.CubicalPoly
+open import AgdaCategories.Initial
 open import Categories.Object.Coproduct Poly
 open import Common.CategoryData
 -- open import Agda.Builtin.Sigma
@@ -10,6 +11,8 @@ open import Data.Sum
 open import Function
 open import Cubical.Proofs
 open import Cubical.Foundations.Prelude
+open import Categories.Category.Monoidal
+import Categories.Category.Cocartesian as Cocartesian
 -- open import Data.Product
 
 coprod : {A B : Polynomial} -> Coproduct A B
@@ -84,3 +87,14 @@ coprod {A = A} {B = B} = record
 --             (π₂ ∘p h) ≡ f₂ → 
 --             ⟨ f₁ , f₂ ⟩ ≡ h
 --         unique {F = F} {h = h} p₁ p₂ = transitivity (λ i → ⟨ sym p₁ i , sym p₂ i ⟩) (helper {p = F} {h = h})
+
+
+binaryCoproducts : Cocartesian.BinaryCoproducts Poly
+binaryCoproducts = record { coproduct = coprod }
+
+coproductCocartesian  : Cocartesian.Cocartesian Poly
+coproductCocartesian = record { initial = initialZero ; coproducts = binaryCoproducts }
+
+coproductMonodial : Monoidal Poly
+coproductMonodial = Cocartesian.CocartesianMonoidal.+-monoidal Poly coproductCocartesian
+
