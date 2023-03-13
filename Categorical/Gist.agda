@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module AgdaCategories.Gist where
+module Categorical.Gist where
 
 open import Categories.Category
 open import Categories.Functor using (Functor; _∘F_) renaming (id to idF)

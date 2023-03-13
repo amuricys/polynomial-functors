@@ -1,8 +1,8 @@
 {-# OPTIONS --cubical #-}
 
-module AgdaCategories.Product where
+module Categorical.Product where
 
-open import AgdaCategories.CubicalPoly
+open import Categorical.CubicalPoly
 open import Categories.Object.Product Poly
 open import Common.CategoryData
 open import Agda.Builtin.Sigma
@@ -12,7 +12,7 @@ open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Transport
 open import Data.Product
 open import Categories.Category.Monoidal
-open import AgdaCategories.Terminal
+open import Categorical.Terminal
 import Categories.Category.Cartesian as Cartesian
 
 prod : {A B : Polynomial} -> Product A B

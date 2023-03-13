@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module AgdaCategories.CompositionMonoid where
+module Categorical.CompositionMonoid where
 
 open import Common.CategoryData
 open import Cubical.Foundations.Prelude

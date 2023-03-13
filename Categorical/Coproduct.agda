@@ -1,9 +1,9 @@
 {-# OPTIONS --cubical #-}
 
-module AgdaCategories.Coproduct where
+module Categorical.Coproduct where
 
-open import AgdaCategories.CubicalPoly
-open import AgdaCategories.Initial
+open import Categorical.CubicalPoly
+open import Categorical.Initial
 open import Categories.Object.Coproduct Poly
 open import Common.CategoryData
 -- open import Agda.Builtin.Sigma

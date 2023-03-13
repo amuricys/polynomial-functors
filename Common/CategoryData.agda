@@ -1,6 +1,3 @@
-{-# OPTIONS --cubical #-}
-
-
 module Common.CategoryData where
 
 import Agda.Builtin.Nat as N
@@ -10,7 +7,6 @@ open import Data.Sum
 open import Data.Product
 open import Data.Bool
 open import Function
-open import Cubical.Data.Sigma.Properties
 
 record Polynomial : Set₁ where
     constructor MkPolynomial

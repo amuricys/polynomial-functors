@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module AgdaCategories.Adjunction where
+module Categorical.Adjunction where
 
 open import Categories.Adjoint
 open import Categories.Functor using (Functor; _∘F_) renaming (id to idF)
@@ -14,10 +14,10 @@ open import Common.CategoryData
 open import Data.Unit
 open import Data.Empty
 open import Data.Product
-open import AgdaCategories.Functor.Constant
-open import AgdaCategories.Functor.Linear
-open import AgdaCategories.Functor.PlugInOne
-open import AgdaCategories.Functor.PlugInZero
+open import Categorical.Functor.Constant
+open import Categorical.Functor.Linear
+open import Categorical.Functor.PlugInOne
+open import Categorical.Functor.PlugInZero
 open import Level
 
 

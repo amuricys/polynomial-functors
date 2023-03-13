@@ -1,9 +1,9 @@
 {-# OPTIONS --cubical #-}
 
-module AgdaCategories.Initial where
+module Categorical.Initial where
 
 open import Common.CategoryData
-open import AgdaCategories.CubicalPoly
+open import Categorical.CubicalPoly
 open import Cubical.Proofs
 open import Categories.Object.Initial Poly
 

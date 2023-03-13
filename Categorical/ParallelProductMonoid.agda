@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module AgdaCategories.ParallelProductMonoid where
+module Categorical.ParallelProductMonoid where
 
 open import Common.CategoryData
 open import Cubical.Foundations.Prelude

@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical --allow-unsolved-metas #-}
 
-module AgdaCategories.CubicalPoly where
+module Categorical.CubicalPoly where
 
 open import Agda.Builtin.Nat hiding (_+_ ; _*_ )
 import Agda.Builtin.Nat

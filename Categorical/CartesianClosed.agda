@@ -1,8 +1,8 @@
 {-# OPTIONS --cubical #-}
 
-module AgdaCategories.CartesianClosed where
+module Categorical.CartesianClosed where
 
-open import AgdaCategories.CubicalPoly
+open import Categorical.CubicalPoly
 import Relation.Binary.PropositionalEquality as Eq
 open import Categories.Object.Exponential Poly
 open import Common.CategoryData
@@ -12,9 +12,9 @@ open import Data.Sum
 open import Data.Unit
 open import Data.Empty
 open import Data.Product hiding (Σ-syntax ; curry)
-open import AgdaCategories.Product
+open import Categorical.Product
 open import Categories.Object.Product Poly
-open import AgdaCategories.Terminal
+open import Categorical.Terminal
 open import Cubical.Proofs
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Transport

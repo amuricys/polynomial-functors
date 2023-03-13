@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module AgdaCategories.Functor.PlugInZero where
+module Categorical.Functor.PlugInZero where
 
 import Relation.Binary.PropositionalEquality as Eq
 open import Agda.Builtin.Unit
@@ -16,7 +16,7 @@ open import Cubical.Foundations.Prelude
 open import Common.CategoryData
 open import Function
 open import Function.Surjection hiding (id)
-open import AgdaCategories.CubicalPoly
+open import Categorical.CubicalPoly
 open import Cubical.Proofs
 open import Data.Bool
 
