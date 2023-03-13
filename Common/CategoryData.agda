@@ -124,3 +124,9 @@ fromArrowInPolyToFunctionBetweenAppliedPolys {(MkPolynomial pos dir)} {B} (mapPo
 
 enclose : Polynomial -> Set
 enclose p = Arrow p Y
+
+monomial : (A B : Set) -> Polynomial -- A*Y^B
+monomial A B = MkPolynomial A (λ _ → B)
+
+selfMonomial : Set -> Polynomial -- S*Y^S
+selfMonomial S = monomial S S
