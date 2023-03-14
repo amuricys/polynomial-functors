@@ -18,11 +18,11 @@ plus = functionToDynamicalSystem (Nat × Nat) Nat (uncurry _+ℕ_)
 prefib : DynamicalSystem
 prefib = plus &&& delay Nat
 
-fibwd : Arrow (DynamicalSystem.interface prefib) (Emitter Nat)
-fibwd = (λ {(pl , de) → de}) ⇄ (λ {(pl , de) l → (de , pl) , pl })
+fibWiringDiagram : Arrow (DynamicalSystem.interface prefib) (Emitter Nat)
+fibWiringDiagram = (λ {(pl , de) → de}) ⇄ (λ {(pl , de) l → (de , pl) , pl })
 
 fibonacci : DynamicalSystem
-fibonacci = install prefib (Emitter Nat) fibwd
+fibonacci = install prefib (Emitter Nat) fibWiringDiagram
 
 FibSeq : Stream Nat _
 FibSeq = run fibonacci auto (1 , 1)

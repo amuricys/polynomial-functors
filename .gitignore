@@ -1,5 +1,9 @@
 # interpreter files
 *.agdai
 *.ibc
-
+# compilation results
+*MAlonzo*
+*dist-newstyle*
+*.png
+*.DS_Store
 .vscode
