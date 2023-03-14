@@ -35,6 +35,7 @@ MkDynamicalSystem stateA interfaceA dynamicsA &&& MkDynamicalSystem stateB inter
             readout (stateA , stateB) = (Arrow.mapPosition dynamicsA stateA) , (Arrow.mapPosition dynamicsB stateB)
             update : (state : (stateA × stateB)) → Polynomial.direction (interfaceA ⊗ interfaceB) (readout state) → stateA × stateB
             update (sA , sB) (dirA , dirB) = (Arrow.mapDirection dynamicsA sA dirA) , (Arrow.mapDirection dynamicsB sB dirB)
+infixr 10 _&&&_
 
 Emitter : Set → Polynomial
 Emitter t = monomial t ⊤
