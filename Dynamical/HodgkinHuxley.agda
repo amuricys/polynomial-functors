@@ -10,19 +10,13 @@ open import Data.Float renaming (Float to ℚ) -- Rationals are more well behave
 open import Common.CategoryData renaming (_*_ to _*p_ ; _+_ to _+p_) hiding (C)
 open import Data.Vec using (Vec)
 
--- https://www.chegg.com/homework-help/questions-and-answers/box-1-hodgkin-huxley-model-main-equations-cox-g-v-v-gnam-h-v-ena-gkn-v-ek-le-13-dit-v-memb-q46967162
-
--- C dV/dt = -GL(V - VL) - Gna * m³h*(V - Ena) - Gk * n**4(V - Ek) + Ie
---   dm/dt = αₘ(V)(1 - m) - βₘ(V)m
---   dh/dt = αₕ(V)(1 - h) - βₕ(V)h
---   dn/dt = αₙ(V)(1 - n) - βₙ(V)n
--- and then a ton of literals lol
+-- https://mark-kramer.github.io/Case-Studies-Python/HH.html
 
 dt : ℚ
-dt = 0.1
+dt = 0.01
 
 e : ℚ
-e = 2.7
+e = 2.718281
 
 -- The big one
 voltage : DynamicalSystem
@@ -30,84 +24,98 @@ voltage = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ × ℚ × ℚ × 
   where readout : ℚ → ℚ
         readout state = state
         GL : ℚ
-        GL = 2.0
-        C : ℚ
-        C = 2.0
-        VL : ℚ
-        VL = - 65.0
+        GL = 0.3
+        EL : ℚ
+        EL = 10.6
         Gna : ℚ
-        Gna = 400.0
+        Gna = 120.0
         Ena : ℚ
-        Ena = 99.0
+        Ena = 115.0
         Gk : ℚ
-        Gk = 200.0
+        Gk = 36.0
         Ek : ℚ
-        Ek = - 85.0
+        Ek = -12.0
         update : ℚ → ℚ × ℚ × ℚ × ℚ → ℚ
-        update state (Ie , m , n , h) = (- GL * (state - VL) - Gna * m ** 3.0 * h * (state - Ena) - Gk * n ** 4.0 * (state - Ek) + Ie ) ÷ C
+        update state (Ie , m , h , n) = state + dt * dv
+            where v = state + 65.0
+                  dv  = Gna * m ** 3.0 * h * (Ena - v) + Gk * n ** 4.0 * (Ek - v) + GL * (EL - v) + Ie
+                  -- V[i+1] = gNa0*m[i]**3*h[i]*(ENa-(V[i]+65)) + gK0*n[i]**4*(EK-(V[i]+65)) + gL0*(EL-(V[i]+65)) + I0
+                   -- dv = (- GL * (state - EL) - Gna * m ** 3.0 * h * (state - Ena) - Gk * n ** 4.0 * (state - Ek) + Ie ) ÷ C
 
 -- Helper functions -----
 αₘ : ℚ → ℚ
-αₘ voltage = 0.1 * (voltage + 40.0) ÷ (1.0 - e ** (-0.1 * (voltage + 40.0)))
+--           (2.5 - 0.1 * (V+65))           / (np.exp(2.5-0.1 * (V        + 65))    -1)
+αₘ voltage = (2.5 - 0.1 * (voltage + 65.0)) ÷ (e ** (2.5 - 0.1 * (voltage + 65.0)) - 1.0)
 βₘ : ℚ → ℚ
-βₘ voltage = 4.0 * e ** (- 0.056 * (voltage + 65.0))
+--           4   * np.exp(-(V+65)/18)
+βₘ voltage = 4.0 * e ** (-(voltage + 65.0) ÷ 18.0)
 
 αₕ : ℚ → ℚ
-αₕ voltage = 0.07 * e ** (-0.05 * (voltage + 65.0))
+--           0.07 * np.exp(-(V+65)/20)
+αₕ voltage = 0.07 * e ** (-(voltage + 65.0) ÷ 20.0)
 βₕ : ℚ → ℚ
-βₕ voltage = 1.0 ÷ (1.0 + e ** (-0.1 * (voltage + 35.0)) )
+-- 1/(np.exp(3.0-0.1*(V+65))+1)
+βₕ voltage = 1.0 ÷ (1.0 + e ** (3.0 - 0.1 * (voltage + 65.0)) )
 
 αₙ : ℚ → ℚ
-αₙ voltage = 0.01 * (voltage + 55.0) ÷ (1.0 - e ** (-0.1 * (voltage + 55.0)))
+--          (0.1-0.01*(V+65))        / (np.exp(1-0.1*(V+65)) -1)
+αₙ voltage = (0.1 - 0.01 * (voltage + 65.0)) ÷ (e ** (1.0 - 0.1 * (voltage + 65.0)) - 1.0)
 βₙ : ℚ → ℚ
-βₙ voltage = 0.125 * e ** (-0.0125 * (voltage + 65.0))
+--           0.125 * np.exp(-(V+65)/80)
+βₙ voltage = 0.125 * e ** ((voltage + 65.0) ÷ 80.0)
 -------------------------
 
 -- First order differential equations
 potassiumActivation : DynamicalSystem
-potassiumActivation = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ × ℚ) (readout ⇄ update)
+potassiumActivation = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ) (readout ⇄ update)
   where readout : ℚ → ℚ
         readout state = state
-        update : ℚ → ℚ × ℚ → ℚ
-        update state (voltage , probability) = state + dt * αₘ voltage * (1.0 - probability) - βₘ voltage * probability
+        update : ℚ → ℚ → ℚ
+        update state voltage = state + dt * dₘ
+          where dₘ = αₘ voltage * (1.0 - state) - βₘ voltage * state
 
 sodiumActivation : DynamicalSystem
-sodiumActivation = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ × ℚ) (readout ⇄ update)
+sodiumActivation = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ) (readout ⇄ update)
   where readout : ℚ → ℚ
         readout state = state
-        update : ℚ → ℚ × ℚ → ℚ
-        update state (voltage , probability) = state + dt * αₕ voltage * (1.0 - probability) - βₕ voltage * probability
+        update : ℚ → ℚ → ℚ
+        update state voltage = state + dt * dₕ
+          where dₕ = αₕ voltage * (1.0 - state) - βₕ voltage * state
 
 sodiumInactivation : DynamicalSystem
-sodiumInactivation = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ × ℚ) (readout ⇄ update)
+sodiumInactivation = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ) (readout ⇄ update)
   where readout : ℚ → ℚ
         readout state = state
-        update : ℚ → ℚ × ℚ → ℚ
-        update state (voltage , probability) = state + dt * αₙ voltage * (1.0 - probability) - βₙ voltage * probability   
+        update : ℚ → ℚ → ℚ
+        update state voltage = state + dt * dₙ
+          where dₙ = αₙ voltage * (1.0 - state) - βₙ voltage * state   
 
 preHH : DynamicalSystem
 preHH = voltage &&& potassiumActivation &&& sodiumActivation &&& sodiumInactivation
 
 -- Wiring diagram is an arrow between monomials (lens)
--- This is definitely wrong. bears writing the wiring diagram out to see what goes where
-hodgkinHuxleyWiringDiagram : Arrow (DynamicalSystem.interface preHH) (selfMonomial (ℚ × ℚ × ℚ × ℚ))
-hodgkinHuxleyWiringDiagram = (λ {(v , m , n , h) → v , m , n , h}) ⇄ (λ {((v , m , n , h)) (a , b , c , d) → (d , d , d , d) , (d , d) , (d , d) , d , d })
+-- The first function in the arrow simply selects something to be the output of the larger system.
+-- The second one deals with wiring inputs. It has access to all outputs plus Ie, which is an input to
+-- the outer box. Wonder why the first arrow doesn't have access to Ie though.
+hodgkinHuxleyWiringDiagram : Arrow (DynamicalSystem.interface preHH) (selfMonomial ℚ)
+hodgkinHuxleyWiringDiagram = (λ {(v , m , h , n) → v }) ⇄ (λ {((v , m , h , n)) Ie → (Ie , m , h , n) , v , v , v })
 
 -- Final system is composition of wiring diagram and dynamics
 hodgkinHuxley : DynamicalSystem
-hodgkinHuxley = install preHH (selfMonomial (ℚ × ℚ × ℚ × ℚ)) hodgkinHuxleyWiringDiagram
+hodgkinHuxley = install preHH (selfMonomial ℚ) hodgkinHuxleyWiringDiagram
 
-hhSeq : Stream (ℚ × ℚ × ℚ × ℚ) _
-hhSeq = run hodgkinHuxley (constI (V₀ , m∞ V₀ , n∞ V₀ , h∞ V₀)) (V₀ , m∞ V₀ , n∞ V₀ , h∞ V₀)
+hhSeq : Stream ℚ _
+hhSeq = run hodgkinHuxley (constI Ie) (V₀ , m∞ V₀ , n∞ V₀ , h∞ V₀)
   where V₀ : ℚ
-        V₀ = -65.0
+        V₀ = -70.0
         m∞ : ℚ → ℚ
-        m∞ v = αₘ v ÷ (αₘ v + βₘ v)
+        m∞ v = 0.05 -- αₘ v ÷ (αₘ v + βₘ v)
         n∞ : ℚ → ℚ
-        n∞ v = αₙ v ÷ (αₙ v + βₙ v)
+        n∞ v = 0.54 -- αₙ v ÷ (αₙ v + βₙ v)
         h∞ : ℚ → ℚ
-        h∞ v = αₙ v ÷ (αₙ v + βₙ v)
+        h∞ v = 0.34 -- αₙ v ÷ (αₙ v + βₙ v)
+        Ie : ℚ
+        Ie = 10.0
 
-hhList : Vec (ℚ × ℚ × ℚ × ℚ) 100
-hhList = take 100 hhSeq
-  
+hhList : Vec ℚ 2000
+hhList = take 2000 hhSeq
