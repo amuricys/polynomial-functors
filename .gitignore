@@ -4,6 +4,10 @@
 # compilation results
 *MAlonzo*
 *dist-newstyle*
+*.hi
+*.o
+Plot
 *.png
 *.DS_Store
 .vscode
+result

@@ -13,7 +13,7 @@ open import Data.Product
 postulate
   plotDynamics  : Float → List Float → List Float → IO ⊤
 
-{-# FOREIGN GHC import Dynamical.Plot.HsPlot #-}
+{-# FOREIGN GHC import HsPlot #-}
 {-# COMPILE GHC plotDynamics = plotToFile #-}
 
 open import Dynamical.LotkaVolterra
