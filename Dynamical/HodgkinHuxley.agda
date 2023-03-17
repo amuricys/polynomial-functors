@@ -117,5 +117,5 @@ hhSeq = run hodgkinHuxley (constI Ie) (V₀ , m∞ V₀ , n∞ V₀ , h∞ V₀)
         Ie : ℚ
         Ie = 10.0
 
-hhList : Vec ℚ 2000
-hhList = take 2000 hhSeq
+hhList : Vec ℚ 1000
+hhList = take 1000 hhSeq

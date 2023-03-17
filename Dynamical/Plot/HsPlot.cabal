@@ -43,7 +43,9 @@ category:           Graphics
 
 library
     -- Modules exported by the library.
-    exposed-modules:  HsPlot
+    exposed-modules: 
+        HsPlot
+      , OptparseHs
 
     -- Modules included in this library but not exported.
     -- other-modules:
@@ -56,6 +58,8 @@ library
         base ^>=4.15.1.0
       , Chart
       , Chart-cairo
+      , optparse-applicative
+      , text
 
     -- Directories containing source files.
     hs-source-dirs:   src
