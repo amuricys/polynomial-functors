@@ -20,6 +20,8 @@ open Polynomial
 depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
 depProd (ind , polyAt) = MkPolynomial ((i : ind) → position (polyAt i))
                                       (λ a⁺ → Σ[ i ∈ ind ](direction (polyAt i) (a⁺ i)))
+open import Cubical.PolynomialEquals
+open import Cubical.Foundations.Prelude
 open Polynomial
 -- Exercise 4.29
 p^0≡1 : {p : Polynomial} → p ^ Zero ≡ One
