@@ -102,7 +102,7 @@ arrowsEqual2 : {p q : Polynomial} {f g : Arrow p q}
     -> (mapPosEq : mapPosition f ≡ mapPosition g)
     -> ((x : position p) -> (y : direction q (mapPosition f x)) -> mapDirection f x y ≡ mapDirection g x (subst (λ mapPos → direction q (mapPos x)) mapPosEq y) ) -- (subst (λ mapPos → direction q (mapPos x)) mapPosEq y)
     -> f ≡ g
-arrowsEqual2 a b = arrowsEqual a (funExt λ x → funExt λ y → {!   !}) -- λ i → transp {!   !} i {!   !})
+arrowsEqual2 a b = arrowsEqual a (funExt λ x → funExt λ y → {! !}) -- λ i → transp {!   !} i {!   !})
 
 arrowSigmasEqual3 : {p q : Polynomial} {f g : Arrow p q}
     -> (mapPosEq : Arrow.mapPosition f ≡ Arrow.mapPosition g)
@@ -118,7 +118,7 @@ arrowSigmasEqual3 {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathTran
       ≡
       mapDirection f x
       (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y)
-    lemma x y = {!   !}
+    lemma x y = {!  !}
 
 arrowsEqual3 : {p q : Polynomial} {f g : Arrow p q}
     -> (mapPosEq : mapPosition f ≡ mapPosition g)

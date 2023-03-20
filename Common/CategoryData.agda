@@ -1,3 +1,5 @@
+{-# OPTIONS --without-K #-}
+
 module Common.CategoryData where
 
 import Agda.Builtin.Nat as N
