@@ -101,7 +101,13 @@ canonical {A} {B} = record
             (f : Arrow (E * D) C) → 
             (ev ∘p (curry f ×a idArrow))
               ≡ f
-        eval-comp-simple (mp ⇄ md) = arrowsEqual3 refl λ x y → {!   !}
+        eval-comp-simple {A = A} {B = B} {C = C} {D = D} {E = E} f = arrowsEqual3 refl λ x y → helper2 x y -- ? helper -- λ x y → {!   !} -- with md x y → ? -- {!  md x y !}
+            where
+                helper2 : (x : position (E * D)) → (y : direction C (Arrow.mapPosition f (proj₁ x , snd x))) → Arrow.mapDirection (ev ∘p (curry f ×a idArrow)) x (subst (λ mapPos → direction C (mapPos x)) (sym (λ _ → Arrow.mapPosition (ev ∘p (curry f ×a idArrow)))) y) ≡ Arrow.mapDirection f x y -- direction (E * D) x
+                helper2 x y with (Arrow.mapDirection f x y)
+                helper2 (fst₁ , snd₁) y | inj₁ x₁ = sym {!   !}
+                helper2 (fst₁ , snd₁) y | inj₂ y₁ = {!   !}
+
     -- eval-comp : {A B C : Polynomial} {f : Arrow (A * C) B} → ev ∘p (curry f ⁂ id) ≡ f
     -- eval-comp : {B A C f.B f.A.1 f.A.2 : Polynomial} {f : Arrow (A * C) B} → ev ∘p (curry f )
     --   (ev ∘p
