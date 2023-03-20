@@ -10,6 +10,7 @@ open import Data.Product
 open import Data.Bool
 open import Function
 
+
 record Polynomial : Set₁ where
     constructor MkPolynomial
     field
@@ -119,7 +120,7 @@ Identity = Y
 compositePower : Polynomial -> N.Nat -> Polynomial
 compositePower p N.zero = Identity
 compositePower p (N.suc n) = p ◂ (compositePower p n) 
- 
+
 fromArrowInPolyToFunctionBetweenAppliedPolys : {A B : Polynomial} {S : Set} -> Arrow A B -> apply A S -> apply B S
 fromArrowInPolyToFunctionBetweenAppliedPolys {(MkPolynomial pos dir)} {B} (mapPosition ⇄ mapDirection) (f , s) =
   mapPosition f , λ {x₁ → s (mapDirection f x₁)}
@@ -132,3 +133,20 @@ monomial A B = MkPolynomial A (λ _ → B)
 
 selfMonomial : Set -> Polynomial -- S*Y^S
 selfMonomial S = monomial S S
+open Polynomial
+
+-- Generalization of the product (_*_) poly.
+πPoly : Σ[ indexType ∈ Set ] (indexType → Polynomial) → Polynomial
+πPoly (indexType , generatePoly) = MkPolynomial pos dir
+  where
+    pos : Set
+    pos = (index : indexType) → position (generatePoly index) -- It embeds all polynomial positions into one position
+
+    dir : pos → Set
+    dir pos = Σ[ index ∈ indexType ] direction (generatePoly index) (pos index) -- The direction is exactly one of the directions of all polynomials directions at that position
+
+
+-- Exponential object.
+-- Theroem 4.27, page 130 in Poly book.
+_^_ : (r : Polynomial) -> (q : Polynomial) -> Polynomial
+_^_ r (MkPolynomial posQ dirQ) = πPoly (posQ , λ j → r ◂ (Y + Constant (dirQ j)))

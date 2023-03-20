@@ -20,6 +20,25 @@ open Polynomial
 depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
 depProd (ind , polyAt) = MkPolynomial ((i : ind) → position (polyAt i))
                                       (λ a⁺ → Σ[ i ∈ ind ](direction (polyAt i) (a⁺ i)))
+open Polynomial
+-- Exercise 4.29
+p^0≡1 : {p : Polynomial} → p ^ Zero ≡ One
+p^0≡1 {p} = poly≡∀' pos≡ dir≡
+  where
+    lemma : {A : ⊥ → Type} → ((i : ⊥) → A i) ≡ ⊤
+    lemma = isoToPath (iso (λ x → tt) (λ {x ()}) (λ {tt → refl}) λ {a i ()})
+
+    pos≡ : position (p ^ Zero) ≡ position One
+    pos≡ =  lemma
+
+    lemmaDir : {A : ⊥ → Type} → Σ ⊥ A ≡ ⊥
+    lemmaDir = isoToPath (iso fst (λ {()}) (λ {()}) λ {()})
+
+    dir≡ : (pos : position (p ^ Zero)) → direction (p ^ Zero) pos ≡ subst (λ x → x → Type) (sym pos≡) (direction One) pos
+    dir≡ pos = lemmaDir
+
+p^1≡p : {p : Polynomial} → p ^ One ≡ p
+p^1≡p = poly≡∀' {!   !} {!   !}
 
 rtoq : (r : Polynomial) -> (q : Polynomial) -> Polynomial
 rtoq r (MkPolynomial posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
