@@ -1,4 +1,4 @@
-{-# OPTIONS --sized-types #-}
+{-# OPTIONS --sized-types --without-K #-}
 
 module Dynamical.System where
 
@@ -20,6 +20,13 @@ record DynamicalSystem : Set₁ where
         state : Set -- S
         interface : Polynomial -- p
         dynamics : Arrow (selfMonomial state) interface -- Sy^S → p
+
+open DynamicalSystem
+
+record InitializedDynamicalSystem : Set₁ where
+    field
+        dynamicalSystem : DynamicalSystem
+        initialState : Arrow Y (selfMonomial (state dynamicalSystem))
 
 functionToDynamicalSystem : (A B : Set) → (A → B) → DynamicalSystem
 functionToDynamicalSystem A B f = MkDynamicalSystem B (monomial B A) (id ⇄ (\_ → f))

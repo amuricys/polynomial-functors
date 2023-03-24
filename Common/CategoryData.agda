@@ -133,6 +133,11 @@ monomial A B = MkPolynomial A (λ _ → B)
 
 selfMonomial : Set -> Polynomial -- S*Y^S
 selfMonomial S = monomial S S
+
+-- | A pure power summand.
+purePower : Set → Polynomial
+purePower power = MkPolynomial ⊤ λ _ → power
+
 open Polynomial
 
 -- Generalization of the product (_*_) poly.
