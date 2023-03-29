@@ -8,6 +8,7 @@ open import Common.CategoryData
 open import Agda.Builtin.Sigma
 open import Data.Sum
 open import Cubical.Proofs
+open import Cubical.ArrowEquals
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Transport
 open import Data.Product
@@ -34,23 +35,21 @@ prod {A = A} {B = B} = record
         ⟨_,_⟩ : {C : Polynomial} → Arrow C A → Arrow C B → Arrow C (A * B)
         ⟨_,_⟩ = λ {(f ⇄ f♯) (g ⇄ g♯) → < f , g > ⇄ λ posC → [ f♯ posC , g♯ posC ]}
 
-        helper2 : {F : Polynomial} {h : Arrow F (A * B)} → (Arrow.mapDirection ⟨ π₁ ∘p h , π₂ ∘p h ⟩) ≡ Arrow.mapDirection h -- (λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h --  {! λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h  !} helper2 = {!   !}
-        helper2 = funExt λ x → funExt λ {(inj₁ x) → refl
+        base : {F : Polynomial} {h : Arrow F (A * B)} → (Arrow.mapDirection ⟨ π₁ ∘p h , π₂ ∘p h ⟩) ≡ Arrow.mapDirection h
+        base = funExt λ x → funExt λ {(inj₁ x) → refl
                                        ; (inj₂ y) → refl}
 
-        helper : {p : Polynomial} {h : Arrow p (A * B)} -> ⟨ π₁ ∘p h , π₂ ∘p h ⟩ ≡ h
-        -- helper {h = h} = arrowsEqual refl {! transportRefl helper2 !} -- λ i fromPos x → {!   !} -- (transportRefl {!   !} {!   !})
-        helper {h = h} = arrowsEqual2 refl λ { x (inj₁ x1) → cong (λ zz → Arrow.mapDirection h x (inj₁ zz)) (sym (transportRefl  x1))
-                                            ;  x (inj₂ y) → cong (λ zz → Arrow.mapDirection h x (inj₂ zz))  (sym (transportRefl y)) } -- λ i fromPos x → {!   !} -- (transportRefl {!   !} {!   !})
+        lemma : {p : Polynomial} {h : Arrow p (A * B)} -> ⟨ π₁ ∘p h , π₂ ∘p h ⟩ ≡ h
+        lemma {p} {h} = arrow≡ refl (substRefl 
+                {B = (λ (h : Polynomial.position p → Polynomial.position (A * B)) → (x : Polynomial.position p) → Polynomial.direction (A * B) (h x) → Polynomial.direction p x)}
+                (Arrow.mapDirection ⟨ π₁ ∘p h , π₂ ∘p h ⟩) ∙ base)
 
-        helper22 : {p q : Polynomial} {f : Arrow p q} -> f ≡ f
-        helper22 {f = f} = arrowsEqual refl (transportRefl (Arrow.mapDirection f))
 
         unique : {F : Polynomial} {h : Arrow F (A * B)} {f₁ : Arrow F A} {f₂ : Arrow F B} →
             (π₁ ∘p h) ≡ f₁ →
             (π₂ ∘p h) ≡ f₂ → 
             ⟨ f₁ , f₂ ⟩ ≡ h
-        unique {F = F} {h = h} p₁ p₂ = transitivity (λ i → ⟨ sym p₁ i , sym p₂ i ⟩) (helper {p = F} {h = h})
+        unique {F = F} {h = h} p₁ p₂ = transitivity (λ i → ⟨ sym p₁ i , sym p₂ i ⟩) (lemma {p = F} {h = h})
 
 binaryProducts : Cartesian.BinaryProducts Poly
 binaryProducts = record { product = prod }
