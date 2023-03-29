@@ -9,6 +9,7 @@ open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Path
 open import Cubical.Data.Equality
 open import Cubical.Proofs
+open import Cubical.ArrowEquals
 open import Function
 open import Common.CategoryData
 open import Data.Unit
@@ -61,26 +62,9 @@ when checking the definition of eq2
 
 plugin1unit : NaturalTransformation idF (constantPolynomial ∘F plugIn1)
 plugin1unit = record { 
-    -- η =  λ X → (λ x → x , λ x₁ → tt) ⇄ λ fromPos () ;
-    -- -- commute : ∀ {X Y} (f : C [ X , Y ]) → η Y ∘ F₁ f ≈ G.F₁ f ∘ η X
-    -- commute = λ { {X} {Y} (mp ⇄ md) → let
-    --   -- t = (fromPos : Polynomial.position X) -> ⊥ -> Polynomial.direction X fromPos
-    --   pathToEq : {t : Type} {A B : t} -> Path t A B -> A ≡ B
-    --   pathToEq {t} {A} {B} p = p
-    --   summin : {fromPos : Polynomial.position X} -> ⊥ -> Polynomial.direction Y (mp fromPos)
-    --   summin = \()
-    --   summin2 : {fromPos : Polynomial.position X} -> ⊥ -> Polynomial.direction X fromPos
-    --   summin2 = \()
-    -- --   summin3 : (fromPos : Polynomial.position X) -> ⊥ -> Polynomial.direction X fromPos
-    -- --   summin3 f = {!   !}
-    --   thereIsPath : Path (((fromPos : Polynomial.position X) -> ⊥ -> Polynomial.direction X fromPos)) (λ fromPos z → md fromPos (summin z)) (λ fromPos z → summin2 z)
-    --   thereIsPath = cong′ (\x -> {!   !}) refl
-    --   in
-    --   arrowsEqual refl {!   !} } ;
-    -- sym-commute =  {!   !}
     η = λ X → (λ x → x , λ _ → tt) ⇄ λ fromPos () ;
-    commute = λ f → arrowsEqual3 refl λ {x ()} ;
-    sym-commute = λ f → arrowsEqual3 refl λ {x ()}
+    commute = λ f → arrow≡∀∀ refl λ {_ ()} ;
+    sym-commute = λ f → arrow≡∀∀ refl λ {_ ()}
     }
 
 plugin1counit : NaturalTransformation (plugIn1 ∘F constantPolynomial) idF
@@ -94,7 +78,7 @@ plugIn1⊣constantPolynomial = record
     { unit = plugin1unit
     ; counit = plugin1counit
     ; zig = ctop refl
-    ; zag = arrowsEqual refl fromAnythingToFalseToAnythingEqual}
+    ; zag = arrow≡∀∀ refl λ {fromPos ()} }
 
 linearunit : NaturalTransformation idF (plugIn1 ∘F linearPolynomial)
 linearunit = record { 
@@ -106,7 +90,7 @@ linearcounit : NaturalTransformation (linearPolynomial ∘F plugIn1) idF
 linearcounit = record { 
     η = λ X → (λ x → fst x) ⇄ λ fromPos x → tt ;
     commute = λ f → refl ;
-    sym-commute = λ f → arrowsEqual refl (λ i fromPos x → tt) }
+    sym-commute = λ f → arrow≡ refl λ i fromPos x → tt }
 
 linearPolynomial⊣plugIn1 : linearPolynomial ⊣ plugIn1
 linearPolynomial⊣plugIn1 = record 
