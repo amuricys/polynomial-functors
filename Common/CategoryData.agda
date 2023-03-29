@@ -150,6 +150,17 @@ open Polynomial
     dir : pos → Set
     dir pos = Σ[ index ∈ indexType ] direction (generatePoly index) (pos index) -- The direction is exactly one of the directions of all polynomials directions at that position
 
+-- Generalization of the coproduct (_+_).
+-- Page 31 in the book.
+ΣPoly : Σ[ indexType ∈ Set ] (indexType → Polynomial) → Polynomial
+ΣPoly (indexType , generatePoly) = MkPolynomial pos dir
+  where
+    pos : Set 
+    pos = Σ[ index ∈ indexType ] (position (generatePoly index)) -- It is the positions of one of the polynomials
+
+    dir : pos → Set
+    dir (index , positionAtIndex) = direction (generatePoly index) positionAtIndex
+
 
 -- Exponential object.
 -- Theroem 4.27, page 130 in Poly book.
