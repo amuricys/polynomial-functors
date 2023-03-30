@@ -11,8 +11,10 @@ open import Data.Sum
 open import Function
 open import Cubical.Proofs
 open import Cubical.Foundations.Prelude
+open import Cubical.Foundations.Transport
 open import Categories.Category.Monoidal
 import Categories.Category.Cocartesian as Cocartesian
+open import Cubical.ArrowEquals
 -- open import Data.Product
 
 coprod : {A B : Polynomial} -> Coproduct A B
@@ -36,21 +38,33 @@ coprod {A = A} {B = B} = record
         [_,_]p : {C : Polynomial} → Arrow A C → Arrow B C → Arrow (A + B) C
         [_,_]p = λ {(f ⇄ f♯) (g ⇄ g♯) → [ f , g ] ⇄ [ f♯ , g♯ ]}
 
-        -- helper2 : {p : Polynomial} {h : Arrow (A + B) p} → {! Arrow.mapDirection [ h ∘p i₁ , h ∘p i₂ ] ≡ Arrow.mapDirection h !} -- (Arrow.mapDirection ⟨ π₁ ∘p h , π₂ ∘p h ⟩) ≡ Arrow.mapDirection h -- (λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h --  {! λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h  !} helper2 = {!   !}
         -- helper2 : {p : Polynomial} {h : Arrow (A + B) p} → (Arrow.mapDirection [ h ∘p i₁ , h ∘p i₂ ]p) ≡ Arrow.mapDirection h
-        -- -- helper2 : {p : Polynomial} {h : Arrow (A + B) p} → (Arrow.mapDirection [ h ∘p i₁ , h ∘p i₂ ]p ) ≡ Arrow.mapDirection h
         -- helper2 = {!   !}
 
         open Arrow
         open Polynomial
 
-        helper : {p : Polynomial} {h : Arrow (A + B) p} -> [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
-        helper {p = p} {h = h} = arrowsEqual2 (funExt λ {(inj₁ x) → refl
-                                                       ; (inj₂ y) → refl}) λ {(inj₁ x) y → cong (λ zz → mapDirection h (inj₁ x) zz) (lemma1 x y) -- subst (λ zz → {! mapDirection h (inj₁ x) zz   !}) (lemma1 x y) {!   !}
-                                                                            ; (inj₂ y₁) y → cong (λ zz → mapDirection h (inj₂ y₁) zz) (sym (transportRefl y)) }
+        
+        helper : {q : Polynomial} {h : Arrow (A + B) q} -> [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
+        helper {q} {h} = arrow≡ (funExt (λ { (inj₁ x) → refl ; (inj₂ y) → refl })) (funExt λ x → {!   !})
+           -- arrowsEqual2 (funExt λ {(inj₁ x) → refl
+           --                                             ; (inj₂ y) → refl}) λ {(inj₁ x) y → cong (λ zz → mapDirection h (inj₁ x) zz) (lemma1 x y) -- subst (λ zz → {! mapDirection h (inj₁ x) zz   !}) (lemma1 x y) {!   !}
+           --                                                                  ; (inj₂ y₁) y → cong (λ zz → mapDirection h (inj₂ y₁) zz) (sym (transportRefl y)) }
             where
-                lemma1 : (x : position A) → (y : direction p (mapPosition h (inj₁ x))) → y ≡ (transp (λ i → direction p (mapPosition h (inj₁ x))) i0 y)
+                lemma1 : (x : position A) → (y : direction q (mapPosition h (inj₁ x))) → y ≡ (transp (λ i → direction q (mapPosition h (inj₁ x))) i0 y)
                 lemma1 x y = sym (transportRefl y)
+                -- this is expanding h on both sides by the lhs of the equality we want to prove [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
+                -- e : Arrow.mapPosition [ ([ h ∘p i₁ , h ∘p i₂ ]p) ∘p i₁ , ([ h ∘p i₁ , h ∘p i₂ ]p) ∘p i₂ ]p ≡ Arrow.mapPosition [ h ∘p i₁ , h ∘p i₂ ]p
+                -- e = (funExt (λ { (inj₁ x) → refl ; (inj₂ y) → refl }))
+                -- lemma2 : e ≡ refl
+                -- lemma2 i j (inj₁ x) = mapPosition h (inj₁ x)
+                -- lemma2 i j (inj₂ y) = mapPosition h (inj₂ y)
+                -- lemma3 : {x : Polynomial.position (A + B)} → (mapDirection [ h ∘p i₁ , h ∘p i₂ ]p) x ≡ mapDirection h x
+                -- lemma3 = refl
+                -- lemma4 : (mapDirection [ h ∘p i₁ , h ∘p i₂ ]p) ≡ mapDirection h
+                -- lemma4 = ?
+
+
 
         -- mapDirection h (inj₁ x) y ≡
       -- mapDirection h (inj₁ x)
@@ -98,3 +112,4 @@ coproductCocartesian = record { initial = initialZero ; coproducts = binaryCopro
 coproductMonodial : Monoidal Poly
 coproductMonodial = Cocartesian.CocartesianMonoidal.+-monoidal Poly coproductCocartesian
 
+     

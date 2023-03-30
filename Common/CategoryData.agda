@@ -25,15 +25,12 @@ record Arrow (from to : Polynomial) : Set where
         mapPosition : position from -> position to
         mapDirection : (fromPos : position from) -> direction to (mapPosition fromPos) -> direction from fromPos
 
-variable
-    A B C D : Polynomial
-
 -- | For each polynomial we have the identity arrow.
 -- | Positions are mapped to itself. The direction is taken as itself.
-idArrow : Arrow A A
+idArrow : {A : Polynomial} → Arrow A A
 idArrow = id ⇄ λ _ → id
 
-_∘p_ : Arrow B C -> Arrow A B -> Arrow A C
+_∘p_ : {A B C : Polynomial} → Arrow B C -> Arrow A B -> Arrow A C
 _∘p_ (bToCPos ⇄ cToBDir) (aToBPos ⇄ bToADir) = (bToCPos ∘ aToBPos) ⇄ (λ fromPos z → bToADir fromPos (cToBDir (aToBPos fromPos) z))
 
 -- Zero polynomial: p(y) = 0

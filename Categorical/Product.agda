@@ -12,6 +12,7 @@ open import Cubical.Foundations.Prelude
 open import Data.Product
 open import Categories.Category.Monoidal
 open import Categorical.Terminal
+open import Cubical.ArrowEquals
 import Categories.Category.Cartesian as Cartesian
 
 π₁ : {p q : Polynomial} → Arrow (p * q) p
@@ -57,3 +58,4 @@ cartesian = record { terminal = terminalOne ; products = binaryProducts }
 
 productMonoidal : Monoidal Poly
 productMonoidal = Cartesian.CartesianMonoidal.monoidal Poly cartesian
+  

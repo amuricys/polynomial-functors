@@ -19,10 +19,10 @@ open import Data.Product hiding (Σ-syntax)
 
 ------- Categorical axioms
 ---------------------------------------
-composeLeftIdentity : (bToC : Arrow B C) -> idArrow ∘p bToC ≡ bToC
+composeLeftIdentity : {B C : Polynomial} → (bToC : Arrow B C) -> idArrow ∘p bToC ≡ bToC
 composeLeftIdentity (_ ⇄ _) = refl
 
-composeRightIdentity : (cToB : Arrow C B) -> cToB ∘p idArrow ≡ cToB
+composeRightIdentity :{B C : Polynomial} → (cToB : Arrow C B) -> cToB ∘p idArrow ≡ cToB
 composeRightIdentity (_ ⇄ _) = refl
 
 composeIsAssoc : ∀ {A B C D} -> {f : Arrow A B} {g : Arrow B C} {h : Arrow C D} -> ((h ∘p g) ∘p f) ≡ (h ∘p (g ∘p f))
@@ -122,7 +122,14 @@ arrowSigmasEqual3 {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathTran
 
 arrowsEqual3 : {p q : Polynomial} {f g : Arrow p q}
     -> (mapPosEq : mapPosition f ≡ mapPosition g)
-    -> ((x : position p) -> (y : direction q (mapPosition g x)) -> mapDirection f x  (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y) -- mapDirection f x (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y  ) -- (subst (λ mapPos → direction q (mapPos x)) mapPosEq y)
+    -> (
+           (x : position p) -> 
+           (y : direction q (mapPosition g x)) -> 
+           mapDirection f x  
+           (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) 
+           ≡ 
+           mapDirection g x y
+        ) -- mapDirection f x (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y  ) -- (subst (λ mapPos → direction q (mapPos x)) mapPosEq y)
     -> f ≡ g
 arrowsEqual3 {f = f} {g = g} a b i = sigmaToArrow (arrowSigmasEqual3 {f = f} {g = g} a b i)
 
@@ -150,15 +157,15 @@ fromMapInDirectionToFunction : {p q : Polynomial} -> (Polynomial.position p → 
 fromMapInDirectionToFunction {p} {q} f = \x ->
   f (fst x) , λ _ → tt
 
-fromFunctionToMapOnDirections : {p q : Polynomial} -> (apply p ⊤ -> apply q ⊤) -> (Polynomial.position p → Polynomial.position q)
-fromFunctionToMapOnDirections {p@(MkPolynomial pos dir)} {q} f = \x -> let
+fromFunctionToMapOnPositions : {p q : Polynomial} -> (apply p ⊤ -> apply q ⊤) -> (Polynomial.position p → Polynomial.position q)
+fromFunctionToMapOnPositions {p@(MkPolynomial pos dir)} {q} f = \x -> let
   y : apply q ⊤
   y = f (x , λ x₁ → tt)
   in
   fst y
 
-plugIn1IsoToMapDirection : {p q : Polynomial} -> Iso (apply p ⊤ -> apply q ⊤) (Polynomial.position p → Polynomial.position q)
-plugIn1IsoToMapDirection = iso fromFunctionToMapOnDirections fromMapInDirectionToFunction (λ b -> refl) (λ a → refl)
+plugIn1IsoToMapPosition : {p q : Polynomial} -> Iso (apply p ⊤ -> apply q ⊤) (Polynomial.position p → Polynomial.position q)
+plugIn1IsoToMapPosition = iso fromFunctionToMapOnPositions fromMapInDirectionToFunction (λ b -> refl) (λ a → refl)
 
 -- Proposition Not sure if this maybe is so similar
 -- Proposition 3.40 in the book. (page 85)
@@ -187,10 +194,10 @@ pwiseToExt {A = A} {f = f} {g = g} p = let
   in
   funExt (λ x → yaaa)
 
-positionArrowsEqual : {f g : Arrow A B} -> f ≡ g -> Arrow.mapPosition f ≡ Arrow.mapPosition g
+positionArrowsEqual : {A B : Polynomial} → {f g : Arrow A B} -> f ≡ g -> Arrow.mapPosition f ≡ Arrow.mapPosition g
 positionArrowsEqual p i = Arrow.mapPosition (p i)
 
-positionArrowsEqualPwise : {f g : Arrow A B} {z : Polynomial.position A} → f ≡ g -> Arrow.mapPosition f z ≡ Arrow.mapPosition g z
+positionArrowsEqualPwise : {A B : Polynomial} →  {f g : Arrow A B} {z : Polynomial.position A} → f ≡ g -> Arrow.mapPosition f z ≡ Arrow.mapPosition g z
 positionArrowsEqualPwise {z = z} p i = let
   posEq = positionArrowsEqual p i
   in posEq z
@@ -209,10 +216,10 @@ I≡pOfOne = isoToPath isoI≡pOfOne
     isoI≡pOfOne : {A : Polynomial} → Iso (apply A ⊤) (Polynomial.position A)
     isoI≡pOfOne = iso toRight toLeft inv1 inv2
       where
-        toRight : apply A ⊤ → Polynomial.position A
+        toRight : {A : Polynomial} →  apply A ⊤ → Polynomial.position A
         toRight = fst
 
-        toLeft : Polynomial.position A → apply A ⊤ 
+        toLeft : {A : Polynomial} → Polynomial.position A → apply A ⊤ 
         toLeft x = x , λ x₁ → tt
 
         inv1 = λ b → refl

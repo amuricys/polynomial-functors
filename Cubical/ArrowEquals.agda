@@ -11,7 +11,7 @@ open Polynomial
 open Arrow
 
 ArrowAsSigma : Polynomial -> Polynomial -> Type
-ArrowAsSigma p q = Σ[ mapPos ∈ (position p -> position q) ] 
+ArrowAsSigma p q = Σ[ mapPos ∈ (position p -> position q) ]
     ((fromPos : position p) -> direction q (mapPos fromPos) -> direction p fromPos)
     
 sigmaToArrow : {p q : Polynomial} -> ArrowAsSigma p q -> Arrow p q
@@ -62,13 +62,20 @@ arrow≡∀ mapPos≡ mapDir≡ = arrow≡ mapPos≡ λ i fromPos → mapDir≡ 
 
 arrow≡∀' : {p q : Polynomial} {f g : Arrow p q}
     → (mapPos≡ : mapPosition f ≡ mapPosition g)
-    → ((fromPos : position p) → mapDirection f fromPos ≡ (subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) (sym mapPos≡) (mapDirection g)) fromPos)
+    → ( (fromPos : position p) → mapDirection f fromPos ≡ (subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) (sym mapPos≡) (mapDirection g)) fromPos)
     → f ≡ g
 arrow≡∀' mapPos≡ mapDir≡ = arrow≡' mapPos≡ λ i fromPos → mapDir≡ fromPos i
 
 arrow≡∀∀ : {p q : Polynomial} {f g : Arrow p q}
     → (mapPos≡ : mapPosition f ≡ mapPosition g)
-    → ((fromPos : position p) → (dirQFromG : direction q (mapPosition g fromPos)) → subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) mapPos≡ (mapDirection f) fromPos dirQFromG ≡ mapDirection g fromPos dirQFromG)
+    → ( (fromPos : position p) → (dirQFromG : direction q (mapPosition g fromPos)) → 
+          subst 
+             (λ h → (x : position p) → direction q (h x) → direction p x)
+             mapPos≡ 
+             (mapDirection f)
+             fromPos dirQFromG 
+             ≡
+           mapDirection g fromPos dirQFromG)
     → f ≡ g
 arrow≡∀∀ mapPos≡ mapDir≡ = arrow≡ mapPos≡ λ i fromPos x → mapDir≡ fromPos x i
 
