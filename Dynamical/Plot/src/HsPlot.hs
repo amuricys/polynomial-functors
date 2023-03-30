@@ -1,4 +1,6 @@
 -- Dynamical/Plot/src/HsPlot.hs
+{-# LANGUAGE BlockArguments #-}
+{-# LANGUAGE ImportQualifiedPost #-}
 
 module HsPlot where
 
@@ -6,10 +8,13 @@ module HsPlot where
 
 import Graphics.Rendering.Chart.Easy
 import Graphics.Rendering.Chart.Backend.Cairo
+import Control.Monad (forM_)
+import Data.Text qualified as T
 
-plotToFile :: Double -> [Double] -> [Double] -> IO ()
-plotToFile dt r f = toFile def "plot.png" $ do
-    layout_title .= "Dynamics idk"
+plotToFile :: Double -> [(T.Text, [Double])] -> IO ()
+plotToFile dt lines = toFile def "plot.png" $ do
+    layout_title .= "Dynamics"
     setColors [opaque blue, opaque red]
-    plot (line "rabbits" [zip [0, dt..] r ])
-    plot (line "foxes" [zip [0, dt..] f])
+    forM_ lines \(name, l) ->
+        plot (line (T.unpack name) [zip [0, dt..] l ])
+    -- plot (line "foxes" [zip [0, dt..] f])

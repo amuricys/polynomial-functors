@@ -20,6 +20,7 @@ open import Categorical.Functor.Linear
 open import Categorical.Functor.PlugInOne
 open import Categorical.Functor.PlugInZero
 open import Level
+open import Cubical.ArrowEquals
 
 
 -- Quadruple adjunction
@@ -54,11 +55,6 @@ eq i ()
 
 eq2r : Path ((⊥ → ⊥) × (⊥ → ⊥)) (id-⊥ , id-⊥) (id-⊥ , !-⊥)
 eq2r = cong′ (\x -> id-⊥ , x) (λ { i () })
-
-{-
-x != (λ ()) x of type ⊥
-when checking the definition of eq2
--}
 
 plugin1unit : NaturalTransformation idF (constantPolynomial ∘F plugIn1)
 plugin1unit = record { 

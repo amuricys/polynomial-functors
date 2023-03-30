@@ -26,10 +26,10 @@ fromArrowInPolyToFunction2 {(MkPolynomial pos dir)} {B} (mapPosition ⇄ mapDire
   directionAirquoteslol = snd x
   in mapPosition positionAirquotes , λ {x₁ → directionAirquoteslol (mapDirection positionAirquotes x₁)}
 
-appliedPolyArrowsEq2 : {f g : Arrow A B} -> f ≡ g -> fromArrowInPolyToFunction2 f ≡ fromArrowInPolyToFunction2 g
+appliedPolyArrowsEq2 : {A B : Polynomial} ->  {f g : Arrow A B} -> f ≡ g -> fromArrowInPolyToFunction2 f ≡ fromArrowInPolyToFunction2 g
 appliedPolyArrowsEq2 p i = fromArrowInPolyToFunction2 (p i)
 
-appliedPolyArrowsEqPwise2 : {f g : Arrow A B} {z : apply A ⊤} → f ≡ g -> fromArrowInPolyToFunction2 f z ≡ fromArrowInPolyToFunction2 g z
+appliedPolyArrowsEqPwise2 : {A B : Polynomial} -> {f g : Arrow A B} {z : apply A ⊤} → f ≡ g -> fromArrowInPolyToFunction2 f z ≡ fromArrowInPolyToFunction2 g z
 appliedPolyArrowsEqPwise2 {z = z} p i = let
   posEq = appliedPolyArrowsEq2 p i
   in posEq z

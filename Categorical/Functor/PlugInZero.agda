@@ -24,10 +24,10 @@ open import Data.Bool
 fromArrowInPolyToFunction : {A B : Polynomial} -> Arrow A B -> apply A ⊥ -> apply B ⊥
 fromArrowInPolyToFunction {A} {B} = fromArrowInPolyToFunctionBetweenAppliedPolys {A} {B} {⊥}
 
-appliedPolyArrowsEq : {f g : Arrow A B} -> f ≡ g -> fromArrowInPolyToFunction f ≡ fromArrowInPolyToFunction g
+appliedPolyArrowsEq : {A B : Polynomial} -> {f g : Arrow A B} -> f ≡ g -> fromArrowInPolyToFunction f ≡ fromArrowInPolyToFunction g
 appliedPolyArrowsEq p i = fromArrowInPolyToFunction (p i)
 
-appliedPolyArrowsEqPwise : {f g : Arrow A B} {z : apply A ⊥} → f ≡ g -> fromArrowInPolyToFunction f z ≡ fromArrowInPolyToFunction g z
+appliedPolyArrowsEqPwise :{A B : Polynomial} ->  {f g : Arrow A B} {z : apply A ⊥} → f ≡ g -> fromArrowInPolyToFunction f z ≡ fromArrowInPolyToFunction g z
 appliedPolyArrowsEqPwise {z = z} p i = let
   posEq = appliedPolyArrowsEq p i
   in posEq z

@@ -1,7 +1,9 @@
-{-# OPTIONS --sized-types --without-K #-}
+{-# OPTIONS --sized-types --without-K --overlapping-instances #-}
 
 module Dynamical.System where
 
+open import Relation.Binary.PropositionalEquality hiding ([_])
+open import Relation.Nullary
 open import Agda.Builtin.Nat renaming (_+_ to _+ℕ_)
 open import Common.CategoryData
 open import Codata.Stream
@@ -12,6 +14,7 @@ import Agda.Builtin.Nat
 open import Function using (id)
 open import Data.Product
 open import Data.Unit
+open import Data.Empty
 
 -- Creating dynamical systems.
 record DynamicalSystem : Set₁ where
@@ -58,6 +61,41 @@ auto = encloseFunction λ _ → tt
 
 constI : {m : Set} -> (i : m) -> enclose (selfMonomial m)
 constI i = encloseFunction λ _ → i
+
+-- open import Data.Nat using (ℕ; zero; suc)
+
+-- record Dimension (A : Set) : Set where
+--   constructor Dim
+--   field
+--     dim : ℕ
+
+-- open Dimension public
+
+-- dimProd : ∀ {A B} {{dimA : Dimension A}} {{dimB : Dimension B}} → Dimension (A × B)
+-- dimProd {A} {B} {{dimA}} {{dimB}} = Dim (suc (dim dimA +ℕ dim dimB))
+
+-- dimNonProd : (A : Set) → ∀ {B C} → { ¬ (A ≡ (B × C))} → Dimension A
+-- dimNonProd typ = Dim (suc zero)
+
+
+-- instance
+--   recur : ∀ {A B} {{dimA : Dimension A}} {{dimB : Dimension B}} → Dimension (A × B)
+--   recur = dimProd
+
+-- instance
+--   base : ∀ {A} → ∀ {B C} → { ¬ (A ≡ (B × C))} → Dimension A
+--   base {A} {B} {C} {p} = dimNonProd A {B} {C} {p}
+
+-- -- Helper function to extract the dimension of a Set with a Dimension instance
+-- dimOf : ∀ {A} {{_ : Dimension A}} → ℕ
+-- dimOf {{d}} = dim d
+
+-- example1 : ℕ
+-- example1 = dimOf {ℕ} {{base {ℕ}}}
+
+-- example2 : ℕ
+-- example2 = dimOf {ℕ × ℕ × ℕ}
+
 
 {-# TERMINATING #-}
 run : (d : DynamicalSystem) → enclose (DynamicalSystem.interface d) → DynamicalSystem.state d → Stream (Polynomial.position (DynamicalSystem.interface d)) _
