@@ -40,7 +40,13 @@ p^0≡1 {p} = poly≡∀' pos≡ dir≡
     dir≡ pos = lemmaDir
 
 p^1≡p : {p : Polynomial} → p ^ One ≡ p
-p^1≡p = poly≡∀' {!   !} {!   !}
+p^1≡p {p@(MkPolynomial pos dir)} = poly≡∀' pos≡ {!   !}
+  where other : ((index : ⊤) → Σ pos (λ i → dir i → ⊤ ⊎ ⊥)) ≡ pos
+        other = isoToPath (iso (λ x → fst (x tt)) (λ x tt → x , λ x₁ → inj₁ tt) (λ b → refl) λ a i index → fst (a tt) , λ x → {!   !})
+        pos≡ : position (p ^ One) ≡ position p
+        pos≡ = other
+        
+
 
 rtoq : (r : Polynomial) -> (q : Polynomial) -> Polynomial
 rtoq r (MkPolynomial posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
@@ -78,3 +84,4 @@ exp {A} {B} = record
     ; β = {!   !}
     ; λ-unique = {!   !}
     }
+ 
