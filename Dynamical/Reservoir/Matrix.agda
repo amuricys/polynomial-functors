@@ -2,7 +2,7 @@
 module Dynamical.Reservoir.Matrix where
 
 open import Data.Nat using (ℕ)
-open import Data.Float renaming (Float to ℚ) hiding (_+_ ; _*_)
+open import Data.Float renaming (Float to ℝ) hiding (_+_ ; _*_)
 import Data.Float as Float
 import Data.Nat as Nat
 open import Data.Vec as Vec hiding (sum ; map)
@@ -23,24 +23,24 @@ record Num (A B C : Set) : Set where
 
 open Num {{...}}
 
-numℕℚℚ : Num ℕ ℚ ℚ
-Num._+_ numℕℚℚ = λ n x → fromℕ n Float.+ x
-Num._*_ numℕℚℚ = λ n x → fromℕ n Float.* x
-Num.zero numℕℚℚ = 0.0
+numℕℝℝ : Num ℕ ℝ ℝ
+Num._+_ numℕℝℝ = λ n x → fromℕ n Float.+ x
+Num._*_ numℕℝℝ = λ n x → fromℕ n Float.* x
+Num.zero numℕℝℝ = 0.0
 
-numℚℕℚ : Num ℚ ℕ ℚ
-Num._+_ numℚℕℚ = λ x n → x Float.+ fromℕ n
-Num._*_ numℚℕℚ = λ x n → x Float.* fromℕ n
-Num.zero numℚℕℚ = 0.0
+numℝℕℝ : Num ℝ ℕ ℝ
+Num._+_ numℝℕℝ = λ x n → x Float.+ fromℕ n
+Num._*_ numℝℕℝ = λ x n → x Float.* fromℕ n
+Num.zero numℝℕℝ = 0.0
 
-numℚℚℚ : Num ℚ ℚ ℚ
-Num._+_ numℚℚℚ = λ x n → x Float.+ n
-Num._*_ numℚℚℚ = λ x n → x Float.* n
-Num.zero numℚℚℚ = 0.0
+numℝℝℝ : Num ℝ ℝ ℝ
+Num._+_ numℝℝℝ = λ x n → x Float.+ n
+Num._*_ numℝℝℝ = λ x n → x Float.* n
+Num.zero numℝℝℝ = 0.0
 
 instance
-  numℚℚℚInstance : Num ℚ ℚ ℚ
-  numℚℚℚInstance = numℚℚℚ
+  numℝℝℝInstance : Num ℝ ℝ ℝ
+  numℝℝℝInstance = numℝℝℝ
   
 
 _+ᴹ_ : ∀ {A r c} {{numA : Num A A A}} → Matrix A r c → Matrix A r c → Matrix A r c

@@ -6,12 +6,12 @@ module Dynamical.Lorenz where
 open import Codata.Stream
 open import Dynamical.System
 open import Data.Product
-open import Data.Float renaming (Float to ℚ) -- Rationals are more well behaved than reals (those are not even in stdlib)
+open import Data.Float renaming (Float to ℝ)
 open import Common.CategoryData renaming (_*_ to _*p_ ; _+_ to _+p_) hiding (Y)
 open import Data.Vec using (Vec ; map)
 open import Data.Unit
 
-dt : ℚ
+dt : ℝ
 dt = 0.01
 
 σ = 10.0
@@ -19,13 +19,13 @@ dt = 0.01
 β = 8.0 ÷ 3.0
 
 data X : Set where
-  xnt : ℚ → X
+  xnt : ℝ → X
 
 data Y : Set where
-  ynt : ℚ → Y
+  ynt : ℝ → Y
 
 data Z : Set where
-  znt : ℚ → Z
+  znt : ℝ → Z
 
 -- First order differential equations
 x : DynamicalSystem
@@ -68,5 +68,5 @@ lorenz = install preLorenz (Emitter (X × Y × Z)) lorenzWiringDiagram
 lorenzSeq : Stream (X × Y × Z) _
 lorenzSeq = run lorenz auto (xnt 10.0 , ynt 10.0 , znt 10.0)
 
-lorenzList : Vec (ℚ × ℚ × ℚ) 1000
+lorenzList : Vec (ℝ × ℝ × ℝ) 1000
 lorenzList = Data.Vec.map (\{(xnt x , ynt y , znt z) → x , y , z } ) (take 1000 lorenzSeq)

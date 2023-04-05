@@ -52,7 +52,7 @@ Constant A = MkPoly A (λ _ → ⊥)
 
 ex : Polynomial
 ex = MkPoly Bool λ {false → Bool
-                        ; true → ⊤}
+                  ; true → ⊤}
 
 f1 : ⊤ → Bool
 f1 _ = true
