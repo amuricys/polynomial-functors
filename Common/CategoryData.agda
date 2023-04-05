@@ -12,7 +12,7 @@ open import Function
 
 
 record Polynomial : Set₁ where
-    constructor MkPolynomial
+    constructor MkPoly
     field
         position : Set
         direction : position → Set
@@ -34,24 +34,24 @@ _∘p_ (bToCPos ⇄ cToBDir) (aToBPos ⇄ bToADir) = (bToCPos ∘ aToBPos) ⇄ (
 
 -- Zero polynomial: p(y) = 0
 Zero : Polynomial
-Zero = MkPolynomial ⊥ (λ ())
+Zero = MkPoly ⊥ (λ ())
 
 arrowFromZero : {p : Polynomial} → Arrow Zero p
 arrowFromZero {p} = (λ ()) ⇄ (λ ())
 
 -- One polynomial: p(y) = 1
 One : Polynomial
-One = MkPolynomial ⊤ (λ {tt → ⊥})
+One = MkPoly ⊤ (λ {tt → ⊥})
 
 arrowToOne : {p : Polynomial} → Arrow p One
 arrowToOne = (λ _ → tt) ⇄ λ {_ ()}
 
 -- Constant polynomial: p(y) = A
 Constant : (A : Set) → Polynomial
-Constant A = MkPolynomial A (λ _ → ⊥)
+Constant A = MkPoly A (λ _ → ⊥)
 
 ex : Polynomial
-ex = MkPolynomial Bool λ {false → Bool
+ex = MkPoly Bool λ {false → Bool
                         ; true → ⊤}
 
 f1 : ⊤ → Bool
@@ -63,7 +63,7 @@ f2 _ = false
 -- Plug in a set: say you have p(y) = y^2 + 3. p ⦅ 2 ⦆ should return 2^2 + 3 ≅ 7
 -- This is the action on objects (sets) of that polynomials perform as functors. They're (endo)functors after all.
 _⦅_⦆ : Polynomial → Set → Set
-_⦅_⦆ (MkPolynomial position direction) Y = Σ position λ x → (direction x → Y)
+_⦅_⦆ (MkPoly position direction) Y = Σ position λ x → (direction x → Y)
 
 some : ex ⦅ ⊤ ⦆
 some = false , (λ{ false → tt
@@ -76,30 +76,30 @@ some2 = true , id
 -- the type 2^2 + 3 ≅ 7 to the type 3^2 + 3 ≅ = 12. This is the action on morphisms (functions) that polynomials
 -- perform as functors (they are endofunctors in Set after all)
 applyFn : {A B : Set} → (p : Polynomial) → (A → B) → p ⦅ A ⦆ → p ⦅ B ⦆
-applyFn (MkPolynomial position direction) f (fst , snd) = fst , λ x → f (snd x)
+applyFn (MkPoly position direction) f (fst , snd) = fst , λ x → f (snd x)
 
 _+_ : Polynomial → Polynomial → Polynomial
-MkPolynomial posA dirA + MkPolynomial posB dirB = MkPolynomial (posA ⊎ posB) [ dirA , dirB ]
+MkPoly posA dirA + MkPoly posB dirB = MkPoly (posA ⊎ posB) [ dirA , dirB ]
 
 
 -- Product between two polynomials.
 -- Pair of position. Each pair of positions has one direction, either from the left or the right polynomial.
 _*_ : Polynomial → Polynomial → Polynomial
-MkPolynomial posA dirA * MkPolynomial posB dirB = MkPolynomial (posA × posB) \{ (posA , posB)→ (dirA posA) ⊎ (dirB posB)}
+MkPoly posA dirA * MkPoly posB dirB = MkPoly (posA × posB) \{ (posA , posB)→ (dirA posA) ⊎ (dirB posB)}
 
 -- Tensor between two polynomials. Parallel product.
 -- Pair of position. Each pair of position has one direction for each component.
 _⊗_ : Polynomial → Polynomial → Polynomial
-MkPolynomial posA dirA ⊗ MkPolynomial posB dirB = MkPolynomial (posA × posB) (λ {(posA , posB) → (dirA posA) × (dirB posB)})
+MkPoly posA dirA ⊗ MkPoly posB dirB = MkPoly (posA × posB) (λ {(posA , posB) → (dirA posA) × (dirB posB)})
 
 -- Unit for tensor is Y. 1 position with 1 direction.
 Y : Polynomial
-Y = MkPolynomial ⊤ (λ _ → ⊤)
+Y = MkPoly ⊤ (λ _ → ⊤)
 
 -- Composition of polynomials (composition of polynomial functors, which happen to be new polynomial functor!).
 -- Proposition 5.2, page 158. Note: not same definition used.
 _◂_ : Polynomial → Polynomial → Polynomial
-p ◂ q = MkPolynomial pos dir
+p ◂ q = MkPoly pos dir
   where
     module p = Polynomial p
     module q = Polynomial q
@@ -119,27 +119,27 @@ compositePower p N.zero = Identity
 compositePower p (N.suc n) = p ◂ (compositePower p n) 
 
 fromArrowInPolyToFunctionBetweenAppliedPolys : {p q : Polynomial} {S : Set} → Arrow p q → p ⦅ S ⦆ → q ⦅ S ⦆
-fromArrowInPolyToFunctionBetweenAppliedPolys {(MkPolynomial pos dir)} {B} (mapPosition ⇄ mapDirection) (f , s) =
+fromArrowInPolyToFunctionBetweenAppliedPolys {(MkPoly pos dir)} {B} (mapPosition ⇄ mapDirection) (f , s) =
   mapPosition f , λ {x₁ → s (mapDirection f x₁)}
 
 enclose : Polynomial → Set
 enclose p = Arrow p Y
 
 monomial : (A B : Set) → Polynomial -- A*Y^B
-monomial A B = MkPolynomial A (λ _ → B)
+monomial A B = MkPoly A (λ _ → B)
 
 selfMonomial : Set → Polynomial -- S*Y^S
 selfMonomial S = monomial S S
 
 -- | A pure power summand.
 purePower : Set → Polynomial
-purePower power = MkPolynomial ⊤ λ _ → power
+purePower power = MkPoly ⊤ λ _ → power
 
 open Polynomial
 
 -- Generalization of the product (_*_) poly.
-πPoly : Σ[ indexType ∈ Set ] (indexType → Polynomial) → Polynomial
-πPoly (indexType , generatePoly) = MkPolynomial pos dir
+ΠPoly : Σ[ indexType ∈ Set ] (indexType → Polynomial) → Polynomial
+ΠPoly (indexType , generatePoly) = MkPoly pos dir
   where
     pos : Set
     pos = (index : indexType) → position (generatePoly index) -- It embeds all polynomial positions into one position
@@ -150,7 +150,7 @@ open Polynomial
 -- Generalization of the coproduct (_+_).
 -- Page 31 in the book.
 ΣPoly : Σ[ indexType ∈ Set ] (indexType → Polynomial) → Polynomial
-ΣPoly (indexType , generatePoly) = MkPolynomial pos dir
+ΣPoly (indexType , generatePoly) = MkPoly pos dir
   where
     pos : Set 
     pos = Σ[ index ∈ indexType ] (position (generatePoly index)) -- It is the positions of one of the polynomials
@@ -162,4 +162,4 @@ open Polynomial
 -- Exponential object.
 -- Theroem 4.27, page 130 in Poly book.
 _^_ : (r : Polynomial) → (q : Polynomial) → Polynomial
-_^_ r (MkPolynomial posQ dirQ) = πPoly (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
+_^_ r (MkPoly posQ dirQ) = ΠPoly (posQ , λ j → r ◂ (Y + Constant (dirQ j)))

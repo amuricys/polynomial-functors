@@ -20,7 +20,7 @@ e = 2.718281
 
 -- The big one
 voltage : DynamicalSystem
-voltage = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ × ℚ × ℚ × ℚ) (readout ⇄ update)
+voltage = MkDynamicalSystem ℚ (MkPoly ℚ λ _ → ℚ × ℚ × ℚ × ℚ) (readout ⇄ update)
   where readout : ℚ → ℚ
         readout state = state
         GL : ℚ
@@ -67,7 +67,7 @@ voltage = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ × ℚ × ℚ × 
 
 -- First order differential equations
 potassiumActivation : DynamicalSystem
-potassiumActivation = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ) (readout ⇄ update)
+potassiumActivation = MkDynamicalSystem ℚ (MkPoly ℚ λ _ → ℚ) (readout ⇄ update)
   where readout : ℚ → ℚ
         readout state = state
         update : ℚ → ℚ → ℚ
@@ -75,7 +75,7 @@ potassiumActivation = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ) (rea
           where dₘ = αₘ voltage * (1.0 - state) - βₘ voltage * state
 
 sodiumActivation : DynamicalSystem
-sodiumActivation = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ) (readout ⇄ update)
+sodiumActivation = MkDynamicalSystem ℚ (MkPoly ℚ λ _ → ℚ) (readout ⇄ update)
   where readout : ℚ → ℚ
         readout state = state
         update : ℚ → ℚ → ℚ
@@ -83,7 +83,7 @@ sodiumActivation = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ) (readou
           where dₕ = αₕ voltage * (1.0 - state) - βₕ voltage * state
 
 sodiumInactivation : DynamicalSystem
-sodiumInactivation = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ) (readout ⇄ update)
+sodiumInactivation = MkDynamicalSystem ℚ (MkPoly ℚ λ _ → ℚ) (readout ⇄ update)
   where readout : ℚ → ℚ
         readout state = state
         update : ℚ → ℚ → ℚ

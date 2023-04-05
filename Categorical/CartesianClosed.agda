@@ -24,7 +24,7 @@ import Categories.Category.CartesianClosed.Canonical Poly as Canonical
 
 open Polynomial
 depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
-depProd (ind , polyAt) = MkPolynomial ((i : ind) → position (polyAt i))
+depProd (ind , polyAt) = MkPoly ((i : ind) → position (polyAt i))
                                       (λ a⁺ → Σ[ i ∈ ind ](direction (polyAt i) (a⁺ i)))
 eval : {p q : Polynomial} → Arrow ((q ^ p) * p) q
 eval {p} {q} = mapPos ⇄ mapDir
@@ -89,7 +89,7 @@ uncurry {p} {q} {r} (f ⇄ f♯) = mapPos ⇄ mapDir
 
 
 r^q : (r : Polynomial) → (q : Polynomial) → Polynomial
-r^q r (MkPolynomial posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
+r^q r (MkPoly posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
 
 mpEv : {A B : Polynomial} → position (r^q B A * A) → position B
 mpEv (posB^A , posA) = fst (posB^A posA)

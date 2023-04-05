@@ -21,7 +21,7 @@ open import Cubical.Proofs
 open import Data.Bool
 
 fromArrowInPolyToFunction2 : {p q : Polynomial} → Arrow p q → p [ ⊤ ] → q[⊤]
-fromArrowInPolyToFunction2 {(MkPolynomial pos dir)} {B} (mapPosition ⇄ mapDirection) = \x → let
+fromArrowInPolyToFunction2 {(MkPoly pos dir)} {B} (mapPosition ⇄ mapDirection) = \x → let
   positionAirquotes = fst x
   directionAirquoteslol = snd x
   in mapPosition positionAirquotes , λ {x₁ → directionAirquoteslol (mapDirection positionAirquotes x₁)}

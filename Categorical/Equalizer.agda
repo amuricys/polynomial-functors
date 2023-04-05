@@ -19,7 +19,7 @@ eq {p} {q} (mpf ⇄ mdf) (mpg ⇄ mdg) =
     isEqualizer = {!   !} 
     }
    where equalizerObject : Polynomial
-         equalizerObject = MkPolynomial (Σ[ i ∈ position p ] (mpf i ≡ mpg i)) dir
+         equalizerObject = MkPoly (Σ[ i ∈ position p ] (mpf i ≡ mpg i)) dir
             where dir : (Σ[ i ∈ position p ] (mpf i ≡ mpg i)) → Set
                   dir ( i , equal ) = coeq (mdf i) (mdf i) -- we can do this because the positions are equalized, so the domain of the direction coequalizer is equal
                     where coeqConstraint : {i : position p} → (f g : direction q (mpf i) → direction p i) → direction p i → Set

@@ -158,7 +158,7 @@ fromMapInDirectionToFunction {p} {q} f = \x →
   f (fst x) , λ _ → tt
 
 fromFunctionToMapOnPositions : {p q : Polynomial} → (p ⦅ ⊤ ⦆ → q ⦅ ⊤ ⦆) → (Polynomial.position p → Polynomial.position q)
-fromFunctionToMapOnPositions {p@(MkPolynomial pos dir)} {q} f = \x → let
+fromFunctionToMapOnPositions {p@(MkPoly pos dir)} {q} f = \x → let
   y : q ⦅ ⊤ ⦆
   y = f (x , λ x₁ → tt)
   in
@@ -226,5 +226,5 @@ I≡pOfOne = isoToPath isoI≡pOfOne
         inv2 = λ {(fst₁ , snd₁) → refl}
 
 -- derivative : Polynomial → Polynomial
--- derivative (MkPolynomial pos dir) = MkPolynomial (Σ pos dir) (λ {(i , a) → {! dir i - a  !}})
+-- derivative (MkPoly pos dir) = MkPoly (Σ pos dir) (λ {(i , a) → {! dir i - a  !}})
 

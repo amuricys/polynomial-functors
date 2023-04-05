@@ -25,7 +25,7 @@ fromAnythingToFalseToAnythingEqual i x ()
 -- Fully faithful functor sending a set A to the constant polynomial Ay^0 = A
 constantPolynomial : Functor (Sets Level.zero) Poly 
 constantPolynomial = record
-    { F₀ = λ x → MkPolynomial x λ _ → ⊥
+    { F₀ = λ x → MkPoly x λ _ → ⊥
     ; F₁ = λ f → f ⇄ λ fromPos → id
     ; identity = refl
     ; homomorphism = refl

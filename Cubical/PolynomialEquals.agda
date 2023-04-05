@@ -11,10 +11,10 @@ PolyAsSigma : Set₁
 PolyAsSigma = Σ[ position ∈ Set ] (position → Set)
 
 polyToSigma : Polynomial → PolyAsSigma
-polyToSigma (MkPolynomial position direction) = position , direction
+polyToSigma (MkPoly position direction) = position , direction
     
 polyFromSigma : PolyAsSigma → Polynomial
-polyFromSigma (position , direction) = MkPolynomial position direction
+polyFromSigma (position , direction) = MkPoly position direction
 
 poly≡polySigma : Polynomial ≡ PolyAsSigma
 poly≡polySigma = isoToPath (iso polyToSigma polyFromSigma (λ _ → refl) (λ _ → refl))

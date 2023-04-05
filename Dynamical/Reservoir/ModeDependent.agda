@@ -36,7 +36,7 @@ lorenzReservoir {systemDim} {numNodes} trainingSteps inputWeights reservoirWeigh
   where reservoir : DynamicalSystem
         reservoir = MkDynamicalSystem (ReservoirState numNodes systemDim) interface (readout ⇄ update)
           where interface : Polynomial
-                interface = MkPolynomial (Vec ℚ systemDim) λ _ → Vec ℚ systemDim
+                interface = MkPoly (Vec ℚ systemDim) λ _ → Vec ℚ systemDim
                 
                 readout : ReservoirState numNodes systemDim → Vec ℚ systemDim
                 readout (T (Training nodeStates _ outputWeights _)) = fromMatrix (activation (vecToRowMatrix nodeStates) outputWeights)

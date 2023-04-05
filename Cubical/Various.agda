@@ -37,7 +37,7 @@ coproductIsΣPoly {p} {q} = poly≡∀' posEq dirEq
         dirEq (false , snd₁) = cong (Polynomial.direction q) (sym (transportRefl snd₁))
         dirEq (true , snd₁) = cong (Polynomial.direction p) (sym (transportRefl snd₁))
 
-productIsΠPoly : {p q : Polynomial} → πPoly (Bool , tupleToFunFromBool (p , q)) ≡ (p * q) 
+productIsΠPoly : {p q : Polynomial} → ΠPoly (Bool , tupleToFunFromBool (p , q)) ≡ (p * q) 
 productIsΠPoly {p} {q} = poly≡∀' posEq dirEq
     where
 
@@ -46,14 +46,14 @@ productIsΠPoly {p} {q} = poly≡∀' posEq dirEq
                                                                     ; x true → proj₁ x}) (λ b → refl) λ a → funExt λ {false → refl
                                                                                                                     ; true → refl})
 
-        posEq : Polynomial.position (πPoly (Bool , tupleToFunFromBool (p , q))) ≡ Polynomial.position (p * q)
+        posEq : Polynomial.position (ΠPoly (Bool , tupleToFunFromBool (p , q))) ≡ Polynomial.position (p * q)
         posEq = boolFun≡product
 
         ⊎≡ : {A B C D : Set} → (A ≡ B) → (C ≡ D) → (A ⊎ C) ≡ (B ⊎ D)
         ⊎≡ p1 p2 i = p1 i ⊎ p2 i
 
-        dirEq : (posA : Polynomial.position (πPoly (Bool , tupleToFunFromBool (p , q))))
-            → Polynomial.direction ((πPoly (Bool , tupleToFunFromBool (p , q)))) posA ≡ subst (λ x → x → Type) (sym posEq) (Polynomial.direction (p * q)) posA
+        dirEq : (posA : Polynomial.position (ΠPoly (Bool , tupleToFunFromBool (p , q))))
+            → Polynomial.direction ((ΠPoly (Bool , tupleToFunFromBool (p , q)))) posA ≡ subst (λ x → x → Type) (sym posEq) (Polynomial.direction (p * q)) posA
         dirEq x = sigmaBool≡tuple ∙ ⊎≡ (cong (Polynomial.direction p) (sym (transportRefl (x true)))) (cong (Polynomial.direction q) (sym (transportRefl (x false))))
 
 -- They encode the same data

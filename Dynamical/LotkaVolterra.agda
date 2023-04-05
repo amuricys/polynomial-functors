@@ -15,14 +15,14 @@ dt = 0.1
 
 -- First order differential equations
 rabbits : DynamicalSystem
-rabbits = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ × ℚ) (readout ⇄ update)
+rabbits = MkDynamicalSystem ℚ (MkPoly ℚ λ _ → ℚ × ℚ) (readout ⇄ update)
   where readout : ℚ → ℚ
         readout state = state
         update : ℚ → ℚ × ℚ → ℚ
         update state (birthRabbits , deathRabbits) = state + dt * (state  * (birthRabbits - deathRabbits))
 
 foxes : DynamicalSystem
-foxes = MkDynamicalSystem ℚ (MkPolynomial ℚ λ _ → ℚ × ℚ) (readout ⇄ update)
+foxes = MkDynamicalSystem ℚ (MkPoly ℚ λ _ → ℚ × ℚ) (readout ⇄ update)
   where readout : ℚ → ℚ
         readout state = state
         update : ℚ → ℚ × ℚ → ℚ

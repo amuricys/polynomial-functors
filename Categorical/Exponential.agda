@@ -19,7 +19,7 @@ open import Function using (_∘_ ; _$_)
 
 open Polynomial
 depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
-depProd (ind , polyAt) = MkPolynomial ((i : ind) → position (polyAt i))
+depProd (ind , polyAt) = MkPoly ((i : ind) → position (polyAt i))
                                       (λ a⁺ → Σ[ i ∈ ind ](direction (polyAt i) (a⁺ i)))
 open import Cubical.PolynomialEquals
 open import Cubical.Foundations.Prelude
@@ -49,7 +49,7 @@ open import Cubical.Foundations.Function hiding (_∘_)
 open import Cubical.Foundations.HLevels
 
 p^1≡p : {p : Polynomial} → p ^ One ≡ p
-p^1≡p {p@(MkPolynomial pos dir)} = poly≡ pos≡ dir≡
+p^1≡p {p@(MkPoly pos dir)} = poly≡ pos≡ dir≡
   where
       lemma₁ : {A : Type} → (⊤ → A) ≡ A
       lemma₁ = isoToPath (iso (λ x → x tt) (λ A tt → A) (λ b → refl) λ i → refl)
@@ -88,13 +88,13 @@ data NineSet : Set where
   nine1 nine2 nine3 nine4 nine5 nine6 nine7 nine8 nine9 : NineSet
 
 Three : Polynomial
-Three = MkPolynomial ThreeSet λ x → ⊥
+Three = MkPoly ThreeSet λ x → ⊥
 
 Two : Polynomial
-Two = MkPolynomial TwoSet (λ x → ⊥)
+Two = MkPoly TwoSet (λ x → ⊥)
 
 Nine : Polynomial
-Nine = MkPolynomial NineSet (λ x → ⊥)
+Nine = MkPoly NineSet (λ x → ⊥)
 
 open import Cubical.Data.Equality
 
@@ -167,7 +167,7 @@ open import Cubical.Data.Equality
         dir≡ p = isoToPath (iso (λ { () }) (λ ()) (λ ()) λ { () i })
 
 rtoq : (r : Polynomial) → (q : Polynomial) → Polynomial
-rtoq r (MkPolynomial posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
+rtoq r (MkPoly posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
 
 ev : {A B : Polynomial} → Arrow (rtoq B A * A) B
 ev {A} {B} = mp ⇄ md
@@ -183,7 +183,7 @@ ev {A} {B} = mp ⇄ md
 λg : {X A B : Polynomial} → (X×A : Product X A) → Arrow (Product.A×B X×A) B → Arrow X (rtoq B A)  
 λg {X} {A} {B} record { A×B = A×B ; π₁ = π₁ ; π₂ = π₂ ; ⟨_,_⟩ = ⟨_,_⟩ ; project₁ = project₁ ; project₂ = project₂ ; unique = unique } (mp ⇄ md) = let
   emp ⇄ emd = ev {A} {B}
-  -- MkPolynomial h m = Product.A×B p
+  -- MkPoly h m = Product.A×B p
   -- hmm : position X → position A → position (X * A)
   -- hmm posX posA = posX , posA
   -- hmmm : position (X * A) → position (Product.A×B (prod {X} {A}))
