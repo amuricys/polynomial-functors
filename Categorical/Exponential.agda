@@ -40,11 +40,34 @@ p^0≡1 {p} = poly≡∀' pos≡ dir≡
     dir≡ pos = lemmaDir
 
 p^1≡p : {p : Polynomial} → p ^ One ≡ p
-p^1≡p {p@(MkPolynomial pos dir)} = poly≡∀' pos≡ {!   !}
-  where other : ((index : ⊤) → Σ pos (λ i → dir i → ⊤ ⊎ ⊥)) ≡ pos
-        other = isoToPath (iso (λ x → fst (x tt)) (λ x tt → x , λ x₁ → inj₁ tt) (λ b → refl) λ a i index → fst (a tt) , {!   !})
-        pos≡ : position (p ^ One) ≡ position p
-        pos≡ = other
+p^1≡p {p@(MkPolynomial pos dir)} = poly≡ pos≡ dir≡
+  where
+      lemma₁ : {A : Type} → (⊤ → A) ≡ A
+      lemma₁ = isoToPath (iso (λ x → x tt) (λ A tt → A) (λ b → refl) λ i → refl)
+
+      lemma₄ : {A : Type} → (A → ⊤) ≡ ⊤
+      lemma₄ = isoToPath (iso (λ x → tt) (λ x x₁ → tt) (λ b → refl) λ a → refl)
+      
+      lemma₃ : (⊤ ⊎ ⊥) ≡ ⊤
+      lemma₃ = isoToPath (iso (λ x → tt) (λ x → inj₁ tt) (λ b → refl) λ {(inj₁ a) → refl ; (inj₂ ()) })
+
+      lemma₂ : {A : Type} → (A → ⊤ ⊎ ⊥) ≡ ⊤
+      lemma₂ {A} = (cong (λ x → (A → x)) lemma₃) ∙ lemma₄
+
+      lemma₅ : {A : Type} → (Σ[ a ∈ A ] ⊤) ≡ A
+      lemma₅ = isoToPath (iso fst (λ x → x , tt) (λ b → refl) λ a → refl)
+
+      lemma : ((index : ⊤) → Σ pos (λ i → dir i → ⊤ ⊎ ⊥)) ≡ pos
+      lemma = lemma₁ ∙ cong (λ a → Σ pos a) help ∙ lemma₅
+        where
+          help : (λ (pos : pos) → dir pos → ⊤ ⊎ ⊥) ≡ (λ (a : pos) → ⊤)
+          help = funExt (λ x → lemma₂)
+
+      pos≡ : position (p ^ One) ≡ position p
+      pos≡ = lemma
+
+      dir≡ : (subst (λ x → x → Type) pos≡ (direction (p ^ One))) ≡ direction p
+      dir≡ = funExt (λ {x → {! refl   !}})
 
 data ThreeSet : Set where
   three1 three2 three3 : ThreeSet
