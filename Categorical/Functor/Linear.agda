@@ -23,7 +23,7 @@ open import Data.Bool
 linearPolynomial : Functor (Sets Level.zero) Poly
 linearPolynomial = record
     { F₀ = λ x → MkPolynomial x λ _ → ⊤
-    ; F₁ = λ f → f ⇄ \ _ _ -> tt
+    ; F₁ = λ f → f ⇄ \ _ _ → tt
     ; identity = λ i → id ⇄ (λ fromPos x → x)
     ; homomorphism = λ {x y z} {f g} i → (g ∘ f) ⇄ λ fromPos k → k
     ; F-resp-≈ = λ {A B} {f g} x i → let

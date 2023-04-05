@@ -59,7 +59,7 @@ encloseFunction f = (λ _ → tt) ⇄ (λ fromPos _ → f fromPos)
 auto : {m : Set} → enclose (Emitter m)
 auto = encloseFunction λ _ → tt
 
-constI : {m : Set} -> (i : m) -> enclose (selfMonomial m)
+constI : {m : Set} → (i : m) → enclose (selfMonomial m)
 constI i = encloseFunction λ _ → i
 
 -- open import Data.Nat using (ℕ; zero; suc)

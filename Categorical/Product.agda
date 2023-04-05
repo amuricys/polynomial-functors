@@ -39,7 +39,7 @@ unique {p} {q} {r} {h = h} pᶠ pᵍ = (λ i → ⟨ sym pᶠ i , sym pᵍ i ⟩
          {B = (λ (h : position p → position (q * r)) → (x : position p) → direction (q * r) (h x) → direction p x)}
          (Arrow.mapDirection ⟨ π₁ ∘p h , π₂ ∘p h ⟩)) ∙ mapDir≡)
 
-prod : {A B : Polynomial} -> Product A B
+prod : {A B : Polynomial} → Product A B
 prod {A = A} {B = B} = record
     { A×B = A * B
     ; π₁ = π₁

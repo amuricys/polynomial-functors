@@ -10,17 +10,17 @@ open import Cubical.Data.Sigma.Properties
 open Polynomial
 open Arrow
 
-ArrowAsSigma : Polynomial -> Polynomial -> Type
-ArrowAsSigma p q = Σ[ mapPos ∈ (position p -> position q) ]
-    ((fromPos : position p) -> direction q (mapPos fromPos) -> direction p fromPos)
+ArrowAsSigma : Polynomial → Polynomial → Type
+ArrowAsSigma p q = Σ[ mapPos ∈ (position p → position q) ]
+    ((fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos)
     
-sigmaToArrow : {p q : Polynomial} -> ArrowAsSigma p q -> Arrow p q
+sigmaToArrow : {p q : Polynomial} → ArrowAsSigma p q → Arrow p q
 sigmaToArrow (mapPos , mapDir) = mapPos ⇄ mapDir
 
-arrowToSigma : {p q : Polynomial} -> Arrow p q -> ArrowAsSigma p q
+arrowToSigma : {p q : Polynomial} → Arrow p q → ArrowAsSigma p q
 arrowToSigma  (mapPos ⇄ mapDir) = mapPos , mapDir
 
-arrow≡arrowSigma : {p q : Polynomial} -> (Arrow p q) ≡ (ArrowAsSigma p q)
+arrow≡arrowSigma : {p q : Polynomial} → (Arrow p q) ≡ (ArrowAsSigma p q)
 arrow≡arrowSigma = isoToPath (iso arrowToSigma sigmaToArrow (λ b → refl) (λ a → refl))
 
 arrowSigmas≡ : {p q : Polynomial} (f g : ArrowAsSigma p q)

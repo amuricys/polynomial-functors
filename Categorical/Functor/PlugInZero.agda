@@ -21,28 +21,28 @@ open import Cubical.Proofs
 open import Data.Bool
 
 
-fromArrowInPolyToFunction : {A B : Polynomial} -> Arrow A B -> apply A ⊥ -> apply B ⊥
+fromArrowInPolyToFunction : {p q : Polynomial} → Arrow p q → p ⦅ ⊥ ⦆  → q ⦅ ⊥ ⦆
 fromArrowInPolyToFunction {A} {B} = fromArrowInPolyToFunctionBetweenAppliedPolys {A} {B} {⊥}
 
-appliedPolyArrowsEq : {A B : Polynomial} -> {f g : Arrow A B} -> f ≡ g -> fromArrowInPolyToFunction f ≡ fromArrowInPolyToFunction g
+appliedPolyArrowsEq : {p q : Polynomial} → {f g : Arrow p q} → f ≡ g → fromArrowInPolyToFunction f ≡ fromArrowInPolyToFunction g
 appliedPolyArrowsEq p i = fromArrowInPolyToFunction (p i)
 
-appliedPolyArrowsEqPwise :{A B : Polynomial} ->  {f g : Arrow A B} {z : apply A ⊥} → f ≡ g -> fromArrowInPolyToFunction f z ≡ fromArrowInPolyToFunction g z
+appliedPolyArrowsEqPwise :{p q : Polynomial} →  {f g : Arrow p q} {z : p ⦅ ⊥ ⦆ } → f ≡ g → fromArrowInPolyToFunction f z ≡ fromArrowInPolyToFunction g z
 appliedPolyArrowsEqPwise {z = z} p i = let
   posEq = appliedPolyArrowsEq p i
   in posEq z
 
-appliedPolyArrowsEqPwiseEq : {A B : Polynomial}
-      {f g : Arrow A B} →
+appliedPolyArrowsEqPwiseEq : {p q : Polynomial}
+      {f g : Arrow p q} →
       f ≡ g →
-      {z : apply A ⊥} →
+      {z : p ⦅ ⊥ ⦆ } →
       fromArrowInPolyToFunction f z Eq.≡ fromArrowInPolyToFunction g z
 appliedPolyArrowsEqPwiseEq p {z} = ctop (appliedPolyArrowsEqPwise {z = z} p)
 
 -- Functor sending a polynomial the zero set "plugging in 0"
 plugIn0 : Functor Poly (Sets Level.zero)
 plugIn0 = record
-    { F₀ = λ x → apply x ⊥
+    { F₀ = λ x → x ⦅ ⊥ ⦆
     ; F₁ = fromArrowInPolyToFunctionBetweenAppliedPolys
     ; identity = Eq.refl
     ; homomorphism = Eq.refl

@@ -54,7 +54,7 @@ eq : id-⊥ ≡ !-⊥
 eq i ()
 
 eq2r : Path ((⊥ → ⊥) × (⊥ → ⊥)) (id-⊥ , id-⊥) (id-⊥ , !-⊥)
-eq2r = cong′ (\x -> id-⊥ , x) (λ { i () })
+eq2r = cong′ (\x → id-⊥ , x) (λ { i () })
 
 plugin1unit : NaturalTransformation idF (constantPolynomial ∘F plugIn1)
 plugin1unit = record { 

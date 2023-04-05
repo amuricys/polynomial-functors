@@ -26,7 +26,7 @@ open Polynomial
 depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
 depProd (ind , polyAt) = MkPolynomial ((i : ind) → position (polyAt i))
                                       (λ a⁺ → Σ[ i ∈ ind ](direction (polyAt i) (a⁺ i)))
-eval : {p q : Polynomial} -> Arrow ((q ^ p) * p) q
+eval : {p q : Polynomial} → Arrow ((q ^ p) * p) q
 eval {p} {q} = mapPos ⇄ mapDir
     where
         mapPos : position ((q ^ p) * p) → position q
@@ -88,7 +88,7 @@ uncurry {p} {q} {r} (f ⇄ f♯) = mapPos ⇄ mapDir
 --         posEq = funExt λ posA → funExt λ posB → {!  Σ-cong' ? !}
 
 
-r^q : (r : Polynomial) -> (q : Polynomial) -> Polynomial
+r^q : (r : Polynomial) → (q : Polynomial) → Polynomial
 r^q r (MkPolynomial posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
 
 mpEv : {A B : Polynomial} → position (r^q B A * A) → position B
@@ -97,9 +97,9 @@ mdEv : {A B : Polynomial} → (fromPos : position (r^q B A * A)) → direction B
 mdEv (posB^A , posA) x with (snd (posB^A posA)) x in eq
 ... | inj₂ v = inj₂ v
 ... | inj₁ s = inj₁ (posA , x , help eq)
-        where help : (snd (posB^A posA) x) Eq.≡ inj₁ s -> [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (posB^A posA) x)
+        where help : (snd (posB^A posA) x) Eq.≡ inj₁ s → [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (posB^A posA) x)
               help p rewrite p = tt
-ev : {A B : Polynomial} -> Arrow (r^q B A * A) B
+ev : {A B : Polynomial} → Arrow (r^q B A * A) B
 ev {A} {B} = mpEv ⇄ mdEv
 
 -- lemma : {C A B : Polynomial} {f@(mp ⇄ md) : Arrow (C * A) B} {posC : position C} {posA : position A} → (direction B (mp (posC , posA)) → direction (C * A) (posC , posA) ) → direction B (mp (posC , posA)) → position (Y + Constant (direction A posA))
@@ -117,7 +117,7 @@ ev {A} {B} = mpEv ⇄ mdEv
 
 
 
-canonical : {A B : Polynomial} -> Canonical.CartesianClosed
+canonical : {A B : Polynomial} → Canonical.CartesianClosed
 canonical {A} {B} = record
     { ⊤ = One
     ; _×_ = _*_
@@ -138,7 +138,7 @@ canonical {A} {B} = record
     }
     --   where
 
-    --     -- helper : {p A B : Polynomial} {h : Arrow p (A * B)} -> ⟨ π₁ ∘p h , π₂ ∘p h ⟩ ≡ h
+    --     -- helper : {p A B : Polynomial} {h : Arrow p (A * B)} → ⟨ π₁ ∘p h , π₂ ∘p h ⟩ ≡ h
     --     -- helper {h = h} = arrowsEqual2 refl λ { x (inj₁ x1) → cong (λ zz → Arrow.mapDirection h x (inj₁ zz)) (sym (transportRefl  x1))
     --     --                                     ;  x (inj₂ y) → cong (λ zz → Arrow.mapDirection h x (inj₂ zz))  (sym (transportRefl y)) } -- λ i fromPos x → {!   !} -- (transportRefl {!   !} {!   !})
 

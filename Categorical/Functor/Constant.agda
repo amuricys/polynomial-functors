@@ -19,7 +19,7 @@ open import Categorical.CubicalPoly
 open import Cubical.Proofs
 open import Data.Bool
 
-fromAnythingToFalseToAnythingEqual : {A B : Set} {w z : A -> ⊥ -> B} -> w ≡ z
+fromAnythingToFalseToAnythingEqual : {A B : Set} {w z : A → ⊥ → B} → w ≡ z
 fromAnythingToFalseToAnythingEqual i x ()
 
 -- Fully faithful functor sending a set A to the constant polynomial Ay^0 = A
@@ -37,7 +37,7 @@ full = record
     { from = record 
         { _⟨$⟩_ = Arrow.mapPosition
         ; cong = positionArrowsEqualPwiseEq } 
-    ; right-inverse-of = \_ -> arrowsEqual refl fromAnythingToFalseToAnythingEqual
+    ; right-inverse-of = \_ → arrowsEqual refl fromAnythingToFalseToAnythingEqual
     }
 
 faithful : Faithful constantPolynomial

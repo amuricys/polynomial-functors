@@ -21,14 +21,14 @@ poly≡polySigma = isoToPath (iso polyToSigma polyFromSigma (λ _ → refl) (λ 
 
 polySigmas≡ : (a b : PolyAsSigma)
     → (fstA≡fstB : fst a ≡ fst b)
-    -- fst a -> Type , fst b -> Type , subst fstA≡fst b into first one to get matching domains
+    -- fst a → Type , fst b → Type , subst fstA≡fst b into first one to get matching domains
     → (subst (λ x → x → Type) fstA≡fstB (snd a)) ≡ snd b
     → a ≡ b
 polySigmas≡ a b fstA≡fstB sndA≡sndB = ΣPathTransport→PathΣ a b (fstA≡fstB , sndA≡sndB)
 
 polySigmas≡' : (a b : PolyAsSigma)
     → (fstA≡fstB : fst a ≡ fst b)
-    -- fst a -> Type , fst b -> Type , subst fstA≡fst b into second one to get matching domains
+    -- fst a → Type , fst b → Type , subst fstA≡fst b into second one to get matching domains
     → snd a ≡ (subst (λ x → x → Type) (sym fstA≡fstB) (snd b))
     → a ≡ b
 polySigmas≡' a b fstA≡fstB sndA≡sndB = sym (ΣPathTransport→PathΣ b a (sym fstA≡fstB , sym sndA≡sndB))

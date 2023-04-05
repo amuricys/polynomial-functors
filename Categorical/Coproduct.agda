@@ -17,7 +17,7 @@ import Categories.Category.Cocartesian as Cocartesian
 open import Cubical.ArrowEquals
 -- open import Data.Product
 
-coprod : {A B : Polynomial} -> Coproduct A B
+coprod : {A B : Polynomial} → Coproduct A B
 coprod {A = A} {B = B} = record
     { A+B = A + B
     ; i₁ = i₁
@@ -45,7 +45,7 @@ coprod {A = A} {B = B} = record
         open Polynomial
 
         
-        helper : {q : Polynomial} {h : Arrow (A + B) q} -> [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
+        helper : {q : Polynomial} {h : Arrow (A + B) q} → [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
         helper {q} {h} = arrow≡ (funExt (λ { (inj₁ x) → refl ; (inj₂ y) → refl })) (funExt λ x → {!   !})
            -- arrowsEqual2 (funExt λ {(inj₁ x) → refl
            --                                             ; (inj₂ y) → refl}) λ {(inj₁ x) y → cong (λ zz → mapDirection h (inj₁ x) zz) (lemma1 x y) -- subst (λ zz → {! mapDirection h (inj₁ x) zz   !}) (lemma1 x y) {!   !}
@@ -93,7 +93,7 @@ coprod {A = A} {B = B} = record
 --         helper2 : {F : Polynomial} {h : Arrow F (A * B)} → (Arrow.mapDirection ⟨ π₁ ∘p h , π₂ ∘p h ⟩) ≡ Arrow.mapDirection h -- (λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h --  {! λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h  !} helper2 = {!   !}
 --         helper2 = λ i fromPos x → {!   !}
 
---         helper : {p  : Polynomial} {h : Arrow p (A * B)} -> ⟨ π₁ ∘p h , π₂ ∘p h ⟩ ≡ h
+--         helper : {p  : Polynomial} {h : Arrow p (A * B)} → ⟨ π₁ ∘p h , π₂ ∘p h ⟩ ≡ h
 --         helper {h = h} = arrowsEqual refl {! helper2  !} -- fromPos x → {! Arrow.mapDirection h fromPos x  !}
 
 --         unique : {F : Polynomial} {h : Arrow F (A * B)} {f₁ : Arrow F A} {f₂ : Arrow F B} →

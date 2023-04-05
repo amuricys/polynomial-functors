@@ -76,7 +76,7 @@ p^1≡p {p@(MkPolynomial pos dir)} = poly≡ pos≡ dir≡
       pos≡ = lemma
 
       dir≡ : (subst (λ x → x → Type) pos≡ (direction (p ^ One))) ≡ direction p
-      dir≡ = funExt (λ {x → {! refl   !}})
+      dir≡ = funExt (λ {x → {!   !}})
 
 data ThreeSet : Set where
   three1 three2 three3 : ThreeSet
@@ -166,10 +166,10 @@ open import Cubical.Data.Equality
             ≡c ⊥
         dir≡ p = isoToPath (iso (λ { () }) (λ ()) (λ ()) λ { () i })
 
-rtoq : (r : Polynomial) -> (q : Polynomial) -> Polynomial
+rtoq : (r : Polynomial) → (q : Polynomial) → Polynomial
 rtoq r (MkPolynomial posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
 
-ev : {A B : Polynomial} -> Arrow (rtoq B A * A) B
+ev : {A B : Polynomial} → Arrow (rtoq B A * A) B
 ev {A} {B} = mp ⇄ md
     where mp : position (rtoq B A * A) → position B
           mp (posB^A , posA) = fst (posB^A posA)
@@ -177,23 +177,23 @@ ev {A} {B} = mp ⇄ md
           md (posB^A , posA) x with (snd (posB^A posA)) x in eq
           ... | inj₂ v = inj₂ v
           ... | inj₁ s = inj₁ (posA , x , help eq)
-                where help : (snd (posB^A posA) x) Eq.≡ inj₁ s -> [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (posB^A posA) x)
+                where help : (snd (posB^A posA) x) Eq.≡ inj₁ s → [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (posB^A posA) x)
                       help p rewrite p = tt
 
-λg : {X A B : Polynomial} -> (X×A : Product X A) → Arrow (Product.A×B X×A) B → Arrow X (rtoq B A)  
+λg : {X A B : Polynomial} → (X×A : Product X A) → Arrow (Product.A×B X×A) B → Arrow X (rtoq B A)  
 λg {X} {A} {B} record { A×B = A×B ; π₁ = π₁ ; π₂ = π₂ ; ⟨_,_⟩ = ⟨_,_⟩ ; project₁ = project₁ ; project₂ = project₂ ; unique = unique } (mp ⇄ md) = let
   emp ⇄ emd = ev {A} {B}
   -- MkPolynomial h m = Product.A×B p
-  -- hmm : position X -> position A -> position (X * A)
+  -- hmm : position X → position A → position (X * A)
   -- hmm posX posA = posX , posA
-  -- hmmm : position (X * A) -> position (Product.A×B (prod {X} {A}))
+  -- hmmm : position (X * A) → position (Product.A×B (prod {X} {A}))
   -- hmmm p = p
   help : position A×B
   help = {!  !}
   in
   (\ x i → mp help , {!   !}) ⇄ {!   !} 
 
-exp : {A B : Polynomial} -> Exponential A B
+exp : {A B : Polynomial} → Exponential A B
 exp {A} {B} = record
     { B^A = rtoq B A
     ; product = prod

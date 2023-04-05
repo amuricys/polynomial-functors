@@ -47,7 +47,7 @@ arrowIsDynamics = isoToPath (iso f f⁻ (λ b → refl) λ a → refl)
 
         -- f⁻ : (Σ[ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn)) → MooreMachine
         -- f⁻ (MkDynamicalSystem state interface dynamics , record { input = input ; output = output ; proof = proof })
-        -- -- state -> input -> state
+        -- -- state → input → state
         --     = record { State = state ; Input = input ; Output = output ; update = J (λ y x → state → input → state) {! mapDirection dynamics  !} proof ; readout = {!  mapPosition dynamics !} }
             -- f⁻ (MkDynamicalSystem state₁ interface₁ dynamics₁ , snd₁) = ? -- record { State = {! fst₁  !} ; Input = {!   !} ; Output = {!   !} ; update = {!   !} ; readout = {!   !} } 
         -- (MkDynamicalSystem state interface dynamics) 
