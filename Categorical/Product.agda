@@ -58,4 +58,3 @@ cartesian = record { terminal = terminalOne ; products = binaryProducts }
 
 productMonoidal : Monoidal Poly
 productMonoidal = Cartesian.CartesianMonoidal.monoidal Poly cartesian
-  

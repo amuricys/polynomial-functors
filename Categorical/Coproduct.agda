@@ -12,6 +12,7 @@ open import Function
 open import Cubical.Proofs
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Transport
+open import Cubical.Foundations.HLevels
 open import Categories.Category.Monoidal
 import Categories.Category.Cocartesian as Cocartesian
 open import Cubical.ArrowEquals
@@ -45,14 +46,17 @@ coprod {A = A} {B = B} = record
         open Polynomial
 
         
-        helper : {q : Polynomial} {h : Arrow (A + B) q} → [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
-        helper {q} {h} = arrow≡ (funExt (λ { (inj₁ x) → refl ; (inj₂ y) → refl })) (funExt λ x → {!   !})
+        helper : {q : Polynomial} {proof1 : isSet (position q)} {h : Arrow (A + B) q} → [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
+        helper {q} {proof1} {h} = arrow≡ (funExt (λ { (inj₁ x) → refl ; (inj₂ y) → refl })) (funExt λ x → {!   !})
            -- arrowsEqual2 (funExt λ {(inj₁ x) → refl
            --                                             ; (inj₂ y) → refl}) λ {(inj₁ x) y → cong (λ zz → mapDirection h (inj₁ x) zz) (lemma1 x y) -- subst (λ zz → {! mapDirection h (inj₁ x) zz   !}) (lemma1 x y) {!   !}
            --                                                                  ; (inj₂ y₁) y → cong (λ zz → mapDirection h (inj₂ y₁) zz) (sym (transportRefl y)) }
             where
                 lemma1 : (x : position A) → (y : direction q (mapPosition h (inj₁ x))) → y ≡ (transp (λ i → direction q (mapPosition h (inj₁ x))) i0 y)
                 lemma1 x y = sym (transportRefl y)
+                lemma2 : ∀ {A : Set} → isSet (A → position q)
+                lemma2 = isSetΠ (λ x → proof1)
+                
                 -- this is expanding h on both sides by the lhs of the equality we want to prove [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
                 -- e : Arrow.mapPosition [ ([ h ∘p i₁ , h ∘p i₂ ]p) ∘p i₁ , ([ h ∘p i₁ , h ∘p i₂ ]p) ∘p i₂ ]p ≡ Arrow.mapPosition [ h ∘p i₁ , h ∘p i₂ ]p
                 -- e = (funExt (λ { (inj₁ x) → refl ; (inj₂ y) → refl }))
@@ -112,4 +116,4 @@ coproductCocartesian = record { initial = initialZero ; coproducts = binaryCopro
 coproductMonodial : Monoidal Poly
 coproductMonodial = Cocartesian.CocartesianMonoidal.+-monoidal Poly coproductCocartesian
 
-     
+       

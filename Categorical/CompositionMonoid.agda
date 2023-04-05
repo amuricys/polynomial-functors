@@ -8,6 +8,10 @@ open import Cubical.Foundations.Isomorphism
 open import Agda.Builtin.Unit
 open import Cubical.PolynomialEquals
 open import Cubical.Proofs
+open import Categories.Category.Monoidal
+open import Categorical.CubicalPoly
+open import Categories.Functor.Bifunctor
+open import Cubical.ArrowEquals
 
 open Polynomial
 
@@ -21,10 +25,10 @@ leftUnit {p} = poly≡∀' pos≡ dir≡
         pos≡ = lemma
 
         lemmaDir : {f : ⊤ → Set} → Σ ⊤ f ≡ f tt
-        lemmaDir = isoToPath (iso (λ {(tt , snd₁) → snd₁}) (λ x → tt , x) (λ b → refl) λ a → refl)
+        lemmaDir = isoToPath (iso (λ {(tt , hmm) → hmm}) (λ x → tt , x) (λ b → refl) λ a → refl)
 
         dir≡ : (posA : position (Y ◂ p)) → direction (Y ◂ p) posA ≡ subst (λ x → x → Type) (sym pos≡) (direction p) posA
-        dir≡ (tt , snd₁) = lemmaDir ∙ cong (direction p) (sym (transportRefl (snd₁ tt)))
+        dir≡ (tt , hmm) = lemmaDir ∙ cong (direction p) (sym (transportRefl (hmm tt)))
 
 rightUnit : {p : Polynomial} → p ◂ Y ≡ p
 rightUnit {p} = poly≡∀' pos≡ dir≡
@@ -40,3 +44,41 @@ rightUnit {p} = poly≡∀' pos≡ dir≡
 
         dir≡ : (posA : position (p ◂ Y)) → direction (p ◂ Y) posA ≡ subst (λ x → x → Type) (sym pos≡) (direction p) posA
         dir≡ posA = lemmaDir ∙ cong (direction p) (sym (transportRefl (fst posA)))
+
+bifunctor : Bifunctor Poly Poly Poly
+bifunctor = record
+    { F₀ = λ  { (p , q) → p ◂ q }
+    ; F₁ = λ { ((mpf ⇄ mdf) , (mpg ⇄ mdg)) → (λ { (a , b) → mpf a , λ { x → mpg (b (mdf a x)) } }) ⇄ λ { (x , y) (w , z) → (mdf x w) , (mdg (y (mdf x w)) z) } }
+    ; identity = refl
+    ; homomorphism = refl
+    ; F-resp-≈ = λ x → arrow≡ {!   !} {!   !}
+    }
+
+monoidal : Monoidal Poly
+monoidal = record
+    { ⊗ = bifunctor
+    ; unit = Y
+    ; unitorˡ = record { 
+        from = (λ { (tt , y) → y tt }) ⇄ λ { (tt , y) z → tt , z } ; 
+        to = (λ { x → tt , λ _ → x }) ⇄ λ { fromPos → snd } ; 
+        iso = record { isoˡ = refl ; isoʳ = refl } 
+        }
+    ; unitorʳ = record { 
+        from = fst ⇄ λ { _ x → x , tt } ; 
+        to = (λ x → x , (λ _ → tt)) ⇄ λ _ → fst ; 
+        iso = record { isoˡ = refl ; isoʳ = refl } 
+        }
+    ; associator = record { 
+        from = (λ { ((x , z) , y) → x , (λ x → z x , (λ x₁ → y (x , x₁))) }) ⇄ λ { ((_ , hmm) , bbb) (fst₂ , (what , is)) → (fst₂ , what) , is } ; 
+        to = (λ { (a , b) → (a , (λ x → fst (b x))) , λ { (idk , wat) → snd (b idk) wat } }) ⇄ λ { (x , y) ((jee , idkk) , w) → jee , idkk , w } ; 
+        iso = record { isoˡ = refl ; isoʳ = refl } 
+        }
+    ; unitorˡ-commute-from = refl
+    ; unitorˡ-commute-to = refl
+    ; unitorʳ-commute-from = refl
+    ; unitorʳ-commute-to = refl
+    ; assoc-commute-from = refl
+    ; assoc-commute-to = refl
+    ; triangle = refl
+    ; pentagon = refl
+    }

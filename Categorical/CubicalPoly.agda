@@ -16,6 +16,14 @@ open import Common.CategoryData
 open import Cubical.Proofs
 open import Cubical.Foundations.Prelude
 
+open Polynomial
+record SetPolynomial : Set₁ where
+    constructor MkSetPoly
+    field
+        poly : Polynomial
+        isPosSet : isSet (position poly)
+        isDirSet : ∀ {p : position poly} → isSet (direction poly p)
+
 -- Definition of Poly category: integration point between agda-categories and cubical
 Poly : Category (Level.suc Level.zero) Level.zero Level.zero
 Poly = record
