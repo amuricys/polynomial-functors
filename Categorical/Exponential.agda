@@ -15,6 +15,7 @@ open import Data.Empty
 open import Categorical.Product
 open import Categories.Object.Product Poly
 import Categories.Category.CartesianClosed.Canonical as Canonical
+open import Function using (_∘_ ; _$_)
 
 open Polynomial
 depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
@@ -38,6 +39,14 @@ p^0≡1 {p} = poly≡∀' pos≡ dir≡
 
     dir≡ : (pos : position (p ^ Zero)) → direction (p ^ Zero) pos ≡ subst (λ x → x → Type) (sym pos≡) (direction One) pos
     dir≡ pos = lemmaDir
+
+open import Cubical.Core.Primitives
+open import Cubical.Foundations.Prelude
+open import Cubical.Foundations.Transport
+open import Cubical.Foundations.Isomorphism
+open import Cubical.Foundations.Equiv
+open import Cubical.Foundations.Function hiding (_∘_)
+open import Cubical.Foundations.HLevels
 
 p^1≡p : {p : Polynomial} → p ^ One ≡ p
 p^1≡p {p@(MkPolynomial pos dir)} = poly≡ pos≡ dir≡
@@ -133,17 +142,21 @@ open import Cubical.Data.Equality
                       proofSection nine7 = refl
                       proofSection nine8 = refl
                       proofSection nine9 = refl
+                      helper :  ∀ {X Y} {some : ⊥ → ⊤ ⊎ ⊥} → X ≡p (Y , some) → X ≡p (Y , (λ ()))
+                      helper {X} {Y} one = ctop (ptoc one ∙ cong (λ a → Y , a) functionFromFalse)
+                        where functionFromFalse : {some : ⊥ → ⊤ ⊎ ⊥} → some ≡ λ ()
+                              functionFromFalse = funExt (λ ())
                       proofRetract : (a : TwoSet → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)) → back (go a) ≡ a
                       proofRetract a with a two1 | a two2 | (Eq.inspect a two1) | (Eq.inspect a two2)
-                      ... | (three1 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym (ptoc {!  eq₁ !}); two2 → {!   !}}
-                      ... | (three1 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
-                      ... | (three1 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
-                      ... | (three2 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
-                      ... | (three2 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
-                      ... | (three2 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
-                      ... | (three3 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
-                      ... | (three3 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
-                      ... | (three3 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
+                      ... | (three1 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
+                      ... | (three1 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
+                      ... | (three1 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
+                      ... | (three2 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
+                      ... | (three2 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
+                      ... | (three2 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
+                      ... | (three3 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
+                      ... | (three3 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
+                      ... | (three3 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
         pos≡ : position (Three ^ Two) ≡ position Nine
         pos≡ = other
         dir≡ : (posA : (index : TwoSet) → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)) →
@@ -189,4 +202,4 @@ exp {A} {B} = record
     ; β = {!   !}
     ; λ-unique = {!   !}
     }
-    
+      
