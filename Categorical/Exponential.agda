@@ -42,11 +42,93 @@ p^0≡1 {p} = poly≡∀' pos≡ dir≡
 p^1≡p : {p : Polynomial} → p ^ One ≡ p
 p^1≡p {p@(MkPolynomial pos dir)} = poly≡∀' pos≡ {!   !}
   where other : ((index : ⊤) → Σ pos (λ i → dir i → ⊤ ⊎ ⊥)) ≡ pos
-        other = isoToPath (iso (λ x → fst (x tt)) (λ x tt → x , λ x₁ → inj₁ tt) (λ b → refl) λ a i index → fst (a tt) , λ x → {!   !})
+        other = isoToPath (iso (λ x → fst (x tt)) (λ x tt → x , λ x₁ → inj₁ tt) (λ b → refl) λ a i index → fst (a tt) , {!   !})
         pos≡ : position (p ^ One) ≡ position p
         pos≡ = other
-        
 
+data ThreeSet : Set where
+  three1 three2 three3 : ThreeSet
+
+data TwoSet : Set where
+  two1 two2 : TwoSet
+
+data NineSet : Set where
+  nine1 nine2 nine3 nine4 nine5 nine6 nine7 nine8 nine9 : NineSet
+
+Three : Polynomial
+Three = MkPolynomial ThreeSet λ x → ⊥
+
+Two : Polynomial
+Two = MkPolynomial TwoSet (λ x → ⊥)
+
+Nine : Polynomial
+Nine = MkPolynomial NineSet (λ x → ⊥)
+
+open import Cubical.Data.Equality
+
+3^2≡9 : Three ^ Two ≡ Nine
+3^2≡9 = poly≡∀' pos≡ dir≡
+  where other : ((index : TwoSet) → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)) ≡ NineSet
+        other = isoToPath (iso go back proofSection proofRetract)
+                where go : (TwoSet → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)) → NineSet
+                      go two with ( two two1 , two two2 )
+                      ... | (three1 , snd₁) , three1 , snd₂ = nine1
+                      ... | (three1 , snd₁) , three2 , snd₂ = nine2
+                      ... | (three1 , snd₁) , three3 , snd₂ = nine3
+                      ... | (three2 , snd₁) , three1 , snd₂ = nine4
+                      ... | (three2 , snd₁) , three2 , snd₂ = nine5
+                      ... | (three2 , snd₁) , three3 , snd₂ = nine6
+                      ... | (three3 , snd₁) , three1 , snd₂ = nine7
+                      ... | (three3 , snd₁) , three2 , snd₂ = nine8
+                      ... | (three3 , snd₁) , three3 , snd₂ = nine9
+                      back : NineSet → TwoSet → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)
+                      back nine1 two1 = three1 , λ ()
+                      back nine1 two2 = three1 , (λ ())
+                      back nine2 two1 = three1 , (λ ())
+                      back nine2 two2 = three2 , (λ ())
+                      back nine3 two1 = three1 , (λ ())
+                      back nine3 two2 = three3 , (λ ())
+                      back nine4 two1 = three2 , (λ ())
+                      back nine4 two2 = three1 , (λ ())
+                      back nine5 two1 = three2 , (λ ())
+                      back nine5 two2 = three2 , (λ ())
+                      back nine6 two1 = three2 , (λ ())
+                      back nine6 two2 = three3 , (λ ())
+                      back nine7 two1 = three3 , (λ ())
+                      back nine7 two2 = three1 , (λ ())
+                      back nine8 two1 = three3 , (λ ())
+                      back nine8 two2 = three2 , (λ ())
+                      back nine9 two1 = three3 , (λ ())
+                      back nine9 two2 = three3 , (λ ())
+                      proofSection : (b : NineSet) → go (back b) ≡ b
+                      proofSection nine1 = refl
+                      proofSection nine2 = refl
+                      proofSection nine3 = refl
+                      proofSection nine4 = refl
+                      proofSection nine5 = refl
+                      proofSection nine6 = refl
+                      proofSection nine7 = refl
+                      proofSection nine8 = refl
+                      proofSection nine9 = refl
+                      proofRetract : (a : TwoSet → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)) → back (go a) ≡ a
+                      proofRetract a with a two1 | a two2 | (Eq.inspect a two1) | (Eq.inspect a two2)
+                      ... | (three1 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym (ptoc {!  eq₁ !}); two2 → {!   !}}
+                      ... | (three1 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
+                      ... | (three1 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
+                      ... | (three2 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
+                      ... | (three2 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
+                      ... | (three2 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
+                      ... | (three3 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
+                      ... | (three3 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
+                      ... | (three3 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → {!   !}; two2 → {!   !}}
+        pos≡ : position (Three ^ Two) ≡ position Nine
+        pos≡ = other
+        dir≡ : (posA : (index : TwoSet) → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)) →
+            Σ TwoSet
+            (λ index →
+              Σ ⊥ (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (posA index) a)))
+            ≡c ⊥
+        dir≡ p = isoToPath (iso (λ { () }) (λ ()) (λ ()) λ { () i })
 
 rtoq : (r : Polynomial) -> (q : Polynomial) -> Polynomial
 rtoq r (MkPolynomial posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
@@ -84,4 +166,4 @@ exp {A} {B} = record
     ; β = {!   !}
     ; λ-unique = {!   !}
     }
- 
+    
