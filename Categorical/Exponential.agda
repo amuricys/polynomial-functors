@@ -173,7 +173,7 @@ open import Cubical.Data.Equality
         dir≡ p = isoToPath (iso (λ { () }) (λ ()) (λ ()) λ { () i })
 
 rtoq : (r : Polynomial) → (q : Polynomial) → Polynomial
-rtoq r (MkPoly posQ dirQ) = depProd (posQ , λ j → r ◂ (𝕐 + Constant (dirQ j)))
+rtoq r (MkPoly posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
 
 ev : {A B : Polynomial} → Arrow (rtoq B A * A) B
 ev {A} {B} = mp ⇄ md

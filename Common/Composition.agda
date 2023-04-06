@@ -22,7 +22,7 @@ p ◂ q = MkPoly pos dir
     dir (i , j) = Σ[ a ∈ p.direction i ] q.direction (j a)
 
 compositionUnit : Polynomial
-compositionUnit = 𝕐
+compositionUnit = Y
 
 compositePower : Polynomial → Nat → Polynomial
 compositePower p zero = compositionUnit

@@ -12,8 +12,8 @@ open import Data.Empty
 𝟙 : Polynomial
 𝟙 = MkPoly ⊤ (λ _ → ⊥)
 
-𝕐 : Polynomial
-𝕐 = MkPoly ⊤ (λ _ → ⊤)
+Y : Polynomial
+Y = MkPoly ⊤ (λ _ → ⊤)
 
 -- Constant polynomial: p(y) = A
 Constant : (A : Set) → Polynomial

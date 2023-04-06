@@ -16,4 +16,4 @@ open import Common.Composition public
 -- Things not belonging elsewhere
 
 enclose : Polynomial → Set
-enclose p = Arrow p 𝕐
+enclose p = Arrow p Y

@@ -89,7 +89,7 @@ uncurry {p} {q} {r} (f ⇄ f♯) = mapPos ⇄ mapDir
 
 
 r^q : (r : Polynomial) → (q : Polynomial) → Polynomial
-r^q r (MkPoly posQ dirQ) = depProd (posQ , λ j → r ◂ (𝕐 + Constant (dirQ j)))
+r^q r (MkPoly posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
 
 mpEv : {A B : Polynomial} → position (r^q B A * A) → position B
 mpEv (posB^A , posA) = fst (posB^A posA)

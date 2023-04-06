@@ -12,4 +12,4 @@ _⊗_ : Polynomial → Polynomial → Polynomial
 MkPoly posA dirA ⊗ MkPoly posB dirB = MkPoly (posA × posB) (λ {(posA , posB) → (dirA posA) × (dirB posB)})
 
 tensorUnit : Polynomial
-tensorUnit = 𝕐
+tensorUnit = Y

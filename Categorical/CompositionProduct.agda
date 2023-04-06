@@ -15,34 +15,34 @@ open import Cubical.ArrowEquals
 
 open Polynomial
 
-leftUnit : {p : Polynomial} → 𝕐 ◂ p ≡ p
+leftUnit : {p : Polynomial} → Y ◂ p ≡ p
 leftUnit {p} = poly≡∀' pos≡ dir≡
     where
         lemma : {A : Type} → Σ ⊤ (λ i → ⊤ → A) ≡ A
         lemma = isoToPath (iso (λ x → snd x tt) (λ x → tt , (λ _ → x)) (λ b → refl) λ a → refl)
 
-        pos≡ : position (𝕐 ◂ p) ≡ position p
+        pos≡ : position (Y ◂ p) ≡ position p
         pos≡ = lemma
 
         lemmaDir : {f : ⊤ → Set} → Σ ⊤ f ≡ f tt
         lemmaDir = isoToPath (iso (λ {(tt , hmm) → hmm}) (λ x → tt , x) (λ b → refl) λ a → refl)
 
-        dir≡ : (posA : position (𝕐 ◂ p)) → direction (𝕐 ◂ p) posA ≡ subst (λ x → x → Type) (sym pos≡) (direction p) posA
+        dir≡ : (posA : position (Y ◂ p)) → direction (Y ◂ p) posA ≡ subst (λ x → x → Type) (sym pos≡) (direction p) posA
         dir≡ (tt , hmm) = lemmaDir ∙ cong (direction p) (sym (transportRefl (hmm tt)))
 
-rightUnit : {p : Polynomial} → p ◂ 𝕐 ≡ p
+rightUnit : {p : Polynomial} → p ◂ Y ≡ p
 rightUnit {p} = poly≡∀' pos≡ dir≡
     where
         lemma : {A : Type} {B : A → Type} → Σ A (λ i → B i → ⊤) ≡ A
         lemma = isoToPath (iso fst (λ x → x , λ x₁ → tt) (λ b → refl) λ a → refl)
 
-        pos≡ : position (p ◂ 𝕐) ≡ position p
+        pos≡ : position (p ◂ Y) ≡ position p
         pos≡ = lemma
 
         lemmaDir : {A : Type} → Σ A (λ _ → ⊤) ≡ A
         lemmaDir = isoToPath (iso fst (λ x → x , tt) (λ b → refl) λ a → refl)
 
-        dir≡ : (posA : position (p ◂ 𝕐)) → direction (p ◂ 𝕐) posA ≡ subst (λ x → x → Type) (sym pos≡) (direction p) posA
+        dir≡ : (posA : position (p ◂ Y)) → direction (p ◂ Y) posA ≡ subst (λ x → x → Type) (sym pos≡) (direction p) posA
         dir≡ posA = lemmaDir ∙ cong (direction p) (sym (transportRefl (fst posA)))
 
 bifunctor : Bifunctor Poly Poly Poly
@@ -57,7 +57,7 @@ bifunctor = record
 monoidal : Monoidal Poly
 monoidal = record
     { ⊗ = bifunctor
-    ; unit = 𝕐
+    ; unit = Y
     ; unitorˡ = record { 
         from = (λ { (tt , y) → y tt }) ⇄ λ { (tt , y) z → tt , z } ; 
         to = (λ { x → tt , λ _ → x }) ⇄ λ { fromPos → snd } ; 
