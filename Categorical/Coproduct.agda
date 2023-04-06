@@ -5,7 +5,7 @@ module Categorical.Coproduct where
 open import Categorical.CubicalPoly
 open import Categorical.Initial
 open import Categories.Object.Coproduct Poly
-open import Common.CategoryData
+open import CategoryData.Core
 -- open import Agda.Builtin.Sigma
 open import Data.Sum
 open import Function
@@ -29,24 +29,17 @@ coprod {A = A} {B = B} = record
     ; unique = unique
     }
     where
-
-        i₁ : Arrow A (A + B)
-        i₁ = inj₁ ⇄ λ _ → id
-
-        i₂ : Arrow B (A + B)
-        i₂ = inj₂ ⇄ λ _ → id
-
         [_,_]p : {C : Polynomial} → Arrow A C → Arrow B C → Arrow (A + B) C
         [_,_]p = λ {(f ⇄ f♯) (g ⇄ g♯) → [ f , g ] ⇄ [ f♯ , g♯ ]}
 
-        -- helper2 : {p : Polynomial} {h : Arrow (A + B) p} → (Arrow.mapDirection [ h ∘p i₁ , h ∘p i₂ ]p) ≡ Arrow.mapDirection h
+        -- helper2 : {p : Polynomial} {h : Arrow (A + B) p} → (Arrow.mapDirection [ h ∘ₚ i₁ , h ∘ₚ i₂ ]p) ≡ Arrow.mapDirection h
         -- helper2 = {!   !}
 
         open Arrow
         open Polynomial
 
         
-        helper : {q : Polynomial} {proof1 : isSet (position q)} {h : Arrow (A + B) q} → [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
+        helper : {q : Polynomial} {proof1 : isSet (position q)} {h : Arrow (A + B) q} → [ h ∘ₚ i₁ , h ∘ₚ i₂ ]p ≡ h
         helper {q} {proof1} {h} = arrow≡ (funExt (λ { (inj₁ x) → refl ; (inj₂ y) → refl })) (funExt λ x → {!   !})
            -- arrowsEqual2 (funExt λ {(inj₁ x) → refl
            --                                             ; (inj₂ y) → refl}) λ {(inj₁ x) y → cong (λ zz → mapDirection h (inj₁ x) zz) (lemma1 x y) -- subst (λ zz → {! mapDirection h (inj₁ x) zz   !}) (lemma1 x y) {!   !}
@@ -57,15 +50,15 @@ coprod {A = A} {B = B} = record
                 lemma2 : ∀ {A : Set} → isSet (A → position q)
                 lemma2 = isSetΠ (λ x → proof1)
                 
-                -- this is expanding h on both sides by the lhs of the equality we want to prove [ h ∘p i₁ , h ∘p i₂ ]p ≡ h
-                -- e : Arrow.mapPosition [ ([ h ∘p i₁ , h ∘p i₂ ]p) ∘p i₁ , ([ h ∘p i₁ , h ∘p i₂ ]p) ∘p i₂ ]p ≡ Arrow.mapPosition [ h ∘p i₁ , h ∘p i₂ ]p
+                -- this is expanding h on both sides by the lhs of the equality we want to prove [ h ∘ₚ i₁ , h ∘ₚ i₂ ]p ≡ h
+                -- e : Arrow.mapPosition [ ([ h ∘ₚ i₁ , h ∘ₚ i₂ ]p) ∘ₚ i₁ , ([ h ∘ₚ i₁ , h ∘ₚ i₂ ]p) ∘ₚ i₂ ]p ≡ Arrow.mapPosition [ h ∘ₚ i₁ , h ∘ₚ i₂ ]p
                 -- e = (funExt (λ { (inj₁ x) → refl ; (inj₂ y) → refl }))
                 -- lemma2 : e ≡ refl
                 -- lemma2 i j (inj₁ x) = mapPosition h (inj₁ x)
                 -- lemma2 i j (inj₂ y) = mapPosition h (inj₂ y)
-                -- lemma3 : {x : Polynomial.position (A + B)} → (mapDirection [ h ∘p i₁ , h ∘p i₂ ]p) x ≡ mapDirection h x
+                -- lemma3 : {x : Polynomial.position (A + B)} → (mapDirection [ h ∘ₚ i₁ , h ∘ₚ i₂ ]p) x ≡ mapDirection h x
                 -- lemma3 = refl
-                -- lemma4 : (mapDirection [ h ∘p i₁ , h ∘p i₂ ]p) ≡ mapDirection h
+                -- lemma4 : (mapDirection [ h ∘ₚ i₁ , h ∘ₚ i₂ ]p) ≡ mapDirection h
                 -- lemma4 = ?
 
 
@@ -88,32 +81,20 @@ coprod {A = A} {B = B} = record
         -- helper {p = p} {h = h} = arrowsEqual (λ i → λ {x → {!   !}}) {!   !} 
 
         unique : {F : Polynomial} {h : Arrow (A + B) F} {f₁ : Arrow A F} {f₂ : Arrow B F} 
-            → (h ∘p i₁) ≡ f₁
-            → (h ∘p i₂) ≡ f₂
+            → (h ∘ₚ i₁) ≡ f₁
+            → (h ∘ₚ i₂) ≡ f₂
             → [ f₁ , f₂ ]p ≡ h
         unique p₁ p₂ = (λ i → [ sym p₁ i , sym p₂ i ]p) ∙ helper
 
 
---         helper2 : {F : Polynomial} {h : Arrow F (A * B)} → (Arrow.mapDirection ⟨ π₁ ∘p h , π₂ ∘p h ⟩) ≡ Arrow.mapDirection h -- (λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h --  {! λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h  !} helper2 = {!   !}
+--         helper2 : {F : Polynomial} {h : Arrow F (A * B)} → (Arrow.mapDirection ⟨ π₁ ∘ₚ h , π₂ ∘ₚ h ⟩) ≡ Arrow.mapDirection h -- (λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h --  {! λ posC → [ (λ z → Arrow.mapDirection h posC (inj₁ z)) , (λ z → Arrow.mapDirection h posC (inj₂ z)) ]) ≡ Arrow.mapDirection h  !} helper2 = {!   !}
 --         helper2 = λ i fromPos x → {!   !}
 
---         helper : {p  : Polynomial} {h : Arrow p (A * B)} → ⟨ π₁ ∘p h , π₂ ∘p h ⟩ ≡ h
+--         helper : {p  : Polynomial} {h : Arrow p (A * B)} → ⟨ π₁ ∘ₚ h , π₂ ∘ₚ h ⟩ ≡ h
 --         helper {h = h} = arrowsEqual refl {! helper2  !} -- fromPos x → {! Arrow.mapDirection h fromPos x  !}
 
 --         unique : {F : Polynomial} {h : Arrow F (A * B)} {f₁ : Arrow F A} {f₂ : Arrow F B} →
---             (π₁ ∘p h) ≡ f₁ →
---             (π₂ ∘p h) ≡ f₂ → 
+--             (π₁ ∘ₚ h) ≡ f₁ →
+--             (π₂ ∘ₚ h) ≡ f₂ → 
 --             ⟨ f₁ , f₂ ⟩ ≡ h
 --         unique {F = F} {h = h} p₁ p₂ = transitivity (λ i → ⟨ sym p₁ i , sym p₂ i ⟩) (helper {p = F} {h = h})
-
-
-binaryCoproducts : Cocartesian.BinaryCoproducts Poly
-binaryCoproducts = record { coproduct = coprod }
-
-coproductCocartesian  : Cocartesian.Cocartesian Poly
-coproductCocartesian = record { initial = initialZero ; coproducts = binaryCoproducts }
-
-coproductMonodial : Monoidal Poly
-coproductMonodial = Cocartesian.CocartesianMonoidal.+-monoidal Poly coproductCocartesian
-
-       

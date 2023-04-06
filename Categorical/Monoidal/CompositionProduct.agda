@@ -1,8 +1,8 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.CompositionProduct where
+module Categorical.Monoidal.CompositionProduct where
 
-open import Common.CategoryData
+open import CategoryData.Core
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Isomorphism
 open import Agda.Builtin.Unit

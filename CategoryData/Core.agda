@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K #-}
 
-module Common.Category where
+module CategoryData.Core where
 
 open import Function
 

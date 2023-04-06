@@ -5,7 +5,7 @@ module Categorical.Exponential where
 open import Categorical.CubicalPoly
 import Relation.Binary.PropositionalEquality as Eq
 open import Categories.Object.Exponential Poly
-open import Common.CategoryData
+open import CategoryData.Core
 open import Cubical.Data.Sigma
 open import Cubical.Foundations.Isomorphism
 open import Data.Sum

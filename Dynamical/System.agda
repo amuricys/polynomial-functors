@@ -15,6 +15,7 @@ open import Function using (id)
 open import Data.Product
 open import Data.Unit
 open import Data.Empty
+open import CategoryData.Everything
 
 -- Creating dynamical systems.
 record DynamicalSystem : Set₁ where

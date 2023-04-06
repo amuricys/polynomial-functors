@@ -13,7 +13,7 @@ open import Categories.Functor.Properties
 open import Categories.NaturalTransformation renaming ( id to idN )
 open import Cubical.Data.Equality using (ctop ; ptoc)
 open import Cubical.Foundations.Prelude
-open import Common.CategoryData
+open import CategoryData.Core
 open import Function
 open import Function.Surjection hiding (id)
 open import Categorical.CubicalPoly

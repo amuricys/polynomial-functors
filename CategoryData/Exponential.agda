@@ -1,12 +1,12 @@
 {-# OPTIONS --without-K #-}
 
-module Common.Exponential where
+module CategoryData.Exponential where
 
-open import Common.Category
-open import Common.Product
-open import Common.Composition
-open import Common.SimplePolynomials
-open import Common.Coproduct
+open import CategoryData.Core
+open import CategoryData.Product
+open import CategoryData.Composition
+open import CategoryData.SimplePolynomials
+open import CategoryData.Coproduct
 open import Data.Product
 
 

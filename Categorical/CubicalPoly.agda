@@ -12,7 +12,7 @@ open import Categories.Category.Instance.Sets
 open import Categories.Functor using (Functor; _∘F_) renaming (id to idF)
 import Cubical.Foundations.Prelude as Cubical
 open import Cubical.Data.Sigma.Properties
-open import Common.CategoryData
+open import CategoryData.Core
 open import Cubical.Proofs
 open import Cubical.Foundations.Prelude
 

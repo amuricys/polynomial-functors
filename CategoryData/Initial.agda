@@ -1,9 +1,9 @@
 {-# OPTIONS --without-K #-}
 
-module Common.Initial where
+module CategoryData.Initial where
 
-open import Common.Category
-open import Common.SimplePolynomials
+open import CategoryData.Core
+open import CategoryData.SimplePolynomials
 
 arrowFromZero : {p : Polynomial} → Arrow 𝟘 p
 arrowFromZero {p} = (λ ()) ⇄ (λ ())

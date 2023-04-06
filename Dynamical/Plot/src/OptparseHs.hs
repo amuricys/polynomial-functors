@@ -7,7 +7,7 @@ import Options.Applicative
 import GHC.Generics (Generic)
 import Data.Text (Text)
 
-data DynamicalSystem = LotkaVolterra | HodgkinHuxley | Lorenz
+data DynamicalSystem = LotkaVolterra | HodgkinHuxley | Lorenz | Reservoir
   deriving (Show, Generic, Read)
 
 data Options = Options
@@ -21,7 +21,7 @@ systemParser = option auto
   ( long "system"
     <> short 's'
     <> metavar "SYSTEM"
-    <> help "Choose a dynamical system: LotkaVolterra, HodgkinHuxley, Lorenz, Reservoir, ReservoirModeDependent" )
+    <> help "Choose a dynamical system: LotkaVolterra, HodgkinHuxley, Lorenz, Reservoir" )
 
 optionsParser :: Parser Options
 optionsParser = Options

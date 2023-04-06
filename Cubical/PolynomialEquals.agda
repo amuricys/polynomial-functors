@@ -2,7 +2,7 @@
 
 module Cubical.PolynomialEquals where
 
-open import Common.CategoryData
+open import CategoryData.Core
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Isomorphism
 open import Cubical.Data.Sigma.Properties

@@ -4,7 +4,7 @@ module Categorical.Product where
 
 open import Categorical.CubicalPoly
 open import Categories.Object.Product Poly
-open import Common.CategoryData
+open import CategoryData.Core
 open import Agda.Builtin.Sigma
 open import Data.Sum
 open import Cubical.ArrowEquals
@@ -41,12 +41,3 @@ prod {A = A} {B = B} = record
     ; project₂ = refl
     ; unique = unique
     }
-
-binaryProducts : Cartesian.BinaryProducts Poly
-binaryProducts = record { product = prod }
-
-cartesian : Cartesian.Cartesian Poly
-cartesian = record { terminal = terminalOne ; products = binaryProducts }
-
-productMonoidal : Monoidal Poly
-productMonoidal = Cartesian.CartesianMonoidal.monoidal Poly cartesian

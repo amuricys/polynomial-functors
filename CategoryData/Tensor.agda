@@ -1,9 +1,9 @@
 {-# OPTIONS --without-K #-}
 
-module Common.Tensor where
+module CategoryData.Tensor where
 
-open import Common.Category
-open import Common.SimplePolynomials
+open import CategoryData.Core
+open import CategoryData.SimplePolynomials
 open import Data.Product
 
 -- Tensor between two polynomials. Parallel product.

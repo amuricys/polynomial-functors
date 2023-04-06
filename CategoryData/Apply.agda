@@ -1,8 +1,8 @@
 {-# OPTIONS --without-K #-}
 
-module Common.Apply where
+module CategoryData.Apply where
 
-open import Common.Category
+open import CategoryData.Core
 open import Data.Product
 open import Data.Bool
 open import Data.Unit

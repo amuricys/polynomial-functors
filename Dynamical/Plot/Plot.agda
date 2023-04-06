@@ -46,6 +46,10 @@ rest Lorenz param = do
   let x , yz = fromSigma (List.unzip (Vec.toList lorenzList))
   let y , z = fromSigma (List.unzip yz)
   plotDynamics 0.1 (("x", x) ∷ ("y", y) ∷ ("z", z) ∷ [])
+rest Reservoir param = do
+  let x , yz = fromSigma (List.unzip (Vec.toList lorenzList))
+  let y , z = fromSigma (List.unzip yz)
+  plotDynamics 0.1 (("x", x) ∷ ("y", y) ∷ ("z", z) ∷ [])
 
 main : IO ⊤
 main = do

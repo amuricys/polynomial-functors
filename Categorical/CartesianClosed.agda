@@ -2,7 +2,7 @@
 
 module Categorical.CartesianClosed where
 
-open import Common.CategoryData
+open import CategoryData.Core
 open import Categorical.CubicalPoly
 
 import Relation.Binary.PropositionalEquality as Eq

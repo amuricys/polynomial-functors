@@ -7,7 +7,7 @@ open import Codata.Stream
 open import Dynamical.System
 open import Data.Product
 open import Data.Float renaming (Float to ℝ)
-open import CategoryData.Core renaming (_*_ to _*p_ ; _+_ to _+p_)
+open import CategoryData.Everything renaming (_*_ to _*p_ ; _+_ to _+p_ ; Y to Y')
 open import Data.Vec using (Vec ; map)
 open import Data.Unit
 

@@ -1,9 +1,9 @@
 {-# OPTIONS --without-K #-}
 
-module Common.Composition where
+module CategoryData.Composition where
 
-open import Common.Category
-open import Common.SimplePolynomials
+open import CategoryData.Core
+open import CategoryData.SimplePolynomials
 open import Data.Product
 open import Agda.Builtin.Nat
 
