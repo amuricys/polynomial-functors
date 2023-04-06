@@ -19,13 +19,13 @@ open import Data.Product hiding (Σ-syntax)
 
 ------- Categorical axioms
 ---------------------------------------
-composeLeftIdentity : {B C : Polynomial} → (bToC : Arrow B C) → idArrow ∘p bToC ≡ bToC
+composeLeftIdentity : {B C : Polynomial} → (bToC : Arrow B C) → idArrow ∘ₚ bToC ≡ bToC
 composeLeftIdentity (_ ⇄ _) = refl
 
-composeRightIdentity :{B C : Polynomial} → (cToB : Arrow C B) → cToB ∘p idArrow ≡ cToB
+composeRightIdentity :{B C : Polynomial} → (cToB : Arrow C B) → cToB ∘ₚ idArrow ≡ cToB
 composeRightIdentity (_ ⇄ _) = refl
 
-composeIsAssoc : ∀ {A B C D} → {f : Arrow A B} {g : Arrow B C} {h : Arrow C D} → ((h ∘p g) ∘p f) ≡ (h ∘p (g ∘p f))
+composeIsAssoc : ∀ {A B C D} → {f : Arrow A B} {g : Arrow B C} {h : Arrow C D} → ((h ∘ₚ g) ∘ₚ f) ≡ (h ∘ₚ (g ∘ₚ f))
 composeIsAssoc = refl
 ---------------------------------------
 
@@ -44,8 +44,8 @@ transitivity {x = x} p q = subst (_≡_ x) q p
 -- subst : (B : A → Type ℓ') (p : x ≡ y) → B x → B y
 -- subst B p pa = transport (λ i → B (p i)) pa
 
-equiv-resp : {A B C : Polynomial} {f h : Arrow B C} {g i : Arrow A B} → f ≡ h → g ≡ i → (f ∘p g) ≡ (h ∘p i)
-equiv-resp  p q ii = (p ii) ∘p (q ii)
+equiv-resp : {A B C : Polynomial} {f h : Arrow B C} {g i : Arrow A B} → f ≡ h → g ≡ i → (f ∘ₚ g) ≡ (h ∘ₚ i)
+equiv-resp  p q ii = (p ii) ∘ₚ (q ii)
 
 fromFalseFunctionsEqual : {A : Type} (f : ⊥ → A) → (g : ⊥ → A) → f ≡ g
 fromFalseFunctionsEqual f g = funExt λ {()}
@@ -138,10 +138,10 @@ arrowsEqual3 {f = f} {g = g} a b i = sigmaToArrow (arrowSigmasEqual3 {f = f} {g 
 
 ------- Proofs related to uniqueness of arrows from and to certain polynomials
 ---------------------------------------
-arrowFromZeroUnique : {p : Polynomial} (f : Arrow Zero p) → arrowFromZero ≡ f
+arrowFromZeroUnique : {p : Polynomial} (f : Arrow 𝟘 p) → arrowFromZero ≡ f
 arrowFromZeroUnique f = arrowsEqual (λ {i ()}) (funExt λ {()})
 
-arrowToOneUnique : {p : Polynomial} (f : Arrow p One) →  arrowToOne ≡ f
+arrowToOneUnique : {p : Polynomial} (f : Arrow p 𝟙) →  arrowToOne ≡ f
 arrowToOneUnique {p = p} f = arrowsEqual mapPosEq (λ {i fromPos ()} )
     where
         isPropUnit : (x y : ⊤) → x ≡ y

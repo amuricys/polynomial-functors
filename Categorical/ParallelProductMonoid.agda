@@ -12,33 +12,34 @@ open import Categories.Category.Monoidal
 open import Categorical.CubicalPoly
 open import Categories.Functor.Bifunctor
 open import Cubical.ArrowEquals
+open import Cubical.Data.Sigma.Properties
 
 open Polynomial
 
 -- Pure monoidal constructions
-leftUnit : (p q : Polynomial) → Y ⊗ p ≡ p
+leftUnit : (p q : Polynomial) → 𝕐 ⊗ p ≡ p
 leftUnit p q = poly≡∀' pos≡ dir≡
     where
         lemma : {A : Set} → (Σ[ _ ∈ ⊤ ] A) ≡ A
         lemma = isoToPath (iso snd (λ x → tt , x) (λ b → refl) λ a → refl)
 
-        pos≡ : position (Y ⊗ p) ≡ position p
+        pos≡ : position (𝕐 ⊗ p) ≡ position p
         pos≡ = lemma
 
-        dir≡ : (posA : position (Y ⊗ p)) → direction (Y ⊗ p) posA ≡ subst (λ x → x → Type) (sym pos≡) (direction p) posA
+        dir≡ : (posA : position (𝕐 ⊗ p)) → direction (𝕐 ⊗ p) posA ≡ subst (λ x → x → Type) (sym pos≡) (direction p) posA
         dir≡ posA = lemma ∙ cong (direction p) (sym (transportRefl (snd posA)))
 
 
-rightUnit : (p q : Polynomial) → p ⊗ Y ≡ p
+rightUnit : (p q : Polynomial) → p ⊗ 𝕐 ≡ p
 rightUnit p q = poly≡∀' pos≡ dir≡
     where
         lemma : {A : Set} → Σ A (λ _ → ⊤) ≡ A
         lemma = isoToPath (iso fst (λ x → x , tt) (λ b → refl) λ a → refl)
 
-        pos≡ : position (p ⊗ Y) ≡ position p
+        pos≡ : position (p ⊗ 𝕐) ≡ position p
         pos≡ = lemma
 
-        dir≡ : (posA : position (p ⊗ Y)) → direction (p ⊗ Y) posA ≡ subst (λ x → x → Type) (sym pos≡) (direction p) posA
+        dir≡ : (posA : position (p ⊗ 𝕐)) → direction (p ⊗ 𝕐) posA ≡ subst (λ x → x → Type) (sym pos≡) (direction p) posA
         dir≡ posA = lemma ∙ cong (direction p) (sym (transportRefl (fst posA)))
 
 -- Monoidal category construction
@@ -48,13 +49,13 @@ bifunctor = record
     ; F₁ = λ { ((mpf ⇄ mdf) , (mpg ⇄ mdg)) → (λ { (posP , posQ) → mpf posP , mpg posQ }) ⇄ λ { (fromPosP , fromPosQ) (dirFstR , dirSndR) → mdf fromPosP dirFstR , mdg fromPosQ dirSndR } }
     ; identity = refl
     ; homomorphism = refl
-    ; F-resp-≈ = {!   !} -- λ { (proofMpEq , proofMdEq) → arrow≡∀ (λ i x₁ → {!  !}) {!   !} }
+    ; F-resp-≈ = λ {(fst₁ , snd₁) → arrow≡ (funExt λ {(fst , snd) → ≡-× (cong (λ y → Arrow.mapPosition y fst) fst₁) (cong (λ y → Arrow.mapPosition y snd) snd₁)}) (funExt λ {(fst , snd) → funExt (λ {(fst₁ , snd₁) → {!   !}})})} -- λ { (proofMpEq , proofMdEq) → arrow≡∀ (λ i x₁ → {!  !}) {!   !} }
     }
 
 monoidal : Monoidal Poly
 monoidal = record
     { ⊗ = bifunctor
-    ; unit = Y
+    ; unit = 𝕐 
     ; unitorˡ = record { 
         from = snd ⇄ λ { _ → tt ,_ } ; 
         to = (tt ,_ ) ⇄ λ _ → snd ; 

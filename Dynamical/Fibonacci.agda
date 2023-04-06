@@ -19,7 +19,7 @@ prefib : DynamicalSystem
 prefib = plus &&& delay Nat
 
 fibWiringDiagram : Arrow (DynamicalSystem.interface prefib) (Emitter Nat)
-fibWiringDiagram = (λ {(sumOutput , idOutput) → idOutput}) ⇄ (λ {(sumOutput , idOutput) l → ({!   !} , sumOutput) , sumOutput })
+fibWiringDiagram = (λ {(sumOutput , idOutput) → idOutput}) ⇄ (λ {(sumOutput , idOutput) l → (idOutput , sumOutput) , sumOutput })
 
 fibonacci : DynamicalSystem
 fibonacci = install prefib (Emitter Nat) fibWiringDiagram

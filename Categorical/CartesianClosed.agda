@@ -89,7 +89,7 @@ uncurry {p} {q} {r} (f ⇄ f♯) = mapPos ⇄ mapDir
 
 
 r^q : (r : Polynomial) → (q : Polynomial) → Polynomial
-r^q r (MkPoly posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
+r^q r (MkPoly posQ dirQ) = depProd (posQ , λ j → r ◂ (𝕐 + Constant (dirQ j)))
 
 mpEv : {A B : Polynomial} → position (r^q B A * A) → position B
 mpEv (posB^A , posA) = fst (posB^A posA)
@@ -119,7 +119,7 @@ ev {A} {B} = mpEv ⇄ mdEv
 
 canonical : {A B : Polynomial} → Canonical.CartesianClosed
 canonical {A} {B} = record
-    { ⊤ = One
+    { ⊤ = 𝟙
     ; _×_ = _*_
     ; ! = arrowToOne
     ; π₁ = π₁
@@ -138,19 +138,19 @@ canonical {A} {B} = record
     }
     --   where
 
-    --     -- helper : {p A B : Polynomial} {h : Arrow p (A * B)} → ⟨ π₁ ∘p h , π₂ ∘p h ⟩ ≡ h
+    --     -- helper : {p A B : Polynomial} {h : Arrow p (A * B)} → ⟨ π₁ ∘ₚ h , π₂ ∘ₚ h ⟩ ≡ h
     --     -- helper {h = h} = arrowsEqual2 refl λ { x (inj₁ x1) → cong (λ zz → Arrow.mapDirection h x (inj₁ zz)) (sym (transportRefl  x1))
     --     --                                     ;  x (inj₂ y) → cong (λ zz → Arrow.mapDirection h x (inj₂ zz))  (sym (transportRefl y)) } -- λ i fromPos x → {!   !} -- (transportRefl {!   !} {!   !})
 
     --     -- unique : {F A B : Polynomial} {h : Arrow F (A * B)} {f₁ : Arrow F A} {f₂ : Arrow F B} →
-    --     --     (π₁ ∘p h) ≡ f₁ →
-    --     --     (π₂ ∘p h) ≡ f₂ → 
+    --     --     (π₁ ∘ₚ h) ≡ f₁ →
+    --     --     (π₂ ∘ₚ h) ≡ f₂ → 
     --     --     ⟨ f₁ , f₂ ⟩ ≡ h
     --     -- unique {F = F} {h = h} p₁ p₂ = transitivity (λ i → ⟨ sym p₁ i , sym p₂ i ⟩) (helper {p = F} {h = h})
 
     --     unique : {F A B : Polynomial} {h : Arrow F (A * B)} {f₁ : Arrow F A} {f₂ : Arrow F B} →
-    --         (π₁ ∘p h) ≡ f₁ →
-    --         (π₂ ∘p h) ≡ f₂ → 
+    --         (π₁ ∘ₚ h) ≡ f₁ →
+    --         (π₂ ∘ₚ h) ≡ f₂ → 
     --         ⟨ f₁ , f₂ ⟩ ≡ h
     --     unique {F = F} {h = h} p₁ p₂ = transitivity (λ i → ⟨ sym p₁ i , sym p₂ i ⟩) (helper {p = F} {h = h})
                 
@@ -159,13 +159,13 @@ canonical {A} {B} = record
     --                                                                   ; (a , b) (inj₂ y) → inj₂ (mdg b y) }
     --     eval-comp-simple : {A B C D E : Polynomial} → 
     --                 (f : Arrow (E * D) C) → 
-    --                 (ev ∘p (curry f ×a idArrow))
+    --                 (ev ∘ₚ (curry f ×a idArrow))
     --                 ≡ f
     --     eval-comp-simple {A} {B} {C} {D} {E} f = arrowsEqual3 refl helper2
     --         where
     --             helper2 : (x@(e , d) : position (E * D)) 
     --                     → (y : direction C (Arrow.mapPosition f x))
-    --                     → Arrow.mapDirection (ev ∘p (curry f ×a idArrow)) x (subst (λ mapPos → direction C (mapPos x)) (sym (λ _ → Arrow.mapPosition (ev ∘p (curry f ×a idArrow)))) y) ≡ Arrow.mapDirection f x y
+    --                     → Arrow.mapDirection (ev ∘ₚ (curry f ×a idArrow)) x (subst (λ mapPos → direction C (mapPos x)) (sym (λ _ → Arrow.mapPosition (ev ∘ₚ (curry f ×a idArrow)))) y) ≡ Arrow.mapDirection f x y
     --             helper2 x@(e , d) y with Arrow.mapDirection f x y
     --             ... | inj₁ x₁ = {!   !} -- cong {!  !} {!  !}
     --             ... | inj₂ y₁ = subst (λ eqv → eqv ≡ inj₂ y₁) proof2 refl

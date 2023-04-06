@@ -32,6 +32,28 @@ eq {p} {q} (mpf ⇄ mdf) (mpg ⇄ mdg) =
                   mp (i , _) = i
                   md : (fromPos : position equalizerObject) → direction p (mp fromPos) → direction equalizerObject fromPos
                   md (i , mdfEq) d = d , λ { a a₂ (fst₁ , snd₁) → λ i₁ → {!   !} } -- gotta subst snd₁ in here somehow
+-- eq {p} {q} f@(fₚ ⇄ f♯) g@(gₚ ⇄ g♯) = record { obj = equalizerObject ; arr = equalizerArrow ; isEqualizer = equalizerProof }
+--       where
+--             equalizerObject : Polynomial
+--             equalizerObject = MkPolynomial pos dir
+--                   where
+--                         pos : Type
+--                         pos = Σ[ i ∈ position p ] fₚ i ≡ gₚ i -- Equalizer of sets. All positions such that fₚ and gₚ equals.
+
+--                         dir : pos → Type
+--                         dir (posₚ , fₚposₚ≡gₚposₚ) = coeq (f♯ posₚ) (g♯ posₚ)
+--                               where
+--                                     coeq : {! (f g : direction q (fₚ posₚ) → direction p posₚ) → Type  !}
+--                                     coeq = {!   !}
+
+--             equalizerArrow : Arrow equalizerObject p
+--             equalizerArrow = {!   !}
+
+--             equalizerProof : IsEqualizer equalizerArrow f g
+--             equalizerProof = record { equality = {!   !} ; equalize = {!   !} ; universal = {!   !} ; unique = {!   !} }
+
+
+
 
 
 

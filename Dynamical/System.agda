@@ -29,7 +29,7 @@ open DynamicalSystem
 record InitializedDynamicalSystem : Set₁ where
     field
         dynamicalSystem : DynamicalSystem
-        initialState : Arrow Y (selfMonomial (state dynamicalSystem))
+        initialState : Arrow 𝕐 (selfMonomial (state dynamicalSystem))
 
 functionToDynamicalSystem : (A B : Set) → (A → B) → DynamicalSystem
 functionToDynamicalSystem A B f = MkDynamicalSystem B (monomial B A) (id ⇄ (\_ → f))
@@ -51,9 +51,9 @@ Emitter : Set → Polynomial
 Emitter t = monomial t ⊤
 
 install : (d : DynamicalSystem) → (a : Polynomial) → Arrow (DynamicalSystem.interface d) a → DynamicalSystem
-install d a l = MkDynamicalSystem (DynamicalSystem.state d) a (l ∘p (DynamicalSystem.dynamics d))
+install d a l = MkDynamicalSystem (DynamicalSystem.state d) a (l ∘ₚ (DynamicalSystem.dynamics d))
 
-encloseFunction : {t u : Set} → (t → u) → Arrow (monomial t u) Y
+encloseFunction : {t u : Set} → (t → u) → Arrow (monomial t u) 𝕐
 encloseFunction f = (λ _ → tt) ⇄ (λ fromPos _ → f fromPos)
 
 auto : {m : Set} → enclose (Emitter m)

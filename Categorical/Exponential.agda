@@ -25,19 +25,19 @@ open import Cubical.PolynomialEquals
 open import Cubical.Foundations.Prelude
 open Polynomial
 -- Exercise 4.29
-p^0≡1 : {p : Polynomial} → p ^ Zero ≡ One
+p^0≡1 : {p : Polynomial} → p ^ 𝟘 ≡ 𝟙
 p^0≡1 {p} = poly≡∀' pos≡ dir≡
   where
     lemma : {A : ⊥ → Type} → ((i : ⊥) → A i) ≡ ⊤
     lemma = isoToPath (iso (λ x → tt) (λ {x ()}) (λ {tt → refl}) λ {a i ()})
 
-    pos≡ : position (p ^ Zero) ≡ position One
+    pos≡ : position (p ^ 𝟘) ≡ position 𝟙
     pos≡ =  lemma
 
     lemmaDir : {A : ⊥ → Type} → Σ ⊥ A ≡ ⊥
     lemmaDir = isoToPath (iso fst (λ {()}) (λ {()}) λ {()})
 
-    dir≡ : (pos : position (p ^ Zero)) → direction (p ^ Zero) pos ≡ subst (λ x → x → Type) (sym pos≡) (direction One) pos
+    dir≡ : (pos : position (p ^ 𝟘)) → direction (p ^ 𝟘) pos ≡ subst (λ x → x → Type) (sym pos≡) (direction 𝟙) pos
     dir≡ pos = lemmaDir
 
 open import Cubical.Core.Primitives
@@ -48,8 +48,8 @@ open import Cubical.Foundations.Equiv
 open import Cubical.Foundations.Function hiding (_∘_)
 open import Cubical.Foundations.HLevels
 
-p^1≡p : {p : Polynomial} → p ^ One ≡ p
-p^1≡p {p@(MkPoly pos dir)} = poly≡ pos≡ dir≡
+p^1≡p : {p : Polynomial} → p ^ 𝟙 ≡ p
+p^1≡p {p@(MkPoly pos dir)} = poly≡' pos≡ dir≡
   where
       lemma₁ : {A : Type} → (⊤ → A) ≡ A
       lemma₁ = isoToPath (iso (λ x → x tt) (λ A tt → A) (λ b → refl) λ i → refl)
@@ -72,11 +72,17 @@ p^1≡p {p@(MkPoly pos dir)} = poly≡ pos≡ dir≡
           help : (λ (pos : pos) → dir pos → ⊤ ⊎ ⊥) ≡ (λ (a : pos) → ⊤)
           help = funExt (λ x → lemma₂)
 
-      pos≡ : position (p ^ One) ≡ position p
+      pos≡ : position (p ^ 𝟙) ≡ position p
       pos≡ = lemma
 
-      dir≡ : (subst (λ x → x → Type) pos≡ (direction (p ^ One))) ≡ direction p
-      dir≡ = funExt (λ {x → {!   !}})
+      dir≡ : direction (p ^ 𝟙) ≡ (subst (λ x → x → Type) (sym pos≡) (direction p))-- ≡ direction p
+      dir≡ = funExt λ {x → hej x}
+        where
+          hej : (x : position (MkPoly pos dir ^ 𝟙)) → direction (MkPoly pos dir ^ 𝟙) x ≡ subst (λ x₁ → x₁ → Type) (sym pos≡) dir x
+          hej hej with hej tt in eq
+          ... | fst₁ , snd₁ = {!   !}
+
+       
 
 data ThreeSet : Set where
   three1 three2 three3 : ThreeSet
@@ -167,7 +173,7 @@ open import Cubical.Data.Equality
         dir≡ p = isoToPath (iso (λ { () }) (λ ()) (λ ()) λ { () i })
 
 rtoq : (r : Polynomial) → (q : Polynomial) → Polynomial
-rtoq r (MkPoly posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
+rtoq r (MkPoly posQ dirQ) = depProd (posQ , λ j → r ◂ (𝕐 + Constant (dirQ j)))
 
 ev : {A B : Polynomial} → Arrow (rtoq B A * A) B
 ev {A} {B} = mp ⇄ md
