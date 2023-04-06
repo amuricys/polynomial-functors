@@ -6,7 +6,7 @@ open import Dynamical.System
 open import Data.Product
 open import Data.Nat renaming (_+_ to _+ℕ_)
 open import Data.Float renaming (Float to ℝ; tanh to tanh1) hiding (⌊_⌋)
-open import Common.CategoryData renaming (_*_ to _*p_ ; _+_ to _+p_)
+open import CategoryData.Core renaming (_*_ to _*p_ ; _+_ to _+p_)
 open import Dynamical.Reservoir.Matrix as Matrix
 open import Dynamical.Reservoir.Initialize
 open import Dynamical.Reservoir.State

@@ -4,7 +4,7 @@ module Dynamical.Fibonacci where
 
 open import Dynamical.System
 open import Agda.Builtin.Nat renaming (_+_ to _+ℕ_)
-open import Common.CategoryData
+open import CategoryData.Core
 open import Codata.Stream
 open import Codata.Thunk
 open import Data.List hiding (take; _++_)
