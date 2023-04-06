@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.ParallelProductMonoid where
+module Categorical.ParallelProduct where
 
 open import Common.CategoryData
 open import Cubical.Foundations.Prelude
@@ -55,7 +55,7 @@ bifunctor = record
 monoidal : Monoidal Poly
 monoidal = record
     { ⊗ = bifunctor
-    ; unit = 𝕐 
+    ; unit = 𝕐
     ; unitorˡ = record { 
         from = snd ⇄ λ { _ → tt ,_ } ; 
         to = (tt ,_ ) ⇄ λ _ → snd ; 

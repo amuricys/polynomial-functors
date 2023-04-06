@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.CompositionMonoid where
+module Categorical.CompositionProduct where
 
 open import Common.CategoryData
 open import Cubical.Foundations.Prelude
@@ -51,7 +51,7 @@ bifunctor = record
     ; F₁ = λ { ((mpf ⇄ mdf) , (mpg ⇄ mdg)) → (λ { (a , b) → mpf a , λ { x → mpg (b (mdf a x)) } }) ⇄ λ { (x , y) (w , z) → (mdf x w) , (mdg (y (mdf x w)) z) } }
     ; identity = refl
     ; homomorphism = refl
-    ; F-resp-≈ = {!   !} -- λ x → arrow≡ (funExt (λ x₁ → {! refl  !})) {!   !}
+    ; F-resp-≈ = λ x → arrow≡ {!   !} {!   !}
     }
 
 monoidal : Monoidal Poly
