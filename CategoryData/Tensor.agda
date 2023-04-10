@@ -10,6 +10,7 @@ open import Data.Product
 -- Pair of position. Each pair of position has one direction for each component.
 _⊗_ : Polynomial → Polynomial → Polynomial
 MkPoly posA dirA ⊗ MkPoly posB dirB = MkPoly (posA × posB) (λ {(posA , posB) → (dirA posA) × (dirB posB)})
+infixl 26 _⊗_
 
 tensorUnit : Polynomial
 tensorUnit = Y

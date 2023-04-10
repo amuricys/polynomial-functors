@@ -13,6 +13,7 @@ open import Function
 _⦅_⦆ : Polynomial → Set → Set
 _⦅_⦆ (MkPoly position direction) Y = Σ position λ x → (direction x → Y)
 
+
 ex : Polynomial
 ex = MkPoly Bool λ {false → Bool
                   ; true → ⊤}

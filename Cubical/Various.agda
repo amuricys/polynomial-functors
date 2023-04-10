@@ -5,7 +5,7 @@ module Cubical.Various where
 open import Data.Bool
 open import Data.Product
 open import Data.Sum
-open import CategoryData.Core
+open import CategoryData.Everything
 open import Cubical.Core.Everything hiding (Σ-syntax)
 open import Cubical.Foundations.Prelude hiding (Σ-syntax)
 open import Cubical.Foundations.Isomorphism

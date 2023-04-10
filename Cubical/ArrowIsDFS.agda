@@ -5,7 +5,7 @@ module Cubical.ArrowIsDFS where
 open import Dynamical.DeterFiniteStateAutomaton
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Isomorphism
-open import CategoryData.Core
+open import CategoryData.Everything
 open import Data.Bool
 open import Data.Product
 open import Data.Unit

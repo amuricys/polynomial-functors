@@ -7,7 +7,7 @@ open import Dynamical.System
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Isomorphism
 open import Cubical.Core.Everything
-open import CategoryData.Core
+open import CategoryData.Everything
 open import Cubical.Data.Sigma.Properties
 
 open Polynomial

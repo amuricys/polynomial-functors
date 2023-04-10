@@ -20,7 +20,6 @@ open import Categorical.Functor.Linear
 open import Categorical.Functor.PlugInOne
 open import Categorical.Functor.PlugInZero
 open import Level
-open import Cubical.ArrowEquals
 
 
 -- Quadruple adjunction

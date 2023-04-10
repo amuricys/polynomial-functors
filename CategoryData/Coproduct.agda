@@ -11,6 +11,7 @@ open import Function
 -- Coproduct has either of the positions, and its correspoding direction
 _+_ : Polynomial → Polynomial → Polynomial
 MkPoly posA dirA + MkPoly posB dirB = MkPoly (posA ⊎ posB) [ dirA , dirB ]
+infixl 28 _+_
 
 coproductUnit : Polynomial
 coproductUnit = 𝟘

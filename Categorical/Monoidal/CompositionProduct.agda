@@ -2,7 +2,7 @@
 
 module Categorical.Monoidal.CompositionProduct where
 
-open import CategoryData.Core
+open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Isomorphism
 open import Agda.Builtin.Unit

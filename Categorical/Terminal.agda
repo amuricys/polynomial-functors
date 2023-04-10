@@ -2,7 +2,7 @@
 
 module Categorical.Terminal where
 
-open import CategoryData.Core
+open import CategoryData.Everything
 open import Categorical.CubicalPoly
 open import Cubical.Proofs
 open import Categories.Object.Terminal Poly
