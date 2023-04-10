@@ -1,4 +1,4 @@
-{-# OPTIONS --cubical --allow-unsolved-metas #-}
+{-# OPTIONS --cubical #-}
 
 module Categorical.Product where
 
@@ -27,10 +27,12 @@ unique {p} {q} {r} {h = h} pᶠ pᵍ = (λ i → ⟨ sym pᶠ i , sym pᵍ i ⟩
                                           ; (inj₂ _) → refl}
         open Polynomial
         lemma : ⟨ π₁ ∘ₚ h , π₂ ∘ₚ h ⟩ ≡ h
-        lemma = arrow≡ refl {!   !}
-        --  ((substRefl 
-        --  {B = λ (h : position p → position (q * r)) → (x : position p) → direction (q * r) (h x) → direction p x}
-        --  (Arrow.mapDirection ⟨ π₁ ∘ₚ h , π₂ ∘ₚ h ⟩)) ∙ mapDir≡)
+        lemma = arrow≡ 
+            refl 
+            ((substRefl 
+                {B = λ (h : position p → position (q * r)) → (x : position p) → direction (q * r) (h x) → direction p x}
+                (Arrow.mapDirection ⟨ π₁ ∘ₚ h , π₂ ∘ₚ h ⟩)
+            ) ∙ mapDir≡)
 
 prod : {A B : Polynomial} → Product A B
 prod {A = A} {B = B} = record

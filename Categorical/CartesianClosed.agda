@@ -1,4 +1,4 @@
-{-# OPTIONS --cubical --allow-unsolved-metas #-}
+{-# OPTIONS --cubical #-}
 
 module Categorical.CartesianClosed where
 
@@ -100,24 +100,38 @@ canonical {A} {B} = record
     ; curry-unique = {!   !}
     }
        where
-        eval-comp-simple : {A B C D E : Polynomial} → 
+        eval-comp-simple : {C D E : Polynomial} → 
                     (f : Arrow (E * D) C) → 
                     (ev ∘ₚ ⟨ curry f × idArrow ⟩)
                     ≡ f
-        eval-comp-simple {A} {B} {C} {D} {E} f = arrow≡∀∀ refl helper2
+        eval-comp-simple {C} {D} {E} f = arrow≡ refl helper2
             where
-                helper2 : (fromPos : position (E * D)) →
-                          (dirQFromG : direction C (mapPosition (ev ∘ₚ ⟨ curry f × idArrow ⟩) fromPos)) → 
-                          subst
-                            (λ h →
-                                (x : position (E * D)) → direction C (h x) → direction (E * D) x)
+                path : {x : position (E * D)} → PathP
+                    (λ _ →
+                    direction C (mapPosition (ev ∘ₚ ⟨ curry f × idArrow ⟩) x) →
+                    direction
+                    (MkPoly (position E) (λ z → direction E z) *
+                     MkPoly (position D) (λ z → direction D z))
+                    x)
+                    (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩) x) (mapDirection f x)
+                path = {!   !}
+                mapDir≡ : (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩)) ≡ mapDirection f
+                mapDir≡ = funExt (λ x → path)
+                helper2 : subst
+                            (λ mapPos →
+                                (fromPos : position (E * D)) →
+                                direction C (mapPos fromPos) → direction (E * D) fromPos)
                             (λ _ → mapPosition (ev ∘ₚ ⟨ curry f × idArrow ⟩))
-                            (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩)) fromPos dirQFromG
-                            ≡ mapDirection f fromPos dirQFromG
-                helper2 (posE , posD) dirQ = substRefl { B = λ (h : position (E * D) → position C) → ? → {!   !} } {!   !}
+                            (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩))
+                            ≡ mapDirection f
+                helper2 = 
+                   (substRefl 
+                        { B = λ (h : position (E * D) → position C) → (x : position (E * D)) → direction C (h x) → direction (E * D) x}
+                        (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩))
+                    ) ∙ mapDir≡
             
 
                                     
 
   
-  
+   
