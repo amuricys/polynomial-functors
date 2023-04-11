@@ -70,3 +70,6 @@ lorenzSeq = run lorenz auto (xnt 10.0 , ynt 10.0 , znt 10.0)
 
 lorenzList : Vec (ℝ × ℝ × ℝ) 1000
 lorenzList = Data.Vec.map (\{(xnt x , ynt y , znt z) → x , y , z } ) (take 1000 lorenzSeq)
+
+outToVec : X × Y × Z → Vec ℝ 3
+outToVec (xnt x , ynt y , znt z) = (x Vec.∷ y Vec.∷ z Vec.∷ Vec.[])

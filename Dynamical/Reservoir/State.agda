@@ -11,28 +11,45 @@ open import Level
 import Category.Monad.Reader
 
 OutputWeights : (numNodes systemDim : ℕ) → Set
-OutputWeights numNodes systemDim = Matrix ℝ numNodes systemDim
+OutputWeights numNodes systemDim = Matrix ℝ systemDim numNodes
 
--- Actually I don't think there's a way to get around the TrainingState having access to
--- the outputWeights, but I think the RunningState might be spared this fate.
+InputWeights : (numNodes systemDim : ℕ) → Set
+InputWeights numNodes systemDim = Matrix ℝ numNodes systemDim
+
+ReservoirWeights : (numNodes : ℕ) → Set
+ReservoirWeights numNodes = Matrix ℝ numNodes numNodes
 
 record TrainingState (numNodes : ℕ) (systemDim : ℕ) : Set where
   constructor Training
   field
-    nodeStates : Vec ℝ numNodes
     statesHistory : List (Vec ℝ numNodes)
     outputWeights : OutputWeights numNodes systemDim
     counter : ℕ
 
-record RunningState (numNodes : ℕ) (systemDim : ℕ) : Set where
-  constructor Running
+-- There's some states we want frozen. Is there a way to achieve this without 
+-- needing inputs to be provided? Maybe yet another dynamical system that
+-- is somehow understood to be constant? For example, We don't want the readout layer to
+-- access the output weights as a state so as to not change them when it's running.
+-- We also don't want the reservoir to access its input weights.
+record ReservoirState (numNodes : ℕ) : Set where
+  constructor Res
   field
     nodeStates : Vec ℝ numNodes
+
+record CollectingDataState (numNodes : ℕ) (systemDim : ℕ) : Set where
+  constructor Collecting
+  field
+    statesHistory : List (ReservoirState numNodes)
     outputWeights : OutputWeights numNodes systemDim
     counter : ℕ
 
 
+record RunningState (numNodes : ℕ) (systemDim : ℕ) : Set where
+  constructor Running
+  field
+    outputWeights : OutputWeights numNodes systemDim
+    reservoirState : ReservoirState numNodes
 
-data ReservoirState (numNodes : ℕ) (systemDim : ℕ)  : Set where
-  T : TrainingState numNodes systemDim → ReservoirState numNodes systemDim
-  R : RunningState numNodes systemDim → ReservoirState numNodes systemDim
+data ReadoutLayerState (numNodes : ℕ) (systemDim : ℕ) : Set where
+  Coll : CollectingDataState numNodes systemDim → ReadoutLayerState numNodes systemDim
+  Run : RunningState numNodes systemDim → ReadoutLayerState numNodes systemDim
