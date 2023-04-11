@@ -1,8 +1,8 @@
 {-# OPTIONS --without-K #-}
 
-module Common.Apply where
+module CategoryData.Apply where
 
-open import Common.Category
+open import CategoryData.Core
 open import Data.Product
 open import Data.Bool
 open import Data.Unit
@@ -12,6 +12,7 @@ open import Function
 -- This is the action on objects (sets) of that polynomials perform as functors. They're (endo)functors after all.
 _⦅_⦆ : Polynomial → Set → Set
 _⦅_⦆ (MkPoly position direction) Y = Σ position λ x → (direction x → Y)
+
 
 ex : Polynomial
 ex = MkPoly Bool λ {false → Bool

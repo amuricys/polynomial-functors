@@ -7,7 +7,8 @@ open import Codata.Stream
 open import Dynamical.System
 open import Data.Product
 open import Data.Float renaming (Float to ℝ)
-open import CategoryData.Core renaming (_*_ to _*p_ ; _+_ to _+p_)
+open import CategoryData.Everything renaming (_*_ to _*p_ ; _+_ to _+p_)
+open import CategoryData.SimplePolynomials using (selfMonomial)
 open import Data.Vec using (Vec)
 
 -- https://mark-kramer.github.io/Case-Studies-Python/HH.html

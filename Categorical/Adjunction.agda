@@ -11,7 +11,7 @@ open import Cubical.Data.Equality
 open import Cubical.Proofs
 open import Cubical.ArrowEquals
 open import Function
-open import Common.CategoryData
+open import CategoryData.Core
 open import Data.Unit
 open import Data.Empty
 open import Data.Product
@@ -20,7 +20,6 @@ open import Categorical.Functor.Linear
 open import Categorical.Functor.PlugInOne
 open import Categorical.Functor.PlugInZero
 open import Level
-open import Cubical.ArrowEquals
 
 
 -- Quadruple adjunction

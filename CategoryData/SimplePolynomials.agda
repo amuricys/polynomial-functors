@@ -1,8 +1,8 @@
 {-# OPTIONS --without-K #-}
 
-module Common.SimplePolynomials where
+module CategoryData.SimplePolynomials where
 
-open import Common.Category
+open import CategoryData.Core
 open import Data.Unit
 open import Data.Empty
 

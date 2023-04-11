@@ -1,14 +1,16 @@
 {-# OPTIONS --without-K #-}
 
-module Common.Composition where
+module CategoryData.Composition where
 
-open import Common.Category
-open import Common.SimplePolynomials
+open import CategoryData.Core
+open import CategoryData.SimplePolynomials
 open import Data.Product
 open import Agda.Builtin.Nat
 
--- Composition of polynomials (composition of polynomial functors, which happen to be new polynomial functor!).
--- Proposition 5.2, page 158. Note: not same definition used.
+-- Composition of polynomials (remember, polynomials are ENDOfunctors so they compose 
+-- to give a new polynomial functor!).
+-- Proposition 5.2, page 158. Note: not same definition used. We here treat positions
+-- as inhabitants of the same set, which makes a lot of proofs easier down the line.
 _◂_ : Polynomial → Polynomial → Polynomial
 p ◂ q = MkPoly pos dir
   where
@@ -20,6 +22,7 @@ p ◂ q = MkPoly pos dir
 
     dir : pos → Set
     dir (i , j) = Σ[ a ∈ p.direction i ] q.direction (j a)
+infixl 27 _◂_
 
 compositionUnit : Polynomial
 compositionUnit = Y

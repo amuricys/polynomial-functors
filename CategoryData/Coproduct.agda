@@ -1,9 +1,9 @@
 {-# OPTIONS --without-K #-}
 
-module Common.Coproduct where
+module CategoryData.Coproduct where
 
-open import Common.Category
-open import Common.SimplePolynomials
+open import CategoryData.Core
+open import CategoryData.SimplePolynomials
 open import Data.Sum
 open import Data.Product
 open import Function
@@ -11,13 +11,14 @@ open import Function
 -- Coproduct has either of the positions, and its correspoding direction
 _+_ : Polynomial → Polynomial → Polynomial
 MkPoly posA dirA + MkPoly posB dirB = MkPoly (posA ⊎ posB) [ dirA , dirB ]
+infixl 28 _+_
 
 coproductUnit : Polynomial
 coproductUnit = 𝟘
 
+-- Canonical injections
 i₁ : {p q : Polynomial} → Arrow p (p + q)
 i₁ = inj₁ ⇄ λ _ → id
-
 i₂ : {p q : Polynomial} → Arrow q (p + q)
 i₂ = inj₂ ⇄ λ _ → id
 

@@ -1,11 +1,11 @@
 {-# OPTIONS --without-K #-}
 
-module Common.Terminal where
+module CategoryData.Terminal where
 
-open import Common.Category
+open import CategoryData.Core
 open import Data.Unit
 open import Data.Empty
-open import Common.SimplePolynomials
+open import CategoryData.SimplePolynomials
 
 arrowToOne : {p : Polynomial} → Arrow p 𝟙
 arrowToOne = (λ _ → tt) ⇄ λ {_ ()}

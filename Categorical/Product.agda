@@ -4,7 +4,7 @@ module Categorical.Product where
 
 open import Categorical.CubicalPoly
 open import Categories.Object.Product Poly
-open import Common.CategoryData
+open import CategoryData.Everything
 open import Agda.Builtin.Sigma
 open import Data.Sum
 open import Cubical.ArrowEquals
@@ -27,9 +27,12 @@ unique {p} {q} {r} {h = h} pᶠ pᵍ = (λ i → ⟨ sym pᶠ i , sym pᵍ i ⟩
                                           ; (inj₂ _) → refl}
         open Polynomial
         lemma : ⟨ π₁ ∘ₚ h , π₂ ∘ₚ h ⟩ ≡ h
-        lemma = arrow≡ refl ((substRefl 
-         {B = (λ (h : position p → position (q * r)) → (x : position p) → direction (q * r) (h x) → direction p x)}
-         (Arrow.mapDirection ⟨ π₁ ∘ₚ h , π₂ ∘ₚ h ⟩)) ∙ mapDir≡)
+        lemma = arrow≡ 
+            refl 
+            ((substRefl 
+                {B = λ (h : position p → position (q * r)) → (x : position p) → direction (q * r) (h x) → direction p x}
+                (Arrow.mapDirection ⟨ π₁ ∘ₚ h , π₂ ∘ₚ h ⟩)
+            ) ∙ mapDir≡)
 
 prod : {A B : Polynomial} → Product A B
 prod {A = A} {B = B} = record
@@ -41,12 +44,3 @@ prod {A = A} {B = B} = record
     ; project₂ = refl
     ; unique = unique
     }
-
-binaryProducts : Cartesian.BinaryProducts Poly
-binaryProducts = record { product = prod }
-
-cartesian : Cartesian.Cartesian Poly
-cartesian = record { terminal = terminalOne ; products = binaryProducts }
-
-productMonoidal : Monoidal Poly
-productMonoidal = Cartesian.CartesianMonoidal.monoidal Poly cartesian

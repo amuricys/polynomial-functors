@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K #-}
 
-module Common.Category where
+module CategoryData.Core where
 
 open import Function
 
@@ -24,5 +24,8 @@ open Arrow public
 idArrow : {A : Polynomial} → Arrow A A
 idArrow = id ⇄ λ _ → id
 
+-- | Composition of polynomials works as you would expect, with the care that ♯ are dependent.
+-- | p  -- f -- > q -- g -- > r
+-- |    <- f♯ ---   <- g♯ --- 
 _∘ₚ_ : {A B C : Polynomial} → Arrow B C → Arrow A B → Arrow A C
-_∘ₚ_ (bToCPos ⇄ cToBDir) (aToBPos ⇄ bToADir) = (bToCPos ∘ aToBPos) ⇄ (λ fromPos z → bToADir fromPos (cToBDir (aToBPos fromPos) z))
+_∘ₚ_ (f ⇄ f♯) (g ⇄ g♯) = (f ∘ g) ⇄ (λ fromPos z → g♯ fromPos (f♯ (g fromPos) z))

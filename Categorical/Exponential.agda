@@ -5,7 +5,7 @@ module Categorical.Exponential where
 open import Categorical.CubicalPoly
 import Relation.Binary.PropositionalEquality as Eq
 open import Categories.Object.Exponential Poly
-open import Common.CategoryData
+open import CategoryData.Everything
 open import Cubical.Data.Sigma
 open import Cubical.Foundations.Isomorphism
 open import Data.Sum
@@ -204,7 +204,7 @@ exp {A} {B} = record
     { B^A = rtoq B A
     ; product = prod
     ; eval = ev
-    ; λg = \{X} X×A x → {!   !}
+    ; λg = \ { {X} record { A×B = A×B ; π₁ = π₁ ; π₂ = π₂ ; ⟨_,_⟩ = ⟨_,_⟩ ; project₁ = project₁ ; project₂ = project₂ ; unique = unique } (f ⇄ f♯) → (λ x i → {! f  !}) ⇄ {!   !}}
     ; β = {!   !}
     ; λ-unique = {!   !}
     }

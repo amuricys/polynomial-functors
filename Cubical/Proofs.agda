@@ -2,7 +2,7 @@
 
 module Cubical.Proofs where
 
-open import Common.CategoryData
+open import CategoryData.Everything
 open import Level
 open import Agda.Builtin.Unit
 open import Data.Empty

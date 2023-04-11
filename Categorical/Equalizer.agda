@@ -4,7 +4,7 @@ module Categorical.Equalizer where
 
 open import Categorical.CubicalPoly
 open import Categories.Diagram.Equalizer Poly
-open import Common.CategoryData
+open import CategoryData.Core
 open import Cubical.ArrowEquals
 open import Cubical.Foundations.Prelude
 open import Data.Sum

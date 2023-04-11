@@ -11,6 +11,7 @@ data DynamicalSystem : Set where
   LotkaVolterra : DynamicalSystem
   HodgkinHuxley : DynamicalSystem
   Lorenz : DynamicalSystem
+  Reservoir : DynamicalSystem
 
 record Options : Set where
   constructor mkopt
@@ -22,7 +23,7 @@ record Options : Set where
 import OptparseHs
 #-}
 
-{-# COMPILE GHC DynamicalSystem = data DynamicalSystem (LotkaVolterra | HodgkinHuxley | Lorenz) #-}
+{-# COMPILE GHC DynamicalSystem = data DynamicalSystem (LotkaVolterra | HodgkinHuxley | Lorenz | Reservoir) #-}
 {-# COMPILE GHC Options = data Options (Options) #-}
 
 postulate 

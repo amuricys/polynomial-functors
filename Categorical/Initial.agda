@@ -2,7 +2,7 @@
 
 module Categorical.Initial where
 
-open import Common.CategoryData
+open import CategoryData.Everything
 open import Categorical.CubicalPoly
 open import Cubical.Proofs
 open import Categories.Object.Initial Poly
