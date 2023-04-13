@@ -7,7 +7,7 @@ open import Data.Unit
 open import Data.Empty
 
 𝟘 : Polynomial
-𝟘 = MkPoly ⊥ (λ _ → ⊥)
+𝟘 = MkPoly ⊥ λ ()
 
 𝟙 : Polynomial
 𝟙 = MkPoly ⊤ (λ _ → ⊥)
