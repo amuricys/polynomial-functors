@@ -16,6 +16,7 @@ open import Cubical.Categories.Limits.Terminal
 open import Cubical.Foundations.Isomorphism
 open import Cubical.Data.Sigma.Properties
 open import Data.Product hiding (Σ-syntax)
+open import Cubical.ArrowEquals
 
 ------- Categorical axioms
 ---------------------------------------
@@ -55,15 +56,6 @@ fromFalseFunctionsEqual f g = funExt λ {()}
 
 ------- Helper conversions and isomorphism between converted representations
 ---------------------------------------
-ArrowAsSigma : Polynomial → Polynomial → Type
-ArrowAsSigma A B = Σ[ mapPosition ∈ (Polynomial.position A → Polynomial.position B) ] 
-    ((fromPos : Polynomial.position A) → Polynomial.direction B (mapPosition fromPos) → Polynomial.direction A fromPos)
-    
-sigmaToArrow : {A B : Polynomial} → ArrowAsSigma A B → Arrow A B
-sigmaToArrow (mapPosition , mapDirection) = mapPosition ⇄ mapDirection
-
-arrowToSigma : {A B : Polynomial} → Arrow A B → ArrowAsSigma A B
-arrowToSigma  (mapPosition ⇄ mapDirection) = mapPosition , mapDirection
 
 isoArrowSigma : {A B : Polynomial} → Iso (Arrow A B) (ArrowAsSigma A B)
 isoArrowSigma = iso arrowToSigma sigmaToArrow (λ b → refl) (λ a → refl)
@@ -139,16 +131,11 @@ arrowsEqual3 {f = f} {g = g} a b i = sigmaToArrow (arrowSigmasEqual3 {f = f} {g 
 ------- Proofs related to uniqueness of arrows from and to certain polynomials
 ---------------------------------------
 arrowFromZeroUnique : {p : Polynomial} (f : Arrow 𝟘 p) → arrowFromZero ≡ f
-arrowFromZeroUnique f = arrowsEqual (λ {i ()}) (funExt λ {()})
+arrowFromZeroUnique f = arrow≡ (funExt λ ()) (funExt λ ())
 
 arrowToOneUnique : {p : Polynomial} (f : Arrow p 𝟙) →  arrowToOne ≡ f
-arrowToOneUnique {p = p} f = arrowsEqual mapPosEq (λ {i fromPos ()} )
-    where
-        isPropUnit : (x y : ⊤) → x ≡ y
-        isPropUnit tt tt = refl
-        
-        mapPosEq : (λ x → tt) ≡ (λ x → tt)
-        mapPosEq = funExt λ x i → isPropUnit (Arrow.mapPosition f x) (Arrow.mapPosition (arrowToOne {p}) x) i
+arrowToOneUnique {p = p} f = arrow≡ refl (funExt λ x → funExt λ ())
+
 ---------------------------------------
 
 ------- Proofs related to plugging in 0
@@ -228,3 +215,4 @@ I≡pOfOne = isoToPath isoI≡pOfOne
 -- derivative : Polynomial → Polynomial
 -- derivative (MkPoly pos dir) = MkPoly (Σ pos dir) (λ {(i , a) → {! dir i - a  !}})
 
+ 
