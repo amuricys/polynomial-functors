@@ -40,6 +40,7 @@ record CollectingDataState (numNodes : ℕ) (systemDim : ℕ) : Set where
   constructor Collecting
   field
     statesHistory : List (ReservoirState numNodes)
+    systemHistory : List (Vec ℝ systemDim)
     outputWeights : OutputWeights numNodes systemDim
     counter : ℕ
 
