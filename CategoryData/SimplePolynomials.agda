@@ -15,16 +15,22 @@ open import Data.Empty
 Y : Polynomial
 Y = MkPoly ⊤ (λ _ → ⊤)
 
--- Constant polynomial: p(y) = A
-Constant : (A : Set) → Polynomial
-Constant A = MkPoly A (λ _ → ⊥)
-
-monomial : (A B : Set) → Polynomial -- A*Y^B
+-- | p(y) = A*y^B
+monomial : (A B : Set) → Polynomial
 monomial A B = MkPoly A (λ _ → B)
 
-selfMonomial : Set → Polynomial -- S*Y^S
+-- | p(y) = A
+Constant : (A : Set) → Polynomial
+Constant A = monomial A ⊥
+
+-- | p(y) = S*y^S
+selfMonomial : Set → Polynomial
 selfMonomial S = monomial S S
 
--- | A pure power summand.
+-- | p(y) = y^S
 purePower : Set → Polynomial
-purePower power = MkPoly ⊤ λ _ → power
+purePower power = monomial ⊤ power
+
+-- | p(y) = A*y
+linear : (A : Set) → Polynomial
+linear A = monomial A ⊤ 
