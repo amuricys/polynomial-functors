@@ -1,41 +1,40 @@
 import numpy as np
 
-def lup_decomposition(A):
+def doolittle_lup_decomposition(A):
     n = A.shape[0]
-    L = np.zeros((n, n))
+    L = np.eye(n)
     U = np.zeros((n, n))
     P = np.eye(n)
 
     for k in range(n):
-        pivot = np.argmax(np.abs(A[k:, k])) + k
-        A[[k, pivot]] = A[[pivot, k]]
-        P[[k, pivot]] = P[[pivot, k]]
+        max_row = np.argmax(np.abs(A[k:, k])) + k
+        if max_row != k:
+            P[[k, max_row]] = P[[max_row, k]]
+            A[[k, max_row]] = A[[max_row, k]]
 
-        L[k, k] = 1
         for i in range(k + 1, n):
             L[i, k] = A[i, k] / A[k, k]
             A[i, k:] -= L[i, k] * A[k, k:]
+
         U[k, k:] = A[k, k:]
 
-    return L, U, P
+    return P, L, U
 
-# Example usage
-A = np.array([[2, 0, 2, 0.6],
-              [3, 3, 4, -2],
-              [5, 5, 4, 2],
-              [-1, -2, 3.4, -1]])
+# Test the implementation
+A = np.array([[4, 3, -1],
+              [5, 3, 2],
+              [2, 1, 3]], dtype=float)
+print("Original Matrix A:")
+print(A)
 
-L, U, P = lup_decomposition(A)
+P, L, U = doolittle_lup_decomposition(A)
 
-print("L:")
-print(L)
-print("U:")
-print(U)
-print("P:")
+
+print("\nPermutation Matrix P:")
 print(P)
-
-# Verify the decomposition
-print("PA:")
-print(np.dot(P, A))
-print("LU:")
-print(np.dot(L, U))
+print("\nLower Triangular Matrix L:")
+print(L)
+print("\nUpper Triangular Matrix U:")
+print(U)
+print("\nReconstructing A from PLU:")
+print(np.dot(P, np.dot(L, U)))

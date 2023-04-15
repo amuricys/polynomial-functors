@@ -136,6 +136,7 @@ replicate = 𝕄 ∘ Vec.replicate ∘ Vec.replicate
 identity : ∀ {A} {n : ℕ} {{numA : Num A A A}} → Matrix A n n
 identity  {n = n} {{numA = numA}} = 𝕄 (tabulate λ i → tabulate λ j → if ⌊ i ≟ j ⌋ then Num.one numA else Num.zero numA)
 
+-- this needs to return the distance to the end of the vector as well HAHA
 maxIdx : ∀ {A n} {{numA : Num A A A}} → Vec A (suc n) → Fin (suc n)
 maxIdx {A} {n} {{numA = numA}} v = proj₁ biggest
   where indicesAndValues : Vec (Fin (suc n) × A) (suc n)
@@ -147,7 +148,61 @@ maxIdx {A} {n} {{numA = numA}} v = proj₁ biggest
             else biggestSoFarIndex , biggestSoFarValue
         biggest = Vec.foldl₁ step indicesAndValues
 
-heee = maxIdx (-7.0 ∷ 1.0 ∷  2.0 ∷ 4.0 ∷  3.0 ∷ []) 
+heee = maxIdx (-7.0 ∷ 1.0 ∷  2.0 ∷ 4.0 ∷  3.0 ∷ [])
+
+sumPositiveProof : ∀ {k y} → k Nat.< k +ℕ suc y
+sumPositiveProof {Nat.zero} {y} = Nat.s≤s Nat.z≤n
+sumPositiveProof {suc k} {y} = Nat.s≤s sumPositiveProof
+
+currentSubColumn : ∀ {A y} → {{numA : Num A A A}} → let n = suc y in (k : ℕ) →  Matrix A (k +ℕ n) (k +ℕ n) → Vec A n
+currentSubColumn k (𝕄 m) = let
+  mᵀ = Vec.transpose m
+  currCol = Vec.lookup mᵀ (Fin.fromℕ< {k} sumPositiveProof)
+  in
+  Vec.drop k currCol
+
+mat : ∀ {A : Set} {a₁₁ a₁₂ a₁₃ a₂₁ a₂₂ a₂₃ a₃₁ a₃₂ a₃₃ : A}→ Matrix A 3 3
+mat {_} {a₁₁} {a₁₂} {a₁₃} {a₂₁} {a₂₂} {a₂₃} {a₃₁} {a₃₂} {a₃₃} = 𝕄 $ 
+  (a₁₁ ∷  a₁₂ ∷  a₁₃ ∷ []) ∷ 
+  (a₂₁ ∷  a₂₂ ∷  a₂₃ ∷ []) ∷ 
+  (a₃₁ ∷  a₃₂ ∷  a₃₃ ∷ []) ∷ []
+
+hmm = maxIdx $ currentSubColumn 0 $ mat {ℝ} {4.0} {3.0} { -1.0} {5.0} {3.0} {2.0} {2.0} {1.0} {3.0}
+
+
+toVecOfSum : ∀ {A : Set} {k y} → {p : k Nat.< (suc y)} → Vec A (suc y) → Vec A (k +ℕ suc (y ∸ k))
+toVecOfSum {k = Nat.zero} {p = Nat.s≤s Nat.z≤n} v = v
+toVecOfSum {k = suc m} {p = Nat.s≤s (Nat.s≤s p)} (x ∷ v) = x ∷ (toVecOfSum {k = m} {p = (Nat.s≤s p)} v)
+
+
+toMatrixOfSum : ∀ {A : Set} {k y} → {p : k Nat.< (suc y)} → Matrix A (suc y) (suc y) → Matrix A (k +ℕ suc (y ∸ k)) (k +ℕ suc (y ∸ k))
+toMatrixOfSum {p = p} (𝕄 v) = 𝕄 $ toVecOfSum {p = p} (Vec.map (toVecOfSum {p = p}) v)
+
+toN< : {n : ℕ} → {k : Fin (suc n)} → toℕ k Nat.< suc n
+toN< {Nat.zero} {Fin.zero} = Nat.s≤s Nat.z≤n
+toN< {suc n} {Fin.zero} = Nat.s≤s Nat.z≤n
+toN< {suc n} {Fin.suc k} = Nat.s≤s toN<
+
+
+pr : ∀ {n} (k : Fin (suc n)) (maxind : Fin (suc (n ∸ toℕ k))) → toℕ k +ℕ toℕ maxind Nat.< suc n
+pr {n} Fin.zero Fin.zero = Nat.s≤s Nat.z≤n
+pr {suc n} Fin.zero (Fin.suc maxind) = Nat.s≤s (pr Fin.zero maxind )
+pr {suc n} (Fin.suc k) maxind = Nat.s≤s (pr k maxind)
+
+addBack : ∀ {n} → (k : Fin (suc n)) → Fin (suc (n ∸ toℕ k)) → Fin (suc n)
+addBack k maxind = fromℕ< {(toℕ k +ℕ toℕ maxind)} (pr k maxind)
+findPivot : ∀ {A n} {{numA : Num A A A}} → Matrix A (suc n) (suc n) → Fin (suc n) → Fin (suc n)
+findPivot {A} {n} m k = let
+  curSubCol = currentSubColumn (toℕ k) (toMatrixOfSum {A} {k = toℕ k} {y = n} {p = toN< {n} {k}} m)
+  maxInd = maxIdx curSubCol
+  in
+  addBack k maxInd
+
+hm = findPivot (mat {ℝ} 
+   {16.0} {3.0} { 17.0} 
+   {5.0} {3.0} {2.0} 
+   {2.0} {4.0} {3.0}
+   ) (Fin.suc Fin.zero)
 
 swapRows : ∀ {A} → {n m : ℕ} → Fin n → Fin n → Matrix A n m → Matrix A n m
 swapRows i j mat@(𝕄 m) = 𝕄 (Vec.updateAt i (λ _ → lookup m j) (Vec.updateAt j (λ _ → lookup m i) m))
@@ -173,46 +228,6 @@ record LUP (A : Set) (n : ℕ) : Set where
     U : Matrix A n n
     P : Matrix A n n
 
-findPivot : ∀ {A m n} {{numA : Num A A A}} → (k : Fin (toℕ m +ℕ n)) → Matrix A (toℕ k +ℕ n) (toℕ k +ℕ n) → Fin (toℕ k +ℕ n)
-findPivot {A} {n} {{numA}} k (𝕄 m) = {!   !}
-
-
--- luDecomposition : ∀ {A} {{numA : Num A A A}} → {n : ℕ} → Matrix A n n → LUP A n
--- luDecomposition {A} {{numA}} {n}  mat@(𝕄 m) = MkLUP l u p
---   where
---     step : Fin n → (Matrix A n n × Matrix A n n × Matrix A n n) → Matrix A n n × Matrix A n n × Matrix A n n
---     step k (𝕄 l , 𝕄 u , 𝕄 p) = (l' , u' , p')
---       where
---         -- Find the pivot index and swap the rows in P, L, and U
---         pivotIdx = maxIdx (Vec.map (λ row → Vec.drop (Fin.toℕ k) row) u)
---         p' = swapRows k pivotIdx p
---         u' = swapRows k pivotIdx u
---         l' = swapRows k pivotIdx (record { values = Vec.updateAt k (const (lookup l k Vec.++ (0 ∷ Vec.replicate k Num.zero numA))) l })
-        
---         -- Perform Gaussian elimination
---         elim : ℕ → Matrix A n n → Matrix A n n
---         elim i u =
---           let
---             factor = Num._*_ numA (Num._*_ numA (Num.one numA) (lookup u i k)) (lookup u k k)
---           in
---             record { values = Vec.updateAt i (const (Vec.zipWith (Num._+_ numA) (lookup u i) (Vec.map (Num._*_ numA factor) (lookup u k)))) u }
-
---         -- Update U and L matrices
---         u'' = Vec.foldl elim u' (Vec.allFin n)
---         l'' = Vec.foldl (λ i l → record { values = Vec.updateAt i (const (Vec.updateAt k (const (lookup u i k)) (lookup l i))) l }) l' (Vec.allFin n)
-
---     -- Initialize L, U, and P matrices
---     u₀ = mat
---     l₀ = identity
---     p₀ = identity
-
---     -- Perform LU decomposition
---     lup : (Matrix A n n × Matrix A n n × Matrix A n n)
---     lup = Vec.foldl step (l₀ , u₀ , p₀) (Vec.allFin n)
---     l = proj₁ lup
---     u = proj₁ (proj₂ lup)
---     p = proj₂ (proj₂ lup)
-
 _⁻¹ : ∀ {A} {{numA : Num A A A}} {n : ℕ} → Matrix A n n → Matrix A n n
 _⁻¹ m = {!   !}
 infixl 40 _⁻¹
@@ -224,24 +239,3 @@ pseudoinverse {A} {r} {c} {{numA = numA}} ridge m =
     aTaPlusLambdaI = aTa +ᴹ (identity *ᴹs ridge)
   in
     aTaPlusLambdaI ⁻¹ *ᴹ m ᵀ
-  
-
--- Calculate the dot product of two vectors.
--- Define a function to update the output weights
-updateOutputWeights :  {numNodes systemDim : ℕ} → OutputWeights numNodes systemDim → ℝ → Vec ℝ numNodes → Vec ℝ systemDim → OutputWeights numNodes systemDim
-updateOutputWeights w learningRate state target = w + learningRate ⊗ (outerProduct (target - (w × state)) state)
-
--- Initialize the output weights to a zero matrix
-initialOutputWeights :  {numNodes systemDim : ℕ} →  OutputWeights numNodes systemDim
-initialOutputWeights = zeroMatrix systemDim numNodes
-
--- Define a learning rate (you can choose an appropriate value)
-learningRate : ℝ
-learningRate = 0.1
-
--- LMS algorithm for multiple iterations.
--- lmsAlgorithm : ∀ {n A} {{numA : Num A A A}} → A → Vec A n → Vec A n → Vec A n → Vec (A × Vec A n)
--- lmsAlgorithm μ w [] [] = []
--- lmsAlgorithm μ w (d ∷ ds) (x ∷ xs) =
---   let (e, w') = lmsIteration μ w d x
---   in (e , w') ∷ lmsAlgorithm μ w' ds xs

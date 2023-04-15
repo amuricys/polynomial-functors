@@ -43,15 +43,7 @@ eq {p} {q} f@(mpf ⇄ mdf) g@(mpg ⇄ mdg) =
          isEqualizer : IsEqualizer arr f g
          isEqualizer = record { 
             equality = arrow≡∀∀ mapPos≡ mapDir≡;
-            equalize = λ {X} {h@(hPos ⇄ hDir)} x  →  equalize {X} {h} {!   !} ;
-            -- let
-            --   arrPos = Arrow.mapPosition arr
-            --   arrDir = Arrow.mapDirection arr
-            --   mpf∘hPos≡mpg∘hPos : mpf ∘ hPos ≡ mpg ∘ hPos
-            --   mpf∘hPos≡mpg∘hPos = λ i → Arrow.mapPosition ({!   !} i)
-            --   in (λ x₁ → hPos x₁ , λ i → mpf∘hPos≡mpg∘hPos i x₁) ⇄ λ { fromPos (inc x) → hDir fromPos x
-            --                                                          ; fromPos (glue smth i) → {!   !}
-            --                                                          ; fromPos (squash x₁ x₂ x y i i₃) → {!   !} }; 
+            equalize = λ {X} {h@(hPos ⇄ hDir)} x  →  equalize {X} {h} x ; 
             universal = {!   !} ; 
             unique = {!   !} }
               where equalize : {X : Polynomial} {h : Arrow X p} → (x : f ∘ₚ h ≡ g ∘ₚ h) → Arrow X eqObj 
@@ -69,25 +61,16 @@ eq {p} {q} f@(mpf ⇄ mdf) g@(mpg ⇄ mdg) =
                               (dirQFromG : direction q (mpg (fst fromPos))) →
                               let canonicalDirQ = subst (λ x → direction q x → direction p (fst fromPos)) (sym (snd fromPos)) (mdg (fst fromPos))
                                   typeOfMapDirGivenMapPos : (EqualizedPosition → position q) → Set
-                                  typeOfMapDirGivenMapPos h = (x : EqualizedPosition) → direction q (h x) → Coeq (mdf (fst x)) (subst (λ x₁ → direction q x₁ → direction p (fst x)) (sym (snd x)) (mdg (fst x)))
+                                  typeOfMapDirGivenMapPos h = 
+                                    (x : EqualizedPosition) → 
+                                    direction q (h x) → 
+                                    Coeq (mdf (fst x)) (subst (λ x₁ → direction q x₁ → direction p (fst x)) (sym (snd x)) (mdg (fst x)))
                                   substed = subst typeOfMapDirGivenMapPos mapPos≡ (λ fromPos₁ z → mapDirection arr fromPos₁ (mdf (mapPosition arr fromPos₁) z)) 
                               in
                               substed fromPos dirQFromG
                               ≡c
                               mapDirection arr fromPos (mdg (mapPosition arr fromPos) dirQFromG)
-                    mapDir≡ fromPos dirQFromG = let canonicalDirQ = subst (λ x → direction q x → direction p (fst fromPos)) (sym (snd fromPos)) (mdg (fst fromPos))
-                                                    typeOfMapDirGivenMapPos : (EqualizedPosition → position q) → Set
-                                                    typeOfMapDirGivenMapPos h = (x : EqualizedPosition) → direction q (h x) → Coeq (mdf (fst x)) (subst (λ x₁ → direction q x₁ → direction p (fst x)) (sym (snd x)) (mdg (fst x)))
-                                                    substed = subst typeOfMapDirGivenMapPos mapPos≡ (λ fromPos₁ z → mapDirection arr fromPos₁ (mdf (mapPosition arr fromPos₁) z)) 
-                              in
-                              λ i → inc (subst {! (λ x → direction q x → direction p i)  !} {!   !} {!   !})
-                  --   mapDir≡ : direction q (mpg fst₁) → 
-                                    -- let substed = subst (λ h → (x : position eqObj) → direction q (h x) → direction eqObj x) 
-                  --                                 mapPos≡ 
-                  --                                 (mapDirection ((mpf ⇄ mdf) ∘ₚ arr))
-                  --                 in
-                  --                   substed (fst₁ , snd₁)  dirQFromG
-                  --             ≡c mapDirection ((mpg ⇄ mdg) ∘ₚ arr) (fst₁ , snd₁) dirQFromG
+                    mapDir≡ fromPos dirQFromG = {!   !}
 
 import Categories.Diagram.Equalizer (Sets zero) as SetsEq
 eqSets : {A B : Set} → (f g : A → B) → SetsEq.Equalizer f g
