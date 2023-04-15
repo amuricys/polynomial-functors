@@ -133,6 +133,9 @@ infixl 31 _*ᴹⱽ_
 replicate : ∀ {A} → {r c : ℕ} → A → Matrix A r c
 replicate = 𝕄 ∘ Vec.replicate ∘ Vec.replicate
 
+zeros : ∀ {A} → {r c : ℕ} → {{numA : Num A A A}} → Matrix A r c
+zeros = replicate zero
+
 identity : ∀ {A} {n : ℕ} {{numA : Num A A A}} → Matrix A n n
 identity  {n = n} {{numA = numA}} = 𝕄 (tabulate λ i → tabulate λ j → if ⌊ i ≟ j ⌋ then Num.one numA else Num.zero numA)
 
@@ -227,6 +230,28 @@ record LUP (A : Set) (n : ℕ) : Set where
     L : Matrix A n n
     U : Matrix A n n
     P : Matrix A n n
+
+luDecomposition : ∀ {A} {{numA : Num A A A}} {n : ℕ} → Matrix A (suc n) (suc n) → LUP A (suc n)
+luDecomposition {A = A} {n = n} (𝕄 m) = fromAccType $ Vec.foldl (λ _ → AccType) step initLUP (Vec.allFin (suc n))
+  where AccType : Set
+        AccType = Matrix A (suc n) (suc n) × LUP A (suc n)
+        fromAccType : AccType → LUP A (suc n)
+        fromAccType = proj₂
+        initLUP : AccType
+        initLUP = 𝕄 m , MkLUP identity zeros identity
+        step : AccType → Fin (suc n) → AccType
+        step (mat@(𝕄 v) , MkLUP L U P) ind = newA ,  MkLUP L' U' P'
+          where pivot = findPivot mat ind
+                swappedA : Matrix A (suc n) (suc n)
+                swappedA = swapRows ind pivot mat
+                L' : Matrix A (suc n) (suc n)
+                L' = {!   !}
+                newA : Matrix A (suc n) (suc n)
+                newA = {!   !}
+                U' : Matrix A (suc n) (suc n)
+                U' = {!   !}
+                P' : Matrix A (suc n) (suc n)
+                P' = swapRows ind pivot P
 
 _⁻¹ : ∀ {A} {{numA : Num A A A}} {n : ℕ} → Matrix A n n → Matrix A n n
 _⁻¹ m = {!   !}
