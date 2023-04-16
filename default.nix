@@ -32,6 +32,7 @@ let
     buildPhase = ''
       agda -c \
         --ghc-flag=-i${haskellSrcPath} \
+        --ghc-flag=-iDynamical/Matrix/src \
         ${pkgs.lib.concatMapStrings (dep: "--ghc-flag=-package=${dep.name} ") haskellDeps} \
         --ghc-flag=-package-db=${customGhc}/lib/ghc-${customGhc.version}/package.conf.d \
         ${agdaSrc}
@@ -53,5 +54,5 @@ let
 in
 {
   plot = plot;
-  pseudoInverse = pseudoInverse;
+#  pseudoInverse = pseudoInverse;
 }

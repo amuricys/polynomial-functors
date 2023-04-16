@@ -9,11 +9,11 @@ open import Data.Unit
 open import Data.Nat renaming (_+_ to _+ℕ_)
 open import Data.Float renaming (Float to ℝ; tanh to tanh1) hiding (⌊_⌋)
 open import CategoryData.Everything renaming (_*_ to _*p_ ; _+_ to _+p_; Y to Y')
-open import Dynamical.Matrix.Everything as Matrix using (Matrix ; _*ᴹⱽ_ ; _*ᴹ_ ; _+ⱽ_)
+open import Codata.Stream
+open import Dynamical.Matrix.Everything as Matrix using (Matrix ; _*ⱽᴹ_ ; _*ᴹⱽ_ ; _*ᴹ_ ; _+ᴹ_ ; _+ⱽ_ ; _ᵀ ; _⁻¹ ; _*ˢᴹ_ ; eye)
 open import Dynamical.Reservoir.State
 open import Dynamical.Lorenz as Lorenz
-open import Data.Vec as Vec using (Vec ; map)
-open import Data.List using (_∷_ ; List)
+open import Data.Vec as Vec using (Vec ; map ; _∷_)
 open import Data.Bool using (if_then_else_ ; Bool)
 open import Relation.Nullary.Decidable using (⌊_⌋)
 open import Function
@@ -47,16 +47,6 @@ DependentInput : {numNodes systemDim : ℕ} → ReadoutOutput systemDim → Set
 DependentInput {numNodes} {systemDim} CD = CollectingDataInput numNodes systemDim
 DependentInput {numNodes} (R _) = RunningInput numNodes
 
-
-
--- Define a function to apply the LMS update rule iteratively
--- trainedOutput :  {numNodes systemDim : ℕ} → OutputWeights numNodes systemDim
--- trainedOutput = foldl (λ (stateTargetPair : (Vec ℝ numNodes × Vec ℝ systemDim)) (currentWeights : OutputWeights numNodes systemDim) →
---                          let (state, target) = stateTargetPair in
---                          updateOutputWeights currentWeights learningRate state target)
---                        initialOutputWeights
---                        (zip statesHistory systemHistory)
-
 reservoir : (numNodes systemDim : ℕ) → DynamicalSystem
 reservoir numNodes systemDim = MkDynamicalSystem (ReservoirState numNodes) interface (readout ⇄ update)
   where interface : Polynomial
@@ -72,18 +62,23 @@ readoutLayer numNodes systemDim trainingSteps = MkDynamicalSystem (ReadoutLayerS
         interface = MkPoly (ReadoutOutput systemDim) DependentInput
         readout : ReadoutLayerState numNodes systemDim → ReadoutOutput systemDim
         readout (Coll _) = CD -- don't care when training
-        readout (Run (Running outputWeights (Res nodeStates))) = R (outputWeights *ᴹⱽ nodeStates)
+        readout (Run (Running outputWeights (Res nodeStates))) = R (outputWeights ᵀ *ᴹⱽ nodeStates)
         update : (fromPos : ReadoutLayerState numNodes systemDim) → DependentInput (readout fromPos) → ReadoutLayerState numNodes systemDim
-        update (Coll (Collecting statesHistory systemHistory outputWeights counter)) (CDI newNodeStates systemOutput) = 
+        update (Coll (Collecting counter statesHistory systemHistory outputWeights)) (CDI newNodeStates systemOutput) = 
           if is-≤ counter trainingSteps then keepCollecting else trainThenRun
             where keepCollecting : ReadoutLayerState numNodes systemDim
-                  keepCollecting = Coll (Collecting (newNodeStates ∷ statesHistory) (systemOutput ∷ systemHistory) outputWeights (counter +ℕ 1))
+                  keepCollecting = Coll (Collecting (1 +ℕ counter) (newNodeStates ∷ statesHistory) (systemOutput ∷ systemHistory) outputWeights)
                   trainThenRun : ReadoutLayerState numNodes systemDim
                   trainThenRun = Run (Running trainedOutput initialState)
                     where initialState : ReservoirState numNodes
                           initialState = Res (Vec.replicate 1.0)
                           trainedOutput : OutputWeights numNodes systemDim
-                          trainedOutput = {!   !}
+                          trainedOutput = (statesHist ᵀ *ᴹ statesHist +ᴹ ridge *ˢᴹ eye) ⁻¹ *ᴹ (statesHist ᵀ *ᴹ systemHist) 
+                            where statesHist : Matrix ℝ counter numNodes
+                                  statesHist = Matrix.𝕄 (Vec.map ReservoirState.nodeStates statesHistory)
+                                  systemHist : Matrix ℝ counter systemDim
+                                  systemHist = Matrix.𝕄 systemHistory
+                                  ridge = 0.00001
         update (Run (Running outputWeights reservoirState)) (RI resStates) = Run (Running outputWeights resStates)
 
 preLorRes : (numNodes trainingSteps : ℕ) → InputWeights numNodes 3 → ReservoirWeights numNodes → DynamicalSystem
@@ -131,3 +126,23 @@ lorenzReservoir numNodes trainingSteps inputWeights reservoirWeights =
           (lorenzReservoirWiringDiagram numNodes inputWeights reservoirWeights)
 
     
+lorenzResSeq : 
+  (numNodes : ℕ) →
+  (trainingSteps : ℕ) →
+  (inputWeights : InputWeights numNodes 3) →
+  (reservoirWeights : ReservoirWeights numNodes) → 
+  (collState :  CollectingDataState numNodes 3) → Stream (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ ⊎ ⊤) _
+lorenzResSeq numNodes trainingSteps inputWeights reservoirWeights collState = 
+  run (lorenzReservoir numNodes trainingSteps inputWeights reservoirWeights)
+      auto
+      ((xnt 1.0 , ynt 1.0 , znt 1.0) , (Res (Vec.replicate 0.0)) , Coll collState)
+
+lorenzResList : 
+  (numNodes : ℕ) →
+  (trainingSteps : ℕ) →
+  (inputWeights : InputWeights numNodes 3) →
+  (reservoirWeights : ReservoirWeights numNodes) → 
+  (collState :  CollectingDataState numNodes 3) → Vec (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ) 5000
+lorenzResList numNodes trainingSteps inputWeights reservoirWeights collState = Vec.map (\{(inj₁ x₁) → x₁
+                                                                                        ; (inj₂ tt) → 0.0 , 0.0 , 0.0 , 0.0 , 0.0 , 0.0} ) (take 5000 $ lorenzResSeq numNodes trainingSteps inputWeights reservoirWeights collState)
+ 

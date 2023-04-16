@@ -5,11 +5,10 @@ module Dynamical.Reservoir.Initialize where
 open import Agda.Builtin.Float
 import IO.Primitive as Prim
 open import IO
-open import Dynamical.Reservoir.Matrix
+open import Dynamical.Matrix.Everything
 open import Data.Nat
 open import Data.Vec hiding (_>>=_)
 open import Dynamical.Reservoir.State
-open import Data.List as List
 
 random : IO Float
 random = lift primRandom where
@@ -33,9 +32,17 @@ randomMatrix rows cols = 𝕄 <$> rowTimes rows (randomVec cols) where
     (λ k → row ∷ k ) <$> rowTimes n rowGenerator
 
 
-initTraining : (numNodes systemDim : ℕ) → IO (TrainingState numNodes systemDim)
-initTraining n s = do
-  nodeStates ← randomVec n
+initCollecting : (numNodes systemDim : ℕ) → IO (CollectingDataState numNodes systemDim)
+initCollecting n s = do
   output ← randomMatrix n s
-  pure (Training nodeStates List.[] output 0)
+  pure (Collecting 0 [] [] output)
 
+initInputWeights : (numNodes systemDim : ℕ) → IO (InputWeights numNodes systemDim)
+initInputWeights n s = do
+  input ← randomMatrix n s
+  pure input
+
+initReservoirWeights : (numNodes : ℕ) → IO (ReservoirWeights numNodes)
+initReservoirWeights n = do
+  res ← randomMatrix n n
+  pure res

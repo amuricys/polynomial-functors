@@ -11,20 +11,13 @@ open import Level
 import Category.Monad.Reader
 
 OutputWeights : (numNodes systemDim : ℕ) → Set
-OutputWeights numNodes systemDim = Matrix ℝ systemDim numNodes
+OutputWeights numNodes systemDim = Matrix ℝ numNodes systemDim
 
 InputWeights : (numNodes systemDim : ℕ) → Set
 InputWeights numNodes systemDim = Matrix ℝ numNodes systemDim
 
 ReservoirWeights : (numNodes : ℕ) → Set
 ReservoirWeights numNodes = Matrix ℝ numNodes numNodes
-
-record TrainingState (numNodes : ℕ) (systemDim : ℕ) : Set where
-  constructor Training
-  field
-    statesHistory : List (Vec ℝ numNodes)
-    outputWeights : OutputWeights numNodes systemDim
-    counter : ℕ
 
 -- There's some states we want frozen. Is there a way to achieve this without 
 -- needing inputs to be provided? Maybe yet another dynamical system that
@@ -39,11 +32,10 @@ record ReservoirState (numNodes : ℕ) : Set where
 record CollectingDataState (numNodes : ℕ) (systemDim : ℕ) : Set where
   constructor Collecting
   field
-    statesHistory : List (ReservoirState numNodes)
-    systemHistory : List (Vec ℝ systemDim)
-    outputWeights : OutputWeights numNodes systemDim
     counter : ℕ
-
+    statesHistory : Vec (ReservoirState numNodes) counter
+    systemHistory : Vec (Vec ℝ systemDim) counter
+    outputWeights : OutputWeights numNodes systemDim
 
 record RunningState (numNodes : ℕ) (systemDim : ℕ) : Set where
   constructor Running
@@ -54,3 +46,4 @@ record RunningState (numNodes : ℕ) (systemDim : ℕ) : Set where
 data ReadoutLayerState (numNodes : ℕ) (systemDim : ℕ) : Set where
   Coll : CollectingDataState numNodes systemDim → ReadoutLayerState numNodes systemDim
   Run : RunningState numNodes systemDim → ReadoutLayerState numNodes systemDim
+ 

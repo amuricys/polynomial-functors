@@ -29,8 +29,13 @@ _+ⱽ_ : ∀ {A n} {{numA : Num A A A}} → Vec A n → Vec A n → Vec A n
 _+ⱽ_ {{numA = numA}} = zipWith _+_
 infixl 29 _+ⱽ_
 
-_*ᴹs_ : ∀ {A r c} {{numA : Num A A A}} → Matrix A r c → A → Matrix A r c
-_*ᴹs_ {{numA = numA}} (record { values = m }) a = record { values = Vec.map (Vec.map (a *_)) m }
+_*ᴹˢ_ : ∀ {A r c} {{numA : Num A A A}} → Matrix A r c → A → Matrix A r c
+_*ᴹˢ_ {{numA = numA}} (record { values = m }) a = record { values = Vec.map (Vec.map (a *_)) m }
+infixl 31 _*ᴹˢ_
+
+_*ˢᴹ_ : ∀ {A r c} {{numA : Num A A A}} → A → Matrix A r c → Matrix A r c
+_*ˢᴹ_ = flip _*ᴹˢ_
+infixl 31 _*ˢᴹ_
 
 _*ᴹ_ : ∀ {A r c p} {{numA : Num A A A}} → Matrix A r c → Matrix A c p → Matrix A r p
 _*ᴹ_ {A = A} {p = p} {{numA = numA}} (record { values = m₁ }) (record { values = m₂ }) =
@@ -77,6 +82,11 @@ _*ᴹⱽ_ : ∀ {A r c} {{numA : Num A A A}} → Matrix A r c → Vec A c → Ve
 m *ᴹⱽ v = columnMatrixToVec (m *ᴹ vecToColumnMatrix v)
 infixl 31 _*ᴹⱽ_
 
+_*ⱽᴹ_ : ∀ {A r c} {{numA : Num A A A}} → Vec A c →  Matrix A r c → Vec A r
+_*ⱽᴹ_ = flip _*ᴹⱽ_
+infixl 31 _*ⱽᴹ_
+
+
 replicate : ∀ {A} → {r c : ℕ} → A → Matrix A r c
 replicate = 𝕄 ∘ Vec.replicate ∘ Vec.replicate
 
@@ -90,6 +100,6 @@ eye  {n = n} {{numA = numA}} = 𝕄 (tabulate λ i → tabulate λ j → if ⌊ 
 -- pseudoinverse {r} {c} ridge m =
 --   let
 --     aTa = m ᵀ *ᴹ m
---     aTaPlusLambdaI = aTa +ᴹ (eye *ᴹs ridge)
+--     aTaPlusLambdaI = aTa +ᴹ (eye *ᴹˢ ridge)
 --   in
 --     aTaPlusLambdaI ⁻¹ *ᴹ m ᵀ

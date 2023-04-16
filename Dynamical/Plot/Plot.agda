@@ -20,6 +20,8 @@ fromSigma : {A B : Set} → A P.× B → A × B
 fromSigma ( a ,p b ) = a , b
 
 open import IO.Primitive
+open import Function
+import IO
 
 postulate
   plotDynamics  : Float → List (String × List Float) → IO ⊤
@@ -31,6 +33,8 @@ postulate
 open import Dynamical.LotkaVolterra
 open import Dynamical.HodgkinHuxley
 open import Dynamical.Lorenz
+open import Dynamical.Reservoir.ModeDependent
+open import Dynamical.Reservoir.Initialize
 import Data.Vec as Vec
 open import Dynamical.Plot.Optparse
 
@@ -47,9 +51,16 @@ rest Lorenz param = do
   let y , z = fromSigma (List.unzip yz)
   plotDynamics 0.1 (("x", x) ∷ ("y", y) ∷ ("z", z) ∷ [])
 rest Reservoir param = do
-  let x , yz = fromSigma (List.unzip (Vec.toList lorenzList))
-  let y , z = fromSigma (List.unzip yz)
-  plotDynamics 0.1 (("x", x) ∷ ("y", y) ∷ ("z", z) ∷ [])
+  inputWeights ← IO.run $ initInputWeights 500 3
+  resWeights ← IO.run $ initReservoirWeights 500
+  collState ← IO.run $ initCollecting 500 3
+  let resList = lorenzResList 500 1000 inputWeights resWeights collState
+      x , yzabc = fromSigma (List.unzip (Vec.toList resList))
+      y , zabc = fromSigma (List.unzip yzabc)
+      z , abc = fromSigma (List.unzip zabc)
+      a , bc = fromSigma (List.unzip abc)
+      b , c = fromSigma (List.unzip bc)
+  plotDynamics 0.1 (("x", x) ∷ ("y", y) ∷ ("z", z) ∷ ("a", a) ∷ ("b", b) ∷ ("c", c) ∷ []) 
 
 main : IO ⊤
 main = do
