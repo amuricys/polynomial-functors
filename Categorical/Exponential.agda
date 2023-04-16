@@ -2,7 +2,7 @@
 
 module Categorical.Exponential where
 
-open import Categorical.CubicalPoly
+open import Categorical.Instance.Poly
 import Relation.Binary.PropositionalEquality as Eq
 open import Categories.Object.Exponential Poly
 open import CategoryData.Everything

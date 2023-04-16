@@ -2,7 +2,7 @@
 
 module Categorical.Monoidal.Coproduct where
 
-open import Categorical.CubicalPoly
+open import Categorical.Instance.Poly
 open import Categorical.Initial
 open import Categorical.Coproduct
 open import Categories.Object.Coproduct Poly

@@ -16,7 +16,7 @@ open import Cubical.Foundations.Prelude
 open import CategoryData.Everything
 open import Function
 open import Function.Surjection hiding (id)
-open import Categorical.CubicalPoly
+open import Categorical.Instance.Poly
 open import Cubical.Proofs
 open import Data.Bool
 

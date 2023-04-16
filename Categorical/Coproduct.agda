@@ -2,7 +2,7 @@
 
 module Categorical.Coproduct where
 
-open import Categorical.CubicalPoly
+open import Categorical.Instance.Poly
 open import Categorical.Initial
 open import Categories.Object.Coproduct Poly
 open import CategoryData.Core

@@ -1,6 +1,6 @@
-{-# OPTIONS --cubical --allow-unsolved-metas #-}
+{-# OPTIONS --cubical #-}
 
-module Categorical.CubicalPoly where
+module Categorical.Instance.Poly where
 
 open import Level renaming (suc to lsuc ; zero to lzero)
 open import Categories.Category
@@ -9,12 +9,6 @@ open import Cubical.Proofs
 open import Cubical.Foundations.Prelude
 
 open Polynomial
-record SetPolynomial : Set₁ where
-    constructor MkSetPoly
-    field
-        poly : Polynomial
-        isPosSet : isSet (position poly)
-        isDirSet : ∀ {p : position poly} → isSet (direction poly p)
 
 -- Definition of Poly category: integration point between agda-categories and cubical
 Poly : Category (lsuc lzero) lzero lzero

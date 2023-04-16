@@ -2,7 +2,7 @@
 
 module Categorical.Monoidal.Product where
 
-open import Categorical.CubicalPoly
+open import Categorical.Instance.Poly
 open import Categorical.Product
 open import Cubical.Foundations.Prelude
 open import Data.Product

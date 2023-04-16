@@ -2,7 +2,7 @@
 
 module Categorical.Product where
 
-open import Categorical.CubicalPoly
+open import Categorical.Instance.Poly
 open import Categories.Object.Product Poly
 open import CategoryData.Everything
 open import Agda.Builtin.Sigma

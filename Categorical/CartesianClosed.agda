@@ -3,7 +3,7 @@
 module Categorical.CartesianClosed where
 
 open import CategoryData.Everything
-open import Categorical.CubicalPoly
+open import Categorical.Instance.Poly
 
 import Relation.Binary.PropositionalEquality as Eq
 open import Categories.Object.Exponential Poly

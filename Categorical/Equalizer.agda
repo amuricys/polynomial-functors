@@ -2,7 +2,7 @@
 
 module Categorical.Equalizer where
 
-open import Categorical.CubicalPoly
+open import Categorical.Instance.Poly
 open import Categories.Category.Instance.Sets
 open import Categories.Diagram.Equalizer Poly
 open import Level
@@ -104,6 +104,14 @@ eqSets {A} {B} f g = record {
                         in
                           ctop {!   !}
 
+Coeq-rec : ∀ {ℓ} {C : Type ℓ} {A B : Set} {f g : A → B}
+      → isSet C → (h : B → C)
+      → (∀ x → h (f x) ≡ h (g x)) → Coeq f g → C
+Coeq-rec cset h h-coeqs (inc x) = h x
+Coeq-rec cset h h-coeqs (glue x i) = h-coeqs x i
+Coeq-rec cset h h-coeqs (squash x y p q i j) =
+  cset (g x) (g y) (λ i → g (p i)) (λ i → g (q i)) i j
+  where g = Coeq-rec cset h h-coeqs
 
 open Coeq
 coeqSets : {A B : Set} → (f g : A → B) → Coequalizer f g
@@ -112,7 +120,7 @@ coeqSets {A} {B} f g = record {
       arr = λ x → inc x; 
       isCoequalizer = record { 
             equality = \{x} → ctop (glue x) ; 
-            coequalize = λ { {coeqSet} {h} x x₁ → coequalize {coeqSet} {h} x x₁ }; 
+            coequalize = {!   !}; 
             universal = reflp ; 
             unique = {!   !} 
             }

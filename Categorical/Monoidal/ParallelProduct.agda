@@ -9,7 +9,7 @@ open import Agda.Builtin.Unit
 open import Cubical.PolynomialEquals
 open import Cubical.Proofs
 open import Categories.Category.Monoidal
-open import Categorical.CubicalPoly
+open import Categorical.Instance.Poly
 open import Categories.Functor.Bifunctor
 open import Cubical.ArrowEquals
 open import Cubical.Data.Sigma.Properties

@@ -3,7 +3,7 @@
 module Categorical.Terminal where
 
 open import CategoryData.Everything
-open import Categorical.CubicalPoly
+open import Categorical.Instance.Poly
 open import Cubical.Proofs
 open import Categories.Object.Terminal Poly
 
