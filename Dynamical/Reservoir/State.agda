@@ -4,7 +4,7 @@ module Dynamical.Reservoir.State where
 
 open import Data.Float renaming (Float to ℝ)
 open import Data.Nat
-open import Dynamical.Reservoir.Matrix
+open import Dynamical.Matrix.Core
 open import Data.Vec hiding (_>>=_)
 open import Data.List
 open import Level

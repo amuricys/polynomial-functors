@@ -9,4 +9,4 @@
 *.png
 *.DS_Store
 .vscode
-result
+result*

@@ -4,8 +4,6 @@
 
 module HsPlot where
 
--- a shit ton of nix stuff was needed. cairo, cairo.dev, zlib, zlib.dev, pkgconfig (NOT pkg-config with a dash)
-
 import Graphics.Rendering.Chart.Easy
 import Graphics.Rendering.Chart.Backend.Cairo
 import Control.Monad (forM_)

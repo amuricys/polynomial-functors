@@ -9,7 +9,7 @@ open import Data.Unit
 open import Data.Nat renaming (_+_ to _+ℕ_)
 open import Data.Float renaming (Float to ℝ; tanh to tanh1) hiding (⌊_⌋)
 open import CategoryData.Everything renaming (_*_ to _*p_ ; _+_ to _+p_; Y to Y')
-open import Dynamical.Reservoir.Matrix as Matrix using (Matrix ; _*ᴹⱽ_ ; _*ᴹ_ ; _+ⱽ_)
+open import Dynamical.Matrix.Everything as Matrix using (Matrix ; _*ᴹⱽ_ ; _*ᴹ_ ; _+ⱽ_)
 open import Dynamical.Reservoir.State
 open import Dynamical.Lorenz as Lorenz
 open import Data.Vec as Vec using (Vec ; map)
