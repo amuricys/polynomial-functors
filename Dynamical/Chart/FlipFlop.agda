@@ -13,6 +13,8 @@ open import Data.Nat.DivMod
 open import Data.Bool
 open import Cubical.Foundations.Everything hiding (id; _∘_)
 open import Function
+open import Cubical.Chart.ChartArrowCommute
+open import CategoryData.Chart.Core
 
 -- Example from https://www.youtube.com/watch?v=QNuGyjHJtP8, ~20 min mark
 
@@ -57,14 +59,25 @@ law₁ : let
         r = mapPosition (dynamics counter)
         r' = mapPosition (dynamics flipFlop)
         f = morphSystem
-    in  r' ∘ f  ≡ r
-law₁ = refl
+    in  (n : Nat) → r' (f n)  ≡ r n
+law₁ n = refl
 
+-- law₂ : let 
+--         u = mapDirection (dynamics counter)
+--         u' = mapDirection (dynamics flipFlop)
+--         f = morphSystem
+--     in  (s : Nat) (x : ⊤) → {! u' ? ≡   !} -- u' (f s x) ≡ (f ∘ (u s)) x
 law₂ : let 
-        u = mapDirection (dynamics counter)
-        u' = mapDirection (dynamics flipFlop)
+        g# = mapDirection (dynamics counter)
+        g = mapPosition (dynamics counter)
+        h# = mapDirection (dynamics flipFlop)
+        h = mapPosition (dynamics flipFlop)
         f = morphSystem
-    in  (s : Nat)  → (u' ∘ f) s ≡ f ∘ (u s)
-law₂ 0 = refl
-law₂ 1 = refl
-law₂ (suc (suc s)) = law₂ s
+        p = linear Switch
+    in  (s : Nat) (dir : (direction p) (g s)) → f (g# s dir) ≡ h# (f s) (subst (λ x → direction p x) (sym (law₁ s)) dir)
+law₂ zero x = refl
+law₂ (suc zero) x = refl
+law₂ (suc (suc s)) x = law₂ s x
+
+square : ArrowChartCommute (dynamics counter) (dynamics flipFlop) (mkChart morphSystem λ _ → morphSystem) idChart
+square = law₁ , law₂
