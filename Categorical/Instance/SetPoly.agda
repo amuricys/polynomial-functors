@@ -7,6 +7,8 @@ open import Categories.Category
 open import CategoryData.Core
 open import Cubical.Proofs
 open import Cubical.Foundations.Prelude
+open import Cubical.Foundations.HLevels
+open import Cubical.Foundations.Isomorphism
 
 -- Definition of SetPoly category: Polynomials based in Set in the HoTT sense
 record SetPolynomial : Set₁ where
@@ -16,6 +18,14 @@ record SetPolynomial : Set₁ where
         isPosSet : isSet (position poly)
         isDirSet : ∀ {p : position poly} → isSet (direction poly p)
 
+PolyAsSigma : Set₁
+PolyAsSigma = Σ[ poly ∈ Polynomial ] 
+                Σ[ isPosSet ∈ isSet (position poly) ] 
+                    (∀ {p : position poly} → isSet (direction poly p))
+
+isSetPolyAsSigma : isSet PolyAsSigma
+isSetPolyAsSigma = isSetΣ {!   !} {!   !} -- Hard
+
 open SetPolynomial
 isSetPoly : isSet SetPolynomial
 isSetPoly = λ x y x₁ y₁ → {!   !}
@@ -24,6 +34,25 @@ record SetArrow (from to : SetPolynomial) : Set where
     constructor ⇄ˢ
     field
         arrow : Arrow (poly from) (poly to)
+
+SetArrowAsSigma : (p q : SetPolynomial) → Set
+SetArrowAsSigma p q = Σ[ mapPos ∈ (position (poly p) → position (poly q)) ]
+    ((pos : position (poly p)) → direction (poly q) (mapPos pos) → direction (poly p) pos)
+
+isSetArrowAsSigma : {p q : SetPolynomial} → isSet (SetArrowAsSigma p q)
+isSetArrowAsSigma {p} {q} = isSetΣ (isSetΠ λ x → isPosSet q) λ x → isSetΠ λ y → isSetΠ λ z → isDirSet p {y}
+
+arrowAsSigma≡arrow : {p q : SetPolynomial} → SetArrow p q ≡ SetArrowAsSigma p q
+arrowAsSigma≡arrow {p} {q} = isoToPath (iso f f⁻ (λ b → refl) λ a → refl)
+    where
+        f : SetArrow p q → SetArrowAsSigma p q
+        f (⇄ˢ arrow) = mapPosition arrow , mapDirection arrow
+
+        f⁻ : SetArrowAsSigma p q → SetArrow p q
+        f⁻ (mapPos , mapDir) = ⇄ˢ (mapPos ⇄ mapDir)
+
+isSetArrow : {p q : SetPolynomial} → isSet (SetArrow p q)
+isSetArrow {p} {q} = subst isSet (sym arrowAsSigma≡arrow) (isSetArrowAsSigma {p} {q})
 
 idSetArrow : ∀ {A : SetPolynomial} → SetArrow A A
 idSetArrow = ⇄ˢ idArrow
