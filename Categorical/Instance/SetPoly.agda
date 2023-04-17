@@ -11,6 +11,15 @@ open import Cubical.Foundations.HLevels
 open import Cubical.Foundations.Isomorphism
 
 -- Definition of SetPoly category: Polynomials based in Set in the HoTT sense
+
+-- record Polynomial : Set₁ where
+--     constructor MkPoly
+--     field
+--         position : Set
+--         direction : position → Set
+-- open Polynomial public
+
+
 record SetPolynomial : Set₁ where
     constructor MkSetPoly
     field
@@ -28,8 +37,9 @@ isSetPolyAsSigma = isSetΣ {!   !} {!   !} -- Hard
 
 open SetPolynomial
 isSetPoly : isSet SetPolynomial
-isSetPoly = λ x y x₁ y₁ → {!   !}
+isSetPoly a@(MkSetPoly poly₁ isPosSet₁ isDirSet₁) b@(MkSetPoly poly₂ isPosSet₂ isDirSet₂) a≡b₁ a≡b₂ i i₁ = {!   !}
 
+-- position (poly (y₁ i)) != position (poly (x₁ i)) of type Type
 record SetArrow (from to : SetPolynomial) : Set where
     constructor ⇄ˢ
     field

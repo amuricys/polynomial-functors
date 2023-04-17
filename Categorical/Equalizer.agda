@@ -2,11 +2,12 @@
 
 module Categorical.Equalizer where
 
-open import Categorical.Instance.Poly
+open import Categorical.Instance.SetPoly
 open import Categories.Category.Instance.Sets
-open import Categories.Diagram.Equalizer Poly
-open import Level
-open import Categories.Diagram.Coequalizer (Sets zero)
+open import Categories.Diagram.Equalizer SetPoly
+import Level
+open import Categories.Diagram.Coequalizer (Sets Level.zero)
+open import Data.Nat using (suc ; zero)
 open import CategoryData.Everything
 open import Cubical.ArrowEquals
 open import Cubical.Foundations.Prelude
@@ -14,6 +15,7 @@ open import Data.Sum
 open import Data.Product using (_×_)
 open import Cubical.Data.Equality
 open import Cubical.Data.Sigma.Properties
+open import Cubical.Foundations.HLevels
 open import Cubical.Foundations.Isomorphism
 open import Function
 
@@ -23,56 +25,40 @@ data Coeq {A B : Set} (f g : A → B) : Set where
   squash : isSet (Coeq f g)
 open Coeq
 
+coeqSet : {A B : Set} {a : isSet A} → {b : isSet B} (f g : A → B) → isSet (Coeq f g)
+coeqSet {a = a} {b = b} f g = {!   !}
+
+equalityIsSet : ∀ {A : Set} → (p : isSet A) → ∀ {x y : A} → isSet (x ≡ y)
+equalityIsSet p {x} {y} = isOfHLevelPath 2 p x y
+
+open SetPolynomial
 open Polynomial
-eq : {p q : Polynomial} → (f g : Arrow p q) → Equalizer f g
-eq {p} {q} f@(mpf ⇄ mdf) g@(mpg ⇄ mdg) = 
+eq : {pˢ qˢ : SetPolynomial} → (f g : SetArrow pˢ qˢ) → Equalizer f g
+eq pˢ@{MkSetPoly p pposSet pdirSet} qˢ@{MkSetPoly q qposSet qdirSet} f@(⇄ˢ (mpf ⇄ mdf)) g@(⇄ˢ (mpg ⇄ mdg)) = 
   record {
     obj = eqObj ;
     arr = arr ; 
     isEqualizer = isEqualizer
     }
    where EqualizedPosition = Σ (position p) (λ z → mpf z ≡c mpg z)
-         eqObj : Polynomial
-         eqObj = MkPoly EqualizedPosition (λ ( i , equal ) → Coeq (mdf i) (subst (λ x → direction q x → direction p i) (sym equal) (mdg i)))
-         arr : Arrow eqObj p
-         arr = mp ⇄ md
-            where mp : position eqObj → position p
-                  mp (i , _) = i
-                  md : (fromPos : position eqObj) → direction p (mp fromPos) → direction eqObj fromPos
-                  md fromPos dir = inc dir
+         eqObj : SetPolynomial
+         eqObj = MkSetPoly eqPoly eqPosSet eqDirSet
+            where eqPoly = MkPoly EqualizedPosition (λ ( i , equal ) → Coeq (mdf i) (subst (λ x → direction q x → direction p i) (sym equal) (mdg i)))
+                  eqPosSet : isSet (position eqPoly)
+                  eqPosSet = isSetΣ pposSet λ x → equalityIsSet qposSet
+                  eqDirSet : ∀ {po : position eqPoly} → isSet (direction eqPoly po)
+                  eqDirSet {posp , mapped≡} = {!   !}
+         arr : SetArrow eqObj pˢ
+         arr = ⇄ˢ {!   !}
          isEqualizer : IsEqualizer arr f g
          isEqualizer = record { 
-            equality = arrow≡∀∀ mapPos≡ mapDir≡;
-            equalize = λ {X} {h@(hPos ⇄ hDir)} x  →  equalize {X} {h} x ; 
+            equality = {!   !} ;
+            equalize = {!   !} ;
             universal = {!   !} ; 
-            unique = {!   !} }
-              where equalize : {X : Polynomial} {h : Arrow X p} → (x : f ∘ₚ h ≡ g ∘ₚ h) → Arrow X eqObj 
-                    equalize {X} {h@(hPos ⇄ hDir)} x = let
-                              arrPos = Arrow.mapPosition arr
-                              arrDir = Arrow.mapDirection arr
-                              mpf∘hPos≡mpg∘hPos : mpf ∘ hPos ≡ mpg ∘ hPos
-                              mpf∘hPos≡mpg∘hPos = λ i → Arrow.mapPosition (x i)
-                              in (λ x₁ → hPos x₁ , λ i → mpf∘hPos≡mpg∘hPos i x₁) ⇄ λ { fromPos (inc x) → hDir fromPos x
-                                                                                    ; fromPos (glue smth i) → {!   !}
-                                                                                    ; fromPos (squash x₁ x₂ x y i i₃) → {!   !} }
-                    mapPos≡ : (λ x → mpf (fst x)) ≡c (λ x → mpg (fst x))
-                    mapPos≡ = funExt snd
-                    mapDir≡ : (fromPos : EqualizedPosition) →
-                              (dirQFromG : direction q (mpg (fst fromPos))) →
-                              let canonicalDirQ = subst (λ x → direction q x → direction p (fst fromPos)) (sym (snd fromPos)) (mdg (fst fromPos))
-                                  typeOfMapDirGivenMapPos : (EqualizedPosition → position q) → Set
-                                  typeOfMapDirGivenMapPos h = 
-                                    (x : EqualizedPosition) → 
-                                    direction q (h x) → 
-                                    Coeq (mdf (fst x)) (subst (λ x₁ → direction q x₁ → direction p (fst x)) (sym (snd x)) (mdg (fst x)))
-                                  substed = subst typeOfMapDirGivenMapPos mapPos≡ (λ fromPos₁ z → mapDirection arr fromPos₁ (mdf (mapPosition arr fromPos₁) z)) 
-                              in
-                              substed fromPos dirQFromG
-                              ≡c
-                              mapDirection arr fromPos (mdg (mapPosition arr fromPos) dirQFromG)
-                    mapDir≡ fromPos dirQFromG = {!   !}
+            unique = {!   !} 
+            }
 
-import Categories.Diagram.Equalizer (Sets zero) as SetsEq
+import Categories.Diagram.Equalizer (Sets Level.zero) as SetsEq
 eqSets : {A B : Set} → (f g : A → B) → SetsEq.Equalizer f g
 eqSets {A} {B} f g = record { 
       obj = (Σ[ i ∈ A ] (f i ≡p g i)) ;
@@ -114,25 +100,25 @@ Coeq-rec cset h h-coeqs (squash x y p q i j) =
   where g = Coeq-rec cset h h-coeqs
 
 open Coeq
-coeqSets : {A B : Set} → (f g : A → B) → Coequalizer f g
-coeqSets {A} {B} f g = record { 
-      obj = Coeq f g ; 
-      arr = λ x → inc x; 
-      isCoequalizer = record { 
-            equality = \{x} → ctop (glue x) ; 
-            coequalize = {!   !}; 
-            universal = reflp ; 
-            unique = {!   !} 
-            }
-      }
-  where coequalize : {coeqSetCandidate : Set} →
-                     {h : B → coeqSetCandidate} →
-                     (x : {x = x₂ : A} → h (f x₂) ≡p h (g x₂)) →
-                     (coeqSetElmt : Coeq f g) → 
-                     coeqSetCandidate
-        coequalize {coeqSetCandidate} {h} x (inc x₁) = h x₁
-        coequalize {coeqSetCandidate} {h} x (glue x₁ i) = ptoc (x {x₁}) i
-        coequalize {coeqSetCandidate} {h} x (squash coeqSetElmt coeqSetElmt₁ x₁ y i i₃) = {!  !}
+-- coeqSets : {A B : Set} → (f g : A → B) → Coequalizer f g
+-- coeqSets {A} {B} f g = record { 
+--       obj = Coeq f g ; 
+--       arr = λ x → inc x; 
+--       isCoequalizer = record { 
+--             equality = \{x} → ctop (glue x) ; 
+--             coequalize = {!   !}; 
+--             universal = reflp ; 
+--             unique = {!   !} 
+--             }
+--       }
+--   where coequalize : {coeqSetCandidate : Set} →
+--                      {h : B → coeqSetCandidate} →
+--                      (x : {x = x₂ : A} → h (f x₂) ≡p h (g x₂)) →
+--                      (coeqSetElmt : Coeq f g) → 
+--                      coeqSetCandidate
+--         coequalize {coeqSetCandidate} {h} x (inc x₁) = h x₁
+--         coequalize {coeqSetCandidate} {h} x (glue x₁ i) = ptoc (x {x₁}) i
+--         coequalize {coeqSetCandidate} {h} x (squash coeqSetElmt coeqSetElmt₁ x₁ y i i₃) = {!  !}
 
 
 -- (Σ[ i ∈ p.position ] (p.direction i → q.position))
