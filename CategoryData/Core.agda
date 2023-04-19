@@ -29,3 +29,4 @@ idArrow = id ⇄ λ _ → id
 -- |    <- f♯ ---   <- g♯ --- 
 _∘ₚ_ : {A B C : Polynomial} → Arrow B C → Arrow A B → Arrow A C
 _∘ₚ_ (f ⇄ f♯) (g ⇄ g♯) = (f ∘ g) ⇄ (λ fromPos z → g♯ fromPos (f♯ (g fromPos) z))
+infixl 25 _∘ₚ_

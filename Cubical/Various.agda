@@ -12,7 +12,9 @@ open import Cubical.Foundations.Isomorphism
 open import Level
 open import Cubical.PolynomialEquals
 open import Cubical.Data.Sigma.Properties
+open import Data.Unit
 open import Dynamical.System
+open import Function
 
 tupleToFunFromBool : {ℓ : Level} {A : Set ℓ} → (A × A) → Bool → A
 tupleToFunFromBool (a , b) true = a
@@ -63,3 +65,9 @@ productIsΠPoly {p} {q} = poly≡∀' posEq dirEq
 
 -- functionToDynamicalSystem₂ : {A B : Set} → (A → B) → DynamicalSystem
 -- functionToDynamicalSystem₂ {A} {B} f = MkDynamicalSystem A (monomial B A) (f ⇄ λ _ → id)
+
+arrowToYIsChoiceOfDirection : {p : Polynomial} → Arrow p Y ≡ ((pos : position p) → direction p pos)
+arrowToYIsChoiceOfDirection {p} = isoToPath (iso (λ { (_ ⇄ md) pos → md pos tt} )
+                                                 (λ { mapSelfDir → const tt ⇄ λ fromPos _ → mapSelfDir fromPos}) 
+                                                 (λ b → refl) 
+                                                 (λ { (mp ⇄ md) → λ _ → const tt ⇄ md }) )   
