@@ -17,6 +17,9 @@ record Comonoid (c : Polynomial) : Set where
     leftCounit :  ~ᴸ ≡ ⟨ ε ◂ idArrow {c} ⟩ ∘ₚ δ
     rightCounit : ~ᴿ ≡ ⟨ idArrow {c} ◂ ε ⟩ ∘ₚ δ
 
+
+open import Data.Product
+
 comonoidsAreCategories : {emanator : Polynomial} → Comonoid emanator → Category zero zero zero
 comonoidsAreCategories {MkPoly pos dir} record { 
   ε = ε ; 
@@ -26,13 +29,13 @@ comonoidsAreCategories {MkPoly pos dir} record {
   rightCounit = rightCounit 
   } = record
   { Obj = pos
-  ; _⇒_ = λ A B → {!   !}
-  ; _≈_ = {!   !}
-  ; id = λ {A} → {!   !}
-  ; _∘_ = {!   !}
-  ; assoc = {!   !}
-  ; sym-assoc = {!   !}
-  ; identityˡ = {!   !}
+  ; _⇒_ = λ x x₁ → pos × pos -- experimenting. We might need a deeper relation
+  ; _≈_ = _≡_ 
+  ; id = λ {A} → A , A
+  ; _∘_ = λ { (a , _) (_ , c) → a , c }
+  ; assoc = refl
+  ; sym-assoc = refl
+  ; identityˡ = {!   !} -- yep. we do. this is already impossible. we need to use the data in the comonoid
   ; identityʳ = {!   !}
   ; identity² = {!   !}
   ; equiv = {!   !}
