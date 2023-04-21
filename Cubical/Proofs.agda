@@ -92,27 +92,59 @@ open Polynomial
 
 arrowsEqual2 : {p q : Polynomial} {f g : Arrow p q}
     → (mapPosEq : mapPosition f ≡ mapPosition g)
-    → ((x : position p) → (y : direction q (mapPosition f x)) → mapDirection f x y ≡ mapDirection g x (subst (λ mapPos → direction q (mapPos x)) mapPosEq y) ) -- (subst (λ mapPos → direction q (mapPos x)) mapPosEq y)
+    → ((x : position p) → (y : direction q (mapPosition f x)) → mapDirection f x y ≡ mapDirection g x (subst (λ mapPos → direction q (mapPos x)) mapPosEq y) )
     → f ≡ g
-arrowsEqual2 a b = arrowsEqual a (funExt λ x → funExt λ y → {! !}) -- λ i → transp {!   !} i {!   !})
+arrowsEqual2 mapPosEq mapDirEq = arrowsEqual mapPosEq (funExt (λ fromPosP → funExt (λ dirAtThatPos → {! mapDirEq  !}))) -- λ i → transp {!   !} i {!   !})
+
+X : {p q : Polynomial} → Set
+X {p} {q} = position p → position q
+
+A : {p q : Polynomial} → X {p} {q} → Set
+A {p} {q} _ = position p
+
+B : {p q : Polynomial} → (x : X {p} {q}) → A {p} {q} x → Type
+B {p} {q} h i = direction q (h i) → direction p i
+
+Π : {p q : Polynomial} → X {p} {q} → Type
+Π {p} {q} = \ (x : X {p} {q}) → (a : A {p} {q} x) → B {p} {q} x a
+
+B̂ : {p q : Polynomial} → Σ (X {p} {q}) (A {p} {q}) → Type
+B̂ {p} {q} (w1 , w2) = B {p} {q} w1 w2
+
+
+transportDep : {p q : Polynomial} {(f ⇄ f♯) (g ⇄ g♯) : Arrow p q} 
+  → (fn : (a : A {p} {q} f) → B {p} {q} f a) 
+  → (pr : f ≡ g) 
+  → (a : A {p} {q} g) → let
+  pairEq : ∀ {one two } → (one , a) ≡ (two , subst (A {p} {q}) (sym pr) a)
+  pairEq = {!   !}
+  in
+  (subst (Π {p} {q}) pr fn a ≡ subst (B̂ {p} {q}) (sym (pairEq {{!   !}} {{!   !}})) (fn (subst (A {p} {q}) (sym pr) a)))
+transportDep {p} {q} pr f = {!  subst Π  !}
+
 
 arrowSigmasEqual3 : {p q : Polynomial} {f g : Arrow p q}
+    → (isPosPSet : isSet (position p))
+    → (isDirPSet : ∀ {pos : position p} → isSet (direction p pos))
+    → (isPosQSet : isSet (position q))
+    → (isDirQSet : ∀ {pos : position q} → isSet (direction q pos))
     → (mapPosEq : Arrow.mapPosition f ≡ Arrow.mapPosition g)
     → ((x : position p) → (y : direction q (mapPosition g x)) → mapDirection f x  (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y)
     → arrowToSigma f ≡ arrowToSigma g
-arrowSigmasEqual3 {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathTransport→PathΣ (arrowToSigma f) (arrowToSigma g) (mapPosEq , funExt λ x  → funExt λ y → transitivity (lemma x y) (mapDirEq x y))
+arrowSigmasEqual3 {p = p} {q = q} {f = f} {g = g} isPosPSet isDirPSet isPosQSet isDirQSet mapPosEq mapDirEq = ΣPathTransport→PathΣ (arrowToSigma f) (arrowToSigma g) (mapPosEq , funExt λ x  → funExt λ y → transitivity (lemma mapPosEq x y) (mapDirEq x y))
   where
-    lemma : (x : position p) → (y : direction q (mapPosition g x)) → transport
-      (λ i →
-         (mapPos : position p) →
-         direction q (mapPosEq i mapPos) → direction p mapPos)
-      (mapDirection f) x y
+    lemma : (pr : Arrow.mapPosition f ≡ Arrow.mapPosition g) (x : position p) → (y : direction q (mapPosition g x)) → 
+      (subst (λ (h : position p → position q) → (i : position p) → direction q (h i) → direction p i) mapPosEq (mapDirection f)) x y
       ≡
-      mapDirection f x
-      (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y)
-    lemma x y = {!   !}
+      mapDirection f x (subst (λ mapPos → direction q (mapPos x)) (sym pr) y)
+    lemma pr x y = {!   !}
+
 
 arrowsEqual3 : {p q : Polynomial} {f g : Arrow p q}
+    → (isPosPSet : isSet (position p))
+    → (isDirPSet : ∀ {pos : position p} → isSet (direction p pos))
+    → (isPosQSet : isSet (position q))
+    → (isDirQSet : ∀ {pos : position q} → isSet (direction q pos))
     → (mapPosEq : mapPosition f ≡ mapPosition g)
     → (
            (x : position p) → 
@@ -123,7 +155,7 @@ arrowsEqual3 : {p q : Polynomial} {f g : Arrow p q}
            mapDirection g x y
         )
     → f ≡ g
-arrowsEqual3 {f = f} {g = g} a b i = sigmaToArrow (arrowSigmasEqual3 {f = f} {g = g} a b i)
+arrowsEqual3 {f = f} {g = g} isPosPSet isDirPSet isPosQSet isDirQSet a b i = sigmaToArrow (arrowSigmasEqual3 {f = f} {g = g} isPosPSet isDirPSet isPosQSet isDirQSet a b i)
 
 
 ---------------------------------------
@@ -215,4 +247,4 @@ I≡pOfOne = isoToPath isoI≡pOfOne
 -- derivative : Polynomial → Polynomial
 -- derivative (MkPoly pos dir) = MkPoly (Σ pos dir) (λ {(i , a) → {! dir i - a  !}})
 
- 
+  
