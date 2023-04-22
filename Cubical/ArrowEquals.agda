@@ -48,6 +48,8 @@ arrow≡ : {p q : Polynomial} {f g : Arrow p q}
     → f ≡ g
 arrow≡ {p} {q} {f} {g} mapPos≡ mapDir≡ i = sigmaToArrow ((arrowSigmas≡ {q = q} (arrowToSigma f) (arrowToSigma g) mapPos≡ mapDir≡ i))
 
+-- 
+
 arrow≡' : {p q : Polynomial} {f g : Arrow p q}
     → (mapPos≡ : mapPosition f ≡ mapPosition g) 
     → mapDirection f ≡ (subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) (sym mapPos≡) (mapDirection g))
@@ -58,13 +60,13 @@ arrow≡∀ : {p q : Polynomial} {f g : Arrow p q}
     → (mapPos≡ : mapPosition f ≡ mapPosition g)
     → ((fromPos : position p) → subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) mapPos≡ (mapDirection f) fromPos ≡ mapDirection g fromPos)
     → f ≡ g
-arrow≡∀ mapPos≡ mapDir≡ = arrow≡ mapPos≡ λ i fromPos → mapDir≡ fromPos i
+arrow≡∀ mapPos≡ mapDir≡ = arrow≡ mapPos≡ (funExt (λ fromPos → mapDir≡ fromPos))
 
 arrow≡∀' : {p q : Polynomial} {f g : Arrow p q}
     → (mapPos≡ : mapPosition f ≡ mapPosition g)
     → ( (fromPos : position p) → mapDirection f fromPos ≡ (subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) (sym mapPos≡) (mapDirection g)) fromPos)
     → f ≡ g
-arrow≡∀' mapPos≡ mapDir≡ = arrow≡' mapPos≡ λ i fromPos → mapDir≡ fromPos i
+arrow≡∀' mapPos≡ mapDir≡ = arrow≡' mapPos≡ (funExt (λ fromPos → mapDir≡ fromPos))
 
 arrow≡∀∀ : {p q : Polynomial} {f g : Arrow p q}
     → (mapPos≡ : mapPosition f ≡ mapPosition g)
@@ -77,7 +79,7 @@ arrow≡∀∀ : {p q : Polynomial} {f g : Arrow p q}
              ≡
            mapDirection g fromPos dirQFromG)
     → f ≡ g
-arrow≡∀∀ mapPos≡ mapDir≡ = arrow≡ mapPos≡ λ i fromPos x → mapDir≡ fromPos x i
+arrow≡∀∀ mapPos≡ mapDir≡ = arrow≡ mapPos≡ (funExt λ fromPos → funExt λ x → mapDir≡ fromPos x)
 
 arrow≡∀∀' : {p q : Polynomial} {f g : Arrow p q}
     → (mapPos≡ : mapPosition f ≡ mapPosition g)
@@ -85,11 +87,29 @@ arrow≡∀∀' : {p q : Polynomial} {f g : Arrow p q}
     → f ≡ g
 arrow≡∀∀' mapPos≡ mapDir≡ = arrow≡' mapPos≡ λ i fromPos x → mapDir≡ fromPos x i
 
--- arrow≡∀∀
--- have: → ((fromPos : position p) → (dirQFromG : direction q (mapPosition g fromPos)) → subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) mapPos≡ (mapDirection f) fromPos dirQFromG ≡ mapDirection g fromPos dirQFromG)
--- arrowEquals3
--- want: → ((fromPos : position p) → (dirQFromG : direction q (mapPosition g fromPos)) → mapDirection f fromPos  (subst (λ mapPos → direction q (mapPos fromPos)) (sym mapPosEq) dirQFromG)                                       ≡ mapDirection g fromPos dirQFromG)
+arrowSigmasEqual3 : {p q : Polynomial} {f g : Arrow p q}
+    → (mapPosEq : Arrow.mapPosition f ≡ Arrow.mapPosition g)
+    → ((x : position p) → (y : direction q (mapPosition g x)) → mapDirection f x  (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y)
+    → arrowToSigma f ≡ arrowToSigma g
+arrowSigmasEqual3 {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathTransport→PathΣ (arrowToSigma f) (arrowToSigma g) (mapPosEq , funExt λ x  → funExt λ y → (lemma x y) ∙ (mapDirEq x y))
+  where
+    lemma : (x : position p) → (y : direction q (mapPosition g x)) → 
+      (subst (λ h → (i : position p) → direction q (h i) → direction p i) mapPosEq (mapDirection f)) x y
+      ≡
+      mapDirection f x
+      (subst (λ h → direction q (h x)) (sym mapPosEq) y)
+    lemma x y i = transp (λ j → direction p (transp (λ _ → position p) (j ∨ i) x)) i ((mapDirection f (transp (λ _ → position p) i x) (transp (λ j → direction q (mapPosEq (~ j) (transp (λ _ → position p) (~ j ∨ i) x))) i0 y))) 
 
--- middle part that differ
--- have: subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) mapPos≡ (mapDirection f) fromPos dirQFromG
--- want: mapDirection f fromPos  (subst (λ mapPos → direction q (mapPos fromPos)) (sym mapPosEq) dirQFromG)
+
+arrowsEqual3 : {p q : Polynomial} {f g : Arrow p q}
+    → (mapPosEq : mapPosition f ≡ mapPosition g)
+    → (
+           (x : position p) → 
+           (y : direction q (mapPosition g x)) → 
+           mapDirection f x  
+           (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) 
+           ≡ 
+           mapDirection g x y
+        )
+    → f ≡ g
+arrowsEqual3 {f = f} {g = g} a b i = sigmaToArrow (arrowSigmasEqual3 {f = f} {g = g} a b i)
