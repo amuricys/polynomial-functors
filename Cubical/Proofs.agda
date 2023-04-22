@@ -78,7 +78,7 @@ enclosePoly≡depFuncToDirections = isoToPath isoEnclosePolydepFuncToDirections
         toRight (mapPosition ⇆ mapDirection) pos = mapDirection pos tt
 
         toLeft : {p : Polynomial} → ((i : Polynomial.position p) → Polynomial.direction p i) → enclose p
-        toLeft p1 = (λ x → tt) ⇆ λ fromPos x → p1 fromPos
+        toLeft p₁ = (λ x → tt) ⇆ λ fromPos x → p₁ fromPos
 
 ---------------------------------------
 
@@ -140,10 +140,10 @@ constantClosedUnderMult : {p q : Polynomial} → isConstant p → isConstant q �
 constantClosedUnderMult isConstantP isConstantQ (posP , posQ) = lemma (isConstantP posP) (isConstantQ posQ)
   where
     lemma2 : {A B : Set} → A ≡ ⊥ → B ≡ ⊥ → (A ⊎ B) ≡ (⊥ ⊎ ⊥)
-    lemma2 p1 p2 = {! cong ? p1   !}
+    lemma2 p₁ p₂ = {! cong ? p₁   !}
 
     lemma : {A B : Set} → A ≡ ⊥ → B ≡ ⊥ → (A ⊎ B) ≡ ⊥
-    lemma {A = A} {B = B} p₁ p₂ = lemma2 p₁ p₂ ∙ {!   !}
+    lemma {A = A} {B = B} p₁ p₂ = lemma2 p₁ p₂ ∙ {!  !}
 
 isLinear : Polynomial → Type₁
 isLinear (MkPoly pos dir) = (p : pos) → dir p ≡ ⊤
@@ -171,4 +171,9 @@ linearClosedUnderPlus isLinearP isLinearQ (inj₂ y) = isLinearQ y
     --   ≡ [ direction (p ◂ r) , direction (q ◂ r) ]
     -- dir≡ = ?
 
+arrowToYIsChoiceOfDirection : {p : Polynomial} → Arrow p Y ≡ ((pos : position p) → direction p pos)
+arrowToYIsChoiceOfDirection {p} = isoToPath (iso (λ { (_ ⇆ md) pos → md pos tt} )
+                                                 (λ { mapSelfDir → const tt ⇆ λ fromPos _ → mapSelfDir fromPos}) 
+                                                 (λ b → refl) 
+                                                 (λ { (mp ⇆ md) → λ _ → const tt ⇆ md }) )   
 

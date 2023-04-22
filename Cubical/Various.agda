@@ -65,9 +65,3 @@ productIsΠPoly {p} {q} = poly≡∀' posEq dirEq
 
 -- functionToDynamicalSystem₂ : {A B : Set} → (A → B) → DynamicalSystem
 -- functionToDynamicalSystem₂ {A} {B} f = MkDynamicalSystem A (monomial B A) (f ⇆ λ _ → id)
-
-arrowToYIsChoiceOfDirection : {p : Polynomial} → Arrow p Y ≡ ((pos : position p) → direction p pos)
-arrowToYIsChoiceOfDirection {p} = isoToPath (iso (λ { (_ ⇆ md) pos → md pos tt} )
-                                                 (λ { mapSelfDir → const tt ⇆ λ fromPos _ → mapSelfDir fromPos}) 
-                                                 (λ b → refl) 
-                                                 (λ { (mp ⇆ md) → λ _ → const tt ⇆ md }) )   
