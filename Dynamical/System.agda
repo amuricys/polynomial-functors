@@ -33,14 +33,14 @@ record InitializedDynamicalSystem : Set₁ where
         initialState : Arrow Y (selfMonomial (state dynamicalSystem))
 
 functionToDynamicalSystem : (A B : Set) → (A → B) → DynamicalSystem
-functionToDynamicalSystem A B f = MkDynamicalSystem B (monomial B A) (id ⇄ (\_ → f))
+functionToDynamicalSystem A B f = MkDynamicalSystem B (monomial B A) (id ⇆ (\_ → f))
 
 delay : (A : Set) → DynamicalSystem
 delay A = functionToDynamicalSystem A A id
 
 _&&&_ : DynamicalSystem → DynamicalSystem → DynamicalSystem
 MkDynamicalSystem stateA interfaceA dynamicsA &&& MkDynamicalSystem stateB interfaceB dynamicsB 
-    = MkDynamicalSystem (stateA × stateB) (interfaceA ⊗ interfaceB) (readout ⇄ update)
+    = MkDynamicalSystem (stateA × stateB) (interfaceA ⊗ interfaceB) (readout ⇆ update)
         where
             readout : (stateA × stateB) → Polynomial.position (interfaceA ⊗ interfaceB)
             readout (stateA , stateB) = (Arrow.mapPosition dynamicsA stateA) , (Arrow.mapPosition dynamicsB stateB)
@@ -55,7 +55,7 @@ install : (d : DynamicalSystem) → (a : Polynomial) → Arrow (DynamicalSystem.
 install d a l = MkDynamicalSystem (DynamicalSystem.state d) a (l ∘ₚ (DynamicalSystem.dynamics d))
 
 encloseFunction : {t u : Set} → (t → u) → Arrow (monomial t u) Y
-encloseFunction f = (λ _ → tt) ⇄ (λ fromPos _ → f fromPos)
+encloseFunction f = (λ _ → tt) ⇆ (λ fromPos _ → f fromPos)
 
 auto : {m : Set} → enclose (Emitter m)
 auto = encloseFunction λ _ → tt

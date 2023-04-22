@@ -48,7 +48,7 @@ DependentInput {numNodes} {systemDim} CD = CollectingDataInput numNodes systemDi
 DependentInput {numNodes} (R _) = RunningInput numNodes
 
 reservoir : (numNodes systemDim : ℕ) → DynamicalSystem
-reservoir numNodes systemDim = MkDynamicalSystem (ReservoirState numNodes) interface (readout ⇄ update)
+reservoir numNodes systemDim = MkDynamicalSystem (ReservoirState numNodes) interface (readout ⇆ update)
   where interface : Polynomial
         interface = MkPoly (ReservoirState numNodes) λ _ → Vec ℝ systemDim × InputWeights numNodes systemDim × ReservoirWeights numNodes
         readout : ReservoirState numNodes → ReservoirState numNodes
@@ -57,7 +57,7 @@ reservoir numNodes systemDim = MkDynamicalSystem (ReservoirState numNodes) inter
         update (Res nodeStates) (inputSequence , inputWeights , reservoirWeights) = Res (Vec.map tanh1 (reservoirWeights *ᴹⱽ nodeStates +ⱽ inputWeights *ᴹⱽ inputSequence ))
 
 readoutLayer : (numNodes systemDim trainingSteps : ℕ) → DynamicalSystem
-readoutLayer numNodes systemDim trainingSteps = MkDynamicalSystem (ReadoutLayerState numNodes systemDim) interface (readout ⇄ update)
+readoutLayer numNodes systemDim trainingSteps = MkDynamicalSystem (ReadoutLayerState numNodes systemDim) interface (readout ⇆ update)
   where interface : Polynomial
         interface = MkPoly (ReadoutOutput systemDim) DependentInput
         readout : ReadoutLayerState numNodes systemDim → ReadoutOutput systemDim
@@ -92,7 +92,7 @@ lorenzReservoirWiringDiagram :
    Arrow 
     (DynamicalSystem.interface (preLorRes numNodes 3 inputWeights reservoirWeights))
     (Emitter (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ ⊎ ⊤))
-lorenzReservoirWiringDiagram numNodes inputWeights reservoirWeights = outerOutputsFrom ⇄ innerInputsFrom
+lorenzReservoirWiringDiagram numNodes inputWeights reservoirWeights = outerOutputsFrom ⇆ innerInputsFrom
   where outerOutputsFrom : position
                            (DynamicalSystem.interface (preLorRes numNodes 3 inputWeights reservoirWeights)) →
                            position (Emitter (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ ⊎ ⊤))

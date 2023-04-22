@@ -41,7 +41,7 @@ isSetPoly a@(MkSetPoly poly₁ isPosSet₁ isDirSet₁) b@(MkSetPoly poly₂ isP
 
 -- position (poly (y₁ i)) != position (poly (x₁ i)) of type Type
 record SetArrow (from to : SetPolynomial) : Set where
-    constructor ⇄ˢ
+    constructor ⇆ˢ
     field
         arrow : Arrow (poly from) (poly to)
 
@@ -56,19 +56,19 @@ arrowAsSigma≡arrow : {p q : SetPolynomial} → SetArrow p q ≡ SetArrowAsSigm
 arrowAsSigma≡arrow {p} {q} = isoToPath (iso f f⁻ (λ b → refl) λ a → refl)
     where
         f : SetArrow p q → SetArrowAsSigma p q
-        f (⇄ˢ arrow) = mapPosition arrow , mapDirection arrow
+        f (⇆ˢ arrow) = mapPosition arrow , mapDirection arrow
 
         f⁻ : SetArrowAsSigma p q → SetArrow p q
-        f⁻ (mapPos , mapDir) = ⇄ˢ (mapPos ⇄ mapDir)
+        f⁻ (mapPos , mapDir) = ⇆ˢ (mapPos ⇆ mapDir)
 
 isSetArrow : {p q : SetPolynomial} → isSet (SetArrow p q)
 isSetArrow {p} {q} = subst isSet (sym arrowAsSigma≡arrow) (isSetArrowAsSigma {p} {q})
 
 idSetArrow : ∀ {A : SetPolynomial} → SetArrow A A
-idSetArrow = ⇄ˢ idArrow
+idSetArrow = ⇆ˢ idArrow
 
 _∘ₚₛ_ : {A B C : SetPolynomial} → SetArrow B C → SetArrow A B → SetArrow A C
-(⇄ˢ arrow) ∘ₚₛ (⇄ˢ arrow₁) = ⇄ˢ (arrow ∘ₚ arrow₁)
+(⇆ˢ arrow) ∘ₚₛ (⇆ˢ arrow₁) = ⇆ˢ (arrow ∘ₚ arrow₁)
 
 equiv-resp-set : {A B C : SetPolynomial} {f h : SetArrow B C} {g i : SetArrow A B} → f ≡ h → g ≡ i → (f ∘ₚₛ g) ≡ (h ∘ₚₛ i)
 equiv-resp-set  p q ii = (p ii) ∘ₚₛ (q ii)

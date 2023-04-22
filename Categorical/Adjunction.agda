@@ -32,8 +32,8 @@ constunit = record {
 
 constcounit : NaturalTransformation (constantPolynomial ∘F plugIn0) idF
 constcounit = record { 
-    η = λ X → fst ⇄ λ fromPos x → snd fromPos x ; 
-    commute = λ {(aa ⇄ bb) i → (λ x → aa (fst x)) ⇄ λ fromPos x → snd fromPos (bb (fst fromPos) x) }; 
+    η = λ X → fst ⇆ λ fromPos x → snd fromPos x ; 
+    commute = λ {(aa ⇆ bb) i → (λ x → aa (fst x)) ⇆ λ fromPos x → snd fromPos (bb (fst fromPos) x) }; 
     sym-commute = λ f → refl }
 
 constantPolynomial⊣plugIn0 : constantPolynomial ⊣ plugIn0 
@@ -57,7 +57,7 @@ eq2r = cong′ (\x → id-⊥ , x) (λ { i () })
 
 plugin1unit : NaturalTransformation idF (constantPolynomial ∘F plugIn1)
 plugin1unit = record { 
-    η = λ X → (λ x → x , λ _ → tt) ⇄ λ fromPos () ;
+    η = λ X → (λ x → x , λ _ → tt) ⇆ λ fromPos () ;
     commute = λ f → arrow≡∀∀ refl λ {_ ()} ;
     sym-commute = λ f → arrow≡∀∀ refl λ {_ ()}
     }
@@ -83,7 +83,7 @@ linearunit = record {
 
 linearcounit : NaturalTransformation (linearPolynomial ∘F plugIn1) idF
 linearcounit = record { 
-    η = λ X → (λ x → fst x) ⇄ λ fromPos x → tt ;
+    η = λ X → (λ x → fst x) ⇆ λ fromPos x → tt ;
     commute = λ f → refl ;
     sym-commute = λ f → arrow≡ refl λ i fromPos x → tt }
 

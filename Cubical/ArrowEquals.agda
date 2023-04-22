@@ -15,10 +15,10 @@ ArrowAsSigma p q = Σ[ mapPos ∈ (position p → position q) ]
     ((fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos)
     
 sigmaToArrow : {p q : Polynomial} → ArrowAsSigma p q → Arrow p q
-sigmaToArrow (mapPos , mapDir) = mapPos ⇄ mapDir
+sigmaToArrow (mapPos , mapDir) = mapPos ⇆ mapDir
 
 arrowToSigma : {p q : Polynomial} → Arrow p q → ArrowAsSigma p q
-arrowToSigma  (mapPos ⇄ mapDir) = mapPos , mapDir
+arrowToSigma  (mapPos ⇆ mapDir) = mapPos , mapDir
 
 arrow≡arrowSigma : {p q : Polynomial} → (Arrow p q) ≡ (ArrowAsSigma p q)
 arrow≡arrowSigma = isoToPath (iso arrowToSigma sigmaToArrow (λ b → refl) (λ a → refl))

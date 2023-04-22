@@ -8,4 +8,4 @@ open import Data.Empty
 open import CategoryData.SimplePolynomials
 
 arrowToOne : {p : Polynomial} → Arrow p 𝟙
-arrowToOne = (λ _ → tt) ⇄ λ {_ ()}
+arrowToOne = (λ _ → tt) ⇆ λ {_ ()}

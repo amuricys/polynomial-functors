@@ -33,17 +33,17 @@ arrowIsDynamics : MooreMachine ≡ SimpleDynamicalSystem -- (Σ[ dyn ∈ Dynamic
 arrowIsDynamics = isoToPath (iso f f⁻ (λ b → refl) λ a → refl)
     where
         f : MooreMachine → SimpleDynamicalSystem -- [ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn)
-        f (MkMooreMachine State Input Output update readout) = MkSimpleDynamicalSystem State Input Output (readout ⇄ update) 
+        f (MkMooreMachine State Input Output update readout) = MkSimpleDynamicalSystem State Input Output (readout ⇆ update) 
 
         -- record { State = State ; Input = Input ; Output = Output ; update = update ; readout = readout }
-        --  = MkDynamicalSystem State (monomial Output Input) (readout ⇄ update) , record { input = Input ; output = Output ; proof = refl }
+        --  = MkDynamicalSystem State (monomial Output Input) (readout ⇆ update) , record { input = Input ; output = Output ; proof = refl }
 
         f⁻ : SimpleDynamicalSystem → MooreMachine
         f⁻ (MkSimpleDynamicalSystem state input output dynamics) = MkMooreMachine state input output (mapDirection dynamics) (mapPosition dynamics)
 
         -- f : MooreMachine → Σ[ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn)
         -- f record { State = State ; Input = Input ; Output = Output ; update = update ; readout = readout }
-        --  = MkDynamicalSystem State (monomial Output Input) (readout ⇄ update) , record { input = Input ; output = Output ; proof = refl }
+        --  = MkDynamicalSystem State (monomial Output Input) (readout ⇆ update) , record { input = Input ; output = Output ; proof = refl }
 
         -- f⁻ : (Σ[ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn)) → MooreMachine
         -- f⁻ (MkDynamicalSystem state interface dynamics , record { input = input ; output = output ; proof = proof })

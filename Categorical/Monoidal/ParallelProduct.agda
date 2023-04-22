@@ -20,7 +20,7 @@ open Polynomial
 bifunctor : Bifunctor Poly Poly Poly
 bifunctor = record
     { F₀ = λ { (p , q) → p ⊗ q }
-    ; F₁ = λ { ((mpf ⇄ mdf) , (mpg ⇄ mdg)) → (λ { (posP , posQ) → mpf posP , mpg posQ }) ⇄ λ { (fromPosP , fromPosQ) (dirFstR , dirSndR) → mdf fromPosP dirFstR , mdg fromPosQ dirSndR } }
+    ; F₁ = λ { ((mpf ⇆ mdf) , (mpg ⇆ mdg)) → (λ { (posP , posQ) → mpf posP , mpg posQ }) ⇆ λ { (fromPosP , fromPosQ) (dirFstR , dirSndR) → mdf fromPosP dirFstR , mdg fromPosQ dirSndR } }
     ; identity = refl
     ; homomorphism = refl
     ; F-resp-≈ = λ {(fst₁ , snd₁) → arrow≡ (funExt λ {(fst , snd) → ≡-× (cong (λ y → Arrow.mapPosition y fst) fst₁) (cong (λ y → Arrow.mapPosition y snd) snd₁)}) (funExt λ {(fst , snd) → funExt (λ {(fst₁ , snd₁) → {!   !}})})} -- λ { (proofMpEq , proofMdEq) → arrow≡∀ (λ i x₁ → {!  !}) {!   !} }
@@ -31,18 +31,18 @@ monoidal = record
     { ⊗ = bifunctor
     ; unit = Y
     ; unitorˡ = record { 
-        from = snd ⇄ λ { _ → tt ,_ } ; 
-        to = (tt ,_ ) ⇄ λ _ → snd ; 
+        from = snd ⇆ λ { _ → tt ,_ } ; 
+        to = (tt ,_ ) ⇆ λ _ → snd ; 
         iso = record { isoˡ = refl ; isoʳ = refl } 
         }
     ; unitorʳ = record { 
-        from = fst ⇄ λ _ → _, tt ; 
-        to = (_, tt) ⇄ λ _ → fst ; 
+        from = fst ⇆ λ _ → _, tt ; 
+        to = (_, tt) ⇆ λ _ → fst ; 
         iso = record { isoˡ = refl ; isoʳ = refl }
         }
     ; associator = record { 
-        from = (λ { ((fst₁ , snd₂) , snd₁) → fst₁ , snd₂ , snd₁ }) ⇄ λ { ((fst₁ , snd₂) , snd₁) x → (fst x , fst (snd x)) , snd (snd x) } ; 
-        to = (λ { (fst₁ , fst₂ , snd₁) → (fst₁ , fst₂) , snd₁ }) ⇄ λ { (fst₁ , snd₁) ((fst₂ , snd₃) , snd₂) → fst₂ , snd₃ , snd₂ } ; 
+        from = (λ { ((fst₁ , snd₂) , snd₁) → fst₁ , snd₂ , snd₁ }) ⇆ λ { ((fst₁ , snd₂) , snd₁) x → (fst x , fst (snd x)) , snd (snd x) } ; 
+        to = (λ { (fst₁ , fst₂ , snd₁) → (fst₁ , fst₂) , snd₁ }) ⇆ λ { (fst₁ , snd₁) ((fst₂ , snd₃) , snd₂) → fst₂ , snd₃ , snd₂ } ; 
         iso = record { isoˡ = refl ; isoʳ = refl } 
         }
     ; unitorˡ-commute-from = refl

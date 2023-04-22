@@ -34,7 +34,7 @@ equalityIsSet p {x} {y} = isOfHLevelPath 2 p x y
 open SetPolynomial
 open Polynomial
 eq : {pˢ qˢ : SetPolynomial} → (f g : SetArrow pˢ qˢ) → Equalizer f g
-eq pˢ@{MkSetPoly p pposSet pdirSet} qˢ@{MkSetPoly q qposSet qdirSet} f@(⇄ˢ (mpf ⇄ mdf)) g@(⇄ˢ (mpg ⇄ mdg)) = 
+eq pˢ@{MkSetPoly p pposSet pdirSet} qˢ@{MkSetPoly q qposSet qdirSet} f@(⇆ˢ (mpf ⇆ mdf)) g@(⇆ˢ (mpg ⇆ mdg)) = 
   record {
     obj = eqObj ;
     arr = arr ; 
@@ -49,7 +49,7 @@ eq pˢ@{MkSetPoly p pposSet pdirSet} qˢ@{MkSetPoly q qposSet qdirSet} f@(⇄ˢ 
                   eqDirSet : ∀ {po : position eqPoly} → isSet (direction eqPoly po)
                   eqDirSet {posp , mapped≡} = {!   !}
          arr : SetArrow eqObj pˢ
-         arr = ⇄ˢ {!   !}
+         arr = ⇆ˢ {!   !}
          isEqualizer : IsEqualizer arr f g
          isEqualizer = record { 
             equality = {!   !} ;

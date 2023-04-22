@@ -16,9 +16,9 @@ arrowIsDFS {State} {Alphabet} = isoToPath (iso fromDfs toDfs (λ x → refl) λ 
     where
         fromDfs : DFS {State} {Alphabet} → (Arrow (selfMonomial State) (monomial Bool Alphabet) × Arrow Y (selfMonomial State))
         fromDfs (MkDFS initial update recognized) 
-            = (recognized ⇄ update) , ((λ x → initial) ⇄ λ fromPos x → fromPos)
+            = (recognized ⇆ update) , ((λ x → initial) ⇆ λ fromPos x → fromPos)
 
         toDfs : Arrow (selfMonomial State) (monomial Bool Alphabet) × Arrow Y (selfMonomial State) → DFS {State} {Alphabet}
-        toDfs ((mapPosition ⇄ mapDirection) , initState) 
+        toDfs ((mapPosition ⇆ mapDirection) , initState) 
             = MkDFS (Arrow.mapPosition initState tt) mapDirection mapPosition
 

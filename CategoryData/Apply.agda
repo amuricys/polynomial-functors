@@ -38,5 +38,5 @@ applyFn : {A B : Set} → (p : Polynomial) → (A → B) → p ⦅ A ⦆ → p �
 applyFn (MkPoly position direction) f (fst , snd) = fst , λ x → f (snd x)
 
 fromArrowInPolyToFunctionBetweenAppliedPolys : {p q : Polynomial} {S : Set} → Arrow p q → p ⦅ S ⦆ → q ⦅ S ⦆
-fromArrowInPolyToFunctionBetweenAppliedPolys {(MkPoly pos dir)} {B} (mapPosition ⇄ mapDirection) (f , s) =
+fromArrowInPolyToFunctionBetweenAppliedPolys {(MkPoly pos dir)} {B} (mapPosition ⇆ mapDirection) (f , s) =
   mapPosition f , λ {x₁ → s (mapDirection f x₁)}

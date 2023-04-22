@@ -21,7 +21,7 @@ e = 2.718281
 
 -- The big one
 voltage : DynamicalSystem
-voltage = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ × ℝ × ℝ × ℝ) (readout ⇄ update)
+voltage = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ × ℝ × ℝ × ℝ) (readout ⇆ update)
   where readout : ℝ → ℝ
         readout state = state
         GL : ℝ
@@ -68,7 +68,7 @@ voltage = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ × ℝ × ℝ × ℝ) (
 
 -- First order differential equations
 potassiumActivation : DynamicalSystem
-potassiumActivation = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ) (readout ⇄ update)
+potassiumActivation = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ) (readout ⇆ update)
   where readout : ℝ → ℝ
         readout state = state
         update : ℝ → ℝ → ℝ
@@ -76,7 +76,7 @@ potassiumActivation = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ) (readout �
           where dₘ = αₘ voltage * (1.0 - state) - βₘ voltage * state
 
 sodiumActivation : DynamicalSystem
-sodiumActivation = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ) (readout ⇄ update)
+sodiumActivation = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ) (readout ⇆ update)
   where readout : ℝ → ℝ
         readout state = state
         update : ℝ → ℝ → ℝ
@@ -84,7 +84,7 @@ sodiumActivation = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ) (readout ⇄ 
           where dₕ = αₕ voltage * (1.0 - state) - βₕ voltage * state
 
 sodiumInactivation : DynamicalSystem
-sodiumInactivation = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ) (readout ⇄ update)
+sodiumInactivation = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ) (readout ⇆ update)
   where readout : ℝ → ℝ
         readout state = state
         update : ℝ → ℝ → ℝ
@@ -99,7 +99,7 @@ preHH = voltage &&& potassiumActivation &&& sodiumActivation &&& sodiumInactivat
 -- The second one deals with wiring inputs. It has access to all outputs plus Ie, which is an input to
 -- the outer box. Wonder why the first arrow doesn't have access to Ie though.
 hodgkinHuxleyWiringDiagram : Arrow (DynamicalSystem.interface preHH) (selfMonomial ℝ)
-hodgkinHuxleyWiringDiagram = (λ {(v , m , h , n) → v }) ⇄ (λ {((v , m , h , n)) Ie → (Ie , m , h , n) , v , v , v })
+hodgkinHuxleyWiringDiagram = (λ {(v , m , h , n) → v }) ⇆ (λ {((v , m , h , n)) Ie → (Ie , m , h , n) , v , v , v })
 
 -- Final system is composition of wiring diagram and dynamics
 hodgkinHuxley : DynamicalSystem

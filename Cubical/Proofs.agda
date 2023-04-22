@@ -23,10 +23,10 @@ open import Cubical.PolynomialEquals
 ------- Categorical axioms
 ---------------------------------------
 composeLeftIdentity : {B C : Polynomial} → (bToC : Arrow B C) → idArrow ∘ₚ bToC ≡ bToC
-composeLeftIdentity (_ ⇄ _) = refl
+composeLeftIdentity (_ ⇆ _) = refl
 
 composeRightIdentity :{B C : Polynomial} → (cToB : Arrow C B) → cToB ∘ₚ idArrow ≡ cToB
-composeRightIdentity (_ ⇄ _) = refl
+composeRightIdentity (_ ⇆ _) = refl
 
 composeIsAssoc : ∀ {A B C D} → {f : Arrow A B} {g : Arrow B C} {h : Arrow C D} → ((h ∘ₚ g) ∘ₚ f) ≡ (h ∘ₚ (g ∘ₚ f))
 composeIsAssoc = refl
@@ -75,10 +75,10 @@ enclosePoly≡depFuncToDirections = isoToPath isoEnclosePolydepFuncToDirections
     isoEnclosePolydepFuncToDirections = iso toRight toLeft (λ _ → refl) (λ _ → refl)
       where
         toRight : {p : Polynomial} → enclose p → ((i : Polynomial.position p) → Polynomial.direction p i)
-        toRight (mapPosition ⇄ mapDirection) pos = mapDirection pos tt
+        toRight (mapPosition ⇆ mapDirection) pos = mapDirection pos tt
 
         toLeft : {p : Polynomial} → ((i : Polynomial.position p) → Polynomial.direction p i) → enclose p
-        toLeft p1 = (λ x → tt) ⇄ λ fromPos x → p1 fromPos
+        toLeft p1 = (λ x → tt) ⇆ λ fromPos x → p1 fromPos
 
 ---------------------------------------
 

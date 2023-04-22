@@ -35,7 +35,7 @@ processorInterface : Polynomial
 processorInterface = (MkPoly ProcessorOutput (const ProcessorInput))
 
 turingProgram : Arrow (selfMonomial ProcessorState) processorInterface
-turingProgram = exposeState ⇄ updateState
+turingProgram = exposeState ⇆ updateState
   where exposeState : ProcessorState → ProcessorOutput
         exposeState n = {!  !}
         updateState : ProcessorState → ProcessorInput → ProcessorState
@@ -60,7 +60,7 @@ tapeInterface = MkPoly TapeOutput decide
         decide (result x) = ⊥
 
 tapeBehavior : Arrow (selfMonomial TapeState) tapeInterface
-tapeBehavior = readout ⇄ update
+tapeBehavior = readout ⇆ update
   where readout : TapeState → TapeOutput
         readout (running x) = instruct (x 0ℤ)
         readout (halting x) = result (halting x)
@@ -80,7 +80,7 @@ Word : Set
 Word = Vec ℤ 32
 
 turingWiringDiagram : Arrow (DynamicalSystem.interface preTuring) (Emitter Word)
-turingWiringDiagram = outerOutput ⇄ fillInputs
+turingWiringDiagram = outerOutput ⇆ fillInputs
   where stillRunning = replicate 0ℤ
         outerOutput : TapeOutput × ProcessorOutput → Word
         outerOutput (instruct x₁ , move x) = stillRunning

@@ -176,7 +176,7 @@ rtoq : (r : Polynomial) → (q : Polynomial) → Polynomial
 rtoq r (MkPoly posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
 
 ev : {A B : Polynomial} → Arrow (rtoq B A * A) B
-ev {A} {B} = mp ⇄ md
+ev {A} {B} = mp ⇆ md
     where mp : position (rtoq B A * A) → position B
           mp (posB^A , posA) = fst (posB^A posA)
           md : (fromPos : position (rtoq B A * A)) → direction B (mp fromPos) → direction (rtoq B A * A) fromPos
@@ -187,8 +187,8 @@ ev {A} {B} = mp ⇄ md
                       help p rewrite p = tt
 
 λg : {X A B : Polynomial} → (X×A : Product X A) → Arrow (Product.A×B X×A) B → Arrow X (rtoq B A)  
-λg {X} {A} {B} record { A×B = A×B ; π₁ = π₁ ; π₂ = π₂ ; ⟨_,_⟩ = ⟨_,_⟩ ; project₁ = project₁ ; project₂ = project₂ ; unique = unique } (mp ⇄ md) = let
-  emp ⇄ emd = ev {A} {B}
+λg {X} {A} {B} record { A×B = A×B ; π₁ = π₁ ; π₂ = π₂ ; ⟨_,_⟩ = ⟨_,_⟩ ; project₁ = project₁ ; project₂ = project₂ ; unique = unique } (mp ⇆ md) = let
+  emp ⇆ emd = ev {A} {B}
   -- MkPoly h m = Product.A×B p
   -- hmm : position X → position A → position (X * A)
   -- hmm posX posA = posX , posA
@@ -197,14 +197,14 @@ ev {A} {B} = mp ⇄ md
   help : position A×B
   help = {!  !}
   in
-  (\ x i → mp help , {!   !}) ⇄ {!   !} 
+  (\ x i → mp help , {!   !}) ⇆ {!   !} 
 
 exp : {A B : Polynomial} → Exponential A B
 exp {A} {B} = record
     { B^A = rtoq B A
     ; product = prod
     ; eval = ev
-    ; λg = \ { {X} record { A×B = A×B ; π₁ = π₁ ; π₂ = π₂ ; ⟨_,_⟩ = ⟨_,_⟩ ; project₁ = project₁ ; project₂ = project₂ ; unique = unique } (f ⇄ f♯) → (λ x i → {! f  !}) ⇄ {!   !}}
+    ; λg = \ { {X} record { A×B = A×B ; π₁ = π₁ ; π₂ = π₂ ; ⟨_,_⟩ = ⟨_,_⟩ ; project₁ = project₁ ; project₂ = project₂ ; unique = unique } (f ⇆ f♯) → (λ x i → {! f  !}) ⇆ {!   !}}
     ; β = {!   !}
     ; λ-unique = {!   !}
     }

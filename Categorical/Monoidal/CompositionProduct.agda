@@ -48,7 +48,7 @@ rightUnit {p} = poly≡∀' pos≡ dir≡
 bifunctor : Bifunctor Poly Poly Poly
 bifunctor = record
     { F₀ = λ  { (p , q) → p ◂ q }
-    ; F₁ = λ { ((mpf ⇄ mdf) , (mpg ⇄ mdg)) → (λ { (a , b) → mpf a , λ { x → mpg (b (mdf a x)) } }) ⇄ λ { (x , y) (w , z) → (mdf x w) , (mdg (y (mdf x w)) z) } }
+    ; F₁ = λ { ((mpf ⇆ mdf) , (mpg ⇆ mdg)) → (λ { (a , b) → mpf a , λ { x → mpg (b (mdf a x)) } }) ⇆ λ { (x , y) (w , z) → (mdf x w) , (mdg (y (mdf x w)) z) } }
     ; identity = refl
     ; homomorphism = refl
     ; F-resp-≈ = λ x → arrow≡ {!   !} {!   !}
@@ -59,18 +59,18 @@ monoidal = record
     { ⊗ = bifunctor
     ; unit = Y
     ; unitorˡ = record { 
-        from = (λ { (tt , y) → y tt }) ⇄ λ { (tt , y) z → tt , z } ; 
-        to = (λ { x → tt , λ _ → x }) ⇄ λ { fromPos → snd } ; 
+        from = (λ { (tt , y) → y tt }) ⇆ λ { (tt , y) z → tt , z } ; 
+        to = (λ { x → tt , λ _ → x }) ⇆ λ { fromPos → snd } ; 
         iso = record { isoˡ = refl ; isoʳ = refl } 
         }
     ; unitorʳ = record { 
-        from = fst ⇄ λ { _ x → x , tt } ; 
-        to = (λ x → x , (λ _ → tt)) ⇄ λ _ → fst ; 
+        from = fst ⇆ λ { _ x → x , tt } ; 
+        to = (λ x → x , (λ _ → tt)) ⇆ λ _ → fst ; 
         iso = record { isoˡ = refl ; isoʳ = refl } 
         }
     ; associator = record { 
-        from = (λ { ((x , z) , y) → x , (λ x → z x , (λ x₁ → y (x , x₁))) }) ⇄ λ { ((_ , hmm) , bbb) (fst₂ , (what , is)) → (fst₂ , what) , is } ; 
-        to = (λ { (a , b) → (a , (λ x → fst (b x))) , λ { (idk , wat) → snd (b idk) wat } }) ⇄ λ { (x , y) ((jee , idkk) , w) → jee , idkk , w } ; 
+        from = (λ { ((x , z) , y) → x , (λ x → z x , (λ x₁ → y (x , x₁))) }) ⇆ λ { ((_ , hmm) , bbb) (fst₂ , (what , is)) → (fst₂ , what) , is } ; 
+        to = (λ { (a , b) → (a , (λ x → fst (b x))) , λ { (idk , wat) → snd (b idk) wat } }) ⇆ λ { (x , y) ((jee , idkk) , w) → jee , idkk , w } ; 
         iso = record { isoˡ = refl ; isoʳ = refl } 
         }
     ; unitorˡ-commute-from = refl

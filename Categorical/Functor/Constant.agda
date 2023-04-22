@@ -26,7 +26,7 @@ fromAnythingToFalseToAnythingEqual i x ()
 constantPolynomial : Functor (Sets Level.zero) Poly 
 constantPolynomial = record
     { F₀ = λ x → MkPoly x λ _ → ⊥
-    ; F₁ = λ f → f ⇄ λ fromPos → id
+    ; F₁ = λ f → f ⇆ λ fromPos → id
     ; identity = refl
     ; homomorphism = refl
     ; F-resp-≈ = λ p → arrowsEqual (funExt λ x → ptoc p) refl

@@ -34,14 +34,14 @@ compositePower p zero = compositionUnit
 compositePower p (suc n) = p ◂ (compositePower p n) 
 
 ~ᴿ : {c : Polynomial} → Arrow c (c ◂ Y)
-~ᴿ =  (_, const tt) ⇄ λ _ → proj₁
+~ᴿ =  (_, const tt) ⇆ λ _ → proj₁
 
 ~ᴸ : {c : Polynomial} → Arrow c (Y ◂ c)
-~ᴸ =  (λ x → tt , const x) ⇄ λ _ → proj₂
+~ᴸ =  (λ x → tt , const x) ⇆ λ _ → proj₂
 
 -- Apply arrows to both sides of the monoidal structure
 ⟨_◂_⟩ : {p q r s : Polynomial} → Arrow p r → Arrow q s → Arrow (p ◂ q) (r ◂ s)
-⟨_◂_⟩ {p} {q} {r} {s} (f ⇄ f♯) (g ⇄ g♯) = mapPos ⇄ mapDir
+⟨_◂_⟩ {p} {q} {r} {s} (f ⇆ f♯) (g ⇆ g♯) = mapPos ⇆ mapDir
   where mapPos : position (p ◂ q) → position (r ◂ s)
         mapPos (posP , dirPToPosQ) = f posP , g ∘ dirPToPosQ ∘ f♯ posP
         mapDir : (fromPos : position (p ◂ q)) → direction (r ◂ s) (mapPos fromPos) → direction (p ◂ q) fromPos

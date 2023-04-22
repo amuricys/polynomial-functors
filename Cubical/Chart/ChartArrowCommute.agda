@@ -7,7 +7,7 @@ open import CategoryData.Chart.Core
 open import Cubical.Foundations.Prelude
 
 ArrowChartCommute : {p₁ p₂ p₃ p₄ : Polynomial} (w : Arrow p₁ p₃) (v : Arrow p₂ p₄) (f : Chart p₁ p₂) (g : Chart p₃ p₄) → Type
-ArrowChartCommute {p₁} {p₂} {p₃} {p₄} (w ⇄ w♯) (v ⇄ v♯) (f ⇉ f♭) (g ⇉ g♭) = Σ mapPos≡ mapDir≡
+ArrowChartCommute {p₁} {p₂} {p₃} {p₄} (w ⇆ w♯) (v ⇆ v♯) (f ⇉ f♭) (g ⇉ g♭) = Σ mapPos≡ mapDir≡
     where
         mapPos≡ : Type
         mapPos≡ = (i : position p₁) → v (f i) ≡ g (w i)

@@ -32,7 +32,7 @@ asEndo p = record
     }
 
 asNatTransArr : {p q : Polynomial} → Arrow p q → NaturalTransformation (asEndo p) (asEndo q)
-asNatTransArr (f ⇄ f♯) = record { 
+asNatTransArr (f ⇆ f♯) = record { 
     η = λ { X (posP , dirP) → f posP , dirP ∘ f♯ posP } ; 
     commute = λ f₁ → Eq.refl ; 
     sym-commute = λ f₁ → Eq.refl 

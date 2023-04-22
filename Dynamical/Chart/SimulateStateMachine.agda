@@ -42,7 +42,7 @@ p = MkPoly Output λ {a → RedBlue
                            ; d → BrownOrange}
                             
 bigArrow : Arrow (selfMonomial S) p
-bigArrow = output ⇄ input
+bigArrow = output ⇆ input
     where 
         output : S → Output
         output one = a
@@ -68,7 +68,7 @@ bigSystem : DynamicalSystem
 bigSystem = MkDynamicalSystem S p bigArrow
 
 smallArrow : Arrow (selfMonomial T) p
-smallArrow = output ⇄ input
+smallArrow = output ⇆ input
     where
         output : T → Output
         output one = a

@@ -27,7 +27,7 @@ depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
 depProd (ind , polyAt) = MkPoly ((i : ind) → position (polyAt i))
                                       (λ a⁺ → Σ[ i ∈ ind ](direction (polyAt i) (a⁺ i)))
 eval : {p q : Polynomial} → Arrow ((q ^ p) * p) q
-eval {p} {q} = mapPos ⇄ mapDir
+eval {p} {q} = mapPos ⇆ mapDir
     where
         mapPos : position ((q ^ p) * p) → position q
         mapPos (posQ^P , posP) = fst (posQ^P posP)
@@ -43,7 +43,7 @@ eval {p} {q} = mapPos ⇄ mapDir
                 help rewrite eq = tt
 
 curry : {p q r : Polynomial} → Arrow (p * q) r → Arrow p (r ^ q)
-curry {p} {q} {r} (f ⇄ f♯) = mapPos ⇄ mapDir
+curry {p} {q} {r} (f ⇆ f♯) = mapPos ⇆ mapDir
     where
         eraseLeft : {A B : Set} → A ⊎ B → ⊤ ⊎ B
         eraseLeft f = [ (λ _ → inj₁ tt) , inj₂ ] f
@@ -56,7 +56,7 @@ curry {p} {q} {r} (f ⇄ f♯) = mapPos ⇄ mapDir
         ... | inj₁ x = x
 
 uncurry : {p q r : Polynomial} → Arrow p (q ^ r) → Arrow (p * r) q
-uncurry {p} {q} {r} (f ⇄ f♯) = mapPos ⇄ mapDir
+uncurry {p} {q} {r} (f ⇆ f♯) = mapPos ⇆ mapDir
     where
         mapPos : position (p * r) → position q
         mapPos (posP , posR) = fst (f posP posR)
@@ -78,7 +78,7 @@ mdEv (posB^A , posA) x with (snd (posB^A posA)) x in eq
         where help : (snd (posB^A posA) x) Eq.≡ inj₁ s → [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (posB^A posA) x)
               help p rewrite p = tt
 ev : {A B : Polynomial} → Arrow (B ^ A * A) B
-ev {A} {B} = mpEv ⇄ mdEv
+ev {A} {B} = mpEv ⇆ mdEv
 
 canonical : {A B : Polynomial} → Canonical.CartesianClosed
 canonical {A} {B} = record

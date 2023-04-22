@@ -29,21 +29,21 @@ data Z : Set where
 
 -- First order differential equations
 x : DynamicalSystem
-x = MkDynamicalSystem X (MkPoly X λ _ → Y) (readout ⇄ update)
+x = MkDynamicalSystem X (MkPoly X λ _ → Y) (readout ⇆ update)
   where readout : X → X
         readout state = state
         update : X → Y → X
         update (xnt state) (ynt y) = xnt (state + dt * (σ * (y - state)))
 
 y : DynamicalSystem
-y = MkDynamicalSystem Y (MkPoly Y λ _ → X × Z) (readout ⇄ update)
+y = MkDynamicalSystem Y (MkPoly Y λ _ → X × Z) (readout ⇆ update)
   where readout : Y → Y
         readout state = state
         update : Y → X × Z → Y
         update (ynt state) ( xnt x , znt z ) = ynt (state + dt * (x * (ρ - z) - state))
 
 z : DynamicalSystem
-z = MkDynamicalSystem Z (MkPoly Z λ _ → X × Y) (readout ⇄ update)
+z = MkDynamicalSystem Z (MkPoly Z λ _ → X × Y) (readout ⇆ update)
   where readout : Z → Z
         readout state = state
         update : Z → X × Y → Z
@@ -55,7 +55,7 @@ preLorenz = x &&& y &&& z
 
 -- Wiring diagram is an arrow between monomials (lens)
 lorenzWiringDiagram : Arrow (DynamicalSystem.interface preLorenz) (Emitter (X × Y × Z))
-lorenzWiringDiagram = mp ⇄ md
+lorenzWiringDiagram = mp ⇆ md
   where mp : X × Y × Z → X × Y × Z
         mp (x , y , z) = x , y , z
         md : X × Y × Z → ⊤ → Y × (X × Z) × (X × Y)
