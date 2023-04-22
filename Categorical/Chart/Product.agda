@@ -10,14 +10,14 @@ open import Cubical.Foundations.Prelude
 open import Cubical.Chart.ChartEquality
 
 π₁ : {p q : Polynomial} → Chart (p ⊗ q) p
-π₁ = mkChart fst λ i → fst
+π₁ = fst ⇉ λ i → fst
 
 π₂ : {p q : Polynomial} → Chart (p ⊗ q) q
-π₂ = mkChart snd λ i → snd
+π₂ = snd ⇉ λ i → snd
 
 open Chart
 ⟨_,_⟩ : {p q r : Polynomial} → Chart p q → Chart p r → Chart p (q ⊗ r)
-⟨ f , g ⟩ = mkChart (λ p → mapPos f p , mapPos g p) λ p x → mapDir f p x , mapDir g p x
+⟨ f , g ⟩ = (λ p → mapPos f p , mapPos g p) ⇉ λ p x → mapDir f p x , mapDir g p x
 
 prod : {A B : Polynomial} → Product A B
 prod {A = A} {B = B} = record

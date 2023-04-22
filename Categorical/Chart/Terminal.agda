@@ -11,7 +11,7 @@ open import Cubical.Chart.ChartEquality
 open import Data.Unit
 
 chartToOne : {p : Polynomial} → Chart p Y
-chartToOne = mkChart (λ x → tt) λ i x → tt
+chartToOne = (λ x → tt) ⇉ λ i x → tt
 
 unique : {p : Polynomial} (f : Chart p Y) → chartToOne ≡ f
 unique f = chart≡ refl refl

@@ -11,15 +11,15 @@ open import Cubical.Foundations.Prelude
 open import Cubical.Chart.ChartEquality
 
 i₁ : {p q : Polynomial} → Chart p (p + q)
-i₁ = mkChart inj₁ λ i x → x
+i₁ = inj₁ ⇉ λ i x → x
 
 i₂ : {p q : Polynomial} → Chart q (p + q)
-i₂ = mkChart inj₂ λ i x → x
+i₂ = inj₂ ⇉ λ i x → x
 
 open Chart
 [_,_]c : {p q r : Polynomial} → Chart p r → Chart q r → Chart (p + q) r
-[_,_]c f g = mkChart (λ {(inj₁ x) → mapPos f x
-                       ; (inj₂ y) → mapPos g y}) λ {(inj₁ x₁) x → mapDir f x₁ x
+[_,_]c f g = (λ {(inj₁ x) → mapPos f x
+                       ; (inj₂ y) → mapPos g y}) ⇉ λ {(inj₁ x₁) x → mapDir f x₁ x
                                                   ; (inj₂ y) x → mapDir g y x}
 
 unique : {p q r : Polynomial} {h : Chart (p + q) r} {f₁ : Chart p r} {f₂ : Chart q r}

@@ -23,6 +23,6 @@ Poly = record
     ; identityˡ = refl
     ; identityʳ = refl
     ; identity² = refl
-    ; equiv = record { refl = refl ; sym = sym ; trans = transitivity }
+    ; equiv = record { refl = refl ; sym = sym ; trans = _∙_ }
     ; ∘-resp-≈ = equiv-resp
     }

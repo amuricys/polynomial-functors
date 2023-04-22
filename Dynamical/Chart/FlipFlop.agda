@@ -79,5 +79,5 @@ law₂ zero x = refl
 law₂ (suc zero) x = refl
 law₂ (suc (suc s)) x = law₂ s x
 
-square : ArrowChartCommute (dynamics counter) (dynamics flipFlop) (mkChart morphSystem λ _ → morphSystem) idChart
+square : ArrowChartCommute (dynamics counter) (dynamics flipFlop) (morphSystem ⇉ λ _ → morphSystem) idChart
 square = law₁ , law₂

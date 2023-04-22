@@ -11,7 +11,7 @@ open import Categories.Object.Initial chartCat
 open import Cubical.Chart.ChartEquality
 
 chartFromZero : {p : Polynomial} → Chart 𝟘 p
-chartFromZero = mkChart (λ ()) λ ()
+chartFromZero = (λ ()) ⇉ λ ()
 
 unique : {p : Polynomial} (f : Chart 𝟘 p) → chartFromZero ≡ f
 unique f = chart≡ (funExt λ ()) (funExt λ ())

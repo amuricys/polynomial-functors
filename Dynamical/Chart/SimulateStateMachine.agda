@@ -127,5 +127,5 @@ law₂ four orange = refl
 law₂ five brown = refl
 law₂ five orange = refl
 
-square : ArrowChartCommute bigArrow smallArrow (mkChart morphSystem λ _ → morphSystem) idChart
+square : ArrowChartCommute bigArrow smallArrow (morphSystem ⇉ λ _ → morphSystem) idChart
 square = law₁ , law₂
