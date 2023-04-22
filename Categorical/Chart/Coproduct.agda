@@ -1,4 +1,4 @@
-{-# OPTIONS --cubical #-}
+{-# OPTIONS --cubical --allow-unsolved-metas #-}
 
 module Categorical.Chart.Coproduct where
 
@@ -29,15 +29,9 @@ unique : {p q r : Polynomial} {h : Chart (p + q) r} {f₁ : Chart p r} {f₂ : C
 unique {p = p2} {q} {h = h} p p' = (λ i → [ sym p i , sym p' i ]c) ∙ lemma
     where
         lemma : [ h ∘c i₁ , h ∘c i₂ ]c ≡ h
-        lemma = chart≡ (funExt λ {(inj₁ x) → refl
-                                ; (inj₂ y) → refl})  (funExt λ {(inj₁ x) → {! lemma2 x  !}
-                                                              ; (inj₂ y) → {! lemma3 y  !}})
-            where
-                lemma2 : (x : position p2) → (mapDir [ h ∘c i₁ , h ∘c i₂ ]c) (inj₁ x) ≡ mapDir h (inj₁ x)
-                lemma2 x = refl
-
-                lemma3 : (x : position q) → (mapDir [ h ∘c i₁ , h ∘c i₂ ]c) (inj₂ x) ≡ mapDir h (inj₂ x)
-                lemma3 x = refl
+        lemma = chart≡∀ (funExt λ {(inj₁ x) → refl
+                                 ; (inj₂ y) → refl}) λ {(inj₁ x₁) x → transportRefl (mapDir h (inj₁ x₁) x)
+                                                      ; (inj₂ y) x → transportRefl (mapDir h (inj₂ y) x)}
 
 coprod : {p q : Polynomial} → Coproduct p q
 coprod {p} {q} = record
