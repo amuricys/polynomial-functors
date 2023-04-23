@@ -57,11 +57,11 @@ chart≡∀ : {p q : Polynomial} {f g : Chart p q}
     → f ≡ g
 chart≡∀ {p} {q} mapPos≡ mapDir≡ = cong chartAsΣToChart (chartΣ≡∀ {p} {q} mapPos≡ mapDir≡)
 
--- arrowSigmasEqual3 : {p q : Polynomial} {f g : Arrow p q}
---     → (mapPosEq : Arrow.mapPosition f ≡ Arrow.mapPosition g)
+-- lensSigmasEqual3 : {p q : Polynomial} {f g : Lens p q}
+--     → (mapPosEq : Lens.mapPosition f ≡ Lens.mapPosition g)
 --     → ((x : position p) → (y : direction q (mapPosition g x)) → mapDirection f x  (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y)
---     → arrowToSigma f ≡ arrowToSigma g
--- arrowSigmasEqual3 {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathTransport→PathΣ (arrowToSigma f) (arrowToSigma g) (mapPosEq , funExt λ x  → funExt λ y → (lemma x y) ∙ (mapDirEq x y))
+--     → lensToSigma f ≡ lensToSigma g
+-- lensSigmasEqual3 {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathTransport→PathΣ (lensToSigma f) (lensToSigma g) (mapPosEq , funExt λ x  → funExt λ y → (lemma x y) ∙ (mapDirEq x y))
 --   where
 --     lemma : (x : position p) → (y : direction q (mapPosition g x)) → 
 --       (subst (λ h → (i : position p) → direction q (h i) → direction p i) mapPosEq (mapDirection f)) x y
@@ -71,7 +71,7 @@ chart≡∀ {p} {q} mapPos≡ mapDir≡ = cong chartAsΣToChart (chartΣ≡∀ {
 --     lemma x y i = transp (λ j → direction p (transp (λ _ → position p) (j ∨ i) x)) i ((mapDirection f (transp (λ _ → position p) i x) (transp (λ j → direction q (mapPosEq (~ j) (transp (λ _ → position p) (~ j ∨ i) x))) i0 y))) 
 
 
--- arrowsEqual3 : {p q : Polynomial} {f g : Arrow p q}
+-- lensesEqual3 : {p q : Polynomial} {f g : Lens p q}
 --     → (mapPosEq : mapPosition f ≡ mapPosition g)
 --     → (
 --            (x : position p) → 
@@ -82,4 +82,4 @@ chart≡∀ {p} {q} mapPos≡ mapDir≡ = cong chartAsΣToChart (chartΣ≡∀ {
 --            mapDirection g x y
 --         )
 --     → f ≡ g
--- arrowsEqual3 {f = f} {g = g} a b i = sigmaToArrow (arrowSigmasEqual3 {f = f} {g = g} a b i)
+-- lensesEqual3 {f = f} {g = g} a b i = sigmaToLens (lensSigmasEqual3 {f = f} {g = g} a b i)

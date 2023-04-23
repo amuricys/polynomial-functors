@@ -22,7 +22,7 @@ open import Data.Bool
 -- Functor sending a set A to the linear polynomial Ay^1 = Ay
 linearPolynomial : Functor (Sets Level.zero) Poly
 linearPolynomial = record
-    { F₀ = λ x → MkPoly x λ _ → ⊤
+    { F₀ = λ x → mkpoly x λ _ → ⊤
     ; F₁ = λ f → f ⇆ \ _ _ → tt
     ; identity = λ i → id ⇆ (λ fromPos x → x)
     ; homomorphism = λ {x y z} {f g} i → (g ∘ f) ⇆ λ fromPos k → k
@@ -36,13 +36,13 @@ linearPolynomial = record
 full : Full linearPolynomial
 full = record 
     { from = record 
-        { _⟨$⟩_ = Arrow.mapPosition
-        ; cong = positionArrowsEqualPwiseEq } 
+        { _⟨$⟩_ = Lens.mapPosition
+        ; cong = positionLensesEqualPwiseEq } 
     ; right-inverse-of = λ x → refl
     }
 
 faithful : Faithful linearPolynomial
-faithful = λ f g x → ctop (positionArrowsEqualPwise x)
+faithful = λ f g x → ctop (positionLensesEqualPwise x)
 
 ffcp : FullyFaithful linearPolynomial
 ffcp = full , faithful

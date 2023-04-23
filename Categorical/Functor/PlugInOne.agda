@@ -20,33 +20,33 @@ open import Categorical.Instance.Poly
 open import Cubical.Proofs
 open import Data.Bool
 
-fromArrowInPolyToFunction2 : {p q : Polynomial} → Arrow p q → p ⦅ ⊤ ⦆ → q ⦅ ⊤ ⦆
-fromArrowInPolyToFunction2 {(MkPoly pos dir)} {B} (mapPosition ⇆ mapDirection) = \x → let
+fromLensInPolyToFunction2 : {p q : Polynomial} → Lens p q → p ⦅ ⊤ ⦆ → q ⦅ ⊤ ⦆
+fromLensInPolyToFunction2 {(mkpoly pos dir)} {B} (mapPosition ⇆ mapDirection) = \x → let
   positionAirquotes = fst x
   directionAirquoteslol = snd x
   in mapPosition positionAirquotes , λ {x₁ → directionAirquoteslol (mapDirection positionAirquotes x₁)}
 
-appliedPolyArrowsEq2 : {p q : Polynomial} →  {f g : Arrow p q} → f ≡ g → fromArrowInPolyToFunction2 f ≡ fromArrowInPolyToFunction2 g
-appliedPolyArrowsEq2 p i = fromArrowInPolyToFunction2 (p i)
+appliedPolyLensesEq2 : {p q : Polynomial} →  {f g : Lens p q} → f ≡ g → fromLensInPolyToFunction2 f ≡ fromLensInPolyToFunction2 g
+appliedPolyLensesEq2 p i = fromLensInPolyToFunction2 (p i)
 
-appliedPolyArrowsEqPwise2 : {p q : Polynomial} → {f g : Arrow p q} {z : p ⦅ ⊤ ⦆} → f ≡ g → fromArrowInPolyToFunction2 f z ≡ fromArrowInPolyToFunction2 g z
-appliedPolyArrowsEqPwise2 {z = z} p i = let
-  posEq = appliedPolyArrowsEq2 p i
+appliedPolyLensesEqPwise2 : {p q : Polynomial} → {f g : Lens p q} {z : p ⦅ ⊤ ⦆} → f ≡ g → fromLensInPolyToFunction2 f z ≡ fromLensInPolyToFunction2 g z
+appliedPolyLensesEqPwise2 {z = z} p i = let
+  posEq = appliedPolyLensesEq2 p i
   in posEq z
 
-appliedPolyArrowsEqPwiseEq2 : {p q : Polynomial}
-      {f g : Arrow p q} →
+appliedPolyLensesEqPwiseEq2 : {p q : Polynomial}
+      {f g : Lens p q} →
       f ≡ g →
       {z : p ⦅ ⊤ ⦆} →
-      fromArrowInPolyToFunction2 f z Eq.≡ fromArrowInPolyToFunction2 g z
-appliedPolyArrowsEqPwiseEq2 p {z} = ctop (appliedPolyArrowsEqPwise2 {z = z} p)
+      fromLensInPolyToFunction2 f z Eq.≡ fromLensInPolyToFunction2 g z
+appliedPolyLensesEqPwiseEq2 p {z} = ctop (appliedPolyLensesEqPwise2 {z = z} p)
 
 -- -- Functor sending a polynomial to its set of positions "plugging in 1"
 plugIn1 : Functor Poly (Sets Level.zero)
 plugIn1 = record
     { F₀ = λ x → x ⦅ ⊤ ⦆
-    ; F₁ = fromArrowInPolyToFunctionBetweenAppliedPolys
+    ; F₁ = fromLensInPolyToFunctionBetweenAppliedPolys
     ; identity = Eq.refl
     ; homomorphism = Eq.refl
-    ; F-resp-≈ = appliedPolyArrowsEqPwiseEq2
+    ; F-resp-≈ = appliedPolyLensesEqPwiseEq2
     }

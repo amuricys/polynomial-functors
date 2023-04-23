@@ -16,4 +16,4 @@ open import CategoryData.Composition public
 -- Things not belonging elsewhere
 
 enclose : Polynomial → Set
-enclose p = Arrow p Y
+enclose p = Lens p Y

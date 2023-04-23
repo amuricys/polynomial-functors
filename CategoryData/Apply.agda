@@ -11,11 +11,11 @@ open import Function
 -- Plug in a set: say you have p(y) = y^2 + 3. p ⦅ 2 ⦆ should return 2^2 + 3 ≅ 7
 -- This is the action on objects (sets) of that polynomials perform as functors. They're (endo)functors after all.
 _⦅_⦆ : Polynomial → Set → Set
-_⦅_⦆ (MkPoly position direction) Y = Σ position λ x → (direction x → Y)
+_⦅_⦆ (mkpoly position direction) Y = Σ position λ x → (direction x → Y)
 
 
 ex : Polynomial
-ex = MkPoly Bool λ {false → Bool
+ex = mkpoly Bool λ {false → Bool
                   ; true → ⊤}
 
 f1 : ⊤ → Bool
@@ -35,8 +35,8 @@ some2 = true , id
 -- the type 2^2 + 3 ≅ 7 to the type 3^2 + 3 ≅ = 12. This is the action on morphisms (functions) that polynomials
 -- perform as functors (they are endofunctors in Set after all)
 applyFn : {A B : Set} → (p : Polynomial) → (A → B) → p ⦅ A ⦆ → p ⦅ B ⦆
-applyFn (MkPoly position direction) f (fst , snd) = fst , λ x → f (snd x)
+applyFn (mkpoly position direction) f (fst , snd) = fst , λ x → f (snd x)
 
-fromArrowInPolyToFunctionBetweenAppliedPolys : {p q : Polynomial} {S : Set} → Arrow p q → p ⦅ S ⦆ → q ⦅ S ⦆
-fromArrowInPolyToFunctionBetweenAppliedPolys {(MkPoly pos dir)} {B} (mapPosition ⇆ mapDirection) (f , s) =
+fromLensInPolyToFunctionBetweenAppliedPolys : {p q : Polynomial} {S : Set} → Lens p q → p ⦅ S ⦆ → q ⦅ S ⦆
+fromLensInPolyToFunctionBetweenAppliedPolys {(mkpoly pos dir)} {B} (mapPosition ⇆ mapDirection) (f , s) =
   mapPosition f , λ {x₁ → s (mapDirection f x₁)}

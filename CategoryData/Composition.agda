@@ -14,7 +14,7 @@ open import Function
 -- Proposition 5.2, page 158. Note: not same definition used. We here treat positions
 -- as inhabitants of the same set, which makes a lot of proofs easier down the line.
 _◂_ : Polynomial → Polynomial → Polynomial
-p ◂ q = MkPoly pos dir
+p ◂ q = mkpoly pos dir
   where
     module p = Polynomial p
     module q = Polynomial q
@@ -33,14 +33,14 @@ compositePower : Polynomial → ℕ → Polynomial
 compositePower p zero = compositionUnit
 compositePower p (suc n) = p ◂ (compositePower p n) 
 
-~ᴿ : {c : Polynomial} → Arrow c (c ◂ Y)
+~ᴿ : {c : Polynomial} → Lens c (c ◂ Y)
 ~ᴿ =  (_, const tt) ⇆ λ _ → proj₁
 
-~ᴸ : {c : Polynomial} → Arrow c (Y ◂ c)
+~ᴸ : {c : Polynomial} → Lens c (Y ◂ c)
 ~ᴸ =  (λ x → tt , const x) ⇆ λ _ → proj₂
 
--- Apply arrows to both sides of the monoidal structure
-⟨_◂_⟩ : {p q r s : Polynomial} → Arrow p r → Arrow q s → Arrow (p ◂ q) (r ◂ s)
+-- Apply lenses to both sides of the monoidal structure
+⟨_◂_⟩ : {p q r s : Polynomial} → Lens p r → Lens q s → Lens (p ◂ q) (r ◂ s)
 ⟨_◂_⟩ {p} {q} {r} {s} (f ⇆ f♯) (g ⇆ g♯) = mapPos ⇆ mapDir
   where mapPos : position (p ◂ q) → position (r ◂ s)
         mapPos (posP , dirPToPosQ) = f posP , g ∘ dirPToPosQ ∘ f♯ posP

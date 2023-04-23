@@ -9,7 +9,7 @@ import Level
 open import Categories.Diagram.Coequalizer (Sets Level.zero)
 open import Data.Nat using (suc ; zero)
 open import CategoryData.Everything
-open import Cubical.ArrowEquals
+open import Cubical.LensEquality
 open import Cubical.Foundations.Prelude
 open import Data.Sum
 open import Data.Product using (_×_)
@@ -33,8 +33,8 @@ equalityIsSet p {x} {y} = isOfHLevelPath 2 p x y
 
 open SetPolynomial
 open Polynomial
-eq : {pˢ qˢ : SetPolynomial} → (f g : SetArrow pˢ qˢ) → Equalizer f g
-eq pˢ@{MkSetPoly p pposSet pdirSet} qˢ@{MkSetPoly q qposSet qdirSet} f@(⇆ˢ (mpf ⇆ mdf)) g@(⇆ˢ (mpg ⇆ mdg)) = 
+eq : {pˢ qˢ : SetPolynomial} → (f g : SetLens pˢ qˢ) → Equalizer f g
+eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆ˢ (mpf ⇆ mdf)) g@(⇆ˢ (mpg ⇆ mdg)) = 
   record {
     obj = eqObj ;
     arr = arr ; 
@@ -42,13 +42,13 @@ eq pˢ@{MkSetPoly p pposSet pdirSet} qˢ@{MkSetPoly q qposSet qdirSet} f@(⇆ˢ 
     }
    where EqualizedPosition = Σ (position p) (λ z → mpf z ≡c mpg z)
          eqObj : SetPolynomial
-         eqObj = MkSetPoly eqPoly eqPosSet eqDirSet
-            where eqPoly = MkPoly EqualizedPosition (λ ( i , equal ) → Coeq (mdf i) (subst (λ x → direction q x → direction p i) (sym equal) (mdg i)))
+         eqObj = mksetpoly  eqPoly eqPosSet eqDirSet
+            where eqPoly = mkpoly EqualizedPosition (λ ( i , equal ) → Coeq (mdf i) (subst (λ x → direction q x → direction p i) (sym equal) (mdg i)))
                   eqPosSet : isSet (position eqPoly)
                   eqPosSet = isSetΣ pposSet λ x → equalityIsSet qposSet
                   eqDirSet : ∀ {po : position eqPoly} → isSet (direction eqPoly po)
                   eqDirSet {posp , mapped≡} = {!   !}
-         arr : SetArrow eqObj pˢ
+         arr : SetLens eqObj pˢ
          arr = ⇆ˢ {!   !}
          isEqualizer : IsEqualizer arr f g
          isEqualizer = record { 

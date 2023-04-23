@@ -50,7 +50,7 @@ DependentInput {numNodes} (R _) = RunningInput numNodes
 reservoir : (numNodes systemDim : ℕ) → DynamicalSystem
 reservoir numNodes systemDim = MkDynamicalSystem (ReservoirState numNodes) interface (readout ⇆ update)
   where interface : Polynomial
-        interface = MkPoly (ReservoirState numNodes) λ _ → Vec ℝ systemDim × InputWeights numNodes systemDim × ReservoirWeights numNodes
+        interface = mkpoly (ReservoirState numNodes) λ _ → Vec ℝ systemDim × InputWeights numNodes systemDim × ReservoirWeights numNodes
         readout : ReservoirState numNodes → ReservoirState numNodes
         readout = id
         update : ReservoirState numNodes → Vec ℝ systemDim × InputWeights numNodes systemDim × ReservoirWeights numNodes → ReservoirState numNodes
@@ -59,7 +59,7 @@ reservoir numNodes systemDim = MkDynamicalSystem (ReservoirState numNodes) inter
 readoutLayer : (numNodes systemDim trainingSteps : ℕ) → DynamicalSystem
 readoutLayer numNodes systemDim trainingSteps = MkDynamicalSystem (ReadoutLayerState numNodes systemDim) interface (readout ⇆ update)
   where interface : Polynomial
-        interface = MkPoly (ReadoutOutput systemDim) DependentInput
+        interface = mkpoly (ReadoutOutput systemDim) DependentInput
         readout : ReadoutLayerState numNodes systemDim → ReadoutOutput systemDim
         readout (Coll _) = CD -- don't care when training
         readout (Run (Running outputWeights (Res nodeStates))) = R (outputWeights ᵀ *ᴹⱽ nodeStates)
@@ -89,7 +89,7 @@ lorenzReservoirWiringDiagram :
   (numNodes : ℕ) →
   (inputWeights : InputWeights numNodes 3) →
   (reservoirWeights : ReservoirWeights numNodes) →
-   Arrow 
+   Lens 
     (DynamicalSystem.interface (preLorRes numNodes 3 inputWeights reservoirWeights))
     (Emitter (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ ⊎ ⊤))
 lorenzReservoirWiringDiagram numNodes inputWeights reservoirWeights = outerOutputsFrom ⇆ innerInputsFrom

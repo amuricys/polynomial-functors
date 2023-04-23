@@ -6,7 +6,7 @@ module Dynamical.Chart.SimulateStateMachine where
 open import Dynamical.System
 open import CategoryData.Everything
 open import Cubical.Foundations.Everything
-open import Cubical.Chart.ChartArrowCommute
+open import Cubical.Chart.ChartLensCommute
 open import CategoryData.Chart.Core
 
 data S : Set where
@@ -36,13 +36,13 @@ data Output : Set where
     d : Output
 
 p : Polynomial
-p = MkPoly Output λ {a → RedBlue
+p = mkpoly Output λ {a → RedBlue
                            ; b → RedBlue
                            ; c → BrownOrange
                            ; d → BrownOrange}
                             
-bigArrow : Arrow (selfMonomial S) p
-bigArrow = output ⇆ input
+bigLens : Lens (selfMonomial S) p
+bigLens = output ⇆ input
     where 
         output : S → Output
         output one = a
@@ -65,10 +65,10 @@ bigArrow = output ⇆ input
         input five orange = two
 
 bigSystem : DynamicalSystem
-bigSystem = MkDynamicalSystem S p bigArrow
+bigSystem = MkDynamicalSystem S p bigLens
 
-smallArrow : Arrow (selfMonomial T) p
-smallArrow = output ⇆ input
+smallLens : Lens (selfMonomial T) p
+smallLens = output ⇆ input
     where
         output : T → Output
         output one = a
@@ -85,7 +85,7 @@ smallArrow = output ⇆ input
 
 -- | More compact version of big system with same semantics
 smallSystem : DynamicalSystem
-smallSystem = MkDynamicalSystem T p smallArrow
+smallSystem = MkDynamicalSystem T p smallLens
 
 
 morphSystem : S → T
@@ -127,5 +127,5 @@ law₂ four orange = refl
 law₂ five brown = refl
 law₂ five orange = refl
 
-square : ArrowChartCommute bigArrow smallArrow (morphSystem ⇉ λ _ → morphSystem) idChart
+square : LensChartCommute bigLens smallLens (morphSystem ⇉ λ _ → morphSystem) idChart
 square = law₁ , law₂

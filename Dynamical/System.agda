@@ -23,14 +23,14 @@ record DynamicalSystem : Set₁ where
     field
         state : Set -- S
         interface : Polynomial -- p
-        dynamics : Arrow (selfMonomial state) interface -- Sy^S → p
+        dynamics : Lens (selfMonomial state) interface -- Sy^S → p
 
 open DynamicalSystem
 
 record InitializedDynamicalSystem : Set₁ where
     field
         dynamicalSystem : DynamicalSystem
-        initialState : Arrow Y (selfMonomial (state dynamicalSystem))
+        initialState : Lens Y (selfMonomial (state dynamicalSystem))
 
 functionToDynamicalSystem : (A B : Set) → (A → B) → DynamicalSystem
 functionToDynamicalSystem A B f = MkDynamicalSystem B (monomial B A) (id ⇆ (\_ → f))
@@ -43,18 +43,18 @@ MkDynamicalSystem stateA interfaceA dynamicsA &&& MkDynamicalSystem stateB inter
     = MkDynamicalSystem (stateA × stateB) (interfaceA ⊗ interfaceB) (readout ⇆ update)
         where
             readout : (stateA × stateB) → Polynomial.position (interfaceA ⊗ interfaceB)
-            readout (stateA , stateB) = (Arrow.mapPosition dynamicsA stateA) , (Arrow.mapPosition dynamicsB stateB)
+            readout (stateA , stateB) = (Lens.mapPosition dynamicsA stateA) , (Lens.mapPosition dynamicsB stateB)
             update : (state : (stateA × stateB)) → Polynomial.direction (interfaceA ⊗ interfaceB) (readout state) → stateA × stateB
-            update (sA , sB) (dirA , dirB) = (Arrow.mapDirection dynamicsA sA dirA) , (Arrow.mapDirection dynamicsB sB dirB)
+            update (sA , sB) (dirA , dirB) = (Lens.mapDirection dynamicsA sA dirA) , (Lens.mapDirection dynamicsB sB dirB)
 infixr 10 _&&&_
 
 Emitter : Set → Polynomial
 Emitter t = monomial t ⊤
 
-install : (d : DynamicalSystem) → (a : Polynomial) → Arrow (DynamicalSystem.interface d) a → DynamicalSystem
+install : (d : DynamicalSystem) → (a : Polynomial) → Lens (DynamicalSystem.interface d) a → DynamicalSystem
 install d a l = MkDynamicalSystem (DynamicalSystem.state d) a (l ∘ₚ (DynamicalSystem.dynamics d))
 
-encloseFunction : {t u : Set} → (t → u) → Arrow (monomial t u) Y
+encloseFunction : {t u : Set} → (t → u) → Lens (monomial t u) Y
 encloseFunction f = (λ _ → tt) ⇆ (λ fromPos _ → f fromPos)
 
 auto : {m : Set} → enclose (Emitter m)
@@ -103,7 +103,7 @@ run : (d : DynamicalSystem) → enclose (DynamicalSystem.interface d) → Dynami
 run d e initialState =  [ output ] ++ (run d e next)
     where
         output : Polynomial.position (DynamicalSystem.interface d)
-        output = (Arrow.mapPosition (DynamicalSystem.dynamics d) initialState)
+        output = (Lens.mapPosition (DynamicalSystem.dynamics d) initialState)
         next : DynamicalSystem.state d
-        next = Arrow.mapDirection (DynamicalSystem.dynamics d) initialState (Arrow.mapDirection e output tt)
+        next = Lens.mapDirection (DynamicalSystem.dynamics d) initialState (Lens.mapDirection e output tt)
 

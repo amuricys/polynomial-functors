@@ -31,7 +31,7 @@ asEndo p = record
     ; F-resp-≈ = λ {_} {_} {f} {g} proof → ctop (F-resp {f = f} {g = g} (conv proof))
     }
 
-asNatTransArr : {p q : Polynomial} → Arrow p q → NaturalTransformation (asEndo p) (asEndo q)
+asNatTransArr : {p q : Polynomial} → Lens p q → NaturalTransformation (asEndo p) (asEndo q)
 asNatTransArr (f ⇆ f♯) = record { 
     η = λ { X (posP , dirP) → f posP , dirP ∘ f♯ posP } ; 
     commute = λ f₁ → Eq.refl ; 

@@ -13,5 +13,5 @@ open import Data.Product
 -- Exponential object.
 -- Theroem 4.27, page 130 in Poly book.
 _^_ : (r : Polynomial) → (q : Polynomial) → Polynomial
-r ^ (MkPoly posQ dirQ) = ΠPoly (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
+r ^ (mkpoly posQ dirQ) = ΠPoly (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
 infixl 30 _^_

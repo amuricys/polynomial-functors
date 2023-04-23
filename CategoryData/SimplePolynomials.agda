@@ -7,17 +7,17 @@ open import Data.Unit
 open import Data.Empty
 
 𝟘 : Polynomial
-𝟘 = MkPoly ⊥ λ ()
+𝟘 = mkpoly ⊥ λ ()
 
 𝟙 : Polynomial
-𝟙 = MkPoly ⊤ (λ _ → ⊥)
+𝟙 = mkpoly ⊤ (λ _ → ⊥)
 
 Y : Polynomial
-Y = MkPoly ⊤ (λ _ → ⊤)
+Y = mkpoly ⊤ (λ _ → ⊤)
 
 -- | p(y) = A*y^B
 monomial : (A B : Set) → Polynomial
-monomial A B = MkPoly A (λ _ → B)
+monomial A B = mkpoly A (λ _ → B)
 
 -- | p(y) = A
 Constant : (A : Set) → Polynomial

@@ -18,7 +18,7 @@ plus = functionToDynamicalSystem (Nat × Nat) Nat (uncurry _+ℕ_)
 prefib : DynamicalSystem
 prefib = plus &&& delay Nat
 
-fibWiringDiagram : Arrow (DynamicalSystem.interface prefib) (Emitter Nat)
+fibWiringDiagram : Lens (DynamicalSystem.interface prefib) (Emitter Nat)
 fibWiringDiagram = (λ {(sumOutput , idOutput) → idOutput}) ⇆ (λ {(sumOutput , idOutput) l → (idOutput , sumOutput) , sumOutput })
 
 fibonacci : DynamicalSystem

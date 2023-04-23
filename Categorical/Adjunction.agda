@@ -9,7 +9,7 @@ open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Path
 open import Cubical.Data.Equality
 open import Cubical.Proofs
-open import Cubical.ArrowEquals
+open import Cubical.LensEquality
 open import Function
 open import CategoryData.Core
 open import Data.Unit
@@ -58,8 +58,8 @@ eq2r = cong′ (\x → id-⊥ , x) (λ { i () })
 plugin1unit : NaturalTransformation idF (constantPolynomial ∘F plugIn1)
 plugin1unit = record { 
     η = λ X → (λ x → x , λ _ → tt) ⇆ λ fromPos () ;
-    commute = λ f → arrow≡∀∀ refl λ {_ ()} ;
-    sym-commute = λ f → arrow≡∀∀ refl λ {_ ()}
+    commute = λ f → lens≡∀∀ refl λ {_ ()} ;
+    sym-commute = λ f → lens≡∀∀ refl λ {_ ()}
     }
 
 plugin1counit : NaturalTransformation (plugIn1 ∘F constantPolynomial) idF
@@ -73,7 +73,7 @@ plugIn1⊣constantPolynomial = record
     { unit = plugin1unit
     ; counit = plugin1counit
     ; zig = ctop refl
-    ; zag = arrow≡∀∀ refl λ {fromPos ()} }
+    ; zag = lens≡∀∀ refl λ {fromPos ()} }
 
 linearunit : NaturalTransformation idF (plugIn1 ∘F linearPolynomial)
 linearunit = record { 
@@ -85,7 +85,7 @@ linearcounit : NaturalTransformation (linearPolynomial ∘F plugIn1) idF
 linearcounit = record { 
     η = λ X → (λ x → fst x) ⇆ λ fromPos x → tt ;
     commute = λ f → refl ;
-    sym-commute = λ f → arrow≡ refl λ i fromPos x → tt }
+    sym-commute = λ f → lens≡ refl λ i fromPos x → tt }
 
 linearPolynomial⊣plugIn1 : linearPolynomial ⊣ plugIn1
 linearPolynomial⊣plugIn1 = record 

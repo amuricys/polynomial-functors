@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical --sized-types #-}
 
-module Cubical.ArrowIsMooreMachine where
+module Cubical.LensIsMooreMachine where
 
 open import Dynamical.MooreMachine
 open import Dynamical.System
@@ -11,7 +11,7 @@ open import CategoryData.Everything
 open import Cubical.Data.Sigma.Properties
 
 open Polynomial
-open Arrow
+open Lens
 open DynamicalSystem
 
 -- record IsMonomial (p : Polynomial): Set₁ where
@@ -27,10 +27,10 @@ record SimpleDynamicalSystem : Set₁ where
         -- interface : Polynomial -- p
         input : Set
         output : Set
-        dynamics : Arrow (selfMonomial state) (monomial output input) -- Sy^S → p
+        dynamics : Lens (selfMonomial state) (monomial output input) -- Sy^S → p
 
-arrowIsDynamics : MooreMachine ≡ SimpleDynamicalSystem -- (Σ[ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn))
-arrowIsDynamics = isoToPath (iso f f⁻ (λ b → refl) λ a → refl)
+lensIsDynamics : MooreMachine ≡ SimpleDynamicalSystem -- (Σ[ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn))
+lensIsDynamics = isoToPath (iso f f⁻ (λ b → refl) λ a → refl)
     where
         f : MooreMachine → SimpleDynamicalSystem -- [ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn)
         f (MkMooreMachine State Input Output update readout) = MkSimpleDynamicalSystem State Input Output (readout ⇆ update) 
@@ -53,4 +53,4 @@ arrowIsDynamics = isoToPath (iso f f⁻ (λ b → refl) λ a → refl)
         -- (MkDynamicalSystem state interface dynamics) 
         --     = record { State = state ; Input = {! direction interface   !} ; Output = position interface ; update = {!  mapDirection dynamics !} ; readout = mapPosition dynamics }
 
--- arrowIsDynamicsInitialed : chine ≡ 
+-- lensIsDynamicsInitialed : chine ≡ 

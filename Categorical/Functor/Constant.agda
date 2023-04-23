@@ -25,23 +25,23 @@ fromAnythingToFalseToAnythingEqual i x ()
 -- Fully faithful functor sending a set A to the constant polynomial Ay^0 = A
 constantPolynomial : Functor (Sets Level.zero) Poly 
 constantPolynomial = record
-    { F₀ = λ x → MkPoly x λ _ → ⊥
+    { F₀ = λ x → mkpoly x λ _ → ⊥
     ; F₁ = λ f → f ⇆ λ fromPos → id
     ; identity = refl
     ; homomorphism = refl
-    ; F-resp-≈ = λ p → arrowsEqual (funExt λ x → ptoc p) refl
+    ; F-resp-≈ = λ p → lensesEqual (funExt λ x → ptoc p) refl
     }
 
 full : Full constantPolynomial
 full = record 
     { from = record 
-        { _⟨$⟩_ = Arrow.mapPosition
-        ; cong = positionArrowsEqualPwiseEq } 
-    ; right-inverse-of = \_ → arrowsEqual refl fromAnythingToFalseToAnythingEqual
+        { _⟨$⟩_ = Lens.mapPosition
+        ; cong = positionLensesEqualPwiseEq } 
+    ; right-inverse-of = \_ → lensesEqual refl fromAnythingToFalseToAnythingEqual
     }
 
 faithful : Faithful constantPolynomial
-faithful = λ f g x → ctop (positionArrowsEqualPwise x)
+faithful = λ f g x → ctop (positionLensesEqualPwise x)
 
 ffcp : FullyFaithful constantPolynomial
 ffcp = full , faithful

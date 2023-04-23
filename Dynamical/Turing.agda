@@ -32,9 +32,9 @@ data ProcessorOutput : Set where
   halt : ProcessorOutput
 
 processorInterface : Polynomial
-processorInterface = (MkPoly ProcessorOutput (const ProcessorInput))
+processorInterface = (mkpoly ProcessorOutput (const ProcessorInput))
 
-turingProgram : Arrow (selfMonomial ProcessorState) processorInterface
+turingProgram : Lens (selfMonomial ProcessorState) processorInterface
 turingProgram = exposeState ⇆ updateState
   where exposeState : ProcessorState → ProcessorOutput
         exposeState n = {!  !}
@@ -54,12 +54,12 @@ data TapeOutput : Set where
   result : TapeState → TapeOutput
 
 tapeInterface : Polynomial
-tapeInterface = MkPoly TapeOutput decide
+tapeInterface = mkpoly TapeOutput decide
   where decide : TapeOutput → Set
         decide (instruct x) = ProcessorOutput
         decide (result x) = ⊥
 
-tapeBehavior : Arrow (selfMonomial TapeState) tapeInterface
+tapeBehavior : Lens (selfMonomial TapeState) tapeInterface
 tapeBehavior = readout ⇆ update
   where readout : TapeState → TapeOutput
         readout (running x) = instruct (x 0ℤ)
@@ -79,7 +79,7 @@ preTuring = tape &&& processor
 Word : Set
 Word = Vec ℤ 32
 
-turingWiringDiagram : Arrow (DynamicalSystem.interface preTuring) (Emitter Word)
+turingWiringDiagram : Lens (DynamicalSystem.interface preTuring) (Emitter Word)
 turingWiringDiagram = outerOutput ⇆ fillInputs
   where stillRunning = replicate 0ℤ
         outerOutput : TapeOutput × ProcessorOutput → Word

@@ -1,13 +1,13 @@
 {-# OPTIONS --cubical #-}
 
-module Cubical.Chart.ChartArrowCommute where
+module Cubical.Chart.ChartLensCommute where
 
 open import CategoryData.Everything
 open import CategoryData.Chart.Core
 open import Cubical.Foundations.Prelude
 
-ArrowChartCommute : {p₁ p₂ p₃ p₄ : Polynomial} (w : Arrow p₁ p₃) (v : Arrow p₂ p₄) (f : Chart p₁ p₂) (g : Chart p₃ p₄) → Type
-ArrowChartCommute {p₁} {p₂} {p₃} {p₄} (w ⇆ w♯) (v ⇆ v♯) (f ⇉ f♭) (g ⇉ g♭) = Σ mapPos≡ mapDir≡
+LensChartCommute : {p₁ p₂ p₃ p₄ : Polynomial} (w : Lens p₁ p₃) (v : Lens p₂ p₄) (f : Chart p₁ p₂) (g : Chart p₃ p₄) → Type
+LensChartCommute {p₁} {p₂} {p₃} {p₄} (w ⇆ w♯) (v ⇆ v♯) (f ⇉ f♭) (g ⇉ g♭) = Σ mapPos≡ mapDir≡
     where
         mapPos≡ : Type
         mapPos≡ = (i : position p₁) → v (f i) ≡ g (w i)
@@ -18,9 +18,9 @@ ArrowChartCommute {p₁} {p₂} {p₃} {p₄} (w ⇆ w♯) (v ⇆ v♯) (f ⇉ f
 -- Horizontal composition
 horizontialComposition : {p₁ p₂ p₃ p₄ p₅ p₆ : Polynomial}
     (f : Chart p₁ p₂) (g : Chart p₃ p₄) (h : Chart p₂ p₅) (r : Chart p₄ p₆)
-    (w : Arrow p₁ p₃) (v : Arrow p₂ p₄) (m : Arrow p₅ p₆)
-    → ArrowChartCommute w v f g → ArrowChartCommute v m h r
-    → ArrowChartCommute w m (h ∘c  f) (r ∘c g)
+    (w : Lens p₁ p₃) (v : Lens p₂ p₄) (m : Lens p₅ p₆)
+    → LensChartCommute w v f g → LensChartCommute v m h r
+    → LensChartCommute w m (h ∘c  f) (r ∘c g)
 horizontialComposition {p₁} {p₂} {p₃} {p₄} {p₅} {p₆} f g h r w v m sq₁ sq₂ = mapPos≡ , mapDir≡
     where
         mapPos≡ : (i : position p₁) → mapPosition m (Chart.mapPos h (Chart.mapPos f i)) ≡ Chart.mapPos r (Chart.mapPos g (mapPosition w i))
@@ -33,7 +33,7 @@ horizontialComposition {p₁} {p₂} {p₃} {p₄} {p₅} {p₆} f g h r w v m s
                 sq₂≡ = fst sq₂ (Chart.mapPos f i)
 
         -- f♭ i (w♯ i x) ≡ v♯ (f i) (subst (direction p₄) (sym (p≡ i)) (g♭ (w i) x))
-    --     Cubical.Chart.ChartArrowCommute.mapDir≡ (mapPosition w)
+    --     Cubical.Chart.ChartLensCommute.mapDir≡ (mapPosition w)
     --   (mapDirection w) (mapPosition m) (mapDirection m)
     --   (Chart.mapPos (h ∘c f)) (Chart.mapDir (h ∘c f))
     --   (Chart.mapPos (r ∘c g)) (Chart.mapDir (r ∘c g)) mapPos≡
@@ -66,10 +66,10 @@ horizontialComposition {p₁} {p₂} {p₃} {p₄} {p₅} {p₆} f g h r w v m s
 
 -- Vertical composition
 verticalComposition : {p₁ p₂ p₃ p₄ p₅ p₆ : Polynomial}
-    (f : Chart p₁ p₂) (g : Chart p₃ p₄) (r : Chart p₅ p₆) (h : Arrow p₃ p₅)
-    (w : Arrow p₁ p₃) (v : Arrow p₂ p₄) (m : Arrow p₄ p₆)
-    → ArrowChartCommute w v f g → ArrowChartCommute h m g r
-    → ArrowChartCommute (h ∘ₚ w) (m ∘ₚ v) f r
+    (f : Chart p₁ p₂) (g : Chart p₃ p₄) (r : Chart p₅ p₆) (h : Lens p₃ p₅)
+    (w : Lens p₁ p₃) (v : Lens p₂ p₄) (m : Lens p₄ p₆)
+    → LensChartCommute w v f g → LensChartCommute h m g r
+    → LensChartCommute (h ∘ₚ w) (m ∘ₚ v) f r
 verticalComposition {p₁} {p₂} {p₃} {p₄} {p₅} {p₆} f g r h w v m sq₁ sq₂ = mapPos≡ , mapDir≡
     where
         mapPos≡ : (i : position p₁) → mapPosition m (mapPosition v (Chart.mapPos f i)) ≡ Chart.mapPos r (mapPosition h (mapPosition w i))

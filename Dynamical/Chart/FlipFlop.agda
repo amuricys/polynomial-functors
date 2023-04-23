@@ -13,7 +13,7 @@ open import Data.Nat.DivMod
 open import Data.Bool
 open import Cubical.Foundations.Everything hiding (id; _∘_)
 open import Function
-open import Cubical.Chart.ChartArrowCommute
+open import Cubical.Chart.ChartLensCommute
 open import CategoryData.Chart.Core
 
 -- Example from https://www.youtube.com/watch?v=QNuGyjHJtP8, ~20 min mark
@@ -79,5 +79,5 @@ law₂ zero x = refl
 law₂ (suc zero) x = refl
 law₂ (suc (suc s)) x = law₂ s x
 
-square : ArrowChartCommute (dynamics counter) (dynamics flipFlop) (morphSystem ⇉ λ _ → morphSystem) idChart
+square : LensChartCommute (dynamics counter) (dynamics flipFlop) (morphSystem ⇉ λ _ → morphSystem) idChart
 square = law₁ , law₂

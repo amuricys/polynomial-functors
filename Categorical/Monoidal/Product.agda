@@ -8,7 +8,7 @@ open import Cubical.Foundations.Prelude
 open import Data.Product
 open import Categories.Category.Monoidal
 open import Categorical.Terminal
-open import Cubical.ArrowEquals
+open import Cubical.LensEquality
 import Categories.Category.Cartesian as Cartesian
 
 binaryProducts : Cartesian.BinaryProducts Poly

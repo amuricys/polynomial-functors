@@ -16,37 +16,37 @@ open import Cubical.Categories.Limits.Terminal
 open import Cubical.Foundations.Isomorphism
 open import Cubical.Data.Sigma.Properties
 open import Data.Product hiding (Σ-syntax)
-open import Cubical.ArrowEquals
+open import Cubical.LensEquality
 open import Data.Sum
 open import Cubical.PolynomialEquals
 open import Function
 
 ------- Categorical axioms
 ---------------------------------------
-composeLeftIdentity : {B C : Polynomial} → (bToC : Arrow B C) → idArrow ∘ₚ bToC ≡ bToC
+composeLeftIdentity : {B C : Polynomial} → (bToC : Lens B C) → idLens ∘ₚ bToC ≡ bToC
 composeLeftIdentity (_ ⇆ _) = refl
 
-composeRightIdentity :{B C : Polynomial} → (cToB : Arrow C B) → cToB ∘ₚ idArrow ≡ cToB
+composeRightIdentity :{B C : Polynomial} → (cToB : Lens C B) → cToB ∘ₚ idLens ≡ cToB
 composeRightIdentity (_ ⇆ _) = refl
 
-composeIsAssoc : ∀ {A B C D} → {f : Arrow A B} {g : Arrow B C} {h : Arrow C D} → ((h ∘ₚ g) ∘ₚ f) ≡ (h ∘ₚ (g ∘ₚ f))
+composeIsAssoc : ∀ {A B C D} → {f : Lens A B} {g : Lens B C} {h : Lens C D} → ((h ∘ₚ g) ∘ₚ f) ≡ (h ∘ₚ (g ∘ₚ f))
 composeIsAssoc = refl
 ---------------------------------------
 
-equiv-resp : {A B C : Polynomial} {f h : Arrow B C} {g i : Arrow A B} → f ≡ h → g ≡ i → (f ∘ₚ g) ≡ (h ∘ₚ i)
+equiv-resp : {A B C : Polynomial} {f h : Lens B C} {g i : Lens A B} → f ≡ h → g ≡ i → (f ∘ₚ g) ≡ (h ∘ₚ i)
 equiv-resp  p q ii = (p ii) ∘ₚ (q ii)
 
 fromFalseFunctionsEqual : {A : Type} (f : ⊥ → A) → (g : ⊥ → A) → f ≡ g
 fromFalseFunctionsEqual f g = funExt λ {()}
 
 
-------- Proofs related to uniqueness of arrows from and to certain polynomials
+------- Proofs related to uniqueness of lenses from and to certain polynomials
 ---------------------------------------
-arrowFromZeroUnique : {p : Polynomial} (f : Arrow 𝟘 p) → arrowFromZero ≡ f
-arrowFromZeroUnique f = arrow≡ (funExt λ ()) (funExt λ ())
+lensFromZeroUnique : {p : Polynomial} (f : Lens 𝟘 p) → lensFromZero ≡ f
+lensFromZeroUnique f = lens≡ (funExt λ ()) (funExt λ ())
 
-arrowToOneUnique : {p : Polynomial} (f : Arrow p 𝟙) →  arrowToOne ≡ f
-arrowToOneUnique {p = p} f = arrow≡ refl (funExt λ x → funExt λ ())
+lensToOneUnique : {p : Polynomial} (f : Lens p 𝟙) →  lensToOne ≡ f
+lensToOneUnique {p = p} f = lens≡ refl (funExt λ x → funExt λ ())
 
 ---------------------------------------
 
@@ -57,7 +57,7 @@ fromMapInDirectionToFunction {p} {q} f = \x →
   f (fst x) , λ _ → tt
 
 fromFunctionToMapOnPositions : {p q : Polynomial} → (p ⦅ ⊤ ⦆ → q ⦅ ⊤ ⦆) → (Polynomial.position p → Polynomial.position q)
-fromFunctionToMapOnPositions {p@(MkPoly pos dir)} {q} f = \x → let
+fromFunctionToMapOnPositions {p@(mkpoly pos dir)} {q} f = \x → let
   y : q ⦅ ⊤ ⦆
   y = f (x , λ x₁ → tt)
   in
@@ -84,7 +84,7 @@ enclosePoly≡depFuncToDirections = isoToPath isoEnclosePolydepFuncToDirections
 ---------------------------------------
 
 
-------- Specific arrow equalities
+------- Specific lens equalities
 ---------------------------------------
 pwiseToExt : {A B : Set} {f g : A → B} → ({x : A} → f x Eq.≡ g x) → f ≡ g
 pwiseToExt {A = A} {f = f} {g = g} p = let
@@ -93,19 +93,19 @@ pwiseToExt {A = A} {f = f} {g = g} p = let
   in
   funExt (λ x → yaaa)
 
-positionArrowsEqual : {A B : Polynomial} → {f g : Arrow A B} → f ≡ g → Arrow.mapPosition f ≡ Arrow.mapPosition g
-positionArrowsEqual p i = Arrow.mapPosition (p i)
+positionLensesEqual : {A B : Polynomial} → {f g : Lens A B} → f ≡ g → Lens.mapPosition f ≡ Lens.mapPosition g
+positionLensesEqual p i = Lens.mapPosition (p i)
 
-positionArrowsEqualPwise : {A B : Polynomial} →  {f g : Arrow A B} {z : Polynomial.position A} → f ≡ g → Arrow.mapPosition f z ≡ Arrow.mapPosition g z
-positionArrowsEqualPwise {z = z} p i = let
-  posEq = positionArrowsEqual p i
+positionLensesEqualPwise : {A B : Polynomial} →  {f g : Lens A B} {z : Polynomial.position A} → f ≡ g → Lens.mapPosition f z ≡ Lens.mapPosition g z
+positionLensesEqualPwise {z = z} p i = let
+  posEq = positionLensesEqual p i
   in posEq z
 
-positionArrowsEqualPwiseEq : {A B : Polynomial} {f g : Arrow A B} →
+positionLensesEqualPwiseEq : {A B : Polynomial} {f g : Lens A B} →
       f ≡ g →
       {x : Polynomial.position A} →
-      Arrow.mapPosition f x Eq.≡ Arrow.mapPosition g x
-positionArrowsEqualPwiseEq p = ctop (positionArrowsEqualPwise p)
+      Lens.mapPosition f x Eq.≡ Lens.mapPosition g x
+positionLensesEqualPwiseEq p = ctop (positionLensesEqualPwise p)
 --  
 -- Proof that for any polynomal p with index set I, p(1) ≡ I
 -- Proposition 2.43 in the book
@@ -125,12 +125,12 @@ I≡pOfOne = isoToPath isoI≡pOfOne
         inv2 = λ {(fst₁ , snd₁) → refl}
 
 -- derivative : Polynomial → Polynomial
--- derivative (MkPoly pos dir) = MkPoly (Σ pos dir) (λ {(i , a) → {! dir i - a  !}})
+-- derivative (mkpoly pos dir) = mkpoly (Σ pos dir) (λ {(i , a) → {! dir i - a  !}})
 
  
 
 isConstant : Polynomial → Type₁
-isConstant (MkPoly pos dir) = (p : pos) → dir p ≡ ⊥
+isConstant (mkpoly pos dir) = (p : pos) → dir p ≡ ⊥
 
 -- Exercise 4.1
 constantClosedUnderPlus : {p q : Polynomial} → isConstant p → isConstant q → isConstant (p + q)
@@ -147,7 +147,7 @@ constantClosedUnderMult isConstantP isConstantQ (posP , posQ) = lemma (isConstan
     lemma {A = A} {B = B} p₁ p₂ = lemma2 p₁ p₂ ∙ {!  !}
 
 isLinear : Polynomial → Type₁
-isLinear (MkPoly pos dir) = (p : pos) → dir p ≡ ⊤
+isLinear (mkpoly pos dir) = (p : pos) → dir p ≡ ⊤
 
 linearClosedUnderPlus : {p q : Polynomial} → isLinear p → isLinear q → isLinear (p + q)
 linearClosedUnderPlus isLinearP isLinearQ (inj₁ x) = isLinearP x
@@ -172,8 +172,8 @@ linearClosedUnderPlus isLinearP isLinearQ (inj₂ y) = isLinearQ y
     --   ≡ [ direction (p ◂ r) , direction (q ◂ r) ]
     -- dir≡ = ?
 
-arrowToYIsChoiceOfDirection : {p : Polynomial} → Arrow p Y ≡ ((pos : position p) → direction p pos)
-arrowToYIsChoiceOfDirection {p} = isoToPath (iso (λ { (_ ⇆ md) pos → md pos tt} )
+lensToYIsChoiceOfDirection : {p : Polynomial} → Lens p Y ≡ ((pos : position p) → direction p pos)
+lensToYIsChoiceOfDirection {p} = isoToPath (iso (λ { (_ ⇆ md) pos → md pos tt} )
                                                  (λ { mapSelfDir → const tt ⇆ λ fromPos _ → mapSelfDir fromPos}) 
                                                  (λ b → refl) 
                                                  (λ { (mp ⇆ md) → λ _ → const tt ⇆ md }) )   

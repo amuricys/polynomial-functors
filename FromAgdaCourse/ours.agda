@@ -40,7 +40,7 @@ p2p3 ∙ p1p2 =
 --- Interpretation: Dynamical systems
 -- helpers
 -- PolyIO : (i : Set) → (o : Set) → Poly --positions as output and
--- PolyIO i o = MkPoly o (\_ → i)           --dectinctions as input
+-- PolyIO i o = mkpoly o (\_ → i)           --dectinctions as input
 
 -- Self : Set → Poly
 -- Self s = PolyIO s s

@@ -11,17 +11,8 @@ open import Cubical.Foundations.HLevels
 open import Cubical.Foundations.Isomorphism
 
 -- Definition of SetPoly category: Polynomials based in Set in the HoTT sense
-
--- record Polynomial : Set₁ where
---     constructor MkPoly
---     field
---         position : Set
---         direction : position → Set
--- open Polynomial public
-
-
 record SetPolynomial : Set₁ where
-    constructor MkSetPoly
+    constructor mksetpoly 
     field
         poly : Polynomial
         isPosSet : isSet (position poly)
@@ -37,55 +28,55 @@ isSetPolyAsSigma = isSetΣ {!   !} {!   !} -- Hard
 
 open SetPolynomial
 isSetPoly : isSet SetPolynomial
-isSetPoly a@(MkSetPoly poly₁ isPosSet₁ isDirSet₁) b@(MkSetPoly poly₂ isPosSet₂ isDirSet₂) a≡b₁ a≡b₂ i i₁ = {!   !}
+isSetPoly a@(mksetpoly  poly₁ isPosSet₁ isDirSet₁) b@(mksetpoly  poly₂ isPosSet₂ isDirSet₂) a≡b₁ a≡b₂ i i₁ = {!   !}
 
 -- position (poly (y₁ i)) != position (poly (x₁ i)) of type Type
-record SetArrow (from to : SetPolynomial) : Set where
+record SetLens (from to : SetPolynomial) : Set where
     constructor ⇆ˢ
     field
-        arrow : Arrow (poly from) (poly to)
+        lens : Lens (poly from) (poly to)
 
-SetArrowAsSigma : (p q : SetPolynomial) → Set
-SetArrowAsSigma p q = Σ[ mapPos ∈ (position (poly p) → position (poly q)) ]
+SetLensAsSigma : (p q : SetPolynomial) → Set
+SetLensAsSigma p q = Σ[ mapPos ∈ (position (poly p) → position (poly q)) ]
     ((pos : position (poly p)) → direction (poly q) (mapPos pos) → direction (poly p) pos)
 
-isSetArrowAsSigma : {p q : SetPolynomial} → isSet (SetArrowAsSigma p q)
-isSetArrowAsSigma {p} {q} = isSetΣ (isSetΠ λ x → isPosSet q) λ x → isSetΠ λ y → isSetΠ λ z → isDirSet p {y}
+isSetLensAsSigma : {p q : SetPolynomial} → isSet (SetLensAsSigma p q)
+isSetLensAsSigma {p} {q} = isSetΣ (isSetΠ λ x → isPosSet q) λ x → isSetΠ λ y → isSetΠ λ z → isDirSet p {y}
 
-arrowAsSigma≡arrow : {p q : SetPolynomial} → SetArrow p q ≡ SetArrowAsSigma p q
-arrowAsSigma≡arrow {p} {q} = isoToPath (iso f f⁻ (λ b → refl) λ a → refl)
+lensAsSigma≡lens : {p q : SetPolynomial} → SetLens p q ≡ SetLensAsSigma p q
+lensAsSigma≡lens {p} {q} = isoToPath (iso f f⁻ (λ b → refl) λ a → refl)
     where
-        f : SetArrow p q → SetArrowAsSigma p q
-        f (⇆ˢ arrow) = mapPosition arrow , mapDirection arrow
+        f : SetLens p q → SetLensAsSigma p q
+        f (⇆ˢ lens) = mapPosition lens , mapDirection lens
 
-        f⁻ : SetArrowAsSigma p q → SetArrow p q
+        f⁻ : SetLensAsSigma p q → SetLens p q
         f⁻ (mapPos , mapDir) = ⇆ˢ (mapPos ⇆ mapDir)
 
-isSetArrow : {p q : SetPolynomial} → isSet (SetArrow p q)
-isSetArrow {p} {q} = subst isSet (sym arrowAsSigma≡arrow) (isSetArrowAsSigma {p} {q})
+isSetLens : {p q : SetPolynomial} → isSet (SetLens p q)
+isSetLens {p} {q} = subst isSet (sym lensAsSigma≡lens) (isSetLensAsSigma {p} {q})
 
-idSetArrow : ∀ {A : SetPolynomial} → SetArrow A A
-idSetArrow = ⇆ˢ idArrow
+idSetLens : ∀ {A : SetPolynomial} → SetLens A A
+idSetLens = ⇆ˢ idLens
 
-_∘ₚₛ_ : {A B C : SetPolynomial} → SetArrow B C → SetArrow A B → SetArrow A C
-(⇆ˢ arrow) ∘ₚₛ (⇆ˢ arrow₁) = ⇆ˢ (arrow ∘ₚ arrow₁)
+_∘ₚₛ_ : {A B C : SetPolynomial} → SetLens B C → SetLens A B → SetLens A C
+(⇆ˢ lens) ∘ₚₛ (⇆ˢ lens₁) = ⇆ˢ (lens ∘ₚ lens₁)
 
-equiv-resp-set : {A B C : SetPolynomial} {f h : SetArrow B C} {g i : SetArrow A B} → f ≡ h → g ≡ i → (f ∘ₚₛ g) ≡ (h ∘ₚₛ i)
+equiv-resp-set : {A B C : SetPolynomial} {f h : SetLens B C} {g i : SetLens A B} → f ≡ h → g ≡ i → (f ∘ₚₛ g) ≡ (h ∘ₚₛ i)
 equiv-resp-set  p q ii = (p ii) ∘ₚₛ (q ii)
 
 SetPoly : Category (lsuc lzero) lzero lzero
 SetPoly = record
     { Obj = SetPolynomial
-    ; _⇒_ = SetArrow
+    ; _⇒_ = SetLens
     ; _≈_ = _≡_
-    ; id = idSetArrow
+    ; id = idSetLens
     ; _∘_ = _∘ₚₛ_
     ; assoc = refl
     ; sym-assoc = refl
     ; identityˡ = refl
     ; identityʳ = refl
     ; identity² = refl
-    ; equiv = record { refl = refl ; sym = sym ; trans = transitivity }
+    ; equiv = record { refl = refl ; sym = sym ; trans = _∙_ }
     ; ∘-resp-≈ = equiv-resp-set
     }
 

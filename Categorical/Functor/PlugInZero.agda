@@ -21,30 +21,30 @@ open import Cubical.Proofs
 open import Data.Bool
 
 
-fromArrowInPolyToFunction : {p q : Polynomial} → Arrow p q → p ⦅ ⊥ ⦆  → q ⦅ ⊥ ⦆
-fromArrowInPolyToFunction {A} {B} = fromArrowInPolyToFunctionBetweenAppliedPolys {A} {B} {⊥}
+fromLensInPolyToFunction : {p q : Polynomial} → Lens p q → p ⦅ ⊥ ⦆  → q ⦅ ⊥ ⦆
+fromLensInPolyToFunction {A} {B} = fromLensInPolyToFunctionBetweenAppliedPolys {A} {B} {⊥}
 
-appliedPolyArrowsEq : {p q : Polynomial} → {f g : Arrow p q} → f ≡ g → fromArrowInPolyToFunction f ≡ fromArrowInPolyToFunction g
-appliedPolyArrowsEq p i = fromArrowInPolyToFunction (p i)
+appliedPolyLensesEq : {p q : Polynomial} → {f g : Lens p q} → f ≡ g → fromLensInPolyToFunction f ≡ fromLensInPolyToFunction g
+appliedPolyLensesEq p i = fromLensInPolyToFunction (p i)
 
-appliedPolyArrowsEqPwise :{p q : Polynomial} →  {f g : Arrow p q} {z : p ⦅ ⊥ ⦆ } → f ≡ g → fromArrowInPolyToFunction f z ≡ fromArrowInPolyToFunction g z
-appliedPolyArrowsEqPwise {z = z} p i = let
-  posEq = appliedPolyArrowsEq p i
+appliedPolyLensesEqPwise :{p q : Polynomial} →  {f g : Lens p q} {z : p ⦅ ⊥ ⦆ } → f ≡ g → fromLensInPolyToFunction f z ≡ fromLensInPolyToFunction g z
+appliedPolyLensesEqPwise {z = z} p i = let
+  posEq = appliedPolyLensesEq p i
   in posEq z
 
-appliedPolyArrowsEqPwiseEq : {p q : Polynomial}
-      {f g : Arrow p q} →
+appliedPolyLensesEqPwiseEq : {p q : Polynomial}
+      {f g : Lens p q} →
       f ≡ g →
       {z : p ⦅ ⊥ ⦆ } →
-      fromArrowInPolyToFunction f z Eq.≡ fromArrowInPolyToFunction g z
-appliedPolyArrowsEqPwiseEq p {z} = ctop (appliedPolyArrowsEqPwise {z = z} p)
+      fromLensInPolyToFunction f z Eq.≡ fromLensInPolyToFunction g z
+appliedPolyLensesEqPwiseEq p {z} = ctop (appliedPolyLensesEqPwise {z = z} p)
 
 -- Functor sending a polynomial the zero set "plugging in 0"
 plugIn0 : Functor Poly (Sets Level.zero)
 plugIn0 = record
     { F₀ = λ x → x ⦅ ⊥ ⦆
-    ; F₁ = fromArrowInPolyToFunctionBetweenAppliedPolys
+    ; F₁ = fromLensInPolyToFunctionBetweenAppliedPolys
     ; identity = Eq.refl
     ; homomorphism = Eq.refl
-    ; F-resp-≈ = appliedPolyArrowsEqPwiseEq
+    ; F-resp-≈ = appliedPolyLensesEqPwiseEq
     }

@@ -14,9 +14,9 @@ open Polynomial
 Poly : Category (lsuc lzero) lzero lzero
 Poly = record
     { Obj = Polynomial
-    ; _⇒_ = Arrow
+    ; _⇒_ = Lens
     ; _≈_ = _≡_
-    ; id = idArrow
+    ; id = idLens
     ; _∘_ = _∘ₚ_
     ; assoc = refl
     ; sym-assoc = refl

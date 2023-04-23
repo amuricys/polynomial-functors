@@ -11,7 +11,7 @@ open import Cubical.Proofs
 open import Categories.Category.Monoidal
 open import Categorical.Instance.Poly
 open import Categories.Functor.Bifunctor
-open import Cubical.ArrowEquals
+open import Cubical.LensEquality
 
 open Polynomial
 
@@ -51,7 +51,7 @@ bifunctor = record
     ; F₁ = λ { ((mpf ⇆ mdf) , (mpg ⇆ mdg)) → (λ { (a , b) → mpf a , λ { x → mpg (b (mdf a x)) } }) ⇆ λ { (x , y) (w , z) → (mdf x w) , (mdg (y (mdf x w)) z) } }
     ; identity = refl
     ; homomorphism = refl
-    ; F-resp-≈ = λ x → arrow≡ {!   !} {!   !}
+    ; F-resp-≈ = λ x → lens≡ {!   !} {!   !}
     }
 
 monoidal : Monoidal Poly

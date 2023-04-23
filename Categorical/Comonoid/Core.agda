@@ -11,17 +11,17 @@ open import Level
 
 record Comonoid (c : Polynomial) : Set where
   field
-    ε : Arrow c Y
-    δ : Arrow c (c ◂ c)
-    assoc : ⟨ idArrow {c} ◂ δ ⟩ ∘ₚ δ ≡ {!   !} ∘ₚ δ -- some work is needed to make ⟨ δ ◂ idArrow {c} ⟩ typecheck
-    leftCounit :  ~ᴸ ≡ ⟨ ε ◂ idArrow {c} ⟩ ∘ₚ δ
-    rightCounit : ~ᴿ ≡ ⟨ idArrow {c} ◂ ε ⟩ ∘ₚ δ
+    ε : Lens c Y
+    δ : Lens c (c ◂ c)
+    assoc : ⟨ idLens {c} ◂ δ ⟩ ∘ₚ δ ≡ {!   !} ∘ₚ δ -- some work is needed to make ⟨ δ ◂ idLens {c} ⟩ typecheck
+    leftCounit :  ~ᴸ ≡ ⟨ ε ◂ idLens {c} ⟩ ∘ₚ δ
+    rightCounit : ~ᴿ ≡ ⟨ idLens {c} ◂ ε ⟩ ∘ₚ δ
 
 
 open import Data.Product
 
 comonoidsAreCategories : {emanator : Polynomial} → Comonoid emanator → Category zero zero zero
-comonoidsAreCategories {MkPoly pos dir} record { 
+comonoidsAreCategories {mkpoly pos dir} record { 
   ε = ε ; 
   δ = δ ; 
   assoc = assoc ; 

@@ -16,14 +16,14 @@ dt = 0.1
 
 -- First order differential equations
 rabbits : DynamicalSystem
-rabbits = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ × ℝ) (readout ⇆ update)
+rabbits = MkDynamicalSystem ℝ (mkpoly ℝ λ _ → ℝ × ℝ) (readout ⇆ update)
   where readout : ℝ → ℝ
         readout state = state
         update : ℝ → ℝ × ℝ → ℝ
         update state (birthRabbits , deathRabbits) = state + dt * (state  * (birthRabbits - deathRabbits))
 
 foxes : DynamicalSystem
-foxes = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ × ℝ) (readout ⇆ update)
+foxes = MkDynamicalSystem ℝ (mkpoly ℝ λ _ → ℝ × ℝ) (readout ⇆ update)
   where readout : ℝ → ℝ
         readout state = state
         update : ℝ → ℝ × ℝ → ℝ
@@ -32,8 +32,8 @@ foxes = MkDynamicalSystem ℝ (MkPoly ℝ λ _ → ℝ × ℝ) (readout ⇆ upda
 preLV : DynamicalSystem
 preLV = rabbits &&& foxes
 
--- Wiring diagram is an arrow between monomials (lens)
-lotkaVolterraWiringDiagram : Arrow (DynamicalSystem.interface preLV) (selfMonomial (ℝ × ℝ))
+-- Wiring diagram is an lens between monomials (lens)
+lotkaVolterraWiringDiagram : Lens (DynamicalSystem.interface preLV) (selfMonomial (ℝ × ℝ))
 lotkaVolterraWiringDiagram = (λ {(r , f) → r , f}) ⇆ (λ {(r , f) (a , b) → (a , c₂ * f) , (c₁ * r , b) })
   where c₁ = 0.4
         c₂ = 0.7

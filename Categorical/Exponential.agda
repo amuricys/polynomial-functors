@@ -19,7 +19,7 @@ open import Function using (_∘_ ; _$_)
 
 open Polynomial
 depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
-depProd (ind , polyAt) = MkPoly ((i : ind) → position (polyAt i))
+depProd (ind , polyAt) = mkpoly ((i : ind) → position (polyAt i))
                                       (λ a⁺ → Σ[ i ∈ ind ](direction (polyAt i) (a⁺ i)))
 open import Cubical.PolynomialEquals
 open import Cubical.Foundations.Prelude
@@ -49,7 +49,7 @@ open import Cubical.Foundations.Function hiding (_∘_)
 open import Cubical.Foundations.HLevels
 
 p^1≡p : {p : Polynomial} → p ^ 𝟙 ≡ p
-p^1≡p {p@(MkPoly pos dir)} = poly≡' pos≡ dir≡
+p^1≡p {p@(mkpoly pos dir)} = poly≡' pos≡ dir≡
   where
       lemma₁ : {A : Type} → (⊤ → A) ≡ A
       lemma₁ = isoToPath (iso (λ x → x tt) (λ A tt → A) (λ b → refl) λ i → refl)
@@ -78,7 +78,7 @@ p^1≡p {p@(MkPoly pos dir)} = poly≡' pos≡ dir≡
       dir≡ : direction (p ^ 𝟙) ≡ (subst (λ x → x → Type) (sym pos≡) (direction p))-- ≡ direction p
       dir≡ = funExt λ {x → hej x}
         where
-          hej : (x : position (MkPoly pos dir ^ 𝟙)) → direction (MkPoly pos dir ^ 𝟙) x ≡ subst (λ x₁ → x₁ → Type) (sym pos≡) dir x
+          hej : (x : position (mkpoly pos dir ^ 𝟙)) → direction (mkpoly pos dir ^ 𝟙) x ≡ subst (λ x₁ → x₁ → Type) (sym pos≡) dir x
           hej hej with hej tt in eq
           ... | fst₁ , snd₁ = {!   !}
 
@@ -94,13 +94,13 @@ data NineSet : Set where
   nine1 nine2 nine3 nine4 nine5 nine6 nine7 nine8 nine9 : NineSet
 
 Three : Polynomial
-Three = MkPoly ThreeSet λ x → ⊥
+Three = mkpoly ThreeSet λ x → ⊥
 
 Two : Polynomial
-Two = MkPoly TwoSet (λ x → ⊥)
+Two = mkpoly TwoSet (λ x → ⊥)
 
 Nine : Polynomial
-Nine = MkPoly NineSet (λ x → ⊥)
+Nine = mkpoly NineSet (λ x → ⊥)
 
 open import Cubical.Data.Equality
 
@@ -173,9 +173,9 @@ open import Cubical.Data.Equality
         dir≡ p = isoToPath (iso (λ { () }) (λ ()) (λ ()) λ { () i })
 
 rtoq : (r : Polynomial) → (q : Polynomial) → Polynomial
-rtoq r (MkPoly posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
+rtoq r (mkpoly posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
 
-ev : {A B : Polynomial} → Arrow (rtoq B A * A) B
+ev : {A B : Polynomial} → Lens (rtoq B A * A) B
 ev {A} {B} = mp ⇆ md
     where mp : position (rtoq B A * A) → position B
           mp (posB^A , posA) = fst (posB^A posA)
@@ -186,10 +186,10 @@ ev {A} {B} = mp ⇆ md
                 where help : (snd (posB^A posA) x) Eq.≡ inj₁ s → [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (posB^A posA) x)
                       help p rewrite p = tt
 
-λg : {X A B : Polynomial} → (X×A : Product X A) → Arrow (Product.A×B X×A) B → Arrow X (rtoq B A)  
+λg : {X A B : Polynomial} → (X×A : Product X A) → Lens (Product.A×B X×A) B → Lens X (rtoq B A)  
 λg {X} {A} {B} record { A×B = A×B ; π₁ = π₁ ; π₂ = π₂ ; ⟨_,_⟩ = ⟨_,_⟩ ; project₁ = project₁ ; project₂ = project₂ ; unique = unique } (mp ⇆ md) = let
   emp ⇆ emd = ev {A} {B}
-  -- MkPoly h m = Product.A×B p
+  -- mkpoly h m = Product.A×B p
   -- hmm : position X → position A → position (X * A)
   -- hmm posX posA = posX , posA
   -- hmmm : position (X * A) → position (Product.A×B (prod {X} {A}))

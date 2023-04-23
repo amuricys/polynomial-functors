@@ -7,5 +7,5 @@ open import Data.Unit
 open import Data.Empty
 open import CategoryData.SimplePolynomials
 
-arrowToOne : {p : Polynomial} → Arrow p 𝟙
-arrowToOne = (λ _ → tt) ⇆ λ {_ ()}
+lensToOne : {p : Polynomial} → Lens p 𝟙
+lensToOne = (λ _ → tt) ⇆ λ {_ ()}

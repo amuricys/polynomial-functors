@@ -11,7 +11,7 @@ open import Cubical.Proofs
 open import Categories.Category.Monoidal
 open import Categorical.Instance.Poly
 open import Categories.Functor.Bifunctor
-open import Cubical.ArrowEquals
+open import Cubical.LensEquality
 open import Cubical.Data.Sigma.Properties
 
 open Polynomial
@@ -23,7 +23,7 @@ bifunctor = record
     ; F₁ = λ { ((mpf ⇆ mdf) , (mpg ⇆ mdg)) → (λ { (posP , posQ) → mpf posP , mpg posQ }) ⇆ λ { (fromPosP , fromPosQ) (dirFstR , dirSndR) → mdf fromPosP dirFstR , mdg fromPosQ dirSndR } }
     ; identity = refl
     ; homomorphism = refl
-    ; F-resp-≈ = λ {(fst₁ , snd₁) → arrow≡ (funExt λ {(fst , snd) → ≡-× (cong (λ y → Arrow.mapPosition y fst) fst₁) (cong (λ y → Arrow.mapPosition y snd) snd₁)}) (funExt λ {(fst , snd) → funExt (λ {(fst₁ , snd₁) → {!   !}})})} -- λ { (proofMpEq , proofMdEq) → arrow≡∀ (λ i x₁ → {!  !}) {!   !} }
+    ; F-resp-≈ = λ {(fst₁ , snd₁) → lens≡ (funExt λ {(fst , snd) → ≡-× (cong (λ y → Lens.mapPosition y fst) fst₁) (cong (λ y → Lens.mapPosition y snd) snd₁)}) (funExt λ {(fst , snd) → funExt (λ {(fst₁ , snd₁) → {!   !}})})} -- λ { (proofMpEq , proofMdEq) → lens≡∀ (λ i x₁ → {!  !}) {!   !} }
     }
 
 monoidal : Monoidal Poly
