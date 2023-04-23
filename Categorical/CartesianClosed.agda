@@ -21,6 +21,7 @@ open import Cubical.ArrowEquals
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Transport
 import Categories.Category.CartesianClosed.Canonical Poly as Canonical
+open import Function
 
 open Polynomial
 depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
@@ -100,35 +101,57 @@ canonical {A} {B} = record
     ; curry-unique = {!   !}
     }
        where
+        curry-unique-simple : {p q r : Polynomial} → {f : Arrow p (q ^ r)} → {g : Arrow (p * r) q} → eval ∘ₚ (⟨ f × idArrow ⟩) ≡ g → f ≡ curry g
+        curry-unique-simple {p} {q} {r} {f = f ⇆ f♯} {g = g ⇆ g♯} proof = arrowsEqual3 mapPos≡ mapDir≡
+           where mapPos≡ : f ≡ mapPosition (curry (g ⇆ g♯))
+                 mapPos≡ = {!   !}
+                 mapDir≡ : (x : position p) (y : direction (q ^ r) (mapPosition (curry (g ⇆ g♯)) x)) → 
+                   f♯ x (subst (λ mapPos → direction (q ^ r) (mapPos x)) (sym mapPos≡) y) 
+                     ≡
+                   mapDirection (curry (g ⇆ g♯)) x y
+                 mapDir≡ x y = {!   !}
+        -- ... | (s ⇆ s♯) = ? ⇆ {!   !}
+            -- where mp : position p → (index : position r) → Σ (position q) (λ i₃ → direction q i₃ → ⊤ ⊎ direction r index)
+            --       mp p ind with s ( p , ind )
+            --       ... | a = a , {!   !}
+            --       md = {!   !}
         eval-comp-simple : {C D E : Polynomial} → 
                     (f : Arrow (E * D) C) → 
                     (ev ∘ₚ ⟨ curry f × idArrow ⟩)
                     ≡ f
-        eval-comp-simple {C} {D} {E} f = arrow≡ refl helper2
+        eval-comp-simple {C} {D} {E} f = arrowsEqual3 refl mapDir≡
             where
-                path : {x : position (E * D)} → PathP
-                    (λ _ →
-                    direction C (mapPosition (ev ∘ₚ ⟨ curry f × idArrow ⟩) x) →
-                    direction
-                    (MkPoly (position E) (λ z → direction E z) *
-                     MkPoly (position D) (λ z → direction D z))
-                    x)
-                    (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩) x) (mapDirection f x)
-                path = {!   !}
-                mapDir≡ : (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩)) ≡ mapDirection f
-                mapDir≡ = funExt (λ x → path)
-                helper2 : subst
-                            (λ mapPos →
-                                (fromPos : position (E * D)) →
-                                direction C (mapPos fromPos) → direction (E * D) fromPos)
-                            (λ _ → mapPosition (ev ∘ₚ ⟨ curry f × idArrow ⟩))
-                            (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩))
-                            ≡ mapDirection f
-                helper2 = 
-                   (substRefl 
-                        { B = λ (h : position (E * D) → position C) → (x : position (E * D)) → direction C (h x) → direction (E * D) x}
-                        (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩))
-                    ) ∙ mapDir≡
+                mapDir≡ : (x : position (E * D))
+                        → (y : direction C (mapPosition (ev ∘ₚ ⟨ curry f × idArrow ⟩) x))
+                        → mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩)
+                                       x 
+                                       (subst (λ mapPos → direction C (mapPos x)) (sym (λ _ → mapPosition (ev ∘ₚ ⟨ curry f × idArrow ⟩))) y)
+                            ≡ 
+                          mapDirection f x y
+                mapDir≡ (posE , posD) y = {!   !}
+                -- path : {x : position (E * D)} → PathP
+                --     (λ _ →
+                --     direction C (mapPosition (ev ∘ₚ ⟨ curry f × idArrow ⟩) x) →
+                --     direction
+                --     (MkPoly (position E) (λ z → direction E z) *
+                --      MkPoly (position D) (λ z → direction D z))
+                --     x)
+                --     (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩) x) (mapDirection f x)
+                -- path = {!   !}
+                -- mapDir≡ : (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩)) ≡ mapDirection f
+                -- mapDir≡ = funExt (λ x → path)
+                -- helper2 : subst
+                --             (λ mapPos →
+                --                 (fromPos : position (E * D)) →
+                --                 direction C (mapPos fromPos) → direction (E * D) fromPos)
+                --             (λ _ → mapPosition (ev ∘ₚ ⟨ curry f × idArrow ⟩))
+                --             (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩))
+                --             ≡ mapDirection f
+                -- helper2 = 
+                --    (substRefl 
+                --         { B = λ (h : position (E * D) → position C) → (x : position (E * D)) → direction C (h x) → direction (E * D) x}
+                --         (mapDirection (ev ∘ₚ ⟨ curry f × idArrow ⟩))
+                --     ) ∙ mapDir≡
             
 
                                     

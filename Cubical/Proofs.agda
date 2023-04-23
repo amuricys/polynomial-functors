@@ -19,6 +19,7 @@ open import Data.Product hiding (Σ-syntax)
 open import Cubical.ArrowEquals
 open import Data.Sum
 open import Cubical.PolynomialEquals
+open import Function
 
 ------- Categorical axioms
 ---------------------------------------

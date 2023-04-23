@@ -98,7 +98,11 @@ arrowSigmasEqual3 {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathTran
       ≡
       mapDirection f x
       (subst (λ h → direction q (h x)) (sym mapPosEq) y)
-    lemma x y i = transp (λ j → direction p (transp (λ _ → position p) (j ∨ i) x)) i ((mapDirection f (transp (λ _ → position p) i x) (transp (λ j → direction q (mapPosEq (~ j) (transp (λ _ → position p) (~ j ∨ i) x))) i0 y))) 
+    lemma x y i = transp (λ j → direction p (transp (λ _ → position p) (j ∨ i) x))
+                         i 
+                         ((mapDirection f 
+                                        (transp (λ _ → position p) i x)
+                                        (transp (λ j → direction q (mapPosEq (~ j) (transp (λ _ → position p) (~ j ∨ i) x))) i0 y))) 
 
 
 arrowsEqual3 : {p q : Polynomial} {f g : Arrow p q}
