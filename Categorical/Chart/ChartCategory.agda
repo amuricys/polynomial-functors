@@ -14,14 +14,14 @@ chartCat = record
     ; _⇒_ = Chart
     ; _≈_ = _≡_
     ; id = idChart
-    ; _∘_ = ∘c
+    ; _∘_ = _∘c_
     ; assoc = refl
     ; sym-assoc = refl
     ; identityˡ = refl
     ; identityʳ = refl
     ; identity² = refl
     ; equiv = record { refl = refl ; sym = sym ; trans = _∙_ }
-    ; ∘-resp-≈ = λ p q i → ∘c (p i) (q i)
+    ; ∘-resp-≈ = λ p q i → (p i) ∘c (q i)
     }
     
 -- idL : {x y : SetPolynomial} (f : Chart x y) → ؛c idChart f ≡ f

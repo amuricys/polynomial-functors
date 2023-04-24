@@ -1,4 +1,4 @@
-{-# OPTIONS --cubical --allow-unsolved-metas #-}
+{-# OPTIONS --cubical #-}
 
 module Categorical.Chart.Coproduct where
 
@@ -23,7 +23,7 @@ open Chart
                                                   ; (inj₂ y) x → mapDir g y x}
 
 unique : {p q r : Polynomial} {h : Chart (p + q) r} {f₁ : Chart p r} {f₂ : Chart q r}
-    → ((h ∘c i₁) ≡ f₁) -- {p q r : Polynomial} {h : Chart p (q ⊗ r)} {i : Chart p q} {j : Chart p r} → (π₁ ∘c h) ≡ i → (π₂ ∘c h) ≡ j → ⟨ i , j ⟩ ≡ h
+    → ((h ∘c i₁) ≡ f₁)
     → ((h ∘c i₂) ≡ f₂)
     → [ f₁ , f₂ ]c ≡ h
 unique {p = p2} {q} {h = h} p p' = (λ i → [ sym p i , sym p' i ]c) ∙ lemma

@@ -6,6 +6,10 @@ open import CategoryData.Core
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Isomorphism
 open import Cubical.Data.Sigma.Properties
+open import Cubical.Functions.FunExtEquiv
+open import Cubical.Foundations.Path
+open import Cubical.Foundations.Transport
+
 
 open Polynomial
 open Lens
@@ -40,6 +44,7 @@ lensSigmas≡' : {p q : Polynomial} (f g : LensAsSigma p q)
     → snd f ≡ (subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) (sym fstF≡fstG) (snd g))
     → f ≡ g
 lensSigmas≡' f g fstF≡fstG sndF≡sndG = sym (ΣPathTransport→PathΣ g f (sym fstF≡fstG , sym sndF≡sndG))
+
 
 
 lens≡ : {p q : Polynomial} {f g : Lens p q}
@@ -87,23 +92,15 @@ lens≡∀∀' : {p q : Polynomial} {f g : Lens p q}
     → f ≡ g
 lens≡∀∀' mapPos≡ mapDir≡ = lens≡' mapPos≡ λ i fromPos x → mapDir≡ fromPos x i
 
+module _ {ℓ : Level} {A : I → Type ℓ} {x : A i0} {y : A i1} where
+  fromPathP⁻' : PathP A x y → x ≡ transport⁻ (λ i → A i) y
+  fromPathP⁻' p = sym (fromPathP {A = λ i → A (~ i)} (symP p))
+
 lensSigmasEqual3 : {p q : Polynomial} {f g : Lens p q}
     → (mapPosEq : Lens.mapPosition f ≡ Lens.mapPosition g)
     → ((x : position p) → (y : direction q (mapPosition g x)) → mapDirection f x  (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y)
     → lensToSigma f ≡ lensToSigma g
-lensSigmasEqual3 {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathTransport→PathΣ (lensToSigma f) (lensToSigma g) (mapPosEq , funExt λ x  → funExt λ y → (lemma x y) ∙ (mapDirEq x y))
-  where
-    lemma : (x : position p) → (y : direction q (mapPosition g x)) → 
-      (subst (λ h → (i : position p) → direction q (h i) → direction p i) mapPosEq (mapDirection f)) x y
-      ≡
-      mapDirection f x
-      (subst (λ h → direction q (h x)) (sym mapPosEq) y)
-    lemma x y i = transp (λ j → direction p (transp (λ _ → position p) (j ∨ i) x))
-                         i 
-                         ((mapDirection f 
-                                        (transp (λ _ → position p) i x)
-                                        (transp (λ j → direction q (mapPosEq (~ j) (transp (λ _ → position p) (~ j ∨ i) x))) i0 y))) 
-
+lensSigmasEqual3 {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathP (mapPosEq , funExt λ x → funExtDep λ {y1} {y2} p → cong (mapDirection f x) (fromPathP⁻' p) ∙ mapDirEq x y2)
 
 lensesEqual3 : {p q : Polynomial} {f g : Lens p q}
     → (mapPosEq : mapPosition f ≡ mapPosition g)
