@@ -6,7 +6,15 @@ let
     "agda-categories"
     "cubical"
   ];
-  agdaDeps = builtins.map (n: pkgs.agdaPackages.${n}) agdaDepsNames;
+  agdaDeps = builtins.map (n: if n == "cubical" then pkgs.agdaPackages.${n}.overrideAttrs (old: {
+        version = "0.4";
+        src = pkgs.fetchFromGitHub {
+          repo = "cubical";
+          owner = "agda";
+          rev = "v0.4";
+          sha256 = "0ca7s8vp8q4a04z5f9v1nx7k43kqxypvdynxcpspjrjpwvkg6wbf";
+        };
+      }) else pkgs.agdaPackages.${n}) agdaDepsNames;
 
   buildAgdaBinary = agdaSrc: binName: haskellDeps: haskellSrcPath: let
     customGhc = pkgs.haskellPackages.ghcWithPackages (ps: haskellDeps);
