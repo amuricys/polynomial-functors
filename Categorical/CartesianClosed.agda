@@ -22,6 +22,7 @@ open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Transport
 import Categories.Category.CartesianClosed.Canonical Poly as Canonical
 open import Function
+open import Cubical.Functions.FunExtEquiv
 
 open Polynomial
 depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
@@ -81,6 +82,26 @@ mdEv (posB^A , posA) x with (snd (posB^A posA)) x in eq
 ev : {A B : Polynomial} → Lens (B ^ A * A) B
 ev {A} {B} = mpEv ⇆ mdEv
 
+one : {p q r : Polynomial} → Lens p (r ^ q) ≡ ((i : position p) → (j : position q) → Lens (mkpoly ⊤ (\ _ → direction p i)) (r ^ q))
+one {p} {q} {r} = isoToPath (iso go
+                                 back
+                                 pgoback
+                                 λ a → refl)
+    where go : (x : Lens p (r ^ q)) (x₁ : position p) (x₂ : position q) → Lens (mkpoly ⊤ (λ _ → direction p x₁)) (r ^ q)
+          go (f ⇆ f♯) i j = (λ _ → f i) ⇆ (λ _ x → f♯ i x)
+          back : ((x₁ : position p) → position q → Lens (mkpoly ⊤ (λ _ → direction p x₁)) (r ^ q)) → Lens p (r ^ q)
+          back f = mp ⇆ md
+                where mp : (x : position p) → position (r ^ q)
+                      mp x index = mapPosition (f x index) tt index
+                      md : (fromPos : position p) → direction (r ^ q) (mp fromPos) → direction p fromPos
+                      md fromPos (posQ , dirR , x) = mapDirection (f fromPos posQ) tt (posQ , dirR , x)
+          pgoback : (b : (x₁ : position p) → position q → Lens (mkpoly ⊤ (λ _ → direction p x₁)) (r ^ q)) → go (back b) ≡ b
+          pgoback b = {!   !}
+chain : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
+chain {p} {q} {r} = isoToPath {!   !}
+  where two : ((i : position p) → (j : position q) → Lens (mkpoly ⊤ (\ _ → direction p i)) (r ^ q)) ≡ ((i : position p) → (j : position q) → {! (r ◂ (mkpoly (direction p i ⊎ direction q j) λ _ → ⊤ ))  !})
+        two = isoToPath {!   !}
+
 canonical : {A B : Polynomial} → Canonical.CartesianClosed
 canonical {A} {B} = record
     { ⊤ = 𝟙
@@ -102,33 +123,55 @@ canonical {A} {B} = record
     }
        where
         curry-unique-simple : {p q r : Polynomial} → {f : Lens p (q ^ r)} → {g : Lens (p * r) q} → eval ∘ₚ (⟨ f × idLens ⟩) ≡ g → f ≡ curry g
-        curry-unique-simple {p} {q} {r} {f = f ⇆ f♯} {g = g ⇆ g♯} proof = lensesEqual3 mapPos≡ mapDir≡
+        curry-unique-simple {p} {q} {r} {f = f ⇆ f♯} {g = g ⇆ g♯} proof = lensesEqual3 mapPos≡ {!   !}
            where mapPos≡ : f ≡ mapPosition (curry (g ⇆ g♯))
-                 mapPos≡ = {!   !}
-                 mapDir≡ : (x : position p) (y : direction (q ^ r) (mapPosition (curry (g ⇆ g♯)) x)) → 
-                   f♯ x (subst (λ mapPos → direction (q ^ r) (mapPos x)) (sym mapPos≡) y) 
-                     ≡
-                   mapDirection (curry (g ⇆ g♯)) x y
-                 mapDir≡ x y = {!   !}
+                 mapPos≡ = pr 
+                   where pr = funExt xtopr
+                            where xtopr : (x : position p) → f x ≡ mapPosition (curry (g ⇆ g♯)) x
+                                  xtopr x = funExt rtoprr
+                                     where rtoprr : (posr : position r) → f x posr ≡ mapPosition (curry (g ⇆ g♯)) x posr
+                                           rtoprr rr = {!   !}
+                                                    where mpcurr : position p → (index : position r) → Σ (position q) (λ i → direction q i → ⊤ ⊎ direction r index)
+                                                          mpcurr = mapPosition (curry (g ⇆ g♯))
+                                                          posq : position q
+                                                          posq = fst $ mpcurr x rr
+                                                          lem : posq ≡ (fst $ f x rr)
+                                                          lem = {!   !}
+                    --  where xtopr : (x : position p) → 
+                    --             where mpcurr : position p → (index : position r) → Σ (position q) (λ i → direction q i → ⊤ ⊎ direction r index)
+                    --                   mpcurr = mapPosition (curry (g ⇆ g♯))
+                    --                   posq : position q
+                    --                   posq = mpcurr x y
+                         
+                 
         -- ... | (s ⇆ s♯) = ? ⇆ {!   !}
             -- where mp : position p → (index : position r) → Σ (position q) (λ i₃ → direction q i₃ → ⊤ ⊎ direction r index)
             --       mp p ind with s ( p , ind )
             --       ... | a = a , {!   !}
             --       md = {!   !}
-        eval-comp-simple : {C D E : Polynomial} → 
-                    (f : Lens (E * D) C) → 
-                    (ev ∘ₚ ⟨ curry f × idLens ⟩)
-                    ≡ f
-        eval-comp-simple {C} {D} {E} f = lensesEqual3 refl mapDir≡
-            where
-                mapDir≡ : (x : position (E * D))
-                        → (y : direction C (mapPosition (ev ∘ₚ ⟨ curry f × idLens ⟩) x))
-                        → mapDirection (ev ∘ₚ ⟨ curry f × idLens ⟩)
-                                       x 
-                                       (subst (λ mapPos → direction C (mapPos x)) (sym (λ _ → mapPosition (ev ∘ₚ ⟨ curry f × idLens ⟩))) y)
-                            ≡ 
-                          mapDirection f x y
-                mapDir≡ (posE , posD) y = {!   !}
+        -- eval-comp-simple : {C D E : Polynomial} → 
+        --             (f : Lens (E * D) C) → 
+        --             (ev ∘ₚ ⟨ curry f × idLens ⟩)
+        --             ≡ f
+        -- eval-comp-simple {C} {D} {E} f = lensesEqual3 refl mapDir≡
+        --     where
+        --         mapDir≡ : (x : position (E * D))
+        --                 → (y : direction C (mapPosition (ev ∘ₚ ⟨ curry f × idLens ⟩) x))
+        --                 → mapDirection (ev ∘ₚ ⟨ curry f × idLens ⟩)
+        --                                x 
+        --                                (subst (λ mapPos → direction C (mapPos x)) (sym (λ _ → mapPosition (ev ∘ₚ ⟨ curry f × idLens ⟩))) y)
+        --                     ≡ 
+        --                   mapDirection f x y
+        --         mapDir≡ x@(posE , posD) y = {!   !}
+        --         mapDir≡' : (x : position (E * D))
+        --                 → (y : direction C (mapPosition (ev ∘ₚ ⟨ curry f × idLens ⟩) x))
+        --                 → mapDirection (ev ∘ₚ ⟨ curry f × idLens ⟩)
+        --                                x 
+        --                                y
+        --                     ≡ 
+        --                   mapDirection f x y
+        --         mapDir≡' x@(posE , posD) y = {!   !}
+                   
                 -- path : {x : position (E * D)} → PathP
                 --     (λ _ →
                 --     direction C (mapPosition (ev ∘ₚ ⟨ curry f × idLens ⟩) x) →
@@ -157,4 +200,4 @@ canonical {A} {B} = record
                                     
 
   
-   
+     
