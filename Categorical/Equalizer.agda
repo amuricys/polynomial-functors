@@ -21,18 +21,6 @@ open import Function
 open import Cubical.HITs.SetCoequalizer
 open import Relation.Binary.PropositionalEquality using () renaming (_≡_ to _≡p_)
 
-data Coeq {A B : Set} (f g : A → B) : Set where
-  inc    : B → Coeq f g
-  glue   : ∀ x → inc (f x) ≡ inc (g x)
-  squash : isSet (Coeq f g)
-open Coeq
-
-coeqSet : {A B : Set} {a : isSet A} → {b : isSet B} (f g : A → B) → isSet (Coeq f g)
-coeqSet {a = a} {b = b} f g = {!   !}
-
-equalityIsSet : ∀ {A : Set} → (p : isSet A) → ∀ {x y : A} → isSet (x ≡ y)
-equalityIsSet p {x} {y} = isOfHLevelPath 2 p x y
-
 open SetPolynomial
 open Polynomial
 eq : {pˢ qˢ : SetPolynomial} → (f g : SetLens pˢ qˢ) → Equalizer f g
@@ -45,9 +33,9 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
    where EqualizedPosition = Σ (position p) (λ z → mpf z ≡ mpg z)
          eqObj : SetPolynomial
          eqObj = mksetpoly  eqPoly eqPosSet eqDirSet
-            where eqPoly = mkpoly EqualizedPosition (λ ( i , equal ) → Coeq (mdf i) (subst (λ x → direction q x → direction p i) (sym equal) (mdg i)))
+            where eqPoly = mkpoly EqualizedPosition (λ ( i , equal ) → SetCoequalizer (mdf i) (subst (λ x → direction q x → direction p i) (sym equal) (mdg i)))
                   eqPosSet : isSet (position eqPoly)
-                  eqPosSet = isSetΣ pposSet λ x → equalityIsSet qposSet
+                  eqPosSet = {!   !}
                   eqDirSet : ∀ {po : position eqPoly} → isSet (direction eqPoly po)
                   eqDirSet {posp , mapped≡} = {!   !}
          arr : SetLens eqObj pˢ
@@ -92,16 +80,15 @@ eqSets {A} {B} f g = record {
                         in
                           pathToEq {!   !}
 
-Coeq-rec : ∀ {ℓ} {C : Type ℓ} {A B : Set} {f g : A → B}
-      → isSet C → (h : B → C)
-      → (∀ x → h (f x) ≡ h (g x)) → Coeq f g → C
-Coeq-rec cset h h-coeqs (inc x) = h x
-Coeq-rec cset h h-coeqs (glue x i) = h-coeqs x i
-Coeq-rec cset h h-coeqs (squash x y p q i j) =
-  cset (g x) (g y) (λ i → g (p i)) (λ i → g (q i)) i j
-  where g = Coeq-rec cset h h-coeqs
+-- Coeq-rec : ∀ {ℓ} {C : Type ℓ} {A B : Set} {f g : A → B}
+--       → isSet C → (h : B → C)
+--       → (∀ x → h (f x) ≡ h (g x)) → SetCoequalizer f g → C
+-- Coeq-rec cset h h-coeqs (inc x) = h x
+-- Coeq-rec cset h h-coeqs (glue x i) = h-coeqs x i
+-- Coeq-rec cset h h-coeqs (squash x y p q i j) =
+--   cset (g x) (g y) (λ i → g (p i)) (λ i → g (q i)) i j
+--   where g = Coeq-rec cset h h-coeqs
 
-open Coeq
 -- coeqSets : {A B : Set} → (f g : A → B) → Coequalizer f g
 -- coeqSets {A} {B} f g = record { 
 --       obj = Coeq f g ; 

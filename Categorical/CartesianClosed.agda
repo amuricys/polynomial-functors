@@ -104,16 +104,54 @@ two {p} {q} {r} = isoToPath (iso go
                                  {!   !}
                                  {!   !})
     where go : ((i : position p) → position q → Lens (mkpoly ⊤ (λ _ → direction p i)) (r ^ q)) → (i : position p) (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆
-          go f posP posQ = fst (mapPosition (f posP posQ) tt posQ) , λ x → inj₁ $ smth (posQ , x , smthelse x)
+          go f posP posQ = fst (mapPosition (f posP posQ) tt posQ) , λ x → sol x
              where smth : direction (r ^ q) (mapPosition (f posP posQ) tt) → direction p posP
                    smth = mapDirection (f posP posQ) tt
-                   smthelse : (x : direction r (proj₁ (mapPosition (f posP posQ) tt posQ))) → [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (mapPosition (f posP posQ) tt posQ) x)
-                   smthelse x = {!   !}
+                   sol : (x : direction r (proj₁ (mapPosition (f posP posQ) tt posQ))) → direction p posP ⊎ direction q posQ
+                   sol x with (snd (mapPosition (f posP posQ) tt posQ) x) in eq
+                   ... | inj₁ x₁ = inj₁ $ (mapDirection (f posP posQ) tt) (posQ , x , help)
+                       where help : [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (mapPosition (f posP posQ) tt posQ) x)
+                             help rewrite eq = tt
+                   ... | inj₂ y = inj₂ y
           back : ((i : position p) (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆) → (i : position p) → position q → Lens (mkpoly ⊤ (λ _ → direction p i)) (r ^ q)
           back f posP posQ = (λ x index → (proj₁ (f posP index)) , (λ x₁ → inj₁ tt)) ⇆ λ fromPos x → {!   !}
 
+thr : {p q r : Polynomial} → ((i : position p) → (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆) ≡ ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j) )  )
+thr {p} {q} {r} = isoToPath (iso (λ x i j → (fst $ x i j) , (λ x₁ → snd (x i j) x₁)) 
+                                 (λ x i j → x i j) 
+                                 {!   !} 
+                                 λ a → refl)
+
+for : {p q r : Polynomial} → ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j))) ≡ ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) )
+for {p} {q} {r} = isoToPath (iso go
+                                 back
+                                 (λ b → refl)
+                                 λ a → refl)
+    where go : ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j))) → ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) )
+          go x (fst₁ , snd₁) = (fst (x fst₁ snd₁)) , snd (x fst₁ snd₁)
+          back : ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) ) → ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j)))
+          back x i j = x ( i , j )
+
+fiv : {p q r : Polynomial} → ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) ) ≡ Lens (p * q) r
+fiv {p} {q} {r} = isoToPath (iso go
+                                 back
+                                 (λ b → refl)
+                                 λ a → refl)
+    where go :  ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) ) → Lens (p * q) r
+          go f = mp ⇆ md
+            where mp : position (p * q) → position r
+                  mp (i , j) = fst $ f ( i , j )
+                  md : (fromPos : position (p * q)) → direction r (mp fromPos) → direction (p * q) fromPos
+                  md fp d = snd (f fp) d
+          back : Lens (p * q) r → ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) )
+          back (f ⇆ f♯) (i , j) = (f (i , j)) , (f♯ (i , j))
+                                
+
 chain : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
-chain {p} {q} {r} = isoToPath {!   !}
+chain {p} {q} {r} = isoToPath (compIso (pathToIso one)
+                                       (compIso (pathToIso two) 
+                                                (compIso (pathToIso thr) 
+                                                         (compIso (pathToIso for)  (pathToIso fiv)))))
 
 canonical : {A B : Polynomial} → Canonical.CartesianClosed
 canonical {A} {B} = record
@@ -213,4 +251,4 @@ canonical {A} {B} = record
                                     
 
   
-     
+        
