@@ -102,7 +102,7 @@ Two = mkpoly TwoSet (λ x → ⊥)
 Nine : Polynomial
 Nine = mkpoly NineSet (λ x → ⊥)
 
-open import Cubical.Data.Equality
+open import Cubical.Data.Equality using (pathToEq ; eqToPath) renaming (_≡_ to _≡p_)
 
 3^2≡9 : Three ^ Two ≡ Nine
 3^2≡9 = poly≡∀' pos≡ dir≡

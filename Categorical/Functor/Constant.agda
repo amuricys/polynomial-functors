@@ -18,6 +18,7 @@ open import Function
 open import Categorical.Instance.Poly
 open import Cubical.Proofs
 open import Data.Bool
+open import Cubical.LensEquality
 
 fromAnythingToFalseToAnythingEqual : {A B : Set} {w z : A → ⊥ → B} → w ≡ z
 fromAnythingToFalseToAnythingEqual i x ()
@@ -29,7 +30,7 @@ constantPolynomial = record
     ; F₁ = λ f → f ⇆ λ fromPos → id
     ; identity = refl
     ; homomorphism = refl
-    ; F-resp-≈ = λ p → lensesEqual (funExt λ x → eqToPath p) refl
+    ; F-resp-≈ = λ p → lensesEqual3 (funExt λ x → eqToPath p) λ x ()
     }
 
 full : Full constantPolynomial
@@ -37,7 +38,7 @@ full = record
     { from = record 
         { _⟨$⟩_ = Lens.mapPosition
         ; cong = positionLensesEqualPwiseEq } 
-    ; right-inverse-of = \_ → lensesEqual refl fromAnythingToFalseToAnythingEqual
+    ; right-inverse-of = \_ → lensesEqual3 refl λ x ()
     }
 
 faithful : Faithful constantPolynomial
