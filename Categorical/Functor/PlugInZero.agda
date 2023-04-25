@@ -11,7 +11,7 @@ open import Categories.Category.Instance.Sets
 open import Categories.Functor using (Functor; _∘F_) renaming (id to idF)
 open import Categories.Functor.Properties
 open import Categories.NaturalTransformation renaming ( id to idN )
-open import Cubical.Data.Equality using (ctop ; ptoc)
+open import Cubical.Data.Equality using (pathToEq ; eqToPath)
 open import Cubical.Foundations.Prelude
 open import CategoryData.Everything
 open import Function
@@ -37,7 +37,7 @@ appliedPolyLensesEqPwiseEq : {p q : Polynomial}
       f ≡ g →
       {z : p ⦅ ⊥ ⦆ } →
       fromLensInPolyToFunction f z Eq.≡ fromLensInPolyToFunction g z
-appliedPolyLensesEqPwiseEq p {z} = ctop (appliedPolyLensesEqPwise {z = z} p)
+appliedPolyLensesEqPwiseEq p {z} = pathToEq (appliedPolyLensesEqPwise {z = z} p)
 
 -- Functor sending a polynomial the zero set "plugging in 0"
 plugIn0 : Functor Poly (Sets Level.zero)

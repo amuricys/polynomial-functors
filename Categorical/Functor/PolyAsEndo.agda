@@ -13,14 +13,14 @@ open import Cubical.Data.Equality
 open import Function
 open import CategoryData.Chart.Core
 
-open import Cubical.Data.Equality using (ctop ; ptoc ) renaming (_≡c_ to _≡_)
+open import Cubical.Data.Equality using (pathToEq ; eqToPath ) renaming (_≡c_ to _≡_)
 import Relation.Binary.PropositionalEquality as Eq
 
 F-resp : {p : Polynomial} {A B : Set} {f g : A → B} {x : p ⦅ A ⦆ } → f ≡ g → applyFn p f x ≡ applyFn p g x -- 
 F-resp {x = posApp , dirApp} pr = λ i → posApp , (pr i) ∘  dirApp
 
 conv : {A B : Set} {f g : A → B} → ({x : A} → f x ≡p g x) → f ≡ g
-conv p = funExt λ x → ptoc $ p
+conv p = funExt λ x → eqToPath $ p
 
 asEndo : (p : Polynomial) → Functor (Sets zero) (Sets zero)
 asEndo p = record
@@ -28,7 +28,7 @@ asEndo p = record
     ; F₁ = λ f → applyFn p f
     ; identity = Eq.refl
     ; homomorphism = Eq.refl
-    ; F-resp-≈ = λ {_} {_} {f} {g} proof → ctop (F-resp {f = f} {g = g} (conv proof))
+    ; F-resp-≈ = λ {_} {_} {f} {g} proof → pathToEq (F-resp {f = f} {g = g} (conv proof))
     }
 
 asNatTransArr : {p q : Polynomial} → Lens p q → NaturalTransformation (asEndo p) (asEndo q)

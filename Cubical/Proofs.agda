@@ -7,7 +7,7 @@ open import Level
 open import Agda.Builtin.Unit
 open import Data.Empty
 import Relation.Binary.PropositionalEquality as Eq
-open import Cubical.Data.Equality using (ctop ; ptoc)
+open import Cubical.Data.Equality using (eqToPath ; pathToEq)
 open import Cubical.Core.Everything
 open import Cubical.Categories.Category
 open import Cubical.Foundations.Prelude
@@ -89,7 +89,7 @@ enclosePoly≡depFuncToDirections = isoToPath isoEnclosePolydepFuncToDirections
 pwiseToExt : {A B : Set} {f g : A → B} → ({x : A} → f x Eq.≡ g x) → f ≡ g
 pwiseToExt {A = A} {f = f} {g = g} p = let
   yaaa : {x : A} → f x ≡ g x
-  yaaa = ptoc p
+  yaaa = eqToPath p
   in
   funExt (λ x → yaaa)
 
@@ -105,7 +105,7 @@ positionLensesEqualPwiseEq : {A B : Polynomial} {f g : Lens A B} →
       f ≡ g →
       {x : Polynomial.position A} →
       Lens.mapPosition f x Eq.≡ Lens.mapPosition g x
-positionLensesEqualPwiseEq p = ctop (positionLensesEqualPwise p)
+positionLensesEqualPwiseEq p = pathToEq (positionLensesEqualPwise p)
 --  
 -- Proof that for any polynomal p with index set I, p(1) ≡ I
 -- Proposition 2.43 in the book

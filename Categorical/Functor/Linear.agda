@@ -11,7 +11,7 @@ open import Categories.Category.Instance.Sets
 open import Categories.Functor using (Functor; _∘F_) renaming (id to idF)
 open import Categories.Functor.Properties
 open import Categories.NaturalTransformation renaming ( id to idN )
-open import Cubical.Data.Equality using (ctop ; ptoc)
+open import Cubical.Data.Equality using (pathToEq ; eqToPath)
 open import Cubical.Foundations.Prelude
 open import CategoryData.Everything
 open import Function
@@ -42,7 +42,7 @@ full = record
     }
 
 faithful : Faithful linearPolynomial
-faithful = λ f g x → ctop (positionLensesEqualPwise x)
+faithful = λ f g x → pathToEq (positionLensesEqualPwise x)
 
 ffcp : FullyFaithful linearPolynomial
 ffcp = full , faithful

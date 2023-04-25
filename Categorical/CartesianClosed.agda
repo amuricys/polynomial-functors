@@ -97,10 +97,23 @@ one {p} {q} {r} = isoToPath (iso go
                       md fromPos (posQ , dirR , x) = mapDirection (f fromPos posQ) tt (posQ , dirR , x)
           pgoback : (b : (x₁ : position p) → position q → Lens (mkpoly ⊤ (λ _ → direction p x₁)) (r ^ q)) → go (back b) ≡ b
           pgoback b = {!   !}
+
+two : {p q r : Polynomial} → ((i : position p) → (j : position q) → Lens (mkpoly ⊤ (\ _ → direction p i)) (r ^ q)) ≡ ((i : position p) → (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆)
+two {p} {q} {r} = isoToPath (iso go
+                                 back
+                                 {!   !}
+                                 {!   !})
+    where go : ((i : position p) → position q → Lens (mkpoly ⊤ (λ _ → direction p i)) (r ^ q)) → (i : position p) (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆
+          go f posP posQ = fst (mapPosition (f posP posQ) tt posQ) , λ x → inj₁ $ smth (posQ , x , smthelse x)
+             where smth : direction (r ^ q) (mapPosition (f posP posQ) tt) → direction p posP
+                   smth = mapDirection (f posP posQ) tt
+                   smthelse : (x : direction r (proj₁ (mapPosition (f posP posQ) tt posQ))) → [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (mapPosition (f posP posQ) tt posQ) x)
+                   smthelse x = {!   !}
+          back : ((i : position p) (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆) → (i : position p) → position q → Lens (mkpoly ⊤ (λ _ → direction p i)) (r ^ q)
+          back f posP posQ = (λ x index → (proj₁ (f posP index)) , (λ x₁ → inj₁ tt)) ⇆ λ fromPos x → {!   !}
+
 chain : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
 chain {p} {q} {r} = isoToPath {!   !}
-  where two : ((i : position p) → (j : position q) → Lens (mkpoly ⊤ (\ _ → direction p i)) (r ^ q)) ≡ ((i : position p) → (j : position q) → {! (r ◂ (mkpoly (direction p i ⊎ direction q j) λ _ → ⊤ ))  !})
-        two = isoToPath {!   !}
 
 canonical : {A B : Polynomial} → Canonical.CartesianClosed
 canonical {A} {B} = record

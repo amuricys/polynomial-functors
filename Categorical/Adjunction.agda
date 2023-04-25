@@ -27,8 +27,8 @@ open import Level
 constunit : NaturalTransformation idF (plugIn0 ∘F constantPolynomial)
 constunit = record { 
     η = λ X x → x , id ; 
-    commute = λ f → ctop refl ; 
-    sym-commute = λ f → ctop refl }
+    commute = λ f → pathToEq refl ; 
+    sym-commute = λ f → pathToEq refl }
 
 constcounit : NaturalTransformation (constantPolynomial ∘F plugIn0) idF
 constcounit = record { 
@@ -41,7 +41,7 @@ constantPolynomial⊣plugIn0 = record
     { unit = constunit
     ; counit = constcounit
     ; zig = refl
-    ; zag = ctop refl }
+    ; zag = pathToEq refl }
 
 id-⊥ : ⊥ → ⊥
 id-⊥ x = x
@@ -65,21 +65,21 @@ plugin1unit = record {
 plugin1counit : NaturalTransformation (plugIn1 ∘F constantPolynomial) idF
 plugin1counit = record { 
     η = λ X x → fst x ; 
-    commute = λ f → ctop refl ; 
-    sym-commute = λ f → ctop refl }
+    commute = λ f → pathToEq refl ; 
+    sym-commute = λ f → pathToEq refl }
 
 plugIn1⊣constantPolynomial : plugIn1 ⊣ constantPolynomial
 plugIn1⊣constantPolynomial = record 
     { unit = plugin1unit
     ; counit = plugin1counit
-    ; zig = ctop refl
+    ; zig = pathToEq refl
     ; zag = lens≡∀∀ refl λ {fromPos ()} }
 
 linearunit : NaturalTransformation idF (plugIn1 ∘F linearPolynomial)
 linearunit = record { 
     η = λ X x → x , λ _ → tt ; 
-    commute = λ f → ctop refl ; 
-    sym-commute = λ f → ctop refl }
+    commute = λ f → pathToEq refl ; 
+    sym-commute = λ f → pathToEq refl }
 
 linearcounit : NaturalTransformation (linearPolynomial ∘F plugIn1) idF
 linearcounit = record { 
@@ -92,5 +92,5 @@ linearPolynomial⊣plugIn1 = record
     { unit = linearunit
     ; counit = linearcounit
     ; zig = refl
-    ; zag = ctop refl }
+    ; zag = pathToEq refl }
                         

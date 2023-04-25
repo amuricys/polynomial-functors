@@ -149,20 +149,20 @@ open import Cubical.Data.Equality
                       proofSection nine8 = refl
                       proofSection nine9 = refl
                       helper :  ∀ {X Y} {some : ⊥ → ⊤ ⊎ ⊥} → X ≡p (Y , some) → X ≡p (Y , (λ ()))
-                      helper {X} {Y} one = ctop (ptoc one ∙ cong (λ a → Y , a) functionFromFalse)
+                      helper {X} {Y} one = pathToEq (eqToPath one ∙ cong (λ a → Y , a) functionFromFalse)
                         where functionFromFalse : {some : ⊥ → ⊤ ⊎ ⊥} → some ≡ λ ()
                               functionFromFalse = funExt (λ ())
                       proofRetract : (a : TwoSet → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)) → back (go a) ≡ a
                       proofRetract a with a two1 | a two2 | (Eq.inspect a two1) | (Eq.inspect a two2)
-                      ... | (three1 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
-                      ... | (three1 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
-                      ... | (three1 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
-                      ... | (three2 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
-                      ... | (three2 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
-                      ... | (three2 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
-                      ... | (three3 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
-                      ... | (three3 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
-                      ... | (three3 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ ptoc ∘ helper $ eq₁; two2 → sym ∘ ptoc ∘ helper $ eq₂}
+                      ... | (three1 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three1 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three1 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three2 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three2 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three2 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three3 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three3 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three3 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
         pos≡ : position (Three ^ Two) ≡ position Nine
         pos≡ = other
         dir≡ : (posA : (index : TwoSet) → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)) →

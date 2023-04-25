@@ -13,11 +13,13 @@ open import Cubical.LensEquality
 open import Cubical.Foundations.Prelude
 open import Data.Sum
 open import Data.Product using (_×_)
-open import Cubical.Data.Equality
+open import Cubical.Data.Equality hiding (_≡_ ; sym)
 open import Cubical.Data.Sigma.Properties
 open import Cubical.Foundations.HLevels
 open import Cubical.Foundations.Isomorphism
 open import Function
+open import Cubical.HITs.SetCoequalizer
+open import Relation.Binary.PropositionalEquality using () renaming (_≡_ to _≡p_)
 
 data Coeq {A B : Set} (f g : A → B) : Set where
   inc    : B → Coeq f g
@@ -40,7 +42,7 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
     arr = arr ; 
     isEqualizer = isEqualizer
     }
-   where EqualizedPosition = Σ (position p) (λ z → mpf z ≡c mpg z)
+   where EqualizedPosition = Σ (position p) (λ z → mpf z ≡ mpg z)
          eqObj : SetPolynomial
          eqObj = mksetpoly  eqPoly eqPosSet eqDirSet
             where eqPoly = mkpoly EqualizedPosition (λ ( i , equal ) → Coeq (mdf i) (subst (λ x → direction q x → direction p i) (sym equal) (mdg i)))
@@ -66,7 +68,7 @@ eqSets {A} {B} f g = record {
       isEqualizer = record { 
             equality = \{ {fst₁ , snd₁} → snd₁ }; 
             equalize = λ {X} {h} x x₁ → h x₁ , x ; 
-            universal =  reflp ; 
+            universal =  _≡p_.refl ; 
             unique = unique }
             }
             where unique : {eqSet : Type} → 
@@ -79,16 +81,16 @@ eqSets {A} {B} f g = record {
                   unique {eqSet} {eqArr} {eq} {a} y {x} = let
                         anew , pro = eq x
                         res = eqArr x
-                        hmm = ptoc (a {x})
-                        hmm2 = ptoc (y {x})
-                        lemma : fst (eq x) ≡c eqArr x
+                        hmm = eqToPath (a {x})
+                        hmm2 = eqToPath (y {x})
+                        lemma : fst (eq x) ≡ eqArr x
                         lemma = sym hmm2
-                        lemma22 : eqArr x ≡c fst (eq x)
+                        lemma22 : eqArr x ≡ fst (eq x)
                         lemma22 = sym lemma
-                        lemma2 : ctop {!   !} ≡c a {x}
+                        lemma2 : pathToEq {!   !} ≡ a {x}
                         lemma2 = {!   !}
                         in
-                          ctop {!   !}
+                          pathToEq {!   !}
 
 Coeq-rec : ∀ {ℓ} {C : Type ℓ} {A B : Set} {f g : A → B}
       → isSet C → (h : B → C)
@@ -105,9 +107,9 @@ open Coeq
 --       obj = Coeq f g ; 
 --       arr = λ x → inc x; 
 --       isCoequalizer = record { 
---             equality = \{x} → ctop (glue x) ; 
+--             equality = \{x} → pathToEq (glue x) ; 
 --             coequalize = {!   !}; 
---             universal = reflp ; 
+--             universal = _≡p_.refl ; 
 --             unique = {!   !} 
 --             }
 --       }
@@ -117,7 +119,7 @@ open Coeq
 --                      (coeqSetElmt : Coeq f g) → 
 --                      coeqSetCandidate
 --         coequalize {coeqSetCandidate} {h} x (inc x₁) = h x₁
---         coequalize {coeqSetCandidate} {h} x (glue x₁ i) = ptoc (x {x₁}) i
+--         coequalize {coeqSetCandidate} {h} x (glue x₁ i) = eqToPath (x {x₁}) i
 --         coequalize {coeqSetCandidate} {h} x (squash coeqSetElmt coeqSetElmt₁ x₁ y i i₃) = {!  !}
 
 
