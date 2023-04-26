@@ -92,15 +92,12 @@ lens≡∀∀' : {p q : Polynomial} {f g : Lens p q}
     → f ≡ g
 lens≡∀∀' mapPos≡ mapDir≡ = lens≡' mapPos≡ λ i fromPos x → mapDir≡ fromPos x i
 
-module _ {ℓ : Level} {A : I → Type ℓ} {x : A i0} {y : A i1} where
-  fromPathP⁻' : PathP A x y → x ≡ transport⁻ (λ i → A i) y
-  fromPathP⁻' p = sym (fromPathP {A = λ i → A (~ i)} (symP p))
 
 lensSigmasEqual3 : {p q : Polynomial} {f g : Lens p q}
     → (mapPosEq : Lens.mapPosition f ≡ Lens.mapPosition g)
     → ((x : position p) → (y : direction q (mapPosition g x)) → mapDirection f x  (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y)
     → lensToSigma f ≡ lensToSigma g
-lensSigmasEqual3 {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathP (mapPosEq , funExt λ x → funExtDep λ {y1} {y2} p → cong (mapDirection f x) (fromPathP⁻' p) ∙ mapDirEq x y2)
+lensSigmasEqual3 {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq = ΣPathP (mapPosEq , funExt λ x → funExtDep λ {y1} {y2} p → cong (mapDirection f x) (fromPathP⁻ p) ∙ mapDirEq x y2)
 
 lensesEqual3 : {p q : Polynomial} {f g : Lens p q}
     → (mapPosEq : mapPosition f ≡ mapPosition g)
