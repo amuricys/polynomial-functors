@@ -12,7 +12,7 @@ import Data.Text qualified as T
 plotToFile :: Double -> [(T.Text, [Double])] -> IO ()
 plotToFile dt lines = toFile def "plot.png" $ do
     layout_title .= "Dynamics"
-    setColors [opaque blue, opaque red]
+    setColors . fmap opaque $ [purple, sienna, plum, powderblue, salmon, sandybrown, cornflowerblue, blanchedalmond, firebrick, gainsboro, honeydew]
     forM_ lines \(name, l) ->
         plot (line (T.unpack name) [zip [0, dt..] l ])
     -- plot (line "foxes" [zip [0, dt..] f])

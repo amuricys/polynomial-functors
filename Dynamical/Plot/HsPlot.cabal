@@ -63,6 +63,7 @@ library
       , text
       , vector
       , random
+      , normaldistribution
       , hmatrix
 
     -- Directories containing source files.
