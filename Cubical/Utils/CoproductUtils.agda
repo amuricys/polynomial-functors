@@ -63,9 +63,9 @@ forgetRecoverRight (inj₂ tt) f = refl
 lemma : {p : inj₁ {B = B} tt ≡ inj₁ tt} → (λ i → inj₁ tt) ≡ p
 lemma {p = p} = {!   !}
 
-keepRecoverLeft : (x : ⊤ ⊎ B) → (f : x ≡ inj₁ tt → B) → keepLeft (recoverLeft x f) ≡ subst (λ a → a ≡ inj₁ tt → B) (sym forgetRecoverLeft) f
-keepRecoverLeft (inj₁ tt) f = funExt (λ x1 → cong f lemma) ∙ sym (transportRefl f)
-keepRecoverLeft (inj₂ y) f = funExt (λ x → absurd (⊎-disjoint⁻ x)) ∙ sym (transportRefl f)
+keepRecoverLeft : {x : ⊤ ⊎ B} → {f : x ≡ inj₁ tt → B} → keepLeft (recoverLeft x f) ≡ subst (λ a → a ≡ inj₁ tt → B) (sym forgetRecoverLeft) f
+keepRecoverLeft {x = inj₁ tt} {f} = funExt (λ x1 → cong f lemma) ∙ sym (transportRefl f)
+keepRecoverLeft {x = inj₂ y} {f} = funExt (λ x → absurd (⊎-disjoint⁻ x)) ∙ sym (transportRefl f)
 
 fromImpossibleRight : {a : ⊤ ⊎ B} → [ (λ _ → ⊤) , (λ _ → ⊥) ] a → (a ≡ inj₁ tt)
 fromImpossibleRight {a = inj₁ tt} term = refl
@@ -84,3 +84,31 @@ toFromImpossibleRight {a = inj₂ y} {p = p} = absurd (⊎-disjoint⁻ p)
 forgetMapLeft : {C : Type} {x : A ⊎ B} {f : A → C} → forgetLeft (map f id x) ≡ forgetLeft x
 forgetMapLeft {x = inj₁ x} = refl
 forgetMapLeft {x = inj₂ y} = refl
+
+
+-- recoverLeft (forgetLeft (snd b dir))
+--       (λ pr →
+--          keepLeft (snd b dir) (fromImpossibleRight (toImpossibleRight pr)))
+--       ≡ snd b dir
+
+-- x = snd b dir
+
+-- recoverLeft (forgetLeft x)
+--       (λ pr →
+--          keepLeft x (fromImpossibleRight (toImpossibleRight pr)))
+--       ≡ x
+
+-- (fromImpossibleRight (toImpossibleRight pr)) = pr
+
+-- recoverLeft (forgetLeft x)
+--       (λ pr →
+--          keepLeft x pr)
+--       ≡ x
+
+-- eta-reduce
+
+-- recoverLeft (forgetLeft x) (keepLeft x) ≡ x
+
+-- recoverForgetLeft : {x : A ⊎ B} → recoverLeft (forgetLeft x) (keepLeft x) ≡ x
+-- recoverForgetLeft {x = inj₁ x} = refl
+-- recoverForgetLeft {x = inj₂ y} = refl

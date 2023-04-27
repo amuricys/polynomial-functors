@@ -7,7 +7,8 @@ open import Categorical.Instance.Poly
 
 import Relation.Binary.PropositionalEquality as Eq
 open import Categories.Object.Exponential Poly
-open import Cubical.Data.Sigma
+open import Cubical.Data.Sigma hiding (_×_)
+open import Cubical.Data.Sigma.Properties -- hiding (_×_)
 open import Cubical.Foundations.Isomorphism
 open import Data.Sum
 open import Data.Unit
@@ -23,11 +24,10 @@ open import Cubical.Foundations.Transport
 import Categories.Category.CartesianClosed.Canonical Poly as Canonical
 open import Function
 open import Cubical.Functions.FunExtEquiv
+open import Cubical.Utils.CoproductUtils hiding (lemma)
 
 open Polynomial
-depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
-depProd (ind , polyAt) = mkpoly ((i : ind) → position (polyAt i))
-                                      (λ a⁺ → Σ[ i ∈ ind ](direction (polyAt i) (a⁺ i)))
+
 eval : {p q : Polynomial} → Lens ((q ^ p) * p) q
 eval {p} {q} = mapPos ⇆ mapDir
     where
@@ -111,15 +111,8 @@ applyingIsSameAsComposingWithConstant {r} {A} = isoToPath (iso go
             back (pos , md) = (λ _ → pos , md) ⇆ λ { fromPos () }
 
 univPropProduct : {p q : Polynomial} {qi : position q → Polynomial} → Lens p (ΠPoly (position q , qi)) ≡ ((i : position q) → Lens p (qi i))
-univPropProduct {p} {q} {qi} = isoToPath (iso go
-                                              back
-                                              (λ b → refl) 
-                                              λ a → refl)
-      where go : Lens p (ΠPoly (position q , qi)) → (i : position q) → Lens p (qi i)
-            go (f ⇆ f♯) = λ i → (λ x → f x i) ⇆ λ fromPos x → f♯ fromPos (i , x)
-            back : ((i : position q) → Lens p (qi i)) → Lens p (ΠPoly (position q , qi))
-            back f = (λ z index → mapPosition (f index) z) ⇆ λ { fromPos (fst₁ , snd₁) → mapDirection (f fst₁) fromPos snd₁ }
--- ΠPoly (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
+univPropProduct {p} {q} {qi} = universalPropertyProduct
+
 univPropProdCoprod : {p q r : Polynomial} → Lens p (r ^ q) ≡ ((i : position p) → (j : position q) → Lens (purePower (direction p i)) (r ◂ (Y + Constant (direction q j))))
 univPropProdCoprod {p} {q} {r} = substed
    where substed : Lens p (r ^ q) ≡ ((i : position p) → (j : position q) → Lens (purePower (direction p i)) (r ◂ (Y + Constant (direction q j))))
@@ -147,252 +140,280 @@ lemmalemma {p} {q} pr = cong (λ a₁ → (i : position p) (j : position q) → 
 useYon : {p q r : Polynomial} → ((i : position p) → (j : position q) → Lens (purePower (direction p i)) (r ◂ (Y + Constant (direction q j)))) ≡ ((i : position p) → (j : position q) → (r ◂ (Y + Constant (direction q j))) ⦅ direction p i ⦆ )
 useYon {p} {q} {r} = lemmalemma {p} {q} (funExt λ x → funExt λ x₁ → yoneda)
 
-wrong : {p q r : Polynomial} → ((i : position p) → (j : position q) → (r ◂ (Y + Constant (direction q j))) ⦅ direction p i ⦆ ) ≡ ((i : position p) → (j : position q) → (r ⦅ direction q j  ⊎ direction p i ⦆ ))
-wrong {p} {q} {r} = isoToPath (iso go 
-                                   {!   !}
-                                   {!   !}
-                                   {!   !})
-  where go : ((i : position p) (j : position q) → (r ◂ Y + Constant (direction q j)) ⦅ direction p i ⦆) → (i : position p) (j : position q) → r ⦅ direction q j ⊎ direction p i ⦆
-        go exx = λ i j → (fst $ fst (exx i j)) , λ { x → (λ { y → {! y  !} }) ∘ snd $ exx i j }
-        back : ((i : position p) (j : position q) → r ⦅ direction q j ⊎ direction p i ⦆) → (i : position p) (j : position q) → (r ◂ Y + Constant (direction q j)) ⦅ direction p i ⦆
-        back exxx = {!   !}
+-- wrong : {p q r : Polynomial} → ((i : position p) → (j : position q) → (r ◂ (Y + Constant (direction q j))) ⦅ direction p i ⦆ ) ≡ ((i : position p) → (j : position q) → (r ⦅ direction q j  ⊎ direction p i ⦆ ))
+-- wrong {p} {q} {r} = isoToPath (iso go 
+--                                    {!   !}
+--                                    {!   !}
+--                                    {!   !})
+--   where go : ((i : position p) (j : position q) → (r ◂ Y + Constant (direction q j)) ⦅ direction p i ⦆) → (i : position p) (j : position q) → r ⦅ direction q j ⊎ direction p i ⦆
+--         go exx = λ i j → (fst $ fst (exx i j)) , λ { x → (λ { y → {! y  !} }) ∘ snd $ exx i j }
+--         back : ((i : position p) (j : position q) → r ⦅ direction q j ⊎ direction p i ⦆) → (i : position p) (j : position q) → (r ◂ Y + Constant (direction q j)) ⦅ direction p i ⦆
+--         back exxx = {!   !}
 
-thr : {p q r : Polynomial} → ((i : position p) → (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆) ≡ ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j)))
-thr {p} {q} {r} = isoToPath (iso (λ x i j → (fst $ x i j) , (λ x₁ → snd (x i j) x₁)) 
+three : {p q r : Polynomial} → ((i : position p) → (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆) ≡ ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j)))
+three {p} {q} {r} = isoToPath (iso (λ x i j → (fst $ x i j) , (λ x₁ → snd (x i j) x₁)) 
                                  (λ x i j → x i j) 
-                                 {!   !} 
+                                 (λ b → refl) 
                                  λ a → refl)
 
-one : {p q r : Polynomial} → Lens p (r ^ q) ≡ ((i : position p) → (j : position q) → Lens (purePower (direction p i)) (r ^ q))
-one {p} {q} {r} = isoToPath (iso go
-                                 back
-                                 pgoback
-                                 λ a → refl)
-    where go : (x : Lens p (r ^ q)) (x₁ : position p) (x₂ : position q) → Lens (purePower (direction p x₁)) (r ^ q)
-          go (f ⇆ f♯) i j = (λ _ → f i) ⇆ (λ _ x → f♯ i x)
-          back : ((x₁ : position p) → position q → Lens (purePower (direction p x₁)) (r ^ q)) → Lens p (r ^ q)
-          back f = mp ⇆ md
-                where mp : (x : position p) → position (r ^ q)
-                      mp x index = mapPosition (f x index) tt index
-                      md : (fromPos : position p) → direction (r ^ q) (mp fromPos) → direction p fromPos
-                      md fromPos (posQ , dirR , x) = mapDirection (f fromPos posQ) tt (posQ , dirR , x)
-          pgoback : (b : (x₁ : position p) → position q → Lens (purePower (direction p x₁)) (r ^ q)) → go (back b) ≡ b
-          pgoback b = {!   !}
 
-two : {p q r : Polynomial} → ((i : position p) → (j : position q) → Lens (purePower (direction p i)) (r ^ q)) ≡ ((i : position p) → (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆)
-two {p} {q} {r} = isoToPath (iso go
-                                 back
-                                 {!   !}
-                                 {!   !})
-    where go : ((i : position p) → position q → Lens (purePower (direction p i)) (r ^ q)) → (i : position p) (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆
-          go f posP posQ = fst (mapPosition (f posP posQ) tt posQ) , λ x → sol x
-             where smth : direction (r ^ q) (mapPosition (f posP posQ) tt) → direction p posP
-                   smth = mapDirection (f posP posQ) tt
-                   sol : (x : direction r (fst (mapPosition (f posP posQ) tt posQ))) → direction p posP ⊎ direction q posQ
-                   sol x with (snd (mapPosition (f posP posQ) tt posQ) x) in eq
-                   ... | inj₁ x₁ = inj₁ $ (mapDirection (f posP posQ) tt) (posQ , x , help)
-                       where help : [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (mapPosition (f posP posQ) tt posQ) x)
-                             help rewrite eq = tt
-                   ... | inj₂ y = inj₂ y
-          back : ((i : position p) (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆) → (i : position p) → position q → Lens (purePower (direction p i)) (r ^ q)
-          back f posP posQ = (λ x index → (fst (f posP index)) , (λ x₁ → inj₁ tt)) ⇆ λ fromPos x → {!   !}
+---------------- Clean attempt
 
-helpgo : {p q r : Polynomial} (f : position p → position (r ^ q)) (i : position p) (j : position q) →  (x : direction r (fst (f i j))) → ⊤ ⊎ direction q j
-helpgo {p} {q} {r} f i j = {!   !}
+variable
+    p q r : Polynomial
 
-anything : {A : Set} (ta : ⊤ ⊎ A) → [ (λ _ → ⊤) , (λ _ → ⊥) ] ta → ⊤
-anything (inj₁ x) pr = x
+groupPi : {A B : Type} {C : A → B → Type}
+    → ((a : A) (b : B) → C a b) 
+    ≡ ((a×b : (A × B)) → C (fst a×b) (snd a×b))
+groupPi = isoToPath (iso (λ f → λ {(a , b) → f a b}) (λ f a b → f (a , b)) (λ b → refl) λ a → refl)
 
-anything2 : {A : Set} (ta : ⊤ ⊎ A) → [ (λ _ → ⊤) , (λ _ → ⊥) ] ta → ta ≡ inj₁ tt
-anything2 (inj₁ x) pr = refl
+π≡ : {I : Type} {B C : I → Type} → B ≡ C → ((i : I) → B i) ≡ ((i : I) → C i)
+π≡ {I} p = cong (λ h → (i : I) → h i) p
 
-letsgo : {p q r : Polynomial} → Lens p (r ^ q) → ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j)))
-letsgo {p} {q} {r} (f ⇆ f♯) i j = (fst (f i j)) , find
-    where find : (x : direction r (fst (f i j))) → direction p i ⊎ direction q j
-          find x with snd (f i j) x in eq
-          ... | inj₁ x₁ = inj₁ (f♯ i (j , x , transport {!  anything2 (snd (f i j) x)  !} ((snd (f i j) x))))
-              where help : [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (f i j) x)
-                    help rewrite eq = tt
-          ... | inj₂ y = inj₂ y
+-- Proposition 2.54, page 32
+prop254 : Lens p q ≡ ((i : position p) → Σ[ j ∈ position q ] (direction q j → direction p i))
+prop254 = isoToPath (iso go back (λ b → refl) λ b → refl)
+    where
+        go : Lens p q → (i : position p) → Σ[ j ∈ position q ] (direction q j → direction p i)
+        go (f ⇆ f♯) posP =  f posP , f♯ posP
 
-import Relation.Binary.PropositionalEquality as Eq
+        back : ((i : position p) → Σ[ j ∈ position q ] (direction q j → direction p i)) → Lens p q
+        back f = (λ posP → fst (f posP)) ⇆ λ posP → snd (f posP)
 
-onethree : {p q r : Polynomial} → Lens p (r ^ q) ≡ ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j)))
-onethree {p} {q} {r} = isoToPath (iso letsgo
-                                      back 
-                                      pr
-                                      (λ { (f ⇆ f♯) → lensesEqual3 (funExt λ x → {!  !}) {!   !} }))
-    where back : ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j))) → Lens p (r ^ q)
-          back f = mp ⇆ md
-               where mp : position p → position (r ^ q)
-                     mp posP index = fst (f posP index) , dirb
-                        where dirb : direction r (fst (f posP index)) → ⊤ ⊎ direction q index
-                              dirb dir = eraseLeft $ snd (f posP index) dir
-                     md : (fromPos : position p) → direction (r ^ q) (mp fromPos) → direction p fromPos
-                     md fp (posQ , dirExp) = convGeneral (snd (f fp posQ) (fst dirExp)) (snd dirExp)
-          pr : section letsgo back
-          pr b = funExt help
-             where help : (x : position p) → letsgo (back b) x ≡ b x
-                   help posP = funExt help2
-                        where help2 : (x : position q) → letsgo (back b) posP x ≡ b posP x
-                              help2 posQ =  ΣPathP (refl , funExt help3 )
-                                where help3 : (x : direction r (fst (letsgo (back b) posP posQ))) → snd (letsgo (back b) posP posQ) x ≡ snd (b posP posQ) x
-                                      help3 k with snd (letsgo (back b) posP posQ) k
-                                      ... | inj₁ x3  = {!   !}
-                                          where help4 : inj₁ x3 ≡ snd (b posP posQ) k 
-                                                help4 with snd (b posP posQ) k
-                                                ... | sm = {!   !}
-                                      ... | inj₂ y  = {!   !}
+
+-- By definition of exponential object. 4.27
+zero' : Lens p (r ^ q)
+     ≡ Lens p (ΠPoly (position q , λ j → r ◂ Y + Constant (direction q j)))
+zero' = refl
+
+-- By universal property of products and coproducts.  
+one' : Lens p (ΠPoly (position q , λ j → r ◂ Y + Constant (direction q j)))
+     ≡ ((i : position p) (j : position q) → Lens (purePower (direction p i)) (r ◂ Y + Constant (direction q j)))
+one' = univPropProdCoprod
+
+-- By yoneda lemma.
+two' : ((i : position p) (j : position q) → Lens (purePower (direction p i)) (r ◂ Y + Constant (direction q j)))
+     ≡ ((i : position p) (j : position q) → (r ◂ Y + Constant (direction q j)) ⦅ direction p i ⦆)
+two' = π≡ (funExt (λ posP → π≡ (funExt (λ posQ → yoneda))))
+
+-- UNSURE IF THE TYPE SHOULD BE (r ◂ Y + Constant (direction q j)) ⦅ direction p i ⦆ 
+
+-- Should be possible to fill holes.
+three' : ((i : position p) (j : position q) → (r ◂ Y + Constant (direction q j)) ⦅ direction p i ⦆)
+       ≡ ((i : position p) (j : position q) → Σ[ k ∈ position r ] ((direction r k) → (direction p i) ⊎ (direction q j)))
+three' {p} {q} {r} = π≡ (funExt λ posP → π≡ (funExt λ posQ → isoToPath (iso (go posP posQ) (back posP posQ) (λ b → ΣPathP (refl , funExt (λ dir → pr))) λ a → backProof posP posQ a )))
+    where
+        go : (posP : position p) (posQ : position q) → (r ◂ Y + Constant (direction q posQ)) ⦅ direction p posP ⦆ → Σ-syntax (position r) (λ k → direction r k → direction p posP ⊎ direction q posQ)
+        go posP posQ ((posR , snd₂) , snd₁) = posR  , λ dir → recoverLeft (snd₂ dir) λ pr → snd₁ (dir , toImpossibleRight pr)
+
+        back : (posP : position p) (posQ : position q) → Σ-syntax (position r) (λ k → direction r k → direction p posP ⊎ direction q posQ) → (r ◂ Y + Constant (direction q posQ)) ⦅ direction p posP ⦆
+        back posP posQ (posR , f) = (posR , λ x → forgetLeft (f x)) , λ {(dir , snd₁) → keepLeft (f dir) (fromImpossibleRight snd₁)  }
+
+        pr : {A B : Type} {x : A ⊎ B} → recoverLeft (forgetLeft x)
+            (λ pr →
+                keepLeft x (fromImpossibleRight (toImpossibleRight pr)))
+            ≡ x
+        pr {A} {B} {x} = cong (recoverLeft (forgetLeft x)) (funExt (λ y → cong (keepLeft x) toFromImpossibleRight)) ∙ recoverForgetLeft
+
+        backProof : (posP : position p) (posQ : position q) (a : (r ◂ Y + Constant (direction q posQ)) ⦅ direction p posP ⦆) → back posP posQ (go posP posQ a) ≡ a
+        backProof posP posQ ((posR , f) , g) =  ΣPathP (ΣPathP (refl , funExt (λ x → forgetRecoverLeft  )) ,  (toPathP (funExt (λ {(dir , pr) → lemma ∙  {! keepRecoverLeft  !}  })))) 
+            where
+                lemma : ∀{a} → transp (λ i → direction p posP) i0 a ≡ a
+                lemma {a} = transportRefl a
+
+                lemma2 : (dir : direction r posR) → ∀{a} → keepLeft (recoverLeft (f {! transp (λ i → direction r posR) i0 dir  !}) a) ≡ keepLeft (recoverLeft (f dir) a) -- ? ≡ ̄?   -- keepLeft (recoverLeft (f (transp (λ i → direction r posR) i0 dir))) ? ≡ keepLeft (recoverLeft (f dir)) a
+                lemma2 = {!   !}
+
+                -- lemma3 : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → 
+                --     keepLeft (recoverLeft (f (transp (λ i → direction r posR) i0 dir))
+                --         (λ (pr₁ : f (transp (λ i → direction r posR) i0 dir) ≡ inj₁ tt) →
+                --             g
+                --             (transp (λ i → direction r posR) i0 dir , toImpossibleRight pr₁)))
+                --     (fromImpossibleRight
+                --     (transp (λ i → [ (λ _ → ⊤) , (λ _ → ⊥) ] (forgetRecoverLeft (~ i)))
+                --         i0 pr))
+                --     ≡ g (dir , pr)
+                -- lemma3 = {!   !}
+                    -- where
+                    --     open import Level
+                    --     lemma4 : (transp (λ i → [_,_] {zero} {{! ⊤  !}} (λ _ → ⊤) (λ _ → ⊥) (forgetRecoverLeft (~ i))) i0 pr) ≡ pr
+                    --     lemma4 = transportRefl (sym pr)
+                -- lemma4 : ∀{a dir} →
+                --     keepLeft (recoverLeft (f (transp (λ i → direction r posR) i0 dir))
+                --         (λ (pr₁ : f (transp (λ i → direction r posR) i0 dir) ≡ inj₁ tt) →
+                --             g
+                --             ((transp (λ i → direction r posR) i0 dir) , toImpossibleRight pr₁)))
+                --     a
+                --     -- (transp (λ i → [ (λ _ → ⊤) , (λ _ → ⊥) ] (forgetRecoverLeft (~ i)))
+                --     --     i0 pr))
+                --     ≡
+                --     keepLeft (recoverLeft (f dir)
+                --         (λ (pr₁ : f dir ≡ inj₁ tt) →
+                --             g
+                --             (dir , toImpossibleRight pr₁)))
+                --     a
+                --     --  g (dir , pr)
+                -- lemma4 = {!   !}
+
+       
+
+-- By 2.84
+four' : ((i : position p) (j : position q) → Σ[ k ∈ position r ] ((direction r k) → (direction p i) ⊎ (direction q j)))
+      ≡ ((i×j : position (p * q)) → Σ[ k ∈ position r ] (direction r k → direction (p * q) i×j))
+four' {p} {q} = π≡ (funExt (λ posP → π≡ (funExt λ posQ → refl))) ∙ groupPi
+
+-- By 2.54
+five' : (((i , j) : position (p * q)) → Σ[ k ∈ position r ] (direction r k → direction (p * q) ((i , j))))
+      ≡ Lens (p * q) r
+five' = sym prop254
+
+-- Page 131
+chain' : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
+chain' = zero' ∙ one' ∙ two' ∙ three' ∙ four' ∙ five'
+
+
+---------------- End clean attempt
+
+
+
+-- -- two' : {p q r : Polynomial} → ((i : position p) → (j : position q) → Lens (purePower (direction p i)) (r ◂ Y + Constant (direction q j))) ≡ (((i : position p) → (j : position q) →  {!   !} ))
+-- -- two' = {!   !}
+
+
+-- one : {p q r : Polynomial} → Lens p (r ^ q) ≡ ((i : position p) → (j : position q) → Lens (purePower (direction p i)) (r ^ q))
+-- one {p} {q} {r} = isoToPath (iso go
+--                                  back
+--                                  pgoback
+--                                  λ a → refl)
+--     where go : (x : Lens p (r ^ q)) (x₁ : position p) (x₂ : position q) → Lens (purePower (direction p x₁)) (r ^ q)
+--           go (f ⇆ f♯) i j = (λ _ → f i) ⇆ (λ _ x → f♯ i x)
+--           back : ((x₁ : position p) → position q → Lens (purePower (direction p x₁)) (r ^ q)) → Lens p (r ^ q)
+--           back f = mp ⇆ md
+--                 where mp : (x : position p) → position (r ^ q)
+--                       mp x index = mapPosition (f x index) tt index
+--                       md : (fromPos : position p) → direction (r ^ q) (mp fromPos) → direction p fromPos
+--                       md fromPos (posQ , dirR , x) = mapDirection (f fromPos posQ) tt (posQ , dirR , x)
+--           pgoback : (b : (x₁ : position p) → position q → Lens (purePower (direction p x₁)) (r ^ q)) → go (back b) ≡ b
+--           pgoback b = {!   !}
+
+-- -- two' : {p q r : Polynomial} → ((i : position p) → (j : position q) → Lens (purePower (direction p i)) (r ^ q)) ≡ ((i : position p) → (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆)
+-- -- two' = ?
+
+-- two : {p q r : Polynomial} → ((i : position p) → (j : position q) → Lens (purePower (direction p i)) (r ^ q)) ≡ ((i : position p) → (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆)
+-- two {p} {q} {r} = isoToPath (iso go
+--                                  back
+--                                  {!   !}
+--                                  {!   !})
+--     where go : ((i : position p) → position q → Lens (purePower (direction p i)) (r ^ q)) → (i : position p) (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆
+--           go f posP posQ = fst (mapPosition (f posP posQ) tt posQ) , λ x → sol x
+--              where smth : direction (r ^ q) (mapPosition (f posP posQ) tt) → direction p posP
+--                    smth = mapDirection (f posP posQ) tt
+--                    sol : (x : direction r (fst (mapPosition (f posP posQ) tt posQ))) → direction p posP ⊎ direction q posQ
+--                    sol x with (snd (mapPosition (f posP posQ) tt posQ) x) in eq
+--                    ... | inj₁ x₁ = inj₁ $ (mapDirection (f posP posQ) tt) (posQ , x , help)
+--                        where help : [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (mapPosition (f posP posQ) tt posQ) x)
+--                              help rewrite eq = tt
+--                    ... | inj₂ y = inj₂ y
+--           back : ((i : position p) (j : position q) → r ⦅ direction p i ⊎ direction q j ⦆) → (i : position p) → position q → Lens (purePower (direction p i)) (r ^ q)
+--           back f posP posQ = (λ x index → (fst (f posP index)) , (λ x₁ → inj₁ tt)) ⇆ λ fromPos x → {!   !}
+
+
+
+
+-- helpgo : {p q r : Polynomial} (f : position p → position (r ^ q)) (i : position p) (j : position q) →  (x : direction r (fst (f i j))) → ⊤ ⊎ direction q j
+-- helpgo {p} {q} {r} f i j = {!   !}
+
+-- anything : {A : Set} (ta : ⊤ ⊎ A) → [ (λ _ → ⊤) , (λ _ → ⊥) ] ta → ⊤
+-- anything (inj₁ x) pr = x
+
+-- anything2 : {A : Set} (ta : ⊤ ⊎ A) → [ (λ _ → ⊤) , (λ _ → ⊥) ] ta → ta ≡ inj₁ tt
+-- anything2 (inj₁ x) pr = refl
+
+-- letsgo : {p q r : Polynomial} → Lens p (r ^ q) → ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j)))
+-- letsgo {p} {q} {r} (f ⇆ f♯) i j = (fst (f i j)) , find
+--     where find : (x : direction r (fst (f i j))) → direction p i ⊎ direction q j
+--           find x with snd (f i j) x in eq
+--           ... | inj₁ x₁ = inj₁ (f♯ i (j , x , transport {!  anything2 (snd (f i j) x)  !} ((snd (f i j) x))))
+--               where help : [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (f i j) x)
+--                     help rewrite eq = tt
+--           ... | inj₂ y = inj₂ y
+
+-- import Relation.Binary.PropositionalEquality as Eq
+
+-- onethree : {p q r : Polynomial} → Lens p (r ^ q) ≡ ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j)))
+-- onethree {p} {q} {r} = isoToPath (iso letsgo
+--                                       back 
+--                                       pr
+--                                       (λ { (f ⇆ f♯) → lensesEqual3 (funExt λ x → {!  !}) {!   !} }))
+--     where back : ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j))) → Lens p (r ^ q)
+--           back f = mp ⇆ md
+--                where mp : position p → position (r ^ q)
+--                      mp posP index = fst (f posP index) , dirb
+--                         where dirb : direction r (fst (f posP index)) → ⊤ ⊎ direction q index
+--                               dirb dir = eraseLeft $ snd (f posP index) dir
+--                      md : (fromPos : position p) → direction (r ^ q) (mp fromPos) → direction p fromPos
+--                      md fp (posQ , dirExp) = convGeneral (snd (f fp posQ) (fst dirExp)) (snd dirExp)
+--           pr : section letsgo back
+--           pr b = funExt help
+--              where help : (x : position p) → letsgo (back b) x ≡ b x
+--                    help posP = funExt help2
+--                         where help2 : (x : position q) → letsgo (back b) posP x ≡ b posP x
+--                               help2 posQ =  ΣPathP (refl , funExt help3 )
+--                                 where help3 : (x : direction r (fst (letsgo (back b) posP posQ))) → snd (letsgo (back b) posP posQ) x ≡ snd (b posP posQ) x
+--                                       help3 k with snd (letsgo (back b) posP posQ) k
+--                                       ... | inj₁ x3  = {!   !}
+--                                           where help4 : inj₁ x3 ≡ snd (b posP posQ) k 
+--                                                 help4 with snd (b posP posQ) k
+--                                                 ... | sm = {!   !}
+--                                       ... | inj₂ y  = {!   !}
                                       
 
-for : {p q r : Polynomial} → ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j))) ≡ ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) )
-for {p} {q} {r} = isoToPath (iso go
-                                 back
-                                 (λ b → refl)
-                                 λ a → refl)
-    where go : ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j))) → ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) )
-          go x (fst₁ , snd₁) = (fst (x fst₁ snd₁)) , snd (x fst₁ snd₁)
-          back : ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) ) → ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j)))
-          back x i j = x ( i , j )
+-- four : {p q r : Polynomial} → ((i : position p) → (j : position q) → Σ[ k ∈ position r ] ( direction r k → (direction p i ⊎ direction q j))) ≡ ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) )
+-- four {p} {q} {r} = isoToPath (iso go
+--                                  back
+--                                  (λ b → refl)
+--                                  λ a → refl)
+--     where go : ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j))) → ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) )
+--           go x (fst₁ , snd₁) = (fst (x fst₁ snd₁)) , snd (x fst₁ snd₁)
+--           back : ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) ) → ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j)))
+--           back x i j = x ( i , j )
 
-fiv : {p q r : Polynomial} → ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) ) ≡ Lens (p * q) r
-fiv {p} {q} {r} = isoToPath (iso go
-                                 back
-                                 (λ b → refl)
-                                 λ a → refl)
-    where go :  ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) ) → Lens (p * q) r
-          go f = mp ⇆ md
-            where mp : position (p * q) → position r
-                  mp (i , j) = fst $ f ( i , j )
-                  md : (fromPos : position (p * q)) → direction r (mp fromPos) → direction (p * q) fromPos
-                  md fp d = snd (f fp) d
-          back : Lens (p * q) r → ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) )
-          back (f ⇆ f♯) (i , j) = (f (i , j)) , (f♯ (i , j))
+-- five : {p q r : Polynomial} → ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ] ( direction r k → direction (p * q) ( i , j ) ) ) ≡ Lens (p * q) r
+-- five {p} {q} {r} = isoToPath (iso go
+--                                  back
+--                                  (λ b → refl)
+--                                  λ a → refl)
+--     where go :  ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) ) → Lens (p * q) r
+--           go f = mp ⇆ md
+--             where mp : position (p * q) → position r
+--                   mp (i , j) = fst $ f ( i , j )
+--                   md : (fromPos : position (p * q)) → direction r (mp fromPos) → direction (p * q) fromPos
+--                   md fp d = snd (f fp) d
+--           back : Lens (p * q) r → ((( i , j ) : position (p * q)) → Σ[ k ∈ position r ]( direction r k → direction (p * q) ( i , j ) ) )
+--           back (f ⇆ f♯) (i , j) = (f (i , j)) , (f♯ (i , j))
                                 
-chain2 : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
-chain2 {p} {q} {r} = isoToPath (iso go 
-                                    back
-                                    (λ b → lensesEqual3 refl {!   !})
-                                    λ a → lensesEqual3 {!   !} {!   !})
-    where go : Lens p (r ^ q) → Lens (p * q) r
-          go (f ⇆ f♯) = mp ⇆ md
-             where mp : position (p * q) → position r
-                   mp (posp , posq) = fst $ f posp posq
-                   md : (fromPos : position (p * q)) → direction r (mp fromPos) → direction (p * q) fromPos
-                   md (posp , posq) dir with snd (f posp posq) dir in eq
-                   ... | inj₁ tt = inj₁ (f♯ posp (posq , (dir , help)))
-                      where help : [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (f posp posq) dir)
-                            help rewrite eq = tt
-                   ... | inj₂ y = inj₂ y
-          back : Lens (p * q) r → Lens p (r ^ q)
-          back (f ⇆ f♯) = mp ⇆ md
-              where mp : position p → position (r ^ q)
-                    mp posp index = (f (posp , index)) , (λ x → eraseLeft $ f♯ (posp , index) x)
-                    md : (fromPos : position p) → direction (r ^ q) (mp fromPos) → direction p fromPos
-                    md fp (posq , dirR , pr) = convGeneral (f♯ (fp , posq) dirR) pr
+-- chain2 : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
+-- chain2 {p} {q} {r} = isoToPath (iso go 
+--                                     back
+--                                     (λ b → lensesEqual3 refl {!   !})
+--                                     λ a → lensesEqual3 {!   !} {!   !})
+--     where go : Lens p (r ^ q) → Lens (p * q) r
+--           go (f ⇆ f♯) = mp ⇆ md
+--              where mp : position (p * q) → position r
+--                    mp (posp , posq) = fst $ f posp posq
+--                    md : (fromPos : position (p * q)) → direction r (mp fromPos) → direction (p * q) fromPos
+--                    md (posp , posq) dir with snd (f posp posq) dir in eq
+--                    ... | inj₁ tt = inj₁ (f♯ posp (posq , (dir , help)))
+--                       where help : [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (f posp posq) dir)
+--                             help rewrite eq = tt
+--                    ... | inj₂ y = inj₂ y
+--           back : Lens (p * q) r → Lens p (r ^ q)
+--           back (f ⇆ f♯) = mp ⇆ md
+--               where mp : position p → position (r ^ q)
+--                     mp posp index = (f (posp , index)) , (λ x → eraseLeft $ f♯ (posp , index) x)
+--                     md : (fromPos : position p) → direction (r ^ q) (mp fromPos) → direction p fromPos
+--                     md fp (posq , dirR , pr) = convGeneral (f♯ (fp , posq) dirR) pr
 
-chain : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
-chain {p} {q} {r} = isoToPath (compIso (pathToIso one)
-                                       (compIso (pathToIso two) 
-                                                (compIso (pathToIso thr) 
-                                                         (compIso (pathToIso for)  (pathToIso fiv)))))
-
-canonical : {A B : Polynomial} → Canonical.CartesianClosed
-canonical {A} {B} = record
-    { ⊤ = 𝟙
-    ; _×_ = _*_
-    ; ! = lensToOne
-    ; π₁ = π₁
-    ; π₂ = π₂
-    ; ⟨_,_⟩ = ⟨_,_⟩
-    ; !-unique = lensToOneUnique
-    ; π₁-comp = refl
-    ; π₂-comp = refl
-    ; ⟨,⟩-unique = unique
-    ; _^_ = _^_
-    ; eval = eval
-    ; curry = curry
-    ; eval-comp =  {!   !}
-    ; curry-resp-≈ = cong curry
-    ; curry-unique = {!   !}
-    }
-       where
-        curry-unique-simple : {p q r : Polynomial} → {f : Lens p (q ^ r)} → {g : Lens (p * r) q} → eval ∘ₚ (⟨ f × idLens ⟩) ≡ g → f ≡ curry g
-        curry-unique-simple {p} {q} {r} {f = f ⇆ f♯} {g = g ⇆ g♯} proof = lensesEqual3 mapPos≡ {!   !}
-           where mapPos≡ : f ≡ mapPosition (curry (g ⇆ g♯))
-                 mapPos≡ = pr 
-                   where pr = funExt xtopr
-                            where xtopr : (x : position p) → f x ≡ mapPosition (curry (g ⇆ g♯)) x
-                                  xtopr x = funExt rtoprr
-                                     where rtoprr : (posr : position r) → f x posr ≡ mapPosition (curry (g ⇆ g♯)) x posr
-                                           rtoprr rr = {!   !}
-                                                    where mpcurr : position p → (index : position r) → Σ (position q) (λ i → direction q i → ⊤ ⊎ direction r index)
-                                                          mpcurr = mapPosition (curry (g ⇆ g♯))
-                                                          posq : position q
-                                                          posq = fst $ mpcurr x rr
-                                                          lem : posq ≡ (fst $ f x rr)
-                                                          lem = {!   !}
-                    --  where xtopr : (x : position p) → 
-                    --             where mpcurr : position p → (index : position r) → Σ (position q) (λ i → direction q i → ⊤ ⊎ direction r index)
-                    --                   mpcurr = mapPosition (curry (g ⇆ g♯))
-                    --                   posq : position q
-                    --                   posq = mpcurr x y
-                         
-                 
-        -- ... | (s ⇆ s♯) = ? ⇆ {!   !}
-            -- where mp : position p → (index : position r) → Σ (position q) (λ i₃ → direction q i₃ → ⊤ ⊎ direction r index)
-            --       mp p ind with s ( p , ind )
-            --       ... | a = a , {!   !}
-            --       md = {!   !}
-        -- eval-comp-simple : {C D E : Polynomial} → 
-        --             (f : Lens (E * D) C) → 
-        --             (ev ∘ₚ ⟨ curry f × idLens ⟩)
-        --             ≡ f
-        -- eval-comp-simple {C} {D} {E} f = lensesEqual3 refl mapDir≡
-        --     where
-        --         mapDir≡ : (x : position (E * D))
-        --                 → (y : direction C (mapPosition (ev ∘ₚ ⟨ curry f × idLens ⟩) x))
-        --                 → mapDirection (ev ∘ₚ ⟨ curry f × idLens ⟩)
-        --                                x 
-        --                                (subst (λ mapPos → direction C (mapPos x)) (sym (λ _ → mapPosition (ev ∘ₚ ⟨ curry f × idLens ⟩))) y)
-        --                     ≡ 
-        --                   mapDirection f x y
-        --         mapDir≡ x@(posE , posD) y = {!   !}
-        --         mapDir≡' : (x : position (E * D))
-        --                 → (y : direction C (mapPosition (ev ∘ₚ ⟨ curry f × idLens ⟩) x))
-        --                 → mapDirection (ev ∘ₚ ⟨ curry f × idLens ⟩)
-        --                                x 
-        --                                y
-        --                     ≡ 
-        --                   mapDirection f x y
-        --         mapDir≡' x@(posE , posD) y = {!   !}
-                   
-                -- path : {x : position (E * D)} → PathP
-                --     (λ _ →
-                --     direction C (mapPosition (ev ∘ₚ ⟨ curry f × idLens ⟩) x) →
-                --     direction
-                --     (mkpoly (position E) (λ z → direction E z) *
-                --      mkpoly (position D) (λ z → direction D z))
-                --     x)
-                --     (mapDirection (ev ∘ₚ ⟨ curry f × idLens ⟩) x) (mapDirection f x)
-                -- path = {!   !}
-                -- mapDir≡ : (mapDirection (ev ∘ₚ ⟨ curry f × idLens ⟩)) ≡ mapDirection f
-                -- mapDir≡ = funExt (λ x → path)
-                -- helper2 : subst
-                --             (λ mapPos →
-                --                 (fromPos : position (E * D)) →
-                --                 direction C (mapPos fromPos) → direction (E * D) fromPos)
-                --             (λ _ → mapPosition (ev ∘ₚ ⟨ curry f × idLens ⟩))
-                --             (mapDirection (ev ∘ₚ ⟨ curry f × idLens ⟩))
-                --             ≡ mapDirection f
-                -- helper2 = 
-                --    (substRefl 
-                --         { B = λ (h : position (E * D) → position C) → (x : position (E * D)) → direction C (h x) → direction (E * D) x}
-                --         (mapDirection (ev ∘ₚ ⟨ curry f × idLens ⟩))
-                --     ) ∙ mapDir≡
-            
-
-                                    
-
-  
-          
+-- -- Page 131
+-- chain : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
+-- chain = one ∙ two ∙ three ∙ four ∙ five

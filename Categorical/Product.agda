@@ -14,6 +14,7 @@ open import Categories.Category.Monoidal
 open import Categorical.Terminal
 open import Cubical.LensEquality
 import Categories.Category.Cartesian as Cartesian
+open import Cubical.Foundations.Isomorphism
 
 
 unique : {p q r : Polynomial} {h : Lens p (q * r)} {f : Lens p q} {g : Lens p r} →
@@ -44,3 +45,15 @@ prod {A = A} {B = B} = record
     ; project₂ = refl
     ; unique = unique
     }
+
+-- Universal product property. A function A→(B*C) is the same as two functions A→B and A→C
+universalPropertyProduct : {p : Polynomial} {Index : Type} {generate : Index → Polynomial}
+                             → Lens p (ΠPoly (Index , generate)) ≡ ((i : Index) → Lens p (generate i))
+universalPropertyProduct {p} {Index} {generate} = isoToPath (iso go back (λ b → refl) λ a → refl)
+    where
+        go : Lens p (ΠPoly (Index , generate)) → (i : Index) → Lens p (generate i)
+        go (f ⇆ f♯) index = (λ pos → f pos index) ⇆ λ pos dir → f♯ pos  (index , dir)
+
+        back : ((i : Index) → Lens p (generate i)) → Lens p (ΠPoly (Index , generate))
+        back generateLens = (λ pos index → mapPosition (generateLens index) pos) ⇆ λ {pos (index , dir) → mapDirection (generateLens index) pos dir}
+
