@@ -2,26 +2,30 @@
 
 module Dynamical.Reservoir.Initialize where
 
-open import Agda.Builtin.Float
+open import Data.Float
 import IO.Primitive as Prim
 open import IO
 open import Dynamical.Matrix.Everything
-open import Data.Nat
+open import Data.Nat hiding (_*_)
 open import Data.Vec hiding (_>>=_)
 open import Dynamical.Reservoir.State
 
+
+postulate primRandom : Prim.IO Float
+{-# FOREIGN GHC import qualified System.Random as Random #-}
+{-# COMPILE GHC primRandom = Random.randomIO #-}
+
 random : IO Float
-random = lift primRandom where
+random = lift primRandom
 
- postulate primRandom : Prim.IO Float
- {-# FOREIGN GHC import qualified System.Random as Random #-}
- {-# COMPILE GHC primRandom = Random.randomIO #-}
+postulate primNormal : Prim.IO Float
+{-# FOREIGN GHC import qualified Data.Random.Normal as Normal #-}
+{-# COMPILE GHC primNormal = Normal.normalIO #-}
 
-normal : IO Float
-normal = lift primNormal where
- postulate primNormal : Prim.IO Float
- {-# FOREIGN GHC import qualified Data.Random.Normal as Normal #-}
- {-# COMPILE GHC primNormal = Normal.normalIO #-}
+normal : Float → IO Float
+normal factor = do
+  x ← lift primNormal 
+  pure (factor * x)
 
 randomVec : (cols : ℕ) → IO (Vec Float cols)
 randomVec zero = pure []
@@ -37,14 +41,14 @@ randomMatrix rows cols = 𝕄 <$> rowTimes rows (randomVec cols) where
     row ← rowGenerator
     (λ k → row ∷ k ) <$> rowTimes n rowGenerator
 
-normalVec : (cols : ℕ) → IO (Vec Float cols)
-normalVec zero = pure []
-normalVec (suc n) = do
-  x ← normal
-  (λ k → x ∷ k ) <$> normalVec n
+normalVec : (factor : Float) (cols : ℕ) → IO (Vec Float cols)
+normalVec factor zero = pure []
+normalVec factor (suc n) = do
+  x ← normal factor
+  (λ k → x ∷ k ) <$> normalVec factor n
 
-normalMatrix : (rows : ℕ) → (cols : ℕ) → IO (Matrix Float rows cols)
-normalMatrix rows cols = 𝕄 <$> rowTimes rows (normalVec cols) where
+normalMatrix : (factor : Float) (rows : ℕ) → (cols : ℕ) → IO (Matrix Float rows cols)
+normalMatrix factor rows cols = 𝕄 <$> rowTimes rows (normalVec factor cols) where
   rowTimes : (rows : ℕ) → IO (Vec Float cols) → IO (Vec (Vec Float cols) rows)
   rowTimes zero _ = pure []
   rowTimes (suc n) rowGenerator = do
@@ -53,15 +57,15 @@ normalMatrix rows cols = 𝕄 <$> rowTimes rows (normalVec cols) where
 
 initCollecting : (numNodes systemDim : ℕ) → IO (CollectingDataState numNodes systemDim)
 initCollecting n s = do
-  output ← normalMatrix n s
+  output ← normalMatrix 1.0 n s
   pure (Collecting 0 [] [] output)
 
-initInputWeights : (numNodes systemDim : ℕ) → IO (InputWeights numNodes systemDim)
-initInputWeights n s = do
-  input ← normalMatrix n s
+initInputWeights : (factor : Float) (numNodes systemDim : ℕ) → IO (InputWeights numNodes systemDim)
+initInputWeights factor n s = do
+  input ← normalMatrix factor n s
   pure input
 
-initReservoirWeights : (numNodes : ℕ) → IO (ReservoirWeights numNodes)
-initReservoirWeights n = do
-  res ← normalMatrix n n
+initReservoirWeights : (factor : Float) (numNodes : ℕ) → IO (ReservoirWeights numNodes)
+initReservoirWeights factor n = do
+  res ← normalMatrix factor n n
   pure res

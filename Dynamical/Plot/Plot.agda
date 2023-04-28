@@ -69,8 +69,8 @@ rest Reservoir (rdimf ∷ trainStepsf ∷ totalSeqStepsf ∷ lorinitx ∷ lorini
   trainSteps ← floor trainStepsf 
   totalSeqSteps ← floor totalSeqStepsf 
       -- variance etc
-  inputWeights ← IO.run $ initInputWeights rdim 3
-  resWeights ← IO.run $ initReservoirWeights rdim
+  inputWeights ← IO.run $ initInputWeights 0.0316 rdim 3
+  resWeights ← IO.run $ initReservoirWeights 0.0632 rdim
   collState ← IO.run $ initCollecting rdim 3
   let resVec = lorenzResList rdim trainSteps totalSeqSteps ( lorinitx , lorinity , lorinitz ) dt inputWeights resWeights collState
       x , yzabc = fromSigma (List.unzip (List.drop trainSteps $ Vec.toList resVec))
