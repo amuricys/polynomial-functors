@@ -235,9 +235,41 @@ three' {p} {q} {r} = π≡ (funExt λ posP → π≡ (funExt λ posQ → isoToPa
                            (dir , toImpossibleRight pr₁)))
                     b
                 lemma4 = {!   !}
-                
-                lemma5 = {!   !}
 
+                -- With all constant transp removed
+                toProve2 : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → 
+                    (keepLeft (recoverLeft (f dir) (λ pr₁ → g (dir , toImpossibleRight pr₁)))
+                    (fromImpossibleRight
+                        (subst [ (λ _ → ⊤) , (λ _ → ⊥) ] (sym $ forgetRecoverLeft2 (f dir) (λ y → g (dir , toImpossibleRight y))) pr)
+                    ))
+                    ≡ g (dir , pr)
+                toProve2 dir pr = {!   !}
+
+                toProve3 : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) →
+                    keepLeft (recoverLeft (f (transport (λ i → direction r posR) dir))
+                        (λ pr₁ →
+                            g
+                            (transport (λ i → direction r posR) dir , toImpossibleRight pr₁)))
+                        (fromImpossibleRight
+                        (transport
+                            (λ i →
+                            [ (λ _ → ⊤) , (λ _ → ⊥) ]
+                            (forgetRecoverLeft2
+                                (f (transp (λ i₃ → direction r posR) (~ i) dir))
+                                (λ y →
+                                g
+                                (transp (λ i₃ → direction r posR) (~ i) dir , toImpossibleRight y))
+                                (~ i)))  pr))
+                        ≡
+                    keepLeft (recoverLeft (f dir) (λ pr₁ → g (dir , toImpossibleRight pr₁)))
+                        (fromImpossibleRight
+                        (transport
+                            (λ i →
+                            [ (λ _ → ⊤) , (λ _ → ⊥) ]
+                            (forgetRecoverLeft2 (f dir) (λ y → g (dir , toImpossibleRight y))
+                                (~ i)))
+                            pr))
+                toProve3 dir pr = {! refl  !}
                 toProve : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → transp (λ i → direction p posP) i0
                     (keepLeft
                     (recoverLeft (f (transp (λ i → direction r posR) i0 dir))
@@ -256,16 +288,9 @@ three' {p} {q} {r} = π≡ (funExt λ posP → π≡ (funExt λ posQ → isoToPa
                             (~ i)))
                         i0 pr)))
                     ≡ g (dir , pr)
-                toProve dir pr = lemma ∙ {! toProve2  !}
+                toProve dir pr = lemma ∙ toProve3 dir pr ∙ toProve2 dir pr
 
-                -- With all constant transp removed
-                toProve2 : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → 
-                    (keepLeft (recoverLeft (f dir) (λ pr₁ → g (dir , toImpossibleRight pr₁)))
-                    (fromImpossibleRight
-                        (transp (λ i → [ (λ _ → ⊤) , (λ _ → ⊥) ] (forgetRecoverLeft2 (f dir) (λ y → g (dir , toImpossibleRight y)) (~ i))) i0 pr)
-                    ))
-                    ≡ g (dir , pr)
-                toProve2 dir pr = {!   !} ∙ {!   !}
+                
 
                 -- toProve3 : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → 
 
@@ -517,4 +542,4 @@ chain' = zero' ∙ one' ∙ two' ∙ three' ∙ four' ∙ five'
 -- -- Page 131
 -- chain : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
 -- chain = one ∙ two ∙ three ∙ four ∙ five
- 
+   

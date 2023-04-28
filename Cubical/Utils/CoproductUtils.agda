@@ -6,6 +6,7 @@ open import Data.Sum
 open import Data.Empty
 open import Cubical.Foundations.Everything hiding (id)
 open import Data.Unit
+open import Cubical.Data.Sum.Properties
 open import Function
 
 variable
@@ -65,7 +66,7 @@ forgetRecoverRight (inj₁ x) f = refl
 forgetRecoverRight (inj₂ tt) f = refl
 
 lemma : {p : inj₁ {B = B} tt ≡ inj₁ tt} → (λ i → inj₁ tt) ≡ p
-lemma {p = p} = {!   !}
+lemma {B} {p = p} = {! isEmbedding-inl   !}
 
 keepRecoverLeft : {x : ⊤ ⊎ B} → {f : x ≡ inj₁ tt → B} → keepLeft (recoverLeft x f) ≡ subst (λ a → a ≡ inj₁ tt → B) (sym forgetRecoverLeft) f
 keepRecoverLeft {x = inj₁ tt} {f} = funExt (λ x1 → cong f lemma) ∙ sym (transportRefl f)

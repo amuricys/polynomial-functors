@@ -55,11 +55,6 @@ normalMatrix factor rows cols = 𝕄 <$> rowTimes rows (normalVec factor cols) w
     row ← rowGenerator
     (λ k → row ∷ k ) <$> rowTimes n rowGenerator
 
-initCollecting : (numNodes systemDim : ℕ) → IO (CollectingDataState numNodes systemDim)
-initCollecting n s = do
-  output ← normalMatrix 1.0 n s
-  pure (Collecting 0 [] [] output)
-
 initInputWeights : (factor : Float) (numNodes systemDim : ℕ) → IO (InputWeights numNodes systemDim)
 initInputWeights factor n s = do
   input ← normalMatrix factor n s

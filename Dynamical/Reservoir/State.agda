@@ -35,13 +35,14 @@ record CollectingDataState (numNodes : ℕ) (systemDim : ℕ) : Set where
     counter : ℕ
     statesHistory : Vec (ReservoirState numNodes) counter
     systemHistory : Vec (Vec ℝ systemDim) counter
-    outputWeights : OutputWeights numNodes systemDim
 
 record RunningState (numNodes : ℕ) (systemDim : ℕ) : Set where
   constructor Running
   field
     outputWeights : OutputWeights numNodes systemDim
     reservoirState : ReservoirState numNodes
+    statesHistory : List (ReservoirState numNodes)
+    systemHistory : List (Vec ℝ systemDim)
 
 data ReadoutLayerState (numNodes : ℕ) (systemDim : ℕ) : Set where
   Coll : CollectingDataState numNodes systemDim → ReadoutLayerState numNodes systemDim
