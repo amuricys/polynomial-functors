@@ -41,3 +41,33 @@ coprod {A = A} {B = B} = record
             → (h ∘ₚ i₂) ≡ f₂
             → [ f₁ , f₂ ]ₚ ≡ h
         unique p₁ p₂ = (λ i → [ sym p₁ i , sym p₂ i ]ₚ) ∙ helper
+
+
+
+-- univPropProdCoprod : {p q r : Polynomial} → Lens p (r ^ q) ≡ ((i : position p) → (j : position q) → Lens (purePower (direction p i)) (r ◂ (Y + Constant (direction q j))))
+-- univPropProdCoprod {p} {q} {r} = substed
+--    where substed : Lens p (r ^ q) ≡ ((i : position p) → (j : position q) → Lens (purePower (direction p i)) (r ◂ (Y + Constant (direction q j))))
+--          substed = univPropCoproduct ∙ substed2
+--             where lemma : ∀ {a b : position p → Type} → a ≡ b → ((i : position p) → a i) ≡ ((i : position p) → b i)
+--                   lemma pr = cong (λ a₁ → (i : position p) → a₁ i) pr
+--                   substed2 : ((i : position p) → Lens (purePower (direction p i)) (r ^ q))
+--                                 ≡
+--                              ((i : position p) (j : position q) → Lens (purePower (direction p i)) (r ◂ Y + Constant (direction q j)))
+--                   substed2 = lemma (funExt λ x → univPropProduct {q = q})
+
+-- Universal coproduct property. A function (A+B)→C is the same as two functions A→C and B→C
+universalPropertyCoproduct : {p : Polynomial}
+                               → Lens {!   !} p ≡ {!   !}
+universalPropertyCoproduct = {!   !}
+
+-- -- Universal product property. A function A→(B*C) is the same as two functions A→B and A→C
+-- universalPropertyProduct : {p : Polynomial} {Index : Type} {generate : Index → Polynomial}
+--                              → Lens p (ΠPoly (Index , generate)) ≡ ((i : Index) → Lens p (generate i))
+-- universalPropertyProduct {p} {Index} {generate} = isoToPath (iso go back (λ b → refl) λ a → refl)
+--     where
+--         go : Lens p (ΠPoly (Index , generate)) → (i : Index) → Lens p (generate i)
+--         go (f ⇆ f♯) index = (λ pos → f pos index) ⇆ λ pos dir → f♯ pos  (index , dir)
+
+--         back : ((i : Index) → Lens p (generate i)) → Lens p (ΠPoly (Index , generate))
+--         back generateLens = (λ pos index → mapPosition (generateLens index) pos) ⇆ λ {pos (index , dir) → mapDirection (generateLens index) pos dir}
+
