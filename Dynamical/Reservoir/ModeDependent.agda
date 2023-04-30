@@ -90,10 +90,30 @@ readoutLayer numNodes systemDim trainingSteps = MkDynamicalSystem (ReadoutLayerS
           
         update (Run (Running outputWeights reservoirState sth ssh)) (RI resStates) = Run (Running outputWeights resStates sth ssh)
 
-preLorRes : (numNodes trainingSteps : ℕ) → (dt : ℝ) → InputWeights numNodes 3 → ReservoirWeights numNodes → DynamicalSystem
-preLorRes numNodes trainingSteps dt inputWeights reservoirWeights = 
-  lorenz dt &&& reservoir numNodes 3 &&& readoutLayer numNodes 3 trainingSteps
+data TouchCtrl : Set where
+  touching going : TouchCtrl
+ctr : ℕ → DynamicalSystem
+ctr touchSteps = MkDynamicalSystem ℕ (mkpoly TouchCtrl (λ x₁ → ⊤)) (crossThreshold ⇆ countUp)
+  where crossThreshold : ℕ → TouchCtrl
+        crossThreshold st = 
+          if is-< st touchSteps then 
+            touching else 
+            going
+        countUp : ℕ → ⊤ → ℕ
+        countUp st tt = st +ℕ 1
 
+preLorRes : (numNodes trainingSteps touchSteps : ℕ) → (dt : ℝ) → InputWeights numNodes 3 → ReservoirWeights numNodes → DynamicalSystem
+preLorRes numNodes trainingSteps touchSteps dt inputWeights reservoirWeights = 
+  -- Training system
+  lorenz dt &&& 
+  -- Test system
+  lorenz dt &&&
+  -- Counter controlling wiring pattern
+  ctr touchSteps  &&&
+  -- Reservoir of dynamics
+  reservoir numNodes 3 &&&
+  -- Readout layer
+  readoutLayer numNodes 3 trainingSteps
 OuterOutputType : (numNodes : ℕ) →  Set
 OuterOutputType numNodes = ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × OutputWeights numNodes 3 × List (ReservoirState numNodes) × List (Vec ℝ 3) ⊎ ⊤
 
@@ -106,53 +126,40 @@ lorenzReservoirWiringDiagram :
   (inputWeights : InputWeights numNodes 3) →
   (reservoirWeights : ReservoirWeights numNodes) →
    Lens 
-    (DynamicalSystem.interface (preLorRes numNodes 3 0.0 inputWeights reservoirWeights))
+    (DynamicalSystem.interface (preLorRes numNodes 3 3 0.0 inputWeights reservoirWeights))
     (OuterOutput numNodes)
 lorenzReservoirWiringDiagram numNodes inputWeights reservoirWeights = outerOutputsFrom ⇆ innerInputsFrom
   where outerOutputsFrom : position
-                           (DynamicalSystem.interface (preLorRes numNodes 3 0.0 inputWeights reservoirWeights)) →
+                           (DynamicalSystem.interface (preLorRes numNodes 3 3 0.0 inputWeights reservoirWeights)) →
                            position (OuterOutput numNodes)
-        outerOutputsFrom ((xnt x , ynt y , znt z) , res , R (predx Vec.∷ predy Vec.∷ predz Vec.∷ Vec.[]) ow stateHist sysHis) = inj₁ (x , (y , (z , (predx , (predy , (predz , (ow , (stateHist , sysHis))))))))
-        outerOutputsFrom (lor , res , CD) = inj₂ tt
-        innerInputsFrom : (fromPos : position (DynamicalSystem.interface (preLorRes numNodes 3 0.0 (Matrix.replicate 1.0) (Matrix.replicate 1.0)))) →
+        outerOutputsFrom ((xnt x , ynt y , znt z) , _ , touching , res , R (predx ∷ predy ∷ predz ∷ Vec.[]) ow stateHist sysHis) = {!   !}
+        outerOutputsFrom ((xnt x , ynt y , znt z) , _ , going , res , R (predx ∷ predy ∷ predz ∷ Vec.[]) ow stateHist sysHis) = {!   !} -- inj₁ (x , y , z , predx , predy , predz , ow , stateHist , sysHis)
+        outerOutputsFrom (lor , res , _ , _ , CD) = inj₂ tt
+        innerInputsFrom : (fromPos : position (DynamicalSystem.interface (preLorRes numNodes 3 3 0.0 (Matrix.replicate 1.0) (Matrix.replicate 1.0)))) →
                           direction (OuterOutput numNodes) (outerOutputsFrom fromPos) →
-                          direction (DynamicalSystem.interface (preLorRes numNodes 3 0.0 inputWeights reservoirWeights))
+                          direction (DynamicalSystem.interface (preLorRes numNodes 3 3 0.0 inputWeights reservoirWeights))
                           fromPos
-        innerInputsFrom (lorOutput , resOutput , R readOutput ow sh sl) dir = tt , resInputRunning , readInputRunning
+        innerInputsFrom (lorTrainingOutput , _ , _ , resOutput , R readOutput ow sh sl) dir = tt , tt , tt , resInputRunning , readInputRunning
           where resInputRunning : direction (DynamicalSystem.interface (reservoir numNodes 3)) resOutput
                 resInputRunning = readOutput , inputWeights , reservoirWeights
                 readInputRunning : RunningInput numNodes
                 readInputRunning = RI resOutput
-        innerInputsFrom (lorOutput , resOutput , CD) dir = tt , resInputTraining , CDI resOutput (outToVec lorOutput)
+        innerInputsFrom (lorTrainingOutput , _ , _ , resOutput , CD) dir = tt , tt , tt , resInputTraining , CDI resOutput (outToVec lorTrainingOutput)
            where resInputTraining : direction (DynamicalSystem.interface (reservoir numNodes 3)) resOutput
-                 resInputTraining = Lorenz.outToVec lorOutput , inputWeights , reservoirWeights
+                 resInputTraining = Lorenz.outToVec lorTrainingOutput , inputWeights , reservoirWeights
                  readInputTraining : ReservoirState numNodes
                  readInputTraining = resOutput
-data RestartOrContinue : Set where
-  continue : X × Y × Z → RestartOrContinue
-  restart : X × Y × Z → RestartOrContinue
-restartingLorenz : ℝ → DynamicalSystem
-restartingLorenz dt = MkDynamicalSystem (DynamicalSystem.state (lorenz dt) ⊎ X × Y × Z) interface behavior
-  where interface : Polynomial
-        interface = mkpoly RestartOrContinue λ { (continue _) → ⊤ ; (restart _) → X × Y × Z }
-        behavior : Lens (selfMonomial (DynamicalSystem.state (lorenz dt) ⊎ X × Y × Z)) interface
-        behavior = readout ⇆ update
-           where readout : X × Y × Z ⊎ X × Y × Z  → RestartOrContinue
-                 readout (inj₁ x₁) = continue x₁
-                 readout (inj₂ lastInputState) = restart lastInputState
-                 update : (fromPos : X × Y × Z ⊎ X × Y × Z) → direction interface (readout fromPos) → X × Y × Z ⊎ X × Y × Z
-                 update (inj₁ x₁) tt = {!   !}
-                 update (inj₂ y₁) inp = {!   !}
 
 lorenzReservoir : 
   (numNodes : ℕ) →
   (trainingSteps : ℕ) →
+  (touchSteps : ℕ) →
   (dt : ℝ) →
   (inputWeights : InputWeights numNodes 3) →
   (reservoirWeights : ReservoirWeights numNodes) → 
   DynamicalSystem
-lorenzReservoir numNodes trainingSteps dt inputWeights reservoirWeights = 
-  install (preLorRes numNodes trainingSteps dt inputWeights reservoirWeights) 
+lorenzReservoir numNodes trainingSteps touchSteps dt inputWeights reservoirWeights = 
+  install (preLorRes numNodes trainingSteps touchSteps dt inputWeights reservoirWeights) 
           (OuterOutput numNodes)
           (lorenzReservoirWiringDiagram numNodes inputWeights reservoirWeights)
 
@@ -160,27 +167,29 @@ lorenzReservoir numNodes trainingSteps dt inputWeights reservoirWeights =
 lorenzResSeq : 
   (numNodes : ℕ) →
   (trainingSteps : ℕ) →
+  (touchSteps : ℕ) →
   (lorenzInitialConditions : ℝ × ℝ × ℝ ) →
   (dt : ℝ) →
   (inputWeights : InputWeights numNodes 3) →
   (reservoirWeights : ReservoirWeights numNodes) → 
   Stream (OuterOutputType numNodes) _
-lorenzResSeq numNodes trainingSteps ( ix , iy , iz ) dt inputWeights reservoirWeights = 
-  run (lorenzReservoir numNodes trainingSteps dt inputWeights reservoirWeights)
+lorenzResSeq numNodes trainingSteps touchSteps ( ix , iy , iz ) dt inputWeights reservoirWeights = 
+  run (lorenzReservoir numNodes trainingSteps touchSteps dt inputWeights reservoirWeights)
       auto
-      ((xnt ix , ynt iy , znt iz) , (Res (Vec.replicate 0.0)) , Coll (Collecting 0 Vec.[] Vec.[]))
+      ((xnt ix , ynt iy , znt iz) , ((xnt (ix + 3.0) , ynt (iy + 3.0) , znt (iz + 3.0))) , 0 , (Res (Vec.replicate 0.0)) , Coll (Collecting 0 Vec.[] Vec.[]))
 
 lorenzResList : 
   (numNodes : ℕ) →
   (trainingSteps : ℕ) →
+  (touchSteps : ℕ) →
   (totalSequenceSteps : ℕ) →
   (lorenzInitialConditions : ℝ × ℝ × ℝ) →
   (dt : ℝ)
   (inputWeights : InputWeights numNodes 3) →
   (reservoirWeights : ReservoirWeights numNodes) → 
   Vec (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × OutputWeights numNodes 3 × List (ReservoirState numNodes) × List (Vec ℝ 3)) totalSequenceSteps
-lorenzResList numNodes trainingSteps totalSequenceSteps lorenzInitialConditions dt inputWeights reservoirWeights = 
-    Vec.map discr (take totalSequenceSteps $ lorenzResSeq numNodes trainingSteps lorenzInitialConditions dt inputWeights reservoirWeights)
+lorenzResList numNodes trainingSteps touchSteps totalSequenceSteps lorenzInitialConditions dt inputWeights reservoirWeights = 
+    Vec.map discr (take totalSequenceSteps $ lorenzResSeq numNodes trainingSteps touchSteps lorenzInitialConditions dt inputWeights reservoirWeights)
        where discr : OuterOutputType numNodes → (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × OutputWeights numNodes 3 × List (ReservoirState numNodes) × List (Vec ℝ 3))
              discr (inj₁ x) = x
              discr (inj₂ tt) = 0.0 , 0.0 , 0.0 , 0.0 , 0.0 , 0.0 , Matrix.𝕄 (Vec.replicate (Vec.replicate 0.0)) , [] , []
