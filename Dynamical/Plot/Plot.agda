@@ -45,7 +45,7 @@ open import Data.Nat
 open import Data.Maybe using (just ; nothing ; Maybe)
 open import Data.Empty
 import Level 
-open import Data.Product
+open import Data.Product using (_,_)
 
 floor : Float → IO ℕ
 floor f with ⌊ f ⌋
@@ -91,10 +91,15 @@ printMatrices (n ∷ ns) = do
   printMatrices ns
 printMatrices [] = IO.run $ IO.pure tt
 
+printOneMatrix : ∀ {n m} → List (Matrix Float n m) → IO ⊤
+printOneMatrix (n ∷ ns) = do
+  _ ← printMatrix n
+  IO.run $ IO.pure tt
+printOneMatrix [] = IO.run $ IO.pure tt
+
 printLists : List (Float P.× Float P.× Float) → IO ⊤
 printLists ((x , y , z) ∷ ns) = do
   _ ← IO.run {Level.zero} $ IO.putStrLn $ "(" S.++ Data.Float.show x S.++ ", " S.++ Data.Float.show y S.++ ", " S.++ Data.Float.show y S.++ ")"
-  _ ← IO.run {Level.zero} $ IO.putStrLn ""
   printLists ns
 printLists [] = IO.run $ IO.pure tt
 
@@ -109,6 +114,18 @@ printMatricesAsLists (n ∷ ns) = do
   _ ← IO.run {Level.zero} $ IO.putStrLn ""
   printMatricesAsLists ns
 printMatricesAsLists [] = IO.run $ IO.pure tt
+
+printOneMatrixAsListFromList : ∀ {n} → List (List (Vec.Vec Float n)) → IO ⊤
+printOneMatrixAsListFromList (_ ∷ n ∷ ns) = do
+  _ ← printMatrixAsList n
+  IO.run $ IO.pure tt
+printOneMatrixAsListFromList _ = IO.run $ IO.pure tt
+
+-- bigUnzip : ∀ {A B C D E F G H I : Set} → List (A P.× B P.× C P.× D P.× E P.× F P.× G P.× H P.× I) → 
+--            (List A P.× List B P.× List C P.× List D P.× List E P.× List F P.× List G P.× List H P.× List I)
+-- bigUnzip [] =  [] ,p [] ,p [] ,p [] ,p [] ,p [] ,p [] ,p [] ,p [] 
+-- bigUnzip ((A ,p B ,p C ,p D ,p E ,p F ,p G ,p H ,p I ) ∷ l) = {! bigUnzip   !}
+
 rest : DynamicalSystem → List Float → IO ⊤
 rest LotkaVolterra param = do
             let dyn = Vec.toList lvList
@@ -123,7 +140,7 @@ rest Lorenz param = do
   plotDynamics 0.1 (("x", x) ∷ ("y", y) ∷ ("z", z) ∷ [])
 rest Reservoir (rdimf ∷ trainStepsf ∷ touchStepsf ∷ outputLengthf ∷ lorinitx ∷ lorinity ∷ lorinitz ∷ dt ∷ []) = do
   rdim ← floor rdimf
-  -- let rdim = 3
+  let rdim = 3
   trainSteps ← floor trainStepsf 
   touchSteps ← floor touchStepsf 
   outputLength ← floor outputLengthf 
@@ -131,34 +148,34 @@ rest Reservoir (rdimf ∷ trainStepsf ∷ touchStepsf ∷ outputLengthf ∷ lori
   inputWeights ← IO.run $ initInputWeights 0.0316 rdim 3
   resWeights ← IO.run $ initReservoirWeights 0.0632 rdim
   let 
-      -- inputWeights = 𝕄 ((-0.064975537042022 Vec.∷ -0.065251741398635 Vec.∷ 0.058517783986069 Vec.∷ Vec.[]) Vec.∷ 
-      --                   (0.076889134463803 Vec.∷ -0.013081902744785 Vec.∷ 0.009235160871493 Vec.∷ Vec.[]) Vec.∷ 
-      --                   (0.027362146117304 Vec.∷ 0.007721283721158 Vec.∷ 0.042541281223982 Vec.∷ Vec.[]) Vec.∷ 
-      --                   Vec.[])
-      -- resWeights = 𝕄 ((0.197316884195857 Vec.∷ -0.574663634125314 Vec.∷ 0.784674814076449 Vec.∷ Vec.[]) Vec.∷ 
-      --                 (0.145047612964489 Vec.∷ 0.407975310337146 Vec.∷ -0.029230453464976 Vec.∷ Vec.[]) Vec.∷ 
-      --                 (1.227628071998505 Vec.∷ 0.636586542258952 Vec.∷ 0.623759334372951 Vec.∷ Vec.[]) Vec.∷ 
-      --                 Vec.[])
+      inputWeights = 𝕄 ((-0.064975537042022 Vec.∷ -0.065251741398635 Vec.∷ 0.058517783986069 Vec.∷ Vec.[]) Vec.∷ 
+                        (0.076889134463803 Vec.∷ -0.013081902744785 Vec.∷ 0.009235160871493 Vec.∷ Vec.[]) Vec.∷ 
+                        (0.027362146117304 Vec.∷ 0.007721283721158 Vec.∷ 0.042541281223982 Vec.∷ Vec.[]) Vec.∷ 
+                        Vec.[])
+      resWeights = 𝕄 ((0.197316884195857 Vec.∷ -0.574663634125314 Vec.∷ 0.784674814076449 Vec.∷ Vec.[]) Vec.∷ 
+                      (0.145047612964489 Vec.∷ 0.407975310337146 Vec.∷ -0.029230453464976 Vec.∷ Vec.[]) Vec.∷ 
+                      (1.227628071998505 Vec.∷ 0.636586542258952 Vec.∷ 0.623759334372951 Vec.∷ Vec.[]) Vec.∷ 
+                      Vec.[])
       resVec = lorenzResList rdim trainSteps touchSteps outputLength ( lorinitx , lorinity , lorinitz ) dt inputWeights resWeights
       x , yzabc = fromSigma (List.unzip (Vec.toList resVec))
       y , zabc = fromSigma (List.unzip yzabc)
       z , abc = fromSigma (List.unzip zabc)
-      a , bc = fromSigma (List.unzip abc)
-      b , co = fromSigma (List.unzip bc)
-      c , ohs = fromSigma (List.unzip co)
+      pred_x , bc = fromSigma (List.unzip abc)
+      pred_y , co = fromSigma (List.unzip bc)
+      pred_z , ohs = fromSigma (List.unzip co)
       o , hs = fromSigma (List.unzip ohs)
       h , s = fromSigma (List.unzip hs)
-  -- _ ← IO.run {Level.zero} $ IO.putStrLn "system history:"
-  -- _ ← printMatricesAsLists s
-  -- _ ← IO.run {Level.zero} $ IO.putStrLn "reservoir state history:"
-  -- _ ← printMatricesAsLists (listMap (listMap ReservoirState.nodeStates) h)
-  -- _ ← IO.run {Level.zero} $ IO.putStrLn "output weights history (should be the same):"
-  -- _ ← printMatrices o
-  -- _ ← IO.run {Level.zero} $ IO.putStrLn "predictions:"
-  -- _ ← printLists $ List.zip x $ List.zip y z
-  plotDynamics 0.1 (("actual_x", x) ∷ ("actual_y", y) ∷ ("actual_z", z) ∷ ("pred_x", a) ∷ ("pred_y", b) ∷ ("pred_z", c) ∷ []) 
+  _ ← IO.run {Level.zero} $ IO.putStrLn "system history:"
+  _ ← printOneMatrixAsListFromList s
+  _ ← IO.run {Level.zero} $ IO.putStrLn "reservoir state history:"
+  _ ← printOneMatrixAsListFromList (listMap (listMap ReservoirState.nodeStates) h)
+  _ ← IO.run {Level.zero} $ IO.putStrLn "output weights history (should be the same):"
+  _ ← printOneMatrix o
+  _ ← IO.run {Level.zero} $ IO.putStrLn "predictions:"
+  _ ← printLists $ List.zip pred_x $ List.zip pred_y pred_z
+  plotDynamics 0.1 (("actual_x", x) ∷ ("actual_y", y) ∷ ("actual_z", z) ∷ ("pred_x", pred_x) ∷ ("pred_y", pred_y) ∷ ("pred_z", pred_z) ∷ []) 
 rest Reservoir params = do 
-  Level.lift tt ← IO.run {Level.zero} $ IO.putStrLn ("Error: missing parameters for reservoir. vei pelo amor de deus got: " S.++ showList params)
+  Level.lift tt ← IO.run {Level.zero} $ IO.putStrLn ("Error: missing parameters for reservoir. got: " S.++ showList params)
   IO.run $ IO.pure tt
 main : IO ⊤
 main = do

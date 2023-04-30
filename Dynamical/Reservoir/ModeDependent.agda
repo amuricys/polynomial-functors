@@ -131,7 +131,8 @@ lorenzReservoirWiringDiagram numNodes inputWeights reservoirWeights = outerOutpu
   where outerOutputsFrom : position
                            (DynamicalSystem.interface (preLorRes numNodes 3 3 0.0 inputWeights reservoirWeights)) →
                            position (OuterOutput numNodes)
-        outerOutputsFrom ((xnt x , ynt y , znt z) , _ , touching , _ , _) = inj₂ tt
+        outerOutputsFrom ((xnt x , ynt y , znt z) , _ , touching , _ , CD) = inj₂ tt
+        outerOutputsFrom (_ , (xnt x , ynt y , znt z) , touching , _ , R (predx ∷ predy ∷ predz ∷ Vec.[]) ow stateHist sysHis) = inj₁ (x , y , z , predx , predy , predz , ow , stateHist , sysHis)
         outerOutputsFrom ((xnt x , ynt y , znt z) , _ , going , res , R (predx ∷ predy ∷ predz ∷ Vec.[]) ow stateHist sysHis) = inj₁ (x , y , z , predx , predy , predz , ow , stateHist , sysHis)
         outerOutputsFrom (lor , res , _ , _ , CD) = inj₂ tt
         innerInputsFrom : (fromPos : position (DynamicalSystem.interface (preLorRes numNodes 3 3 0.0 (Matrix.replicate 1.0) (Matrix.replicate 1.0)))) →
@@ -191,7 +192,7 @@ lorenzResList :
   (reservoirWeights : ReservoirWeights numNodes) → 
   Vec (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × OutputWeights numNodes 3 × List (ReservoirState numNodes) × List (Vec ℝ 3)) outputLength
 lorenzResList numNodes trainingSteps touchSteps outputLength lorenzInitialConditions dt inputWeights reservoirWeights = 
-    Vec.map discr (take outputLength ∘ drop (trainingSteps +ℕ touchSteps) $ lorenzResSeq numNodes trainingSteps touchSteps lorenzInitialConditions dt inputWeights reservoirWeights)
+    Vec.map discr (take outputLength ∘ drop trainingSteps $ lorenzResSeq numNodes trainingSteps touchSteps lorenzInitialConditions dt inputWeights reservoirWeights)
        where discr : OuterOutputType numNodes → (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × OutputWeights numNodes 3 × List (ReservoirState numNodes) × List (Vec ℝ 3))
              discr (inj₁ x) = x
              discr (inj₂ tt) = 0.0 , 0.0 , 0.0 , 0.0 , 0.0 , 0.0 , Matrix.𝕄 (Vec.replicate (Vec.replicate 0.0)) , [] , []
