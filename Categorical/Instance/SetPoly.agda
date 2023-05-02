@@ -9,6 +9,7 @@ open import Cubical.Proofs
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.HLevels
 open import Cubical.Foundations.Isomorphism
+open import Function
 
 -- Definition of SetPoly category: Polynomials based in Set in the HoTT sense
 record SetPolynomial : Set₁ where
@@ -17,18 +18,30 @@ record SetPolynomial : Set₁ where
         poly : Polynomial
         isPosSet : isSet (position poly)
         isDirSet : ∀ {p : position poly} → isSet (direction poly p)
-
 PolyAsSigma : Set₁
-PolyAsSigma = Σ[ poly ∈ Polynomial ] 
+PolyAsSigma = Σ[ position ∈ Set ] (position → Set)
+
+polyToSigma : Polynomial → PolyAsSigma
+polyToSigma (mkpoly position direction) = position , direction
+    
+polyFromSigma : PolyAsSigma → Polynomial
+polyFromSigma (position , direction) = mkpoly position direction
+
+poly≡polySigma : Polynomial ≡ PolyAsSigma
+poly≡polySigma = isoToPath (iso polyToSigma polyFromSigma (λ _ → refl) (λ _ → refl))
+
+SetPolyAsSigma : Set₁
+SetPolyAsSigma = Σ[ poly ∈ Polynomial ] 
                 Σ[ isPosSet ∈ isSet (position poly) ] 
                     (∀ {p : position poly} → isSet (direction poly p))
 
-isSetPolyAsSigma : isSet PolyAsSigma
+isSetPolyAsSigma : isSet SetPolyAsSigma
 isSetPolyAsSigma = isSetΣ {!   !} {!   !} -- Hard
 
 open SetPolynomial
+
 isSetPoly : isSet SetPolynomial
-isSetPoly a@(mksetpoly  poly₁ isPosSet₁ isDirSet₁) b@(mksetpoly  poly₂ isPosSet₂ isDirSet₂) a≡b₁ a≡b₂ i i₁ = {!   !}
+isSetPoly a@(mksetpoly  poly₁ isPosSet₁ isDirSet₁) b@(mksetpoly  poly₂ isPosSet₂ isDirSet₂) = {!   !}
 
 -- position (poly (y₁ i)) != position (poly (x₁ i)) of type Type
 record SetLens (from to : SetPolynomial) : Set where

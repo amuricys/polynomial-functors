@@ -13,7 +13,7 @@ open import Cubical.LensEquality
 open import Cubical.Foundations.Prelude
 open import Data.Sum
 open import Data.Product using (_×_)
-open import Cubical.Data.Equality hiding (_≡_ ; sym)
+open import Cubical.Data.Equality using (pathToEq ; eqToPath)
 open import Cubical.Data.Sigma.Properties
 open import Cubical.Foundations.HLevels
 open import Cubical.Foundations.Isomorphism
@@ -23,6 +23,7 @@ open import Relation.Binary.PropositionalEquality using () renaming (_≡_ to _�
 
 open SetPolynomial
 open Polynomial
+open SetLens
 eq : {pˢ qˢ : SetPolynomial} → (f g : SetLens pˢ qˢ) → Equalizer f g
 eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆ˢ (mpf ⇆ mdf)) g@(⇆ˢ (mpg ⇆ mdg)) = 
   record {
@@ -32,22 +33,24 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
     }
    where EqualizedPosition = Σ (position p) (λ z → mpf z ≡ mpg z)
          eqObj : SetPolynomial
-         eqObj = mksetpoly  eqPoly eqPosSet eqDirSet
+         eqObj = mksetpoly eqPoly eqPosSet eqDirSet
             where eqPoly = mkpoly EqualizedPosition (λ ( i , equal ) → SetCoequalizer (mdf i) (subst (λ x → direction q x → direction p i) (sym equal) (mdg i)))
                   eqPosSet : isSet (position eqPoly)
-                  eqPosSet = {!   !}
+                  eqPosSet = isSetΣ pposSet λ x → isProp→isSet (qposSet (mpf x) (mpg x))
                   eqDirSet : ∀ {po : position eqPoly} → isSet (direction eqPoly po)
                   eqDirSet {posp , mapped≡} = {!   !}
          arr : SetLens eqObj pˢ
-         arr = ⇆ˢ {!   !}
+         arr = ⇆ˢ ((λ { (posP , _) → posP }) ⇆ λ { _ x → inc x })
          isEqualizer : IsEqualizer arr f g
          isEqualizer = record { 
-            equality = {!   !} ;
-            equalize = {!   !} ;
+            equality = cong ⇆ˢ (lensesEqual3 (funExt (λ { (_ , mapped≡) → mapped≡} )) mde)  ;
+            equalize = λ { {_} {⇆ˢ (mp ⇆ md)} x → ⇆ˢ {!   !} } ;
             universal = {!   !} ; 
             unique = {!   !} 
             }
-
+            where mde : (x : Σ (position p) (λ z → mpf z ≡ mpg z)) (y : direction q (mpg (fst x))) → inc (mdf (fst x) (transport (λ i → direction q (snd x (~ i))) y)) ≡ inc (mdg (fst x) y)
+                  mde (posp , equalized) dir = \i → coeq (subst (λ x → direction q x) (sym equalized) dir) i
+                  
 import Categories.Diagram.Equalizer (Sets Level.zero) as SetsEq
 eqSets : {A B : Set} → (f g : A → B) → SetsEq.Equalizer f g
 eqSets {A} {B} f g = record { 
@@ -91,25 +94,27 @@ eqSets {A} {B} f g = record {
 
 -- coeqSets : {A B : Set} → (f g : A → B) → Coequalizer f g
 -- coeqSets {A} {B} f g = record { 
---       obj = Coeq f g ; 
+--       obj = SetCoequalizer f g ; 
 --       arr = λ x → inc x; 
 --       isCoequalizer = record { 
---             equality = \{x} → pathToEq (glue x) ; 
---             coequalize = {!   !}; 
---             universal = _≡p_.refl ; 
+--             equality = \{x} → pathToEq (coeq x) ; 
+--             coequalize = λ { {_} {h} x (inc x₁) → h x₁
+--                            ; {_} {h} x (coeq a i) → (eqToPath (x {a})) i
+--                            ; {_} {h} x (squash x₁ x₂ p q i i₃) → {! eqToPath x !} }; 
+--             universal = {!   !} ; 
 --             unique = {!   !} 
 --             }
 --       }
 --   where coequalize : {coeqSetCandidate : Set} →
 --                      {h : B → coeqSetCandidate} →
 --                      (x : {x = x₂ : A} → h (f x₂) ≡p h (g x₂)) →
---                      (coeqSetElmt : Coeq f g) → 
+--                      (coeqSetElmt : SetCoequalizer f g) → 
 --                      coeqSetCandidate
 --         coequalize {coeqSetCandidate} {h} x (inc x₁) = h x₁
---         coequalize {coeqSetCandidate} {h} x (glue x₁ i) = eqToPath (x {x₁}) i
+--         coequalize {coeqSetCandidate} {h} x (coeq x₁ i) = eqToPath (x {x₁}) i
 --         coequalize {coeqSetCandidate} {h} x (squash coeqSetElmt coeqSetElmt₁ x₁ y i i₃) = {!  !}
 
 
 -- (Σ[ i ∈ p.position ] (p.direction i → q.position))
 -- p'(1) := {i ∈ p(1) | mpf(i) = mpg(i)}
-       
+           
