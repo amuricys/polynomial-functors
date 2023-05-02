@@ -71,3 +71,14 @@ library
 
     -- Base language which the package is written in.
     default-language: Haskell2010
+
+executable parse
+    hs-source-dirs:   app
+    main-is: Main.hs
+    -- other-modules:
+    -- other-extensions:
+    build-depends: 
+        base ^>=4.15.1.0
+      , HsPlot
+
+    default-language: Haskell2010

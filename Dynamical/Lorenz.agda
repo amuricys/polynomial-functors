@@ -62,11 +62,11 @@ lorenzWiringDiagram = mp ⇆ md
 lorenz : ℝ → DynamicalSystem
 lorenz dt = install (preLorenz dt) (Emitter (X × Y × Z)) lorenzWiringDiagram
 
-lorenzSeq : ℝ → Stream (X × Y × Z) _
-lorenzSeq dt = run (lorenz dt) auto (xnt 10.0 , ynt 10.0 , znt 10.0)
+lorenzSeq : ℝ → ℝ → ℝ → ℝ → Stream (X × Y × Z) _
+lorenzSeq x0 y0 z0 dt = run (lorenz dt) auto (xnt x0 , ynt y0 , znt z0)
 
-lorenzList : Vec (ℝ × ℝ × ℝ) 1000
-lorenzList = Data.Vec.map (\{(xnt x , ynt y , znt z) → x , y , z } ) (take 1000 (lorenzSeq 0.01))
+lorenzList : ℝ → ℝ → ℝ → ℝ → Vec (ℝ × ℝ × ℝ) 1000
+lorenzList x0 y0 z0 dt = Data.Vec.map (\{(xnt x , ynt y , znt z) → x , y , z } ) (take 1000 (lorenzSeq x0 y0 z0 dt))
 
 outToVec : X × Y × Z → Vec ℝ 3
 outToVec (xnt x , ynt y , znt z) = (x Vec.∷ y Vec.∷ z Vec.∷ Vec.[])

@@ -33,17 +33,20 @@ preLV : DynamicalSystem
 preLV = rabbits &&& foxes
 
 -- Wiring diagram is an lens between monomials (lens)
-lotkaVolterraWiringDiagram : Lens (DynamicalSystem.interface preLV) (selfMonomial (ℝ × ℝ))
-lotkaVolterraWiringDiagram = (λ {(r , f) → r , f}) ⇆ (λ {(r , f) (a , b) → (a , c₂ * f) , (c₁ * r , b) })
-  where c₁ = 0.4
-        c₂ = 0.7
+lotkaVolterraWiringDiagram : ℝ → ℝ → Lens (DynamicalSystem.interface preLV) (selfMonomial (ℝ × ℝ))
+lotkaVolterraWiringDiagram foxPerCapDeath foxBloodthirst = outerOutput ⇆ innerInput
+  where outerOutput : ℝ × ℝ → ℝ × ℝ
+        outerOutput (rabbitOutput , foxOutput) = rabbitOutput , foxOutput
+        innerInput : (outputs : ℝ × ℝ) → direction (selfMonomial (ℝ × ℝ)) (outerOutput outputs) → direction (DynamicalSystem.interface preLV) outputs
+        innerInput (r , f) (rabMaxPerCapGrowth , howNutritiousRabbitsAre) = (rabMaxPerCapGrowth , foxBloodthirst * f) , (foxPerCapDeath * r , howNutritiousRabbitsAre)
+        
 
 -- Final system is composition of wiring diagram and dynamics
-lotkaVolterra : DynamicalSystem
-lotkaVolterra = install preLV (selfMonomial (ℝ × ℝ)) lotkaVolterraWiringDiagram
+lotkaVolterra : ℝ → ℝ → DynamicalSystem
+lotkaVolterra β γ = install preLV (selfMonomial (ℝ × ℝ)) (lotkaVolterraWiringDiagram β γ)
 
-lvSeq : Stream (ℝ × ℝ) _
-lvSeq = run lotkaVolterra (constI (1.1 , 0.4)) (0.6 , 0.4)
+lvSeq : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Stream (ℝ × ℝ) _
+lvSeq α β γ δ r0 f0 = run (lotkaVolterra β γ) (constI (α , δ)) (r0 , f0)
 
-lvList : Vec (ℝ × ℝ) 1000
-lvList = take 1000 lvSeq
+lvList : ℝ → ℝ → ℝ → ℝ → ℝ → ℝ → Vec (ℝ × ℝ) 1000
+lvList α β γ δ r0 f0 = take 1000 (lvSeq α β γ δ  r0 f0)

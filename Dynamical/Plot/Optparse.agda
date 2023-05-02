@@ -7,25 +7,25 @@ open import Agda.Builtin.Float
 open import Agda.Builtin.Nat renaming (Nat to ℕ)
 open import Data.List
 
-data DynamicalSystem : Set where
-  LotkaVolterra : DynamicalSystem
-  HodgkinHuxley : DynamicalSystem
-  Lorenz : DynamicalSystem
-  Reservoir : DynamicalSystem
-
-record Options : Set where
-  constructor mkopt
-  field
-    system  : DynamicalSystem
-    params : List Float
 
 {-# FOREIGN GHC 
 import OptparseHs
 #-}
 
-{-# COMPILE GHC DynamicalSystem = data DynamicalSystem (LotkaVolterra | HodgkinHuxley | Lorenz | Reservoir) #-}
+data SystemParams : Set where
+  ReservoirParams : (rdim : ℕ) → (trainSteps touchSteps outputLength : ℕ) → (lorinitx lorinity lorinitz dt variance : Float) → SystemParams
+  LorenzParams    : (lorinitx lorinity lorinitz dt : Float) → SystemParams
+  HodgkinHuxleyParams : SystemParams
+  LotkaVolterraParams : (α β δ γ r0 f0 dt : Float) → SystemParams
+{-# COMPILE GHC SystemParams = data SystemParams (ReservoirParams | LorenzParams | HodgkinHuxleyParams | LotkaVolterraParams) #-}
+
+record Options : Set where
+  constructor mkopt
+  field
+    system  : SystemParams
+
 {-# COMPILE GHC Options = data Options (Options) #-}
 
 postulate 
   parseOptions : IO Options
-{-# COMPILE GHC parseOptions = parseOptions #-}
+{-# COMPILE GHC parseOptions = parseOptions #-} 

@@ -2,3 +2,5 @@ cradle:
   cabal:
     - path: "src"
       component: "lib:HsPlot"
+    - path: "app"
+      component: "exe:parse"

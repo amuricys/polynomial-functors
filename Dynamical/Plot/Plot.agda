@@ -126,25 +126,11 @@ printOneMatrixAsListFromList _ = IO.run $ IO.pure tt
 -- bigUnzip [] =  [] ,p [] ,p [] ,p [] ,p [] ,p [] ,p [] ,p [] ,p [] 
 -- bigUnzip ((A ,p B ,p C ,p D ,p E ,p F ,p G ,p H ,p I ) ∷ l) = {! bigUnzip   !}
 
-rest : DynamicalSystem → List Float → IO ⊤
-rest LotkaVolterra param = do
-            let dyn = Vec.toList lvList
-            let r , f = fromSigma (List.unzip dyn)
-            plotDynamics 0.1 (("rabbits", r) ∷ ("foxes", f) ∷ [])
-rest HodgkinHuxley param = do
-  let dyn = Vec.toList hhList
-  plotDynamics 0.1 [( "voltage" , dyn )]
-rest Lorenz param = do
-  let x , yz = fromSigma (List.unzip (Vec.toList lorenzList))
-  let y , z = fromSigma (List.unzip yz)
-  plotDynamics 0.1 (("x", x) ∷ ("y", y) ∷ ("z", z) ∷ [])
-rest Reservoir (rdimf ∷ trainStepsf ∷ touchStepsf ∷ outputLengthf ∷ lorinitx ∷ lorinity ∷ lorinitz ∷ dt ∷ []) = do
-  rdim ← floor rdimf
+rest : SystemParams → IO ⊤
+rest (ReservoirParams rdim trainSteps touchSteps outputLength lorinitx lorinity lorinitz dt₁ variance) = do 
   let rdim = 3
-  trainSteps ← floor trainStepsf 
-  touchSteps ← floor touchStepsf 
-  outputLength ← floor outputLengthf 
-      -- variance etc
+
+  -- variance etc
   inputWeights ← IO.run $ initInputWeights 0.0316 rdim 3
   resWeights ← IO.run $ initReservoirWeights 0.0632 rdim
   let 
@@ -156,7 +142,7 @@ rest Reservoir (rdimf ∷ trainStepsf ∷ touchStepsf ∷ outputLengthf ∷ lori
                       (0.145047612964489 Vec.∷ 0.407975310337146 Vec.∷ -0.029230453464976 Vec.∷ Vec.[]) Vec.∷ 
                       (1.227628071998505 Vec.∷ 0.636586542258952 Vec.∷ 0.623759334372951 Vec.∷ Vec.[]) Vec.∷ 
                       Vec.[])
-      resVec = lorenzResList rdim trainSteps touchSteps outputLength ( lorinitx , lorinity , lorinitz ) dt inputWeights resWeights
+      resVec = lorenzResList rdim trainSteps touchSteps outputLength ( lorinitx , lorinity , lorinitz ) dt₁ inputWeights resWeights
       x , yzabc = fromSigma (List.unzip (Vec.toList resVec))
       y , zabc = fromSigma (List.unzip yzabc)
       z , abc = fromSigma (List.unzip zabc)
@@ -174,11 +160,23 @@ rest Reservoir (rdimf ∷ trainStepsf ∷ touchStepsf ∷ outputLengthf ∷ lori
   _ ← IO.run {Level.zero} $ IO.putStrLn "predictions:"
   _ ← printLists $ List.zip pred_x $ List.zip pred_y pred_z
   plotDynamics 0.1 (("actual_x", x) ∷ ("actual_y", y) ∷ ("actual_z", z) ∷ ("pred_x", pred_x) ∷ ("pred_y", pred_y) ∷ ("pred_z", pred_z) ∷ []) 
-rest Reservoir params = do 
-  Level.lift tt ← IO.run {Level.zero} $ IO.putStrLn ("Error: missing parameters for reservoir. got: " S.++ showList params)
-  IO.run $ IO.pure tt
+rest (LorenzParams lorinitx lorinity lorinitz dt₁) = do 
+  let x , yz = fromSigma (List.unzip (Vec.toList $ lorenzList lorinitx lorinity lorinitz dt₁))
+  let y , z = fromSigma (List.unzip yz)
+  plotDynamics 0.1 (("x", x) ∷ ("y", y) ∷ ("z", z) ∷ [])
+rest HodgkinHuxleyParams = do 
+  let dyn = Vec.toList hhList
+  plotDynamics 0.1 [( "voltage" , dyn )]
+rest (LotkaVolterraParams α β δ γ r0 f0 dt₁) = do 
+  let dyn = Vec.toList $ lvList α β δ γ r0 f0
+  let r , f = fromSigma (List.unzip dyn) 
+  plotDynamics 0.1 (("rabbits", r) ∷ ("foxes", f) ∷ [])
+-- rest Reservoir (rdimf ∷ trainStepsf ∷ touchStepsf ∷ outputLengthf ∷ lorinitx ∷ lorinity ∷ lorinitz ∷ dt ∷ []) = do
+-- rest Reservoir params = do 
+--   Level.lift tt ← IO.run {Level.zero} $ IO.putStrLn ("Error: missing parameters for reservoir. got: " S.++ showList params)
+--   IO.run $ IO.pure tt
 main : IO ⊤
 main = do
-  mkopt sys param ← parseOptions
-  rest sys param
+  mkopt sys ← parseOptions
+  rest sys
    
