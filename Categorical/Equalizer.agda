@@ -55,28 +55,28 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
             }
             where 
                   
-                  mde2 : ((posp , equalized) : EqualizedPosition) → {- position in E -} 
+                  mapDir≡ : ((posp , equalized) : EqualizedPosition) → {- position in E -} 
                         (dir : direction q (mpg posp)) →            {- direction in Q at that position -} 
                         inc {A = direction q (mpf posp)} 
                             {B = direction p posp} 
                             {f = mdf posp}
                             {g = λ x → mdg posp (subst (λ x₁ → direction q x₁) equalized x)} 
-                            (mdf posp (transport (sym (λ i → direction q (equalized i))) dir))
+                            (mdf posp (subst (direction q) (sym equalized) dir))
                         ≡
                         inc (mdg posp dir)
-                  mde2 x@(posp , equalized) dir = let 
-                  -- mpg posp != mpf posp of type position q
-                  -- when checking that the expression thecoeq has type
-                  -- inc
-                  -- (mdf posp (transport (λ i → direction q (equalized (~ i))) dir))
-                  -- ≡ inc (mdg posp dir)
-                  -- inc (mdf posp (transport (λ i → direction q (equalized (~ i))) dir)) ≡ inc (mdg posp dir)
+                  mapDir≡ x@(posp , equalized) dir = let
                     thecoeq = coeq {f = \x → mdf posp (transport (λ i → direction q (equalized (~ i))) x)} {g = mdg posp} dir
-                    in -- thecoeq
-                       subst (λ posq → {! inc (mdf posp (transport (λ i → direction q (equalized (~ i))) dir)) ≡ inc (mdg posp dir)  !}) equalized thecoeq
+                    partapplf : direction q (mpf posp) → direction p posp
+                    partapplf = mdf posp
+                    partapplg : direction q (mpg posp) → direction p posp
+                    partapplg = mdg posp
+                    comefromsame : (direction q (mpf posp) → direction p posp) ≡ (direction q (mpg posp) → direction p posp)
+                    comefromsame = subst {!   !} {!   !} {!   !}
+                    in
+                      {!   !}
                   equal : (mpf ⇆ mdf) ∘ₚ (mpe ⇆ mde) ≡ (mpg ⇆ mdg) ∘ₚ (mpe ⇆ mde)
                   equal = lensesEqual3 (funExt (λ { (_ , mapped≡) → mapped≡} )) 
-                                       mde2 -- {!    !} -- {!   !}
+                                       mapDir≡
                   
 import Categories.Diagram.Equalizer (Sets Level.zero) as SetsEq
 eqSets : {A B : Set} → (f g : A → B) → SetsEq.Equalizer f g
