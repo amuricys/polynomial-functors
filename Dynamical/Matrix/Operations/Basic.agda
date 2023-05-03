@@ -95,11 +95,3 @@ zeros = replicate zero
 
 eye : ∀ {A} {n : ℕ} {{numA : Num A A A}} → Matrix A n n
 eye  {n = n} {{numA = numA}} = 𝕄 (tabulate λ i → tabulate λ j → if ⌊ i ≟ j ⌋ then one else zero)
-
--- pseudoinverse : ∀ {r c} → ℝ → Matrix ℝ r c → Matrix ℝ c r
--- pseudoinverse {r} {c} ridge m =
---   let
---     aTa = m ᵀ *ᴹ m
---     aTaPlusLambdaI = aTa +ᴹ (eye *ᴹˢ ridge)
---   in
---     aTaPlusLambdaI ⁻¹ *ᴹ m ᵀ

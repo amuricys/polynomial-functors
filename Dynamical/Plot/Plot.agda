@@ -151,14 +151,14 @@ rest (ReservoirParams rdim trainSteps touchSteps outputLength lorinitx lorinity 
       pred_z , ohs = fromSigma (List.unzip co)
       o , hs = fromSigma (List.unzip ohs)
       h , s = fromSigma (List.unzip hs)
-  _ ← IO.run {Level.zero} $ IO.putStrLn "system history:"
-  _ ← printOneMatrixAsListFromList s
-  _ ← IO.run {Level.zero} $ IO.putStrLn "reservoir state history:"
-  _ ← printOneMatrixAsListFromList (listMap (listMap ReservoirState.nodeStates) h)
-  _ ← IO.run {Level.zero} $ IO.putStrLn "output weights history (should be the same):"
-  _ ← printOneMatrix o
-  _ ← IO.run {Level.zero} $ IO.putStrLn "predictions:"
-  _ ← printLists $ List.zip pred_x $ List.zip pred_y pred_z
+  -- _ ← IO.run {Level.zero} $ IO.putStrLn "system history:"
+  -- _ ← printOneMatrixAsListFromList s
+  -- _ ← IO.run {Level.zero} $ IO.putStrLn "reservoir state history:"
+  -- _ ← printOneMatrixAsListFromList (listMap (listMap ReservoirState.nodeStates) h)
+  -- _ ← IO.run {Level.zero} $ IO.putStrLn "output weights history (should be the same):"
+  -- _ ← printOneMatrix o
+  -- _ ← IO.run {Level.zero} $ IO.putStrLn "predictions:"
+  -- _ ← printLists $ List.zip pred_x $ List.zip pred_y pred_z
   plotDynamics 0.1 (("actual_x", x) ∷ ("actual_y", y) ∷ ("actual_z", z) ∷ ("pred_x", pred_x) ∷ ("pred_y", pred_y) ∷ ("pred_z", pred_z) ∷ []) 
 rest (LorenzParams lorinitx lorinity lorinitz dt₁) = do 
   let x , yz = fromSigma (List.unzip (Vec.toList $ lorenzList lorinitx lorinity lorinitz dt₁))

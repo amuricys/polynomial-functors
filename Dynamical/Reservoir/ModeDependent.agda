@@ -7,7 +7,7 @@ open import Data.Product using (_×_; _,_)
 open import Data.Sum
 open import Data.Unit
 open import Data.Nat renaming (_+_ to _+ℕ_)
-open import Data.Float renaming (Float to ℝ; tanh to tanh1) hiding (⌊_⌋)
+open import Data.Float renaming (Float to ℝ; tanh to tanh1; show to showf) hiding (⌊_⌋)
 open import CategoryData.Everything renaming (_*_ to _*p_ ; _+_ to _+p_; Y to Y')
 open import Codata.Stream
 open import Dynamical.Matrix.Everything as Matrix using (Matrix ; _*ⱽᴹ_ ; _*ᴹⱽ_ ; _*ᴹ_ ; _+ᴹ_ ; _+ⱽ_ ; _ᵀ ; _⁻¹ ; _*ˢᴹ_ ; eye)
@@ -28,6 +28,18 @@ is-< a b = ⌊ a Data.Nat.<? b ⌋
 
 tanh : ∀ {m n} → Matrix ℝ m n → Matrix ℝ m n
 tanh = Matrix.map tanh1
+
+open import Data.String
+
+postulate trace : ∀ {A : Set} → String → A → A
+{-# FOREIGN GHC
+  import Debug.Trace
+  import Data.Text
+
+  myTrace :: Text -> a -> a
+  myTrace str a = trace (unpack str) a
+#-}
+{-# COMPILE GHC trace = \_ -> myTrace #-}
 
 data ReadoutOutput (numNodes systemDim : ℕ) : Set where
   CD : ReadoutOutput numNodes systemDim
@@ -139,7 +151,7 @@ lorenzReservoirWiringDiagram numNodes inputWeights reservoirWeights = outerOutpu
                           direction (OuterOutput numNodes) (outerOutputsFrom fromPos) →
                           direction (DynamicalSystem.interface (preLorRes numNodes 3 3 0.0 inputWeights reservoirWeights))
                           fromPos
-        innerInputsFrom (_ , lorTestOutput , touching , resOutput , ro@(R readOutput ow sh sl)) dir = tt , tt , ro , resInputTouching , readInputTouching
+        innerInputsFrom (_ , lorTestOutput , touching , resOutput , ro@(R readOutput ow sh sl)) dir = trace (Matrix.showVec ∘ ReservoirState.nodeStates $ resOutput) $ tt , tt , ro , resInputTouching , readInputTouching
           where resInputTouching : direction (DynamicalSystem.interface (reservoir numNodes 3)) resOutput
                 resInputTouching = Lorenz.outToVec lorTestOutput , inputWeights , reservoirWeights
                 readInputTouching : RunningInput numNodes
