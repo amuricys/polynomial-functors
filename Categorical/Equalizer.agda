@@ -47,7 +47,7 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
          eqPosSet : isSet (position eqPoly)
          eqPosSet = isSetΣ pposSet λ x → isProp→isSet (qposSet (mpf x) (mpg x))
          eqDirSet : ∀ {po : position eqPoly} → isSet (direction eqPoly po)
-         eqDirSet {posp , mapped≡} = {!   !}
+         eqDirSet {posp , mapped≡} = squash
          eqObj : SetPolynomial
          eqObj = mksetpoly eqPoly eqPosSet eqDirSet
          mpe : position (poly eqObj) → position p
@@ -61,7 +61,7 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
             equality = cong ⇆ˢ equal ;
             equalize = λ { {X} {h = ⇆ˢ (mph ⇆ mdh )} x → ⇆ˢ 
                             ((λ x₁ → mph x₁ , funExt⁻ (cong mapPosition $ rapaz x) x₁) 
-                             ⇆ λ fromPos → inducedHom (λ x₁ y → isDirSet X x₁ y) (mdh fromPos) λ a → {!  !} ) }  ;
+                             ⇆ λ fromPos → inducedHom (λ x₁ y → isDirSet X x₁ y) (mdh fromPos) λ a → λ i → (mapDirection ∘ lens) (x i) fromPos {! a  !} ) }  ;
             universal = {!   !} ; 
             unique = {!   !} 
             }
