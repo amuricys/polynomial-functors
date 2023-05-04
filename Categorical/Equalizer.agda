@@ -21,10 +21,11 @@ open import Function
 open import Cubical.HITs.SetCoequalizer
 open import Relation.Binary.PropositionalEquality using () renaming (_≡_ to _≡p_)
 import Cubical.HITs.SetQuotients.Properties
-
+open import Cubical.Foundations.Transport
 open SetPolynomial
 open Polynomial
 open SetLens
+
 eq : {pˢ qˢ : SetPolynomial} → (f g : SetLens pˢ qˢ) → Equalizer f g
 eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆ˢ (mpf ⇆ mdf)) g@(⇆ˢ (mpg ⇆ mdg)) = 
   record {
@@ -32,7 +33,12 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
     arr = arr ; 
     isEqualizer = isEqualizer
     }
-   where EqualizedPosition = Σ (position p) (λ z → mpf z ≡ mpg z)
+   where -- This is the equalizer part: the set of positions of the equalizer polynomial is the equalizer set of the maps on positions
+         EqualizedPosition = Σ (position p) (λ z → mpf z ≡ mpg z)
+         -- And in the dependent part of the polynomial's definition here, the set of directions for each position is the SetCoequalizer
+         -- of the maps on directions *partially applied* the direction from which it came. This would normally be different types, but 
+         -- the positions of the equalizer have a proof that mpf posp = mpg posp, which we use to subst below.
+         eqPoly : Polynomial
          eqPoly = mkpoly EqualizedPosition $ λ intele@( posp , equal ) → SetCoequalizer (mdf posp) (λ x → mdg posp (subst (λ diffPosQ → direction q diffPosQ) equal x))
          eqPosSet : isSet (position eqPoly)
          eqPosSet = isSetΣ pposSet λ x → isProp→isSet (qposSet (mpf x) (mpg x))
@@ -40,43 +46,45 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
          eqDirSet {posp , mapped≡} = {!   !}
          eqObj : SetPolynomial
          eqObj = mksetpoly eqPoly eqPosSet eqDirSet
-         arr : SetLens eqObj pˢ
          mpe : position (poly eqObj) → position p
          mpe (posP , theyreEqualLol) = posP
          mde : (fromPos : position (poly eqObj)) → direction p (mpe fromPos) → direction (poly eqObj) fromPos
          mde _ dir = inc dir
+         arr : SetLens eqObj pˢ
          arr = ⇆ˢ (mpe ⇆ mde)
          isEqualizer : IsEqualizer arr f g
          isEqualizer = record { 
             equality = cong ⇆ˢ equal ;
-            equalize = λ { {_} {⇆ˢ (mp ⇆ md)} x → ⇆ˢ ({!   !} ⇆ {!   !}) } ;
+            equalize = {!   !} ;
             universal = {!   !} ; 
             unique = {!   !} 
             }
-            where 
-                  
-                  mapDir≡ : ((posp , equalized) : EqualizedPosition) → {- position in E -} 
-                        (dir : direction q (mpg posp)) →            {- direction in Q at that position -} 
-                        inc {A = direction q (mpf posp)} 
-                            {B = direction p posp} 
+            where mapDir≡ : ((posp , equalized) : EqualizedPosition) → {- position in E -}
+                        (dir : direction q (mpg posp)) →            {- direction in Q at that position -}
+                        inc {A = direction q (mpf posp)}
+                            {B = direction p posp}
                             {f = mdf posp}
-                            {g = λ x → mdg posp (subst (λ x₁ → direction q x₁) equalized x)} 
+                            {g = λ x → mdg posp (subst (λ x₁ → direction q x₁) equalized x)}
                             (mdf posp (subst (direction q) (sym equalized) dir))
                         ≡
                         inc (mdg posp dir)
                   mapDir≡ x@(posp , equalized) dir = let
-                    thecoeq = coeq {f = \x → mdf posp (transport (λ i → direction q (equalized (~ i))) x)} {g = mdg posp} dir
-                    partapplf : direction q (mpf posp) → direction p posp
-                    partapplf = mdf posp
-                    partapplg : direction q (mpg posp) → direction p posp
-                    partapplg = mdg posp
-                    comefromsame : (direction q (mpf posp) → direction p posp) ≡ (direction q (mpg posp) → direction p posp)
-                    comefromsame = subst {!   !} {!   !} {!   !}
+                    thecoeq : inc (mdf posp (transport (λ i → direction q (equalized (~ i))) dir))
+                                 ≡
+                              inc (mdg posp (transport (λ i → direction q (equalized i)) 
+                                                       (transport (λ i → direction q (equalized (~ i)))
+                                                                  dir)))
+                    thecoeq = coeq {f = mdf posp}
+                                   {g = λ x → mdg posp (subst (λ y → direction q y) equalized x)}
+                                   (subst (direction q) (sym equalized) dir)
+                    AAAA : transport (λ i → direction q (equalized i)) (transport (λ i → direction q (equalized (~ i))) dir) ≡ dir
+                    AAAA = transport⁻Transport (sym (λ i → direction q (equalized i))) dir
+                    please : inc (mdg posp (transport (λ i → direction q (equalized i)) (transport (λ i → direction q (equalized (~ i))) dir))) ≡ inc (mdg posp dir)
+                    please = cong (inc {A = direction q (mpf posp)} {f = mdf posp} {g = λ x → mdg posp (subst (λ y → direction q y) equalized x)} ∘ mdg posp) AAAA
                     in
-                      {!   !}
+                      thecoeq ∙ please
                   equal : (mpf ⇆ mdf) ∘ₚ (mpe ⇆ mde) ≡ (mpg ⇆ mdg) ∘ₚ (mpe ⇆ mde)
-                  equal = lensesEqual3 (funExt (λ { (_ , mapped≡) → mapped≡} )) 
-                                       mapDir≡
+                  equal = lensesEqual3 (funExt (λ { (_ , mapped≡) → mapped≡} )) mapDir≡
                   
 import Categories.Diagram.Equalizer (Sets Level.zero) as SetsEq
 eqSets : {A B : Set} → (f g : A → B) → SetsEq.Equalizer f g
@@ -144,4 +152,4 @@ eqSets {A} {B} f g = record {
 
 -- (Σ[ i ∈ p.position ] (p.direction i → q.position))
 -- p'(1) := {i ∈ p(1) | mpf(i) = mpg(i)}
-               
+                

@@ -63,10 +63,10 @@ reservoirParamsParser = ReservoirParams
   <*> option auto (long "trainingSteps" <> short 't' <> metavar "TRAINSTEPS" <> help "Number of data points to train on")
   <*> option auto (long "touchingSteps" <> short 'c' <> metavar "TOUCHSTEPS" <> help "Number of points from training system to feed before looping RC into itself")
   <*> option auto (long "outputLength" <> short 'o' <> metavar "OUTPUTLENGTH" <> help "Length of total output by reservoir + test system")
-  <*> option auto (long "dt" <> short 'd' <> metavar "DT" <> help "Time step size")
   <*> option auto (long "x0" <> short 'x' <> metavar "X0" <> help "X initial condition")
   <*> option auto (long "y0" <> short 'y' <> metavar "Y0" <> help "Y initial condition")
   <*> option auto (long "z0" <> short 'z' <> metavar "Z0" <> help "Z initial condition")
+  <*> option auto (long "dt" <> short 'd' <> metavar "DT" <> help "Time step size")
   <*> option auto (long "variance" <> short 'v' <> metavar "VARIANCE" <> help "Variance")
 
 lorenzParamsParser :: Parser SystemParams

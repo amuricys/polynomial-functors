@@ -41,8 +41,6 @@ record RunningState (numNodes : ℕ) (systemDim : ℕ) : Set where
   field
     outputWeights : OutputWeights numNodes systemDim
     reservoirState : ReservoirState numNodes
-    statesHistory : List (ReservoirState numNodes)
-    systemHistory : List (Vec ℝ systemDim)
 
 data ReadoutLayerState (numNodes : ℕ) (systemDim : ℕ) : Set where
   Coll : CollectingDataState numNodes systemDim → ReadoutLayerState numNodes systemDim

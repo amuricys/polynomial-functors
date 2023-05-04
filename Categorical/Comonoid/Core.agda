@@ -17,11 +17,17 @@ record Comonoid (c : Polynomial) : Set where
     leftCounit :  ~ᴸ ≡ ⟨ ε ◂ idLens {c} ⟩ ∘ₚ δ
     rightCounit : ~ᴿ ≡ ⟨ idLens {c} ◂ ε ⟩ ∘ₚ δ
 
+open import Relation.Binary.Core
+record SmallArrow {emanator : Polynomial} (dom : position emanator) (cod : position emanator) : Set where
+  constructor _⟫_
+  
 
 open import Data.Product
 
+
+
 comonoidsAreCategories : {emanator : Polynomial} → Comonoid emanator → Category zero zero zero
-comonoidsAreCategories {mkpoly pos dir} record { 
+comonoidsAreCategories {emanator@(mkpoly pos dir)} record { 
   ε = ε ; 
   δ = δ ; 
   assoc = assoc ; 
@@ -29,10 +35,10 @@ comonoidsAreCategories {mkpoly pos dir} record {
   rightCounit = rightCounit 
   } = record
   { Obj = pos
-  ; _⇒_ = λ x x₁ → pos × pos -- experimenting. We might need a deeper relation
+  ; _⇒_ = smallArrow -- experimenting. We might need a deeper relation
   ; _≈_ = _≡_ 
-  ; id = λ {A} → A , A
-  ; _∘_ = λ { (a , _) (_ , c) → a , c }
+  ; id = {!   !}
+  ; _∘_ = {!   !}
   ; assoc = refl
   ; sym-assoc = refl
   ; identityˡ = {!   !} -- yep. we do. this is already impossible. we need to use the data in the comonoid
@@ -41,6 +47,8 @@ comonoidsAreCategories {mkpoly pos dir} record {
   ; equiv = {!   !}
   ; ∘-resp-≈ = {!   !}
   }
+  where smallArrow : Rel pos zero
+        smallArrow = λ x x₁ → SmallArrow {emanator} x x₁
 
 categoriesAreComonoids : {emanator : Polynomial} → Category zero zero zero → Comonoid emanator
 categoriesAreComonoids cat = {!   !}

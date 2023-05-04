@@ -147,10 +147,10 @@ rest (ReservoirParams rdim trainSteps touchSteps outputLength lorinitx lorinity 
       y , zabc = fromSigma (List.unzip yzabc)
       z , abc = fromSigma (List.unzip zabc)
       pred_x , bc = fromSigma (List.unzip abc)
-      pred_y , co = fromSigma (List.unzip bc)
-      pred_z , ohs = fromSigma (List.unzip co)
-      o , hs = fromSigma (List.unzip ohs)
-      h , s = fromSigma (List.unzip hs)
+      pred_y , pred_z = fromSigma (List.unzip bc)
+     --  pred_z , ohs = fromSigma (List.unzip co)
+      -- o , hs = fromSigma (List.unzip ohs)
+      -- h , s = fromSigma (List.unzip hs)
   -- _ ← IO.run {Level.zero} $ IO.putStrLn "system history:"
   -- _ ← printOneMatrixAsListFromList s
   -- _ ← IO.run {Level.zero} $ IO.putStrLn "reservoir state history:"

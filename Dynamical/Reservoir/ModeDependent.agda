@@ -9,7 +9,7 @@ open import Data.Unit
 open import Data.Nat renaming (_+_ to _+ℕ_)
 open import Data.Float renaming (Float to ℝ; tanh to tanh1; show to showf) hiding (⌊_⌋)
 open import CategoryData.Everything renaming (_*_ to _*p_ ; _+_ to _+p_; Y to Y')
-open import Codata.Stream
+open import Codata.Stream using (Stream ; take ; drop)
 open import Dynamical.Matrix.Everything as Matrix using (Matrix ; _*ⱽᴹ_ ; _*ᴹⱽ_ ; _*ᴹ_ ; _+ᴹ_ ; _+ⱽ_ ; _ᵀ ; _⁻¹ ; _*ˢᴹ_ ; eye)
 open import Dynamical.Reservoir.State
 open import Dynamical.Lorenz as Lorenz
@@ -43,7 +43,7 @@ postulate trace : ∀ {A : Set} → String → A → A
 
 data ReadoutOutput (numNodes systemDim : ℕ) : Set where
   CD : ReadoutOutput numNodes systemDim
-  R : Vec ℝ systemDim → OutputWeights numNodes systemDim → List (ReservoirState numNodes) → List (Vec ℝ systemDim) → ReadoutOutput numNodes systemDim
+  R : Vec ℝ systemDim → OutputWeights numNodes systemDim → ReadoutOutput numNodes systemDim
 
 record CollectingDataInput (numNodes systemDim : ℕ) : Set where
   constructor CDI
@@ -51,14 +51,12 @@ record CollectingDataInput (numNodes systemDim : ℕ) : Set where
     resStates : ReservoirState numNodes
     sysOutput : Vec ℝ systemDim
 
-record RunningInput (numNodes : ℕ) : Set where
-  constructor RI
-  field
-    resStates : ReservoirState numNodes
+RunningInput : (numNodes : ℕ) → Set
+RunningInput = ReservoirState
 
 DependentInput : {numNodes systemDim : ℕ} → ReadoutOutput numNodes systemDim → Set
 DependentInput {numNodes} {systemDim} CD = CollectingDataInput numNodes systemDim
-DependentInput {numNodes} (R _ _ _ _) = RunningInput numNodes
+DependentInput {numNodes} (R _ _ ) = RunningInput numNodes
 
 reservoir : (numNodes systemDim : ℕ) → DynamicalSystem
 reservoir numNodes systemDim = MkDynamicalSystem (ReservoirState numNodes) interface (readout ⇆ update)
@@ -67,7 +65,7 @@ reservoir numNodes systemDim = MkDynamicalSystem (ReservoirState numNodes) inter
         readout : ReservoirState numNodes → ReservoirState numNodes
         readout = id
         update : ReservoirState numNodes → Vec ℝ systemDim × InputWeights numNodes systemDim × ReservoirWeights numNodes → ReservoirState numNodes
-        update (Res nodeStates) (inputSequence , inputWeights , reservoirWeights) = Res reservoirActivations
+        update (Res nodeStates) (inputSequence , inputWeights , reservoirWeights) =  Res reservoirActivations
            where inputDynamic : Vec ℝ numNodes
                  inputDynamic = inputWeights *ᴹⱽ inputSequence
                  newReservoirStates : Vec ℝ numNodes
@@ -81,7 +79,7 @@ readoutLayer numNodes systemDim trainingSteps = MkDynamicalSystem (ReadoutLayerS
         interface = mkpoly (ReadoutOutput numNodes systemDim) DependentInput
         readout : ReadoutLayerState numNodes systemDim → ReadoutOutput numNodes systemDim
         readout (Coll _) = CD -- don't care when training
-        readout (Run (Running outputWeights (Res nodeStates) statesHist systemHist)) = R (outputWeights ᵀ *ᴹⱽ nodeStates) outputWeights (reverse statesHist) (reverse systemHist)
+        readout (Run (Running outputWeights (Res lastSeenNodeStates))) = R (outputWeights ᵀ *ᴹⱽ lastSeenNodeStates) outputWeights
         update : (fromPos : ReadoutLayerState numNodes systemDim) → DependentInput (readout fromPos) → ReadoutLayerState numNodes systemDim
         update (Coll (Collecting counter statesHistory systemHistory)) (CDI newNodeStates systemOutput) = 
           if is-< counter trainingSteps then keepCollecting else trainThenRun
@@ -94,12 +92,18 @@ readoutLayer numNodes systemDim trainingSteps = MkDynamicalSystem (ReadoutLayerS
                   keepCollecting : ReadoutLayerState numNodes systemDim
                   keepCollecting = Coll (Collecting (1 +ℕ counter) (newNodeStates ∷ statesHistory) (systemOutput ∷ systemHistory))
                   trainThenRun : ReadoutLayerState numNodes systemDim
-                  trainThenRun = Run (Running trainedOutput initialState (Vec.toList statesHistory) (Vec.toList systemHistory))
+                  trainThenRun = Run (Running trainedOutputWeights initialState)
                     where initialState : ReservoirState numNodes
                           initialState = Res (Vec.replicate 0.0)
-                          trainedOutput : OutputWeights numNodes systemDim
-                          trainedOutput = (statesHist ᵀ *ᴹ statesHist +ᴹ ridge *ˢᴹ eye)⁻¹ *ᴹ (statesHist ᵀ *ᴹ systemHist) 
-        update (Run (Running outputWeights reservoirState sth ssh)) (RI resStates) = Run (Running outputWeights resStates sth ssh)
+                          trainedOutputWeights : OutputWeights numNodes systemDim
+                          trainedOutputWeights = (statesHist ᵀ *ᴹ statesHist +ᴹ ridge *ˢᴹ eye {n = numNodes})⁻¹ *ᴹ (statesHist ᵀ *ᴹ systemHist)
+        update (Run (Running outputWeights (Res lastSeenNodeStates))) (Res nodeStateFromReservoir) = trace str $ Run (Running outputWeights (Res nodeStateFromReservoir))
+          where str = "Readout's conception of node states (what you'd get from a readout): \n" ++ 
+                      Matrix.showVec (outputWeights ᵀ *ᴹⱽ lastSeenNodeStates) ++
+                      "\nResult of multiplying owᵀ = \n" ++ 
+                      Matrix.showMatrix (outputWeights ᵀ) ++ 
+                      "with its current nodeStates = \n" ++
+                      Matrix.showVec lastSeenNodeStates
 
 data TouchCtrl : Set where
   touching going : TouchCtrl
@@ -112,7 +116,7 @@ ctr {nN} {sd} touchSteps = MkDynamicalSystem ℕ (mkpoly TouchCtrl (λ x₁ → 
             going
         countUp : ℕ → ReadoutOutput nN sd → ℕ
         countUp st CD = st
-        countUp st (R _ _ _ _) = st +ℕ 1
+        countUp st (R _ _) = st +ℕ 1
 
 preLorRes : (numNodes trainingSteps touchSteps : ℕ) → (dt : ℝ) → InputWeights numNodes 3 → ReservoirWeights numNodes → DynamicalSystem
 preLorRes numNodes trainingSteps touchSteps dt inputWeights reservoirWeights = 
@@ -127,11 +131,12 @@ preLorRes numNodes trainingSteps touchSteps dt inputWeights reservoirWeights =
   -- Readout layer
   readoutLayer numNodes 3 trainingSteps
 OuterOutputType : (numNodes : ℕ) →  Set
-OuterOutputType numNodes = ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × OutputWeights numNodes 3 × List (ReservoirState numNodes) × List (Vec ℝ 3) ⊎ ⊤
+OuterOutputType numNodes = ℝ × ℝ × ℝ × ℝ × ℝ × ℝ ⊎ ⊤
 
 OuterOutput : (numNodes : ℕ) → Polynomial
 OuterOutput numNodes = Emitter (OuterOutputType numNodes)
 
+open import Data.Product
 lorenzReservoirWiringDiagram :
   (numNodes : ℕ) →
   (inputWeights : InputWeights numNodes 3) →
@@ -144,23 +149,20 @@ lorenzReservoirWiringDiagram numNodes inputWeights reservoirWeights = outerOutpu
                            (DynamicalSystem.interface (preLorRes numNodes 3 3 0.0 inputWeights reservoirWeights)) →
                            position (OuterOutput numNodes)
         outerOutputsFrom ((xnt x , ynt y , znt z) , _ , touching , _ , CD) = inj₂ tt
-        outerOutputsFrom (_ , (xnt x , ynt y , znt z) , touching , _ , R (predx ∷ predy ∷ predz ∷ Vec.[]) ow stateHist sysHis) = inj₁ (x , y , z , predx , predy , predz , ow , stateHist , sysHis)
-        outerOutputsFrom ((xnt x , ynt y , znt z) , _ , going , res , R (predx ∷ predy ∷ predz ∷ Vec.[]) ow stateHist sysHis) = inj₁ (x , y , z , predx , predy , predz , ow , stateHist , sysHis)
+        outerOutputsFrom (_ , (xnt x , ynt y , znt z) , touching , _ , R (predx ∷ predy ∷ predz ∷ Vec.[]) ow) = inj₁ (x , y , z , predx , predy , predz)
+        outerOutputsFrom ((xnt x , ynt y , znt z) , _ , going , res , R (predx ∷ predy ∷ predz ∷ Vec.[]) ow) = inj₁ (x , y , z , predx , predy , predz)
         outerOutputsFrom (lor , res , _ , _ , CD) = inj₂ tt
-        innerInputsFrom : (fromPos : position (DynamicalSystem.interface (preLorRes numNodes 3 3 0.0 (Matrix.replicate 1.0) (Matrix.replicate 1.0)))) →
-                          direction (OuterOutput numNodes) (outerOutputsFrom fromPos) →
-                          direction (DynamicalSystem.interface (preLorRes numNodes 3 3 0.0 inputWeights reservoirWeights))
-                          fromPos
-        innerInputsFrom (_ , lorTestOutput , touching , resOutput , ro@(R readOutput ow sh sl)) dir = trace (Matrix.showVec ∘ ReservoirState.nodeStates $ resOutput) $ tt , tt , ro , resInputTouching , readInputTouching
+        innerInputsFrom : {!   !} -- (X × Y × Z) × (X × Y × Z) × TouchCtrl × ReservoirState numNodes × ReadoutOutput numNodes 3 → ⊤ → ?
+        innerInputsFrom (_ , lorTestOutput , touching , resOutput , ro@(R readOutput ow )) dir = tt , tt , ro , {!   !} , readInputTouching
           where resInputTouching : direction (DynamicalSystem.interface (reservoir numNodes 3)) resOutput
                 resInputTouching = Lorenz.outToVec lorTestOutput , inputWeights , reservoirWeights
                 readInputTouching : RunningInput numNodes
-                readInputTouching = RI resOutput
-        innerInputsFrom (lorTrainingOutput , _ , going , resOutput , ro@(R readOutput ow sh sl)) dir = tt , tt , ro , resInputRunning , readInputRunning
+                readInputTouching = resOutput
+        innerInputsFrom (lorTrainingOutput , _ , going , resOutput , ro@(R readOutput ow)) dir = tt , tt , ro , resInputRunning , readInputRunning
           where resInputRunning : direction (DynamicalSystem.interface (reservoir numNodes 3)) resOutput
                 resInputRunning = readOutput , inputWeights , reservoirWeights
                 readInputRunning : RunningInput numNodes
-                readInputRunning = RI resOutput
+                readInputRunning = resOutput
         innerInputsFrom (lorTrainingOutput , _ , _ , resOutput , CD) dir = tt , tt , CD , resInputTraining , CDI resOutput (outToVec lorTrainingOutput)
            where resInputTraining : direction (DynamicalSystem.interface (reservoir numNodes 3)) resOutput
                  resInputTraining = Lorenz.outToVec lorTrainingOutput , inputWeights , reservoirWeights
@@ -202,10 +204,10 @@ lorenzResList :
   (dt : ℝ)
   (inputWeights : InputWeights numNodes 3) →
   (reservoirWeights : ReservoirWeights numNodes) → 
-  Vec (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × OutputWeights numNodes 3 × List (ReservoirState numNodes) × List (Vec ℝ 3)) outputLength
+  Vec (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ) outputLength
 lorenzResList numNodes trainingSteps touchSteps outputLength lorenzInitialConditions dt inputWeights reservoirWeights = 
     Vec.map discr (take outputLength ∘ drop trainingSteps $ lorenzResSeq numNodes trainingSteps touchSteps lorenzInitialConditions dt inputWeights reservoirWeights)
-       where discr : OuterOutputType numNodes → (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ × OutputWeights numNodes 3 × List (ReservoirState numNodes) × List (Vec ℝ 3))
+       where discr : OuterOutputType numNodes → (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ)
              discr (inj₁ x) = x
-             discr (inj₂ tt) = 0.0 , 0.0 , 0.0 , 0.0 , 0.0 , 0.0 , Matrix.𝕄 (Vec.replicate (Vec.replicate 0.0)) , [] , []
+             discr (inj₂ tt) = 0.0 , 0.0 , 0.0 , 0.0 , 0.0 , 0.0 
   
