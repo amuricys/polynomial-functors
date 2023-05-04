@@ -25,6 +25,10 @@ open import Cubical.Foundations.Transport
 open SetPolynomial
 open Polynomial
 open SetLens
+open UniversalProperty
+
+rapaz : {p q : SetPolynomial} {f g : SetLens p q} → f ≡ g → (lens f) ≡ (lens g)
+rapaz x = λ i → lens $ x i
 
 eq : {pˢ qˢ : SetPolynomial} → (f g : SetLens pˢ qˢ) → Equalizer f g
 eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆ˢ (mpf ⇆ mdf)) g@(⇆ˢ (mpg ⇆ mdg)) = 
@@ -55,7 +59,9 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
          isEqualizer : IsEqualizer arr f g
          isEqualizer = record { 
             equality = cong ⇆ˢ equal ;
-            equalize = {!   !} ;
+            equalize = λ { {X} {h = ⇆ˢ (mph ⇆ mdh )} x → ⇆ˢ 
+                            ((λ x₁ → mph x₁ , funExt⁻ (cong mapPosition $ rapaz x) x₁) 
+                             ⇆ λ fromPos → inducedHom (λ x₁ y → isDirSet X x₁ y) (mdh fromPos) λ a → {!  !} ) }  ;
             universal = {!   !} ; 
             unique = {!   !} 
             }
@@ -93,7 +99,7 @@ eqSets {A} {B} f g = record {
       arr = λ { (fst₁ , snd₁) → fst₁ } ; 
       isEqualizer = record { 
             equality = \{ {fst₁ , snd₁} → snd₁ }; 
-            equalize = λ {X} {h} x x₁ → h x₁ , x ; 
+            equalize = λ {X} {h} x x₁ → h x₁ , {!   !} ; 
             universal =  _≡p_.refl ; 
             unique = unique }
             }
@@ -152,4 +158,4 @@ eqSets {A} {B} f g = record {
 
 -- (Σ[ i ∈ p.position ] (p.direction i → q.position))
 -- p'(1) := {i ∈ p(1) | mpf(i) = mpg(i)}
-                
+                  

@@ -111,3 +111,9 @@ lensesEqual3 : {p q : Polynomial} {f g : Lens p q}
         )
     → f ≡ g
 lensesEqual3 {f = f} {g = g} a b i = sigmaToLens (lensSigmasEqual3 {f = f} {g = g} a b i)
+
+lens≡→mapPos≡ : {p q : Polynomial} {f g : Lens p q} → (f ≡ g) → (mapPosition f ≡ mapPosition g)
+lens≡→mapPos≡ p = λ i → mapPosition (p i)
+
+-- lens≡→mapDir≡ : {p q : Polynomial} {f g : Lens p q} → (f ≡ g) → (mapDirection f ≡ mapDirection g)
+-- lens≡→mapDir≡ p = λ i → mapDirection (p i)
