@@ -59,14 +59,16 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
          isEqualizer : IsEqualizer arr f g
          isEqualizer = record { 
             equality = cong ⇆ˢ equal ;
-            equalize = λ { {X} {h = ⇆ˢ (mph ⇆ mdh )} x → ⇆ˢ 
-                            ((λ x₁ → mph x₁ , funExt⁻ (cong mapPosition $ rapaz x) x₁) 
-                             ⇆ λ fromPos → inducedHom (λ x₁ y → isDirSet X x₁ y) (mdh fromPos) λ a → λ i → (mapDirection ∘ lens) (x i) fromPos {! a  !} ) }  ;
-            universal = {!   !} ; 
-            unique = {!   !} 
+            equalize = λ { {X} {h = ⇆ˢ (mph ⇆ mdh)} x → ⇆ˢ 
+                          ((λ x₁ → mph x₁ , funExt⁻ (cong mapPosition $ rapaz x) x₁) 
+                             ⇆ λ fromPos → inducedHom (λ x₁ y → isDirSet X x₁ y) (mdh fromPos) (lens≡→mapDir≡' (rapaz x) fromPos) ) }  ;
+            universal = λ {X} {(⇆ˢ (mph ⇆ mdh))} {eq2} → cong ⇆ˢ (lensesEqual3 refl λ x y → commutativity (isDirSet X) (\y →  mdh x {!  !}) (λ a → lens≡→mapDir≡' (cong lens eq2) x a) {!   !}) ; 
+            unique = λ {X} {h@(⇆ˢ (mph ⇆ mdh))} {(⇆ˢ (mpi ⇆ mdi))} x → cong ⇆ˢ  (lensesEqual3 (funExt λ { posX → {! mpi posX  !} }) {!   !}) 
             }
-            where mapDir≡ : ((posp , equalized) : EqualizedPosition) → {- position in E -}
-                        (dir : direction q (mpg posp)) →            {- direction in Q at that position -}
+            where 
+                  
+                  mapDir≡ : ((posp , equalized) : EqualizedPosition) → {- position in E -}
+                        (dir : direction q (mpg posp)) →               {- direction in Q at that position -}
                         inc {A = direction q (mpf posp)}
                             {B = direction p posp}
                             {f = mdf posp}
@@ -158,4 +160,4 @@ eqSets {A} {B} f g = record {
 
 -- (Σ[ i ∈ p.position ] (p.direction i → q.position))
 -- p'(1) := {i ∈ p(1) | mpf(i) = mpg(i)}
-                  
+                    
