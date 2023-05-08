@@ -19,6 +19,8 @@ Y = mkpoly ⊤ (λ _ → ⊤)
 monomial : (A B : Set) → Polynomial
 monomial A B = mkpoly A (λ _ → B)
 
+_y^_ = monomial
+
 -- | p(y) = A
 Constant : (A : Set) → Polynomial
 Constant A = monomial A ⊥

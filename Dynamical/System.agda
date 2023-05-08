@@ -49,7 +49,7 @@ MkDynamicalSystem stateA interfaceA dynamicsA &&& MkDynamicalSystem stateB inter
 infixr 10 _&&&_
 
 Emitter : Set → Polynomial
-Emitter t = monomial t ⊤
+Emitter = linear
 
 install : (d : DynamicalSystem) → (a : Polynomial) → Lens (DynamicalSystem.interface d) a → DynamicalSystem
 install d a l = MkDynamicalSystem (DynamicalSystem.state d) a (l ∘ₚ (DynamicalSystem.dynamics d))
