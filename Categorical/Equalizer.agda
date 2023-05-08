@@ -51,48 +51,68 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
          eqObj : SetPolynomial
          eqObj = mksetpoly eqPoly eqPosSet eqDirSet
          mpe : position (poly eqObj) → position p
-         mpe (posP , theyreEqualLol) = posP
+         mpe = fst
          mde : (fromPos : position (poly eqObj)) → direction p (mpe fromPos) → direction (poly eqObj) fromPos
          mde _ dir = inc dir
          arr : SetLens eqObj pˢ
          arr = ⇆ˢ (mpe ⇆ mde)
-         isEqualizer : IsEqualizer arr f g
-         isEqualizer = record { 
-            equality = cong ⇆ˢ equal ;
-            equalize = λ { {X} {h = ⇆ˢ (mph ⇆ mdh)} x → ⇆ˢ 
-                          ((λ x₁ → mph x₁ , funExt⁻ (cong mapPosition $ rapaz x) x₁) 
-                             ⇆ λ fromPos → inducedHom (λ x₁ y → isDirSet X x₁ y) (mdh fromPos) (lens≡→mapDir≡' (rapaz x) fromPos) ) }  ;
-            universal = λ {X} {(⇆ˢ (mph ⇆ mdh))} {eq2} → cong ⇆ˢ (lensesEqual3 refl λ x y → commutativity (isDirSet X) (\y →  mdh x {!  !}) (λ a → lens≡→mapDir≡' (cong lens eq2) x a) {!   !}) ; 
-            unique = λ {X} {h@(⇆ˢ (mph ⇆ mdh))} {(⇆ˢ (mpi ⇆ mdi))} x → cong ⇆ˢ  (lensesEqual3 (funExt λ { posX → {! mpi posX  !} }) {!   !}) 
-            }
-            where 
-                  
-                  mapDir≡ : ((posp , equalized) : EqualizedPosition) → {- position in E -}
+
+         mapDir≡ : ((posp , equalized) : EqualizedPosition) → {- position in E -}
                         (dir : direction q (mpg posp)) →               {- direction in Q at that position -}
-                        inc {A = direction q (mpf posp)}
-                            {B = direction p posp}
-                            {f = mdf posp}
-                            {g = λ x → mdg posp (subst (λ x₁ → direction q x₁) equalized x)}
-                            (mdf posp (subst (direction q) (sym equalized) dir))
-                        ≡
-                        inc (mdg posp dir)
-                  mapDir≡ x@(posp , equalized) dir = let
-                    thecoeq : inc (mdf posp (transport (λ i → direction q (equalized (~ i))) dir))
-                                 ≡
-                              inc (mdg posp (transport (λ i → direction q (equalized i)) 
-                                                       (transport (λ i → direction q (equalized (~ i)))
-                                                                  dir)))
-                    thecoeq = coeq {f = mdf posp}
-                                   {g = λ x → mdg posp (subst (λ y → direction q y) equalized x)}
-                                   (subst (direction q) (sym equalized) dir)
-                    AAAA : transport (λ i → direction q (equalized i)) (transport (λ i → direction q (equalized (~ i))) dir) ≡ dir
-                    AAAA = transport⁻Transport (sym (λ i → direction q (equalized i))) dir
-                    please : inc (mdg posp (transport (λ i → direction q (equalized i)) (transport (λ i → direction q (equalized (~ i))) dir))) ≡ inc (mdg posp dir)
-                    please = cong (inc {A = direction q (mpf posp)} {f = mdf posp} {g = λ x → mdg posp (subst (λ y → direction q y) equalized x)} ∘ mdg posp) AAAA
-                    in
-                      thecoeq ∙ please
-                  equal : (mpf ⇆ mdf) ∘ₚ (mpe ⇆ mde) ≡ (mpg ⇆ mdg) ∘ₚ (mpe ⇆ mde)
-                  equal = lensesEqual3 (funExt (λ { (_ , mapped≡) → mapped≡} )) mapDir≡
+            inc {A = direction q (mpf posp)}
+                  {B = direction p posp}
+                  {f = mdf posp}
+                  {g = λ x → mdg posp (subst (λ x₁ → direction q x₁) equalized x)}
+                  (mdf posp (subst (direction q) (sym equalized) dir))
+            ≡
+            inc (mdg posp dir)
+         mapDir≡ x@(posp , equalized) dir = let
+               thecoeq : inc (mdf posp (transport (λ i → direction q (equalized (~ i))) dir))
+                           ≡
+                     inc (mdg posp (transport (λ i → direction q (equalized i)) 
+                                                   (transport (λ i → direction q (equalized (~ i)))
+                                                         dir)))
+               thecoeq = coeq {f = mdf posp}
+                           {g = λ x → mdg posp (subst (λ y → direction q y) equalized x)}
+                           (subst (direction q) (sym equalized) dir)
+               AAAA : transport (λ i → direction q (equalized i)) (transport (λ i → direction q (equalized (~ i))) dir) ≡ dir
+               AAAA = transport⁻Transport (sym (λ i → direction q (equalized i))) dir
+               please : inc (mdg posp (transport (λ i → direction q (equalized i)) (transport (λ i → direction q (equalized (~ i))) dir))) ≡ inc (mdg posp dir)
+               please = cong (inc {A = direction q (mpf posp)} {f = mdf posp} {g = λ x → mdg posp (subst (λ y → direction q y) equalized x)} ∘ mdg posp) AAAA
+               in
+               thecoeq ∙ please
+         equal : (mpf ⇆ mdf) ∘ₚ (mpe ⇆ mde) ≡ (mpg ⇆ mdg) ∘ₚ (mpe ⇆ mde)
+         equal = lensesEqual3 (funExt (λ { (_ , mapped≡) → mapped≡} )) mapDir≡
+
+         open IsEqualizer
+         isEqualizer : IsEqualizer arr f g
+         equality isEqualizer = cong ⇆ˢ equal
+         equalize isEqualizer {X} {h = ⇆ˢ (mph ⇆ mdh)} x = ⇆ˢ 
+                           ((λ x₁ → mph x₁ , funExt⁻ (cong mapPosition $ rapaz x) x₁) 
+                              ⇆ λ fromPos → inducedHom (λ x₁ y → isDirSet X x₁ y) (mdh fromPos) (lens≡→mapDir≡' (rapaz x) fromPos))
+         universal isEqualizer {X} {(⇆ˢ (mph ⇆ mdh))} {eq} = cong ⇆ˢ (lensesEqual3 refl mdhproof)
+           where mdhproof : (x : position (poly X)) 
+                            (y : direction p (mph x)) → 
+                            mdh x (transport (λ i → direction p (mph x)) y) ≡ mdh x y
+                 mdhproof x y  = cong (λ a → mdh x a) obvious
+                    where obvious : transport (λ i → direction p (mph x)) y ≡ y
+                          obvious = transportRefl y
+         unique isEqualizer {X} {(⇆ˢ (mph ⇆ mdh))} {(⇆ˢ (mpi ⇆ mdi))} {eq} eq2 = cong ⇆ˢ (lensesEqual3 mapPos≡ {!   !})
+           where mapPos≡ : mpi ≡ (λ x₁ → mph x₁ , (λ i → mapPosition (lens (eq i)) x₁))
+                 mapPos≡ = funExt (λ x → ΣPathP (funExt⁻ (sym (lens≡→mapPos≡ (rapaz eq2))) x , {!   !}))
+      --      record { 
+      --       equality = cong ⇆ˢ equal ;
+            --  equalize = λ { {X} {h = ⇆ˢ (mph ⇆ mdh)} x → ⇆ˢ 
+            --                ((λ x₁ → mph x₁ , funExt⁻ (cong mapPosition $ rapaz x) x₁) 
+            --                   ⇆ λ fromPos → inducedHom (λ x₁ y → isDirSet X x₁ y) (mdh fromPos) (lens≡→mapDir≡' (rapaz x) fromPos) ) }  ;
+      --       universal = λ {X} {(⇆ˢ (mph ⇆ mdh))} {eq2} → cong ⇆ˢ (lensesEqual3 refl λ x y → {!   !}  ); -- commutativity (isDirSet X) (\y →  mdh x {!  !}) (λ a → lens≡→mapDir≡' (cong lens eq2) x a) {!   !}) ; 
+      --       unique = λ {X} {h@(⇆ˢ (mph ⇆ mdh))} {(⇆ˢ (mpi ⇆ mdi))} x → cong ⇆ˢ (lensesEqual3 (funExt λ { posX → {! mpi posX  !} }) {!   !}) 
+      --       }
+--            where 
+                  -- universal : ∀ {X p q : SetPolynomial} {h : Lens X p}  → {!   !}
+                  -- universal = λ {X} {(⇆ˢ (mph ⇆ mdh))} {eq2} → cong ⇆ˢ (lensesEqual3 refl λ x y → commutativity (isDirSet X) (\y →  mdh x {!  !}) (λ a → lens≡→mapDir≡' (cong lens eq2) x a) {!   !}) 
+                  
+                  
                   
 import Categories.Diagram.Equalizer (Sets Level.zero) as SetsEq
 eqSets : {A B : Set} → (f g : A → B) → SetsEq.Equalizer f g
