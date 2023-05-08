@@ -15,60 +15,86 @@ open import CategoryData.Everything hiding ( 𝟘 ; 𝟙 )
 open import Function
 open import Relation.Nullary.Decidable using (⌊_⌋)
 open import Data.Bool using (if_then_else_ ; Bool ; true ; false)
+------- Common definitions
+data Alphabet : Set where
+  𝟘 𝟙 𝕓 : Alphabet
+
+data Movement : Set where 
+  𝕝 𝕣 : Movement
 
 ------- Processor definitions
 ProcessorState : Set
 ProcessorState = ℕ 
 
-data ProcessorInput : Set where
-  𝟘 𝟙 b : ProcessorInput
-
-data TapeMovement : Set where
-  l r : TapeMovement
-
 data ProcessorOutput : Set where
-  move : TapeMovement → ProcessorOutput
-  write : ProcessorInput → ProcessorOutput
+  move : Movement → ProcessorOutput
+  write : Alphabet → ProcessorOutput
   halt : ProcessorOutput
 
+data ProcessorInput : Set where
+  instruction : Alphabet → ProcessorInput
+
+procInputFromOutput : ProcessorOutput → Set
+procInputFromOutput (move x) = ProcessorInput
+procInputFromOutput (write x) = ProcessorInput
+procInputFromOutput halt = ⊤
+
 processorInterface : Polynomial
-processorInterface = (mkpoly ProcessorOutput (const ProcessorInput))
+processorInterface = (mkpoly ProcessorOutput procInputFromOutput)
 
 turingProgram : Lens (selfMonomial ProcessorState) processorInterface
 turingProgram = exposeState ⇆ updateState
   where exposeState : ProcessorState → ProcessorOutput
-        exposeState n = {!  !}
-        updateState : ProcessorState → ProcessorInput → ProcessorState
-        updateState n toWrite = {!   !}
+        exposeState (ℕ.suc (ℕ.suc n)) = halt
+        exposeState (ℕ.suc zero) = move 𝕣
+        exposeState zero = move 𝕝
+        updateState : (x : ProcessorState) → procInputFromOutput (exposeState x) → ProcessorState
+        updateState zero (instruction x) = {! x  !}
+        updateState (ℕ.suc zero) (instruction x) = {!   !}
+        updateState (ℕ.suc (ℕ.suc x)) tt = (ℕ.suc (ℕ.suc x))
 
 processor : DynamicalSystem
 processor = MkDynamicalSystem ProcessorState processorInterface turingProgram
 
 ------- Tape definitions
-data TapeState : Set where
-  running : (ℤ → ProcessorInput) → TapeState
-  halting : (ℤ → ProcessorInput) → TapeState
+data TapeInput : Set where
+  write : Alphabet → TapeInput
+  move : Movement → TapeInput
+  halt : TapeInput
+  
+TapeAt : Set
+TapeAt = ℤ → Alphabet
 
 data TapeOutput : Set where
-  instruct : ProcessorInput → TapeOutput
-  result : TapeState → TapeOutput
+  goOut : Alphabet → TapeOutput
+  haltOut : TapeAt → TapeOutput
+
+tapeInputFromOutput : TapeOutput → Set
+tapeInputFromOutput (goOut x) = TapeInput
+tapeInputFromOutput (haltOut x) = ⊥
 
 tapeInterface : Polynomial
-tapeInterface = mkpoly TapeOutput decide
-  where decide : TapeOutput → Set
-        decide (instruct x) = ProcessorOutput
-        decide (result x) = ⊥
+tapeInterface = mkpoly TapeOutput tapeInputFromOutput
+
+
+
+data TapeState : Set where
+  go : TapeAt → TapeState
+  halt : TapeAt → TapeState
 
 tapeBehavior : Lens (selfMonomial TapeState) tapeInterface
-tapeBehavior = readout ⇆ update
+tapeBehavior = 
+  readout ⇆ update
   where readout : TapeState → TapeOutput
-        readout (running x) = instruct (x 0ℤ)
-        readout (halting x) = result (halting x)
-        update : (fromPos : position (selfMonomial TapeState)) → direction tapeInterface (readout fromPos) → direction (selfMonomial TapeState) fromPos
-        update (running f) (move l) = running (f ∘ (_+ℤ 1ℤ))
-        update (running f) (move r) = running (f ∘ (_-ℤ 1ℤ))
-        update (running f) (write x) = running λ x₁ → if ⌊ x₁ ≟ 0ℤ ⌋ then x else f x₁
-        update (running x) halt = halting x
+        readout (go tapeAt) = goOut (tapeAt 0ℤ)
+        readout (halt tapeAt) = haltOut tapeAt 
+        update : (x : TapeState) → (tapeInputFromOutput (readout x)) → TapeState
+        update (go tapeAt) (write x) = go (λ tapeIndex → if ⌊ tapeIndex ≟ 0ℤ ⌋ then x else tapeAt tapeIndex)
+        update (go tapeAt) (move x) = go (moveTape x tapeAt)
+           where moveTape : Movement → TapeAt → TapeAt
+                 moveTape 𝕝 f = f ∘ (1ℤ +ℤ_ )
+                 moveTape 𝕣 f = f ∘ (1ℤ -ℤ_ )
+        update (go tapeAt) halt = halt tapeAt
 
 tape : DynamicalSystem
 tape = MkDynamicalSystem TapeState tapeInterface tapeBehavior
@@ -76,24 +102,28 @@ tape = MkDynamicalSystem TapeState tapeInterface tapeBehavior
 preTuring : DynamicalSystem
 preTuring = tape &&& processor
 
+open DynamicalSystem
 Word : Set
-Word = Vec ℤ 32
-
-turingWiringDiagram : Lens (DynamicalSystem.interface preTuring) (Emitter Word)
+Word = Vec ℤ 256
+toInt : Alphabet → ℤ
+toInt 𝟘 = 0ℤ
+toInt 𝟙 = 1ℤ
+toInt 𝕓 = 1ℤ +ℤ 1ℤ
+turingWiringDiagram : Lens (interface preTuring) (Emitter (Word ⊎ ⊤))
 turingWiringDiagram = outerOutput ⇆ fillInputs
-  where stillRunning = replicate 0ℤ
-        outerOutput : TapeOutput × ProcessorOutput → Word
-        outerOutput (instruct x₁ , move x) = stillRunning
-        outerOutput (result x₁ , move x) = stillRunning
-        outerOutput (instruct x₁ , write x) = stillRunning
-        outerOutput (result x₁ , write x) = stillRunning
-        outerOutput (instruct x , halt) = stillRunning
-        outerOutput (result (running x) , halt) = stillRunning
-        outerOutput (result (halting x) , halt) = Data.Vec.map (toInt ∘ x) (tabulate (+_ ∘ toℕ))
-          where toInt : ProcessorInput → ℤ
-                toInt 𝟘 = 0ℤ
-                toInt 𝟙 = 1ℤ
-                toInt b = 1ℤ +ℤ 1ℤ
-        fillInputs : (fromPos : TapeOutput × ProcessorOutput) → ⊤ → direction (DynamicalSystem.interface preTuring) fromPos
-        fillInputs (instruct x , proc) tt = proc , x
-        fillInputs ( tape , proc ) tt = {!   !}
+  where outerOutput : TapeOutput × ProcessorOutput → (Word ⊎ ⊤)
+        outerOutput (goOut x , procOut) = inj₂ tt
+        outerOutput (haltOut x , _) = inj₁ $ Data.Vec.map (toInt ∘ x) (tabulate (+_ ∘ toℕ))
+        fillInputs : (fromPos : position (interface preTuring)) →
+                     direction (Emitter (Word ⊎ ⊤)) (outerOutput fromPos) → 
+                     direction (interface preTuring) fromPos
+        fillInputs (goOut tapeInstruction , move procInstruction) tt = move procInstruction , instruction tapeInstruction
+        fillInputs (goOut tapeInstruction , write procInstruction) tt = write procInstruction , instruction tapeInstruction
+        fillInputs (goOut tapeInstruction , halt) tt = halt , tt
+        fillInputs (haltOut x , move x₁) tt = {!   !} , (instruction {!   !})
+        fillInputs (haltOut x , write x₁) tt = {!   !}
+        fillInputs (haltOut x , halt) tt = {!   !}
+        -- fillInputs : (fromPos : TapeOutput × ProcessorOutput) → ⊤ → direction (interface preTuring) fromPos
+        -- fillInputs (instruct x , proc) tt = proc , x
+        -- fillInputs (result x , x₁) tt = {! x  !}
+  

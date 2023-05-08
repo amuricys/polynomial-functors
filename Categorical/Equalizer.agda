@@ -99,7 +99,16 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
                           obvious = transportRefl y
          unique isEqualizer {X} {(⇆ˢ (mph ⇆ mdh))} {(⇆ˢ (mpi ⇆ mdi))} {eq} eq2 = cong ⇆ˢ (lensesEqual3 mapPos≡ {!   !})
            where mapPos≡ : mpi ≡ (λ x₁ → mph x₁ , (λ i → mapPosition (lens (eq i)) x₁))
-                 mapPos≡ = funExt (λ x → ΣPathP (funExt⁻ (sym (lens≡→mapPos≡ (rapaz eq2))) x , {!   !}))
+                 mapPos≡ = funExt (λ x → ΣPathP (funExt⁻ (sym (lens≡→mapPos≡ (rapaz eq2))) x , toPathP wat))
+                   where wat : {x : position (poly X)} →
+                               transport
+                                (λ i →
+                                   mpf (funExt⁻ (λ i₃ → lens≡→mapPos≡ (rapaz eq2) (~ i₃)) x i) ≡
+                                   mpg (funExt⁻ (λ i₃ → lens≡→mapPos≡ (rapaz eq2) (~ i₃)) x i))
+                                {!   !}
+                                ≡ 
+                                (λ i → mapPosition (lens (eq i)) x)
+                         wat = {! cong mapPosition $ rapaz eq !}
       --      record { 
       --       equality = cong ⇆ˢ equal ;
             --  equalize = λ { {X} {h = ⇆ˢ (mph ⇆ mdh)} x → ⇆ˢ 
