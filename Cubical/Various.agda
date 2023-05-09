@@ -42,7 +42,6 @@ coproductIsΣPoly {p} {q} = poly≡∀' posEq dirEq
 productIsΠPoly : {p q : Polynomial} → ΠPoly (Bool , tupleToFunFromBool (p , q)) ≡ (p * q) 
 productIsΠPoly {p} {q} = poly≡∀' posEq dirEq
     where
-
         boolFun≡product : {B : Bool → Set} → ((index : Bool) → B index) ≡ (B true × B false)
         boolFun≡product = isoToPath (iso (λ x → x true , x false) (λ {x false → snd x
                                                                     ; x true → proj₁ x}) (λ b → refl) λ a → funExt λ {false → refl

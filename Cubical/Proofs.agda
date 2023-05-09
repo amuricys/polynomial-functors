@@ -127,10 +127,12 @@ I≡pOfOne = isoToPath isoI≡pOfOne
 -- derivative : Polynomial → Polynomial
 -- derivative (mkpoly pos dir) = mkpoly (Σ pos dir) (λ {(i , a) → {! dir i - a  !}})
 
- 
+import Relation.Binary.PropositionalEquality as Eq
+
 
 isConstant : Polynomial → Type₁
 isConstant (mkpoly pos dir) = (p : pos) → dir p ≡ ⊥
+
 
 -- Exercise 4.1
 constantClosedUnderPlus : {p q : Polynomial} → isConstant p → isConstant q → isConstant (p + q)
@@ -140,11 +142,11 @@ constantClosedUnderPlus isConstantP isConstantQ (inj₂ y) = isConstantQ y
 constantClosedUnderMult : {p q : Polynomial} → isConstant p → isConstant q → isConstant (p * q)
 constantClosedUnderMult isConstantP isConstantQ (posP , posQ) = lemma (isConstantP posP) (isConstantQ posQ)
   where
-    lemma2 : {A B : Set} → A ≡ ⊥ → B ≡ ⊥ → (A ⊎ B) ≡ (⊥ ⊎ ⊥)
-    lemma2 p₁ p₂ = {! cong ? p₁   !}
+    lemma2 : {A B : Set} → A Eq.≡ ⊥ → B Eq.≡ ⊥ → (A ⊎ B) ≡ (⊥ ⊎ ⊥)
+    lemma2 Eq.refl Eq.refl = refl
 
     lemma : {A B : Set} → A ≡ ⊥ → B ≡ ⊥ → (A ⊎ B) ≡ ⊥
-    lemma {A = A} {B = B} p₁ p₂ = lemma2 p₁ p₂ ∙ {!  !}
+    lemma {A = A} {B = B} p₁ p₂ = lemma2 (pathToEq p₁) (pathToEq p₂) ∙ isoToPath (iso (λ { (inj₁ ()) ; (inj₂ ()) }) (λ ()) (λ () ) (λ { (inj₁ ()) ; (inj₂ ()) }))
 
 isLinear : Polynomial → Type₁
 isLinear (mkpoly pos dir) = (p : pos) → dir p ≡ ⊤
@@ -152,6 +154,14 @@ isLinear (mkpoly pos dir) = (p : pos) → dir p ≡ ⊤
 linearClosedUnderPlus : {p q : Polynomial} → isLinear p → isLinear q → isLinear (p + q)
 linearClosedUnderPlus isLinearP isLinearQ (inj₁ x) = isLinearP x
 linearClosedUnderPlus isLinearP isLinearQ (inj₂ y) = isLinearQ y
+
+isMonomial : Polynomial → Type₁
+isMonomial (mkpoly pos dir) = ∀ {p₁ : pos} {p₂ : pos} → dir p₁ ≡ dir p₂
+
+monomialClosedUnderMult : {p q : Polynomial} → isMonomial p → isMonomial q → isMonomial (p * q)
+monomialClosedUnderMult isMonP isMonQ {posp₁ , posq₁} {posp₂ , posq₂} = cong (λ { (a , b) → a ⊎ b }) (ΣPathP (leftEqual , rightEqual))
+  where leftEqual = isMonP {posp₁} {posp₂}
+        rightEqual = isMonQ {posq₁} {posq₂}
 
 -- yoyo : {p q r : Polynomial} → (p + q) ◂ r ≡ (p ◂ r) + (q ◂ r)
 -- yoyo {p} {q} {r} = poly≡∀ pos≡ λ {(inj₁ x) → {! cong (λ y → Σ (direction p (proj₁ x)) y) ?   !}
@@ -178,3 +188,4 @@ lensToYIsChoiceOfDirection {p} = isoToPath (iso (λ { (_ ⇆ md) pos → md pos 
                                                  (λ b → refl) 
                                                  (λ { (mp ⇆ md) → λ _ → const tt ⇆ md }) )   
 
+ 
