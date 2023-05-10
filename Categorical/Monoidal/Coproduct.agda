@@ -16,5 +16,9 @@ binaryCoproducts = record { coproduct = coprod }
 coproductCocartesian  : Cocartesian.Cocartesian Poly
 coproductCocartesian = record { initial = initialZero ; coproducts = binaryCoproducts }
 
-coproductMonodial : Monoidal Poly
-coproductMonodial = Cocartesian.CocartesianMonoidal.+-monoidal Poly coproductCocartesian
+coproductMonoidal : Monoidal Poly
+coproductMonoidal = Cocartesian.CocartesianMonoidal.+-monoidal Poly coproductCocartesian
+
+open import Categories.Category.Monoidal.Symmetric coproductMonoidal
+productSymmetricMonoidal : Symmetric
+productSymmetricMonoidal = Cocartesian.CocartesianSymmetricMonoidal.+-symmetric Poly coproductCocartesian

@@ -56,9 +56,9 @@ coprod {A = A} {B = B} = record
 --                   substed2 = lemma (funExt λ x → univPropProduct {q = q})
 
 -- Universal coproduct property. A function (A+B)→C is the same as two functions A→C and B→C
-universalPropertyCoproduct : {p : Polynomial}
-                               → Lens {!   !} p ≡ {!   !}
-universalPropertyCoproduct = {!   !}
+-- universalPropertyCoproduct : {p : Polynomial}
+--                                → Lens {!   !} p ≡ {!   !}
+-- universalPropertyCoproduct = {!   !}
 
 -- -- Universal product property. A function A→(B*C) is the same as two functions A→B and A→C
 -- universalPropertyProduct : {p : Polynomial} {Index : Type} {generate : Index → Polynomial}

@@ -19,3 +19,7 @@ cartesian = record { terminal = terminalOne ; products = binaryProducts }
 
 productMonoidal : Monoidal Poly
 productMonoidal = Cartesian.CartesianMonoidal.monoidal Poly cartesian
+
+open import Categories.Category.Monoidal.Symmetric productMonoidal
+productSymmetricMonoidal : Symmetric
+productSymmetricMonoidal = Cartesian.CartesianSymmetricMonoidal.symmetric Poly cartesian

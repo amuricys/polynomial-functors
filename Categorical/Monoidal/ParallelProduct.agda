@@ -2,7 +2,7 @@
 
 module Categorical.Monoidal.ParallelProduct where
 
-open import CategoryData.Core
+open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Isomorphism
 open import Agda.Builtin.Unit
@@ -53,4 +53,14 @@ monoidal = record
     ; assoc-commute-to = refl
     ; triangle = refl
     ; pentagon = refl
+    }
+open import Categories.Category.Monoidal.Symmetric monoidal
+
+symmetricMonoidal : Symmetric
+symmetricMonoidal = record 
+    { braided = record 
+        { braiding = record { F⇒G = record { η = λ X → {!   !} ; commute = {!   !} ; sym-commute = {!   !} } ; F⇐G = {!   !} ; iso = {!   !} } 
+        ; hexagon₁ = {!   !} 
+        ; hexagon₂ = {!   !} } 
+    ; commutative = {!   !} 
     }
