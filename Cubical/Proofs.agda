@@ -33,20 +33,20 @@ composeIsAssoc : ∀ {A B C D} → {f : Lens A B} {g : Lens B C} {h : Lens C D} 
 composeIsAssoc = refl
 ---------------------------------------
 
-equiv-resp : {A B C : Polynomial} {f h : Lens B C} {g i : Lens A B} → f ≡ h → g ≡ i → (f ∘ₚ g) ≡ (h ∘ₚ i)
-equiv-resp  p q ii = (p ii) ∘ₚ (q ii)
+∘-resp-≈ : {A B C : Polynomial} {f h : Lens B C} {g i : Lens A B} → f ≡ h → g ≡ i → (f ∘ₚ g) ≡ (h ∘ₚ i)
+∘-resp-≈  p q ii = (p ii) ∘ₚ (q ii)
 
 fromFalseFunctionsEqual : {A : Type} (f : ⊥ → A) → (g : ⊥ → A) → f ≡ g
 fromFalseFunctionsEqual f g = funExt λ {()}
-
+ 
 
 ------- Proofs related to uniqueness of lenses from and to certain polynomials
 ---------------------------------------
 lensFromZeroUnique : {p : Polynomial} (f : Lens 𝟘 p) → lensFromZero ≡ f
-lensFromZeroUnique f = lens≡ (funExt λ ()) (funExt λ ())
+lensFromZeroUnique f = lensesEqual3 (funExt λ ()) λ ()
 
 lensToOneUnique : {p : Polynomial} (f : Lens p 𝟙) →  lensToOne ≡ f
-lensToOneUnique {p = p} f = lens≡ refl (funExt λ x → funExt λ ())
+lensToOneUnique {p = p} f = lensesEqual3 refl λ _ ()
 
 ---------------------------------------
 
@@ -188,4 +188,44 @@ lensToYIsChoiceOfDirection {p} = isoToPath (iso (λ { (_ ⇆ md) pos → md pos 
                                                  (λ b → refl) 
                                                  (λ { (mp ⇆ md) → λ _ → const tt ⇆ md }) )   
 
- 
+open import Data.Fin renaming (zero to z ; suc to s)
+open import Data.Bool
+
+ex⦅2⦆≡4 : ex ⦅ Bool ⦆ ≡ Fin 6
+ex⦅2⦆≡4 = isoToPath $
+  iso go 
+      back
+      sec
+      ret
+    where go : ex ⦅ Bool ⦆ → Fin 6
+          go (false , fromboo) with fromboo false | fromboo true
+          ... | false | false = z
+          ... | true  | false = s z
+          ... | false | true  = s (s z)
+          ... | true  | true  = s (s (s z))
+          go (true , fromboo) with fromboo tt
+          ... | false         = s (s (s (s z)))
+          ... | true          = s (s (s (s (s z))))
+          back : Fin 6 → ex ⦅ Bool ⦆
+          back z                     = false , λ { false → false ; true → false }
+          back (s z)                 = false , λ { false → true ; true → false }
+          back (s (s z))             = false , λ { false → false ; true → true }
+          back (s (s (s z)))         = false , λ { false → true ; true → true }
+          back (s (s (s (s z))))     = true ,  λ { tt → false }
+          back (s (s (s (s (s z))))) = true ,  λ { tt → true }
+          sec : section go back
+          sec z                     = refl
+          sec (s z)                 = refl
+          sec (s (s z))             = refl
+          sec (s (s (s z)))         = refl
+          sec (s (s (s (s z))))     = refl
+          sec (s (s (s (s (s z))))) = refl
+          ret : retract go back
+          ret (false , fromboo) with fromboo false in eq | fromboo true in eq2
+          ... | false | false = ΣPathP (refl , funExt (λ { false → eqToPath (Eq.sym eq) ; true → eqToPath (Eq.sym eq2)} ))
+          ... | true  | false = ΣPathP (refl , funExt (λ { false → eqToPath (Eq.sym eq) ; true → eqToPath (Eq.sym eq2)} ))
+          ... | false | true  = ΣPathP (refl , funExt (λ { false → eqToPath (Eq.sym eq) ; true → eqToPath (Eq.sym eq2)} ))
+          ... | true  | true  = ΣPathP (refl , funExt (λ { false → eqToPath (Eq.sym eq) ; true → eqToPath (Eq.sym eq2)} ))
+          ret (true , fromboo) with fromboo tt in eq
+          ... | false         = ΣPathP (refl , funExt (λ { tt → eqToPath (Eq.sym eq) } ))
+          ... | true          = ΣPathP (refl , funExt (λ { tt → eqToPath (Eq.sym eq) } ))

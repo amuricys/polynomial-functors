@@ -74,8 +74,8 @@ idSetLens = ⇆ˢ idLens
 _∘ₚₛ_ : {A B C : SetPolynomial} → SetLens B C → SetLens A B → SetLens A C
 (⇆ˢ lens) ∘ₚₛ (⇆ˢ lens₁) = ⇆ˢ (lens ∘ₚ lens₁)
 
-equiv-resp-set : {A B C : SetPolynomial} {f h : SetLens B C} {g i : SetLens A B} → f ≡ h → g ≡ i → (f ∘ₚₛ g) ≡ (h ∘ₚₛ i)
-equiv-resp-set  p q ii = (p ii) ∘ₚₛ (q ii)
+∘-resp-≈-set : {A B C : SetPolynomial} {f h : SetLens B C} {g i : SetLens A B} → f ≡ h → g ≡ i → (f ∘ₚₛ g) ≡ (h ∘ₚₛ i)
+∘-resp-≈-set  p q ii = (p ii) ∘ₚₛ (q ii)
 
 SetPoly : Category (lsuc lzero) lzero lzero
 SetPoly = record
@@ -90,6 +90,6 @@ SetPoly = record
     ; identityʳ = refl
     ; identity² = refl
     ; equiv = record { refl = refl ; sym = sym ; trans = _∙_ }
-    ; ∘-resp-≈ = equiv-resp-set
+    ; ∘-resp-≈ = ∘-resp-≈-set
     }
 
