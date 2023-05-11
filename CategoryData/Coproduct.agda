@@ -5,7 +5,7 @@ module CategoryData.Coproduct where
 open import CategoryData.Core
 open import CategoryData.SimplePolynomials
 open import Data.Sum
-open import Data.Product
+open import Data.Product using (Σ-syntax ; _,_)
 open import Function
 
 -- Coproduct has either of the positions, and its correspoding direction
@@ -25,6 +25,15 @@ i₂ = inj₂ ⇆ λ _ → id
 -- The unique factorizer of two lenses
 [_,_]ₚ : {p q r : Polynomial} → Lens p r → Lens q r → Lens (p + q) r
 [ f ⇆ f♯ , g ⇆ g♯ ]ₚ = [ f , g ] ⇆ [ f♯ , g♯ ]
+
+⟨_⊎_⟩ : {p q r w : Polynomial} → (f : Lens p r) (g : Lens q w) → Lens (p + q) (r + w)
+⟨_⊎_⟩ {p} {q} {r} {w} (f ⇆ f♯) (g ⇆ g♯) = mp ⇆ md
+    where mp : position (p + q) → position (r + w)
+          mp = map f g
+          md : (fromPos : position (p + q)) → direction (r + w) (mp fromPos) → direction (p + q) fromPos
+          md (inj₁ x) d = f♯ x d
+          md (inj₂ y) d = g♯ y d
+infixl 30 ⟨_⊎_⟩
 
 -- Generalization of the coproduct (_+_).
 -- Page 31 in the book.

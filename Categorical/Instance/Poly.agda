@@ -24,5 +24,5 @@ Poly = record
     ; identityʳ = refl
     ; identity² = refl
     ; equiv = record { refl = refl ; sym = sym ; trans = _∙_ }
-    ; ∘-resp-≈ = equiv-resp
+    ; ∘-resp-≈ = ∘-resp-≈
     }

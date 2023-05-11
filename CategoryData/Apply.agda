@@ -12,24 +12,12 @@ open import Function
 -- This is the action on objects (sets) of that polynomials perform as functors. They're (endo)functors after all.
 _⦅_⦆ : Polynomial → Set → Set
 _⦅_⦆ (mkpoly position direction) Y = Σ position λ x → (direction x → Y)
+infixl 30 _⦅_⦆
 
-
+-- p(y) = y^2 + y
 ex : Polynomial
 ex = mkpoly Bool λ {false → Bool
                   ; true → ⊤}
-
-f1 : ⊤ → Bool
-f1 _ = true
-
-f2 : ⊤ → Bool
-f2 _ = false
-
-some : ex ⦅ ⊤ ⦆
-some = false , (λ{ false → tt
-                 ; true → tt })
-
-some2 : ex ⦅ ⊤ ⦆
-some2 = true , id
 
 -- Plug in a function: say you have p(y) = y^2 + 3 and f : 2 → 3. applyFn p f should return a function from 
 -- the type 2^2 + 3 ≅ 7 to the type 3^2 + 3 ≅ = 12. This is the action on morphisms (functions) that polynomials
