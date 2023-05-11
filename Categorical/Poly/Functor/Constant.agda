@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.Functor.Linear where
+module Categorical.Poly.Functor.Constant where
 
 import Relation.Binary.PropositionalEquality as Eq
 open import Agda.Builtin.Unit
@@ -15,34 +15,34 @@ open import Cubical.Data.Equality using (pathToEq ; eqToPath)
 open import Cubical.Foundations.Prelude
 open import CategoryData.Everything
 open import Function
-open import Categorical.Instance.Poly
+open import Categorical.Poly.Instance
 open import Cubical.Proofs
 open import Data.Bool
+open import Cubical.LensEquality
 
--- Functor sending a set A to the linear polynomial Ay^1 = Ay
-linearPolynomial : Functor (Sets Level.zero) Poly
-linearPolynomial = record
-    { F₀ = λ x → mkpoly x λ _ → ⊤
-    ; F₁ = λ f → f ⇆ \ _ _ → tt
-    ; identity = λ i → id ⇆ (λ fromPos x → x)
-    ; homomorphism = λ {x y z} {f g} i → (g ∘ f) ⇆ λ fromPos k → k
-    ; F-resp-≈ = λ {A B} {f g} x i → let
-      cubic : f ≡ g
-      cubic = pwiseToExt x
-      in
-        (cubic i) ⇆ λ fromPos x₁ → x₁
+fromAnythingToFalseToAnythingEqual : {A B : Set} {w z : A → ⊥ → B} → w ≡ z
+fromAnythingToFalseToAnythingEqual i x ()
+
+-- Fully faithful functor sending a set A to the constant polynomial Ay^0 = A
+constantPolynomial : Functor (Sets Level.zero) Poly 
+constantPolynomial = record
+    { F₀ = λ x → mkpoly x λ _ → ⊥
+    ; F₁ = λ f → f ⇆ λ fromPos → id
+    ; identity = refl
+    ; homomorphism = refl
+    ; F-resp-≈ = λ p → lensesEqual3 (funExt λ x → eqToPath p) λ x ()
     }
 
-full : Full linearPolynomial
+full : Full constantPolynomial
 full = record 
     { from = record 
         { _⟨$⟩_ = Lens.mapPosition
         ; cong = positionLensesEqualPwiseEq } 
-    ; right-inverse-of = λ x → refl
+    ; right-inverse-of = \_ → lensesEqual3 refl λ x ()
     }
 
-faithful : Faithful linearPolynomial
+faithful : Faithful constantPolynomial
 faithful = λ f g x → pathToEq (positionLensesEqualPwise x)
 
-ffcp : FullyFaithful linearPolynomial
+ffcp : FullyFaithful constantPolynomial
 ffcp = full , faithful

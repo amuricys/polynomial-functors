@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical --allow-unsolved-metas #-}
 
-module Categorical.Monoidal.CompositionProduct where
+module Categorical.Poly.Monoidal.CompositionProduct where
 
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
@@ -9,7 +9,7 @@ open import Agda.Builtin.Unit
 open import Cubical.PolynomialEquals
 open import Cubical.Proofs
 open import Categories.Category.Monoidal
-open import Categorical.Instance.Poly
+open import Categorical.Poly.Instance
 open import Categories.Functor.Bifunctor
 open import Cubical.LensEquality
 open import Cubical.Data.Sigma.Properties

@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.Chart.ChartCategory where
+module Categorical.Chart.Instance where
 
 open import Categories.Category
 open import Level
@@ -8,8 +8,8 @@ open import CategoryData.Chart.Core
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
 
-chartCat : Category (ℓ-suc ℓ-zero) ℓ-zero ℓ-zero
-chartCat = record
+ChartCat : Category (ℓ-suc ℓ-zero) ℓ-zero ℓ-zero
+ChartCat = record
     { Obj = Polynomial
     ; _⇒_ = Chart
     ; _≈_ = _≡_

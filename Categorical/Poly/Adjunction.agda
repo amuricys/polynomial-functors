@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.Adjunction where
+module Categorical.Poly.Adjunction where
 
 open import Categories.Adjoint
 open import Categories.Functor using (Functor; _∘F_) renaming (id to idF)
@@ -15,10 +15,10 @@ open import CategoryData.Core
 open import Data.Unit
 open import Data.Empty
 open import Data.Product
-open import Categorical.Functor.Constant
-open import Categorical.Functor.Linear
-open import Categorical.Functor.PlugInOne
-open import Categorical.Functor.PlugInZero
+open import Categorical.Poly.Functor.Constant
+open import Categorical.Poly.Functor.Linear
+open import Categorical.Poly.Functor.PlugInOne
+open import Categorical.Poly.Functor.PlugInZero
 open import Level
 
 

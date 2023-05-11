@@ -1,10 +1,10 @@
 {-# OPTIONS --cubical  --without-K #-}
-module Categorical.Comonoid.Core where
+module Categorical.Poly.Comonoid.Core where
 
 open import Categories.Category.Core
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
-open import Categorical.Monoidal.CompositionProduct renaming (assoc to assoc◂)
+open import Categorical.Poly.Monoidal.CompositionProduct renaming (assoc to assoc◂)
 
 open import Level
 

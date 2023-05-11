@@ -2,11 +2,11 @@
 
 module Categorical.Chart.Terminal where
 
-open import Categorical.Chart.ChartCategory
+open import Categorical.Chart.Instance
 open import CategoryData.Chart.Core
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
-open import Categories.Object.Terminal chartCat
+open import Categories.Object.Terminal ChartCat
 open import Cubical.Chart.ChartEquality
 open import Data.Unit
 

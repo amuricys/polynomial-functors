@@ -1,5 +1,5 @@
 {-# OPTIONS --cubical #-}
-module Categorical.Exp where
+module Categorical.Poly.Exp where
 
 open import CategoryData.Everything
 open import Cubical.Foundations.Everything hiding () renaming (curry to curryₛ ; uncurry to uncurryₛ)

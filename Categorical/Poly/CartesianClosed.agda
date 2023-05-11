@@ -1,9 +1,9 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.CartesianClosed where
+module Categorical.Poly.CartesianClosed where
 
 open import CategoryData.Everything
-open import Categorical.Instance.Poly
+open import Categorical.Poly.Instance
 
 import Relation.Binary.PropositionalEquality as Eq
 open import Categories.Object.Exponential Poly
@@ -14,9 +14,9 @@ open import Data.Sum
 open import Data.Unit
 open import Data.Empty
 open import Data.Product hiding (Σ-syntax ; curry ; uncurry)
-open import Categorical.Product
+open import Categorical.Poly.Product
 open import Categories.Object.Product Poly
-open import Categorical.Terminal
+open import Categorical.Poly.Terminal
 open import Cubical.Proofs
 open import Cubical.LensEquality
 open import Cubical.Foundations.Prelude

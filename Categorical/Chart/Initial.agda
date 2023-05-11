@@ -3,11 +3,11 @@
 
 module Categorical.Chart.Initial where
 
-open import Categorical.Chart.ChartCategory
+open import Categorical.Chart.Instance
 open import CategoryData.Chart.Core
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
-open import Categories.Object.Initial chartCat
+open import Categories.Object.Initial ChartCat
 open import Cubical.Chart.ChartEquality
 
 chartFromZero : {p : Polynomial} → Chart 𝟘 p

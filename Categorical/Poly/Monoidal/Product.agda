@@ -1,13 +1,13 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.Monoidal.Product where
+module Categorical.Poly.Monoidal.Product where
 
-open import Categorical.Instance.Poly
-open import Categorical.Product
+open import Categorical.Poly.Instance
+open import Categorical.Poly.Product
 open import Cubical.Foundations.Prelude
 open import Data.Product
 open import Categories.Category.Monoidal
-open import Categorical.Terminal
+open import Categorical.Poly.Terminal
 open import Cubical.LensEquality
 import Categories.Category.Cartesian as Cartesian
 

@@ -1,8 +1,8 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.Equalizer where
+module Categorical.SetPoly.Equalizer where
 
-open import Categorical.Instance.SetPoly
+open import Categorical.SetPoly.Instance
 open import Categories.Category.Instance.Sets
 open import Categories.Diagram.Equalizer SetPoly
 import Level
