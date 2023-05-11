@@ -11,7 +11,8 @@ open import Cubical.Data.Equality
 open import Cubical.Proofs
 open import Cubical.LensEquality
 open import Function
-open import CategoryData.Core
+open import CategoryData.Polynomial
+open import CategoryData.Lens
 open import Data.Unit
 open import Data.Empty
 open import Data.Product

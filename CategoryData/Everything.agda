@@ -3,7 +3,8 @@
 module CategoryData.Everything where
 
 open import CategoryData.Coproduct public
-open import CategoryData.Core public
+open import CategoryData.Polynomial public
+open import CategoryData.Lens public
 open import CategoryData.Product public
 open import CategoryData.Initial public
 open import CategoryData.Terminal public

@@ -1,9 +1,9 @@
-{-# OPTIONS --cubical #-}
+{-# OPTIONS --cubical --allow-unsolved-metas #-}
 
-module Cubical.Chart.ChartLensCommute where
+module Cubical.ChartLensCommute where
 
 open import CategoryData.Everything
-open import CategoryData.Chart.Core
+open import CategoryData.Chart
 open import Cubical.Foundations.Prelude
 
 LensChartCommute : {p₁ p₂ p₃ p₄ : Polynomial} (w : Lens p₁ p₃) (v : Lens p₂ p₄) (f : Chart p₁ p₂) (g : Chart p₃ p₄) → Type
@@ -33,7 +33,7 @@ horizontialComposition {p₁} {p₂} {p₃} {p₄} {p₅} {p₆} f g h r w v m s
                 sq₂≡ = fst sq₂ (Chart.mapPos f i)
 
         -- f♭ i (w♯ i x) ≡ v♯ (f i) (subst (direction p₄) (sym (p≡ i)) (g♭ (w i) x))
-    --     Cubical.Chart.ChartLensCommute.mapDir≡ (mapPosition w)
+    --     Cubical.ChartLensCommute.mapDir≡ (mapPosition w)
     --   (mapDirection w) (mapPosition m) (mapDirection m)
     --   (Chart.mapPos (h ∘c f)) (Chart.mapDir (h ∘c f))
     --   (Chart.mapPos (r ∘c g)) (Chart.mapDir (r ∘c g)) mapPos≡

@@ -1,12 +1,13 @@
 {-# OPTIONS --cubical #-}
 
-module Cubical.Chart.ChartEquality where
+module Cubical.ChartEquality where
 
-open import CategoryData.Core
+open import CategoryData.Polynomial
+open import CategoryData.Lens
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Isomorphism
 open import Cubical.Data.Sigma.Properties
-open import CategoryData.Chart.Core
+open import CategoryData.Chart
 open import Cubical.Functions.FunExtEquiv
 open import Cubical.Foundations.Path
 open import Cubical.Foundations.Transport

@@ -13,8 +13,8 @@ open import Data.Nat.DivMod
 open import Data.Bool
 open import Cubical.Foundations.Everything hiding (id; _∘_)
 open import Function
-open import Cubical.Chart.ChartLensCommute
-open import CategoryData.Chart.Core
+open import Cubical.ChartLensCommute
+open import CategoryData.Chart
 
 -- Example from https://www.youtube.com/watch?v=QNuGyjHJtP8, ~20 min mark
 

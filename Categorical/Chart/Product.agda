@@ -4,10 +4,10 @@ module Categorical.Chart.Product where
 
 open import Categorical.Chart.Instance
 open import CategoryData.Everything hiding (π₁ ; π₂ ; ⟨_,_⟩)
-open import CategoryData.Chart.Core
+open import CategoryData.Chart
 open import Categories.Object.Product ChartCat
 open import Cubical.Foundations.Prelude
-open import Cubical.Chart.ChartEquality
+open import Cubical.ChartEquality
 
 π₁ : {p q : Polynomial} → Chart (p ⊗ q) p
 π₁ = fst ⇉ λ i → fst

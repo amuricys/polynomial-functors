@@ -1,15 +1,9 @@
 {-# OPTIONS --without-K #-}
 
-module CategoryData.Core where
+module CategoryData.Lens where
 
+open import CategoryData.Polynomial
 open import Function
-
-record Polynomial : Set₁ where
-    constructor mkpoly
-    field
-        position : Set
-        direction : position → Set
-open Polynomial public
 
 record Lens (from to : Polynomial) : Set where
     constructor _⇆_

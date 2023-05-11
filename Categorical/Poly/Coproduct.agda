@@ -5,7 +5,8 @@ module Categorical.Poly.Coproduct where
 open import Categorical.Poly.Instance
 open import Categorical.Poly.Initial
 open import Categories.Object.Coproduct Poly
-open import CategoryData.Core
+open import CategoryData.Polynomial
+open import CategoryData.Lens
 open import Data.Sum
 open import Function
 open import Cubical.Proofs

@@ -2,7 +2,8 @@
 
 module CategoryData.Exponential where
 
-open import CategoryData.Core
+open import CategoryData.Polynomial
+open import CategoryData.Lens
 open import CategoryData.Product
 open import CategoryData.Composition
 open import CategoryData.SimplePolynomials
