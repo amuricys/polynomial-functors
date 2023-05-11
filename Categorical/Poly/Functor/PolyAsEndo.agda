@@ -12,7 +12,7 @@ open import Categories.Category.Instance.Sets
 open import Categories.Category.Instance.Setoids
 open import Level
 open import Function
-open import CategoryData.Chart.Core
+open import CategoryData.Chart
 -- open import Categories.Functor.Representable
 
 open import Cubical.Foundations.Prelude

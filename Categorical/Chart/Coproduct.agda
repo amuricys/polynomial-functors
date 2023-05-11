@@ -4,11 +4,11 @@ module Categorical.Chart.Coproduct where
 
 open import Categorical.Chart.Instance
 open import CategoryData.Everything hiding (i₁ ; i₂ ; ⟨_,_⟩)
-open import CategoryData.Chart.Core
+open import CategoryData.Chart
 open import Categories.Object.Coproduct ChartCat
 open import Data.Sum
 open import Cubical.Foundations.Prelude
-open import Cubical.Chart.ChartEquality
+open import Cubical.ChartEquality
 
 i₁ : {p q : Polynomial} → Chart p (p + q)
 i₁ = inj₁ ⇉ λ i x → x

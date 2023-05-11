@@ -2,7 +2,7 @@
 
 module CategoryData.SimplePolynomials where
 
-open import CategoryData.Core
+open import CategoryData.Polynomial
 open import Data.Unit
 open import Data.Empty
 

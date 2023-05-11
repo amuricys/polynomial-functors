@@ -2,7 +2,8 @@
 
 module CategoryData.Product where
 
-open import CategoryData.Core
+open import CategoryData.Polynomial
+open import CategoryData.Lens
 open import CategoryData.SimplePolynomials
 open import Data.Product
 open import Data.Sum

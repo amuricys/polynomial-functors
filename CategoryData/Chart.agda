@@ -1,8 +1,8 @@
 {-# OPTIONS --without-K #-}
 
-module CategoryData.Chart.Core where
+module CategoryData.Chart where
 
-open import CategoryData.Everything
+open import CategoryData.Polynomial
 open import Function
 
 record Chart (p q : Polynomial) : Set where

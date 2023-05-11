@@ -6,8 +6,8 @@ module Dynamical.Chart.SimulateStateMachine where
 open import Dynamical.System
 open import CategoryData.Everything
 open import Cubical.Foundations.Everything
-open import Cubical.Chart.ChartLensCommute
-open import CategoryData.Chart.Core
+open import Cubical.ChartLensCommute
+open import CategoryData.Chart
 
 data S : Set where
     one : S

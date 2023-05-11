@@ -4,14 +4,11 @@
 module Categorical.Chart.Initial where
 
 open import Categorical.Chart.Instance
-open import CategoryData.Chart.Core
+open import CategoryData.Chart
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
 open import Categories.Object.Initial ChartCat
-open import Cubical.Chart.ChartEquality
-
-chartFromZero : {p : Polynomial} → Chart 𝟘 p
-chartFromZero = (λ ()) ⇉ λ ()
+open import Cubical.ChartEquality
 
 unique : {p : Polynomial} (f : Chart 𝟘 p) → chartFromZero ≡ f
 unique f = chart≡ (funExt λ ()) (funExt λ ())

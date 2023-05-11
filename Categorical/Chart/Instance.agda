@@ -4,7 +4,7 @@ module Categorical.Chart.Instance where
 
 open import Categories.Category
 open import Level
-open import CategoryData.Chart.Core
+open import CategoryData.Chart
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
 

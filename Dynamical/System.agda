@@ -5,7 +5,8 @@ module Dynamical.System where
 open import Relation.Binary.PropositionalEquality hiding ([_])
 open import Relation.Nullary
 open import Agda.Builtin.Nat renaming (_+_ to _+ℕ_)
-open import CategoryData.Core
+open import CategoryData.Polynomial
+open import CategoryData.Lens
 open import Codata.Stream
 open import Codata.Thunk
 open import Data.List hiding (take; _++_)

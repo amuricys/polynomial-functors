@@ -4,7 +4,8 @@ module Categorical.SetPoly.Instance where
 
 open import Level renaming (suc to lsuc ; zero to lzero)
 open import Categories.Category
-open import CategoryData.Core
+open import CategoryData.Polynomial
+open import CategoryData.Lens
 open import Cubical.Proofs
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.HLevels

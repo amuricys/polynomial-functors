@@ -3,15 +3,12 @@
 module Categorical.Chart.Terminal where
 
 open import Categorical.Chart.Instance
-open import CategoryData.Chart.Core
+open import CategoryData.Chart
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
 open import Categories.Object.Terminal ChartCat
-open import Cubical.Chart.ChartEquality
+open import Cubical.ChartEquality
 open import Data.Unit
-
-chartToOne : {p : Polynomial} → Chart p Y
-chartToOne = (λ x → tt) ⇉ λ i x → tt
 
 unique : {p : Polynomial} (f : Chart p Y) → chartToOne ≡ f
 unique f = chart≡ refl refl
