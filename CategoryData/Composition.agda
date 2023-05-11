@@ -13,17 +13,15 @@ open import Function
 -- to give a new polynomial functor!).
 -- Proposition 5.2, page 158. Note: not same definition used. We here treat positions
 -- as inhabitants of the same set, which makes a lot of proofs easier down the line.
+pos : (p q : Polynomial) → Set
+pos p q = (Σ[ i ∈ position p ] (direction p i → position q))
+
+dir : (p q : Polynomial) → (posat : pos p q) → Set
+dir p q (i , j) = Σ[ a ∈ direction p i ] direction q (j a)
+
 _◂_ : Polynomial → Polynomial → Polynomial
-p ◂ q = mkpoly pos dir
-  where
-    module p = Polynomial p
-    module q = Polynomial q
+p ◂ q = mkpoly (pos p q) (dir p q)
 
-    pos : Set
-    pos = (Σ[ i ∈ p.position ] (p.direction i → q.position))
-
-    dir : pos → Set
-    dir (i , j) = Σ[ a ∈ p.direction i ] q.direction (j a)
 infixl 27 _◂_
 
 compositionUnit : Polynomial

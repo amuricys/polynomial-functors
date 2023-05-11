@@ -1,9 +1,9 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.Initial where
+module Categorical.Poly.Initial where
 
 open import CategoryData.Everything
-open import Categorical.Instance.Poly
+open import Categorical.Poly.Instance
 open import Cubical.Proofs
 open import Categories.Object.Initial Poly
 

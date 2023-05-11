@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical --allow-unsolved-metas #-}
 
-module Categorical.Instance.SetPoly where
+module Categorical.SetPoly.Instance where
 
 open import Level renaming (suc to lsuc ; zero to lzero)
 open import Categories.Category

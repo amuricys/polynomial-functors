@@ -1,8 +1,8 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.Exponential where
+module Categorical.Poly.Exponential where
 
-open import Categorical.Instance.Poly
+open import Categorical.Poly.Instance
 import Relation.Binary.PropositionalEquality as Eq
 open import Categories.Object.Exponential Poly
 open import CategoryData.Everything
@@ -12,7 +12,7 @@ open import Data.Sum
 open import Data.Bool
 open import Data.Unit
 open import Data.Empty
-open import Categorical.Product
+open import Categorical.Poly.Product
 open import Categories.Object.Product Poly
 import Categories.Category.CartesianClosed.Canonical as Canonical
 open import Function using (_∘_ ; _$_)

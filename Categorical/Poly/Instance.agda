@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.Instance.Poly where
+module Categorical.Poly.Instance where
 
 open import Level renaming (suc to lsuc ; zero to lzero)
 open import Categories.Category

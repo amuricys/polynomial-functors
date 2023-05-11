@@ -1,10 +1,10 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.Monoidal.Coproduct where
+module Categorical.Poly.Monoidal.Coproduct where
 
-open import Categorical.Instance.Poly
-open import Categorical.Initial
-open import Categorical.Coproduct
+open import Categorical.Poly.Instance
+open import Categorical.Poly.Initial
+open import Categorical.Poly.Coproduct
 open import Categories.Object.Coproduct Poly
 open import Cubical.Proofs
 open import Categories.Category.Monoidal

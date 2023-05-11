@@ -1,6 +1,6 @@
-{-# OPTIONS --cubical #-}
+{-# OPTIONS --cubical --allow-unsolved-metas #-}
 
-module Categorical.Monoidal.CompositionProduct where
+module Categorical.Poly.Monoidal.CompositionProduct where
 
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
@@ -9,9 +9,10 @@ open import Agda.Builtin.Unit
 open import Cubical.PolynomialEquals
 open import Cubical.Proofs
 open import Categories.Category.Monoidal
-open import Categorical.Instance.Poly
+open import Categorical.Poly.Instance
 open import Categories.Functor.Bifunctor
 open import Cubical.LensEquality
+open import Cubical.Data.Sigma.Properties
 
 open Polynomial
 
@@ -45,6 +46,46 @@ rightUnit {p} = poly≡∀' pos≡ dir≡
         dir≡ : (posA : position (p ◂ Y)) → direction (p ◂ Y) posA ≡ subst (λ x → x → Type) (sym pos≡) (direction p) posA
         dir≡ posA = lemmaDir ∙ cong (direction p) (sym (transportRefl (fst posA)))
 
+open import CategoryData.Composition
+assoc : {p q r : Polynomial} → (p ◂ q) ◂ r ≡ p ◂ (q ◂ r)
+assoc {p} {q} {r} = poly≡∀ pos≡ dir≡
+    where pos≡norm : Σ (Σ (position p) (λ i → direction p i → position q))
+                       (λ i →
+                           Σ (direction p (fst i)) (λ a → direction q (snd i a)) → position r)
+                    ≡
+                    Σ (position p)
+                      (λ i →
+                          direction p i →
+                          Σ (position q) (λ i₃ → direction q i₃ → position r))
+          pos≡norm = isoToPath (iso go back (λ _ → refl) λ _ → refl)
+            where go :  Σ (Σ (position p) (λ i → direction p i → position q))
+                          (λ i → Σ (direction p (fst i)) (λ a → direction q (snd i a))
+                                 → position r)
+                        →
+                        Σ (position p)
+                          (λ i →
+                              direction p i →
+                              Σ (position q) (λ i₃ → direction q i₃ → position r))
+                  go ((posp , dirptoposq) , fromdirandfunctoposr) = 
+                    posp , (λ dirp → (dirptoposq dirp) , (λ dirqatthatpos → fromdirandfunctoposr (dirp , dirqatthatpos)))
+                  back : Σ (position p)
+                          (λ i →
+                              direction p i →
+                              Σ (position q) (λ i₃ → direction q i₃ → position r)) 
+                        → 
+                        Σ (Σ (position p) (λ i → direction p i → position q))
+                          (λ i → Σ (direction p (fst i)) (λ a → direction q (snd i a))
+                                 → position r)
+                  back (posp , postodir) = 
+                    (posp , (λ dirp → fst (postodir dirp))) , λ { (dirp , dirq) → snd (postodir dirp) dirq }
+                        
+          pos≡ : position (p ◂ q ◂ r) ≡ position (p ◂ (q ◂ r))
+          pos≡ = pos≡norm
+          dir≡ : (posB : Σ (position p) (λ i → direction p i → position (q ◂ r))) →
+                    subst (λ x → x → Type) pos≡ (dir (p ◂ q) r) posB 
+                  ≡
+                 dir p (q ◂ r) posB
+          dir≡ (a , b) = {!   !}
 bifunctor : Bifunctor Poly Poly Poly
 bifunctor = record
     { F₀ = λ  { (p , q) → p ◂ q }
@@ -82,3 +123,4 @@ monoidal = record
     ; triangle = refl
     ; pentagon = refl
     }
+ 

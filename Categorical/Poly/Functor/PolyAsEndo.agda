@@ -1,6 +1,6 @@
 {-# OPTIONS --cubical --allow-unsolved-metas #-}
 
-module Categorical.Functor.PolyAsEndo where
+module Categorical.Poly.Functor.PolyAsEndo where
 
 open import CategoryData.Everything
 

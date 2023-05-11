@@ -1,8 +1,8 @@
 {-# OPTIONS --cubical #-}
 
-module Categorical.Product where
+module Categorical.Poly.Product where
 
-open import Categorical.Instance.Poly
+open import Categorical.Poly.Instance
 open import Categories.Object.Product Poly
 open import CategoryData.Everything
 open import Agda.Builtin.Sigma
@@ -11,7 +11,7 @@ open import Cubical.LensEquality
 open import Cubical.Foundations.Prelude
 open import Data.Product
 open import Categories.Category.Monoidal
-open import Categorical.Terminal
+open import Categorical.Poly.Terminal
 open import Cubical.LensEquality
 import Categories.Category.Cartesian as Cartesian
 open import Cubical.Foundations.Isomorphism
