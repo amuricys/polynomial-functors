@@ -26,7 +26,7 @@ open import Function
 import IO
 
 postulate
-  plotDynamics  : Float → List (String × List Float) → IO ⊤
+  plotDynamics : String → String → String → Float → List (String × List Float) → IO ⊤
 
 {-# FOREIGN GHC import HsPlot #-}
 {-# COMPILE GHC plotDynamics = plotToFile #-}
@@ -159,22 +159,19 @@ rest (ReservoirParams rdim trainSteps touchSteps outputLength lorinitx lorinity 
   -- _ ← printOneMatrix o
   -- _ ← IO.run {Level.zero} $ IO.putStrLn "predictions:"
   -- _ ← printLists $ List.zip pred_x $ List.zip pred_y pred_z
-  plotDynamics 0.1 (("actual_x", x) ∷ ("actual_y", y) ∷ ("actual_z", z) ∷ ("pred_x", pred_x) ∷ ("pred_y", pred_y) ∷ ("pred_z", pred_z) ∷ []) 
+  plotDynamics "seconds" "" "Reservoir computer" 0.1 (("actual_x", x) ∷ ("actual_y", y) ∷ ("actual_z", z) ∷ ("pred_x", pred_x) ∷ ("pred_y", pred_y) ∷ ("pred_z", pred_z) ∷ []) 
 rest (LorenzParams lorinitx lorinity lorinitz dt₁) = do 
   let x , yz = fromSigma (List.unzip (Vec.toList $ lorenzList lorinitx lorinity lorinitz dt₁))
   let y , z = fromSigma (List.unzip yz)
-  plotDynamics 0.1 (("x", x) ∷ ("y", y) ∷ ("z", z) ∷ [])
-rest HodgkinHuxleyParams = do 
-  let dyn = Vec.toList hhList
-  plotDynamics 0.1 [( "voltage" , dyn )]
+  plotDynamics "seconds" "" "Lorenz dynamics" dt₁ (("x", x) ∷ ("y", y) ∷ ("z", z) ∷ [])
+rest (HodgkinHuxleyParams dt) = do 
+  let dyn = Vec.toList (hhList dt)
+  plotDynamics "time (ms)" "voltage (mV)" "Hodgkin-Huxley dynamics" dt [("voltage", dyn)]
 rest (LotkaVolterraParams α β δ γ r0 f0 dt₁) = do 
-  let dyn = Vec.toList $ lvList α β δ γ r0 f0
+  let dyn = Vec.toList $ lvList α β δ γ r0 f0 dt₁
   let r , f = fromSigma (List.unzip dyn) 
-  plotDynamics 0.1 (("rabbits", r) ∷ ("foxes", f) ∷ [])
--- rest Reservoir (rdimf ∷ trainStepsf ∷ touchStepsf ∷ outputLengthf ∷ lorinitx ∷ lorinity ∷ lorinitz ∷ dt ∷ []) = do
--- rest Reservoir params = do 
---   Level.lift tt ← IO.run {Level.zero} $ IO.putStrLn ("Error: missing parameters for reservoir. got: " S.++ showList params)
---   IO.run $ IO.pure tt
+  plotDynamics "time" "population" "Lotka Volterra dynamics" dt₁ (("rabbits", r) ∷ ("foxes", f) ∷ [])
+
 main : IO ⊤
 main = do
   mkopt sys ← parseOptions

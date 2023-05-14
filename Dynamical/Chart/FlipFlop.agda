@@ -33,7 +33,7 @@ ignoreUnitInput f a tt = f a
 -- | Note: linear interface is used to accept only 1 possible input.
 --   Readout defined as id to expose state.
 flipFlop : DynamicalSystem
-flipFlop = MkDynamicalSystem Switch (linear Switch) (id ⇆ ignoreUnitInput toggle)
+flipFlop = mkdyn Switch (linear Switch) (id ⇆ ignoreUnitInput toggle)
 
 -- | Result is: on, off, on, off...
 flipFlopRan : Vec Switch 10
@@ -44,7 +44,7 @@ modNat n = if n % 2 == 0 then on else off
 
 -- | To compare flipFlop and counter they need to have the same interface.
 counter : DynamicalSystem
-counter = MkDynamicalSystem Nat (linear Switch) (modNat ⇆ ignoreUnitInput suc)
+counter = mkdyn Nat (linear Switch) (modNat ⇆ ignoreUnitInput suc)
 
 -- | Result is: on, off, on, off...
 counterRan : Vec Switch 10

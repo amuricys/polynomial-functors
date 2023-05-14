@@ -26,21 +26,21 @@ data Z : Set where
 
 -- First order differential equations
 x : ℝ → DynamicalSystem
-x dt = MkDynamicalSystem X (mkpoly X λ _ → Y) (readout ⇆ update)
+x dt = mkdyn X (mkpoly X λ _ → Y) (readout ⇆ update)
   where readout : X → X
         readout state = state
         update : X → Y → X
         update (xnt state) (ynt y) = xnt (state + dt * (σ * (y - state)))
 
 y : ℝ → DynamicalSystem
-y dt = MkDynamicalSystem Y (mkpoly Y λ _ → X × Z) (readout ⇆ update)
+y dt = mkdyn Y (mkpoly Y λ _ → X × Z) (readout ⇆ update)
   where readout : Y → Y
         readout state = state
         update : Y → X × Z → Y
         update (ynt state) ( xnt x , znt z ) = ynt (state + dt * (x * (ρ - z) - state))
 
 z : ℝ → DynamicalSystem
-z dt = MkDynamicalSystem Z (mkpoly Z λ _ → X × Y) (readout ⇆ update)
+z dt = mkdyn Z (mkpoly Z λ _ → X × Y) (readout ⇆ update)
   where readout : Z → Z
         readout state = state
         update : Z → X × Y → Z
@@ -51,7 +51,7 @@ preLorenz : ℝ → DynamicalSystem
 preLorenz dt = x dt &&& y dt &&& z dt
 
 -- Wiring diagram is an lens between monomials (lens)
-lorenzWiringDiagram : Lens (DynamicalSystem.interface (preLorenz 0.0 {- we just want the interface -})) (Emitter (X × Y × Z))
+lorenzWiringDiagram : Lens (DynamicalSystem.interface (preLorenz 0.0 {- we just want the interface -})) (emitter (X × Y × Z))
 lorenzWiringDiagram = mp ⇆ md
   where mp : X × Y × Z → X × Y × Z
         mp (x , y , z) = x , y , z
@@ -60,7 +60,7 @@ lorenzWiringDiagram = mp ⇆ md
 
 -- Final system is composition of wiring diagram and dynamics
 lorenz : ℝ → DynamicalSystem
-lorenz dt = install (preLorenz dt) (Emitter (X × Y × Z)) lorenzWiringDiagram
+lorenz dt = install (preLorenz dt) (emitter (X × Y × Z)) lorenzWiringDiagram
 
 lorenzSeq : ℝ → ℝ → ℝ → ℝ → Stream (X × Y × Z) _
 lorenzSeq x0 y0 z0 dt = run (lorenz dt) auto (xnt x0 , ynt y0 , znt z0)

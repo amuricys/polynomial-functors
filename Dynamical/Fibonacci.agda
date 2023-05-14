@@ -12,6 +12,10 @@ open import Data.List hiding (take; _++_)
 open import Data.Vec using (Vec)
 import Agda.Builtin.Nat
 open import Data.Product
+open import Function
+
+delay : (A : Set) → DynamicalSystem
+delay A = functionToDynamicalSystem A A id
 
 plus : DynamicalSystem
 plus = functionToDynamicalSystem (Nat × Nat) Nat (uncurry _+ℕ_)
@@ -19,11 +23,11 @@ plus = functionToDynamicalSystem (Nat × Nat) Nat (uncurry _+ℕ_)
 prefib : DynamicalSystem
 prefib = plus &&& delay Nat
 
-fibWiringDiagram : Lens (DynamicalSystem.interface prefib) (Emitter Nat)
+fibWiringDiagram : Lens (DynamicalSystem.interface prefib) (emitter Nat)
 fibWiringDiagram = (λ {(sumOutput , idOutput) → idOutput}) ⇆ (λ {(sumOutput , idOutput) l → (idOutput , sumOutput) , sumOutput })
 
 fibonacci : DynamicalSystem
-fibonacci = install prefib (Emitter Nat) fibWiringDiagram
+fibonacci = install prefib (emitter Nat) fibWiringDiagram
 
 FibSeq : Stream Nat _
 FibSeq = run fibonacci auto (1 , 1)

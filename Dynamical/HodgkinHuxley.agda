@@ -19,9 +19,11 @@ dt = 0.01
 e : ℝ
 e = 2.718281
 
+open DynamicalSystem
+
 -- The big one
-voltage : DynamicalSystem
-voltage = MkDynamicalSystem ℝ (mkpoly ℝ λ _ → ℝ × ℝ × ℝ × ℝ) (readout ⇆ update)
+voltage : ℝ → DynamicalSystem
+voltage dt = mkdyn ℝ (mkpoly ℝ λ _ → ℝ × ℝ × ℝ × ℝ) (readout ⇆ update)
   where readout : ℝ → ℝ
         readout state = state
         GL : ℝ
@@ -41,8 +43,7 @@ voltage = MkDynamicalSystem ℝ (mkpoly ℝ λ _ → ℝ × ℝ × ℝ × ℝ) (
             where v = state + 65.0
                   dv  = Gna * m ** 3.0 * h * (Ena - v) + Gk * n ** 4.0 * (Ek - v) + GL * (EL - v) + Ie
                   -- V[i+1] = gNa0*m[i]**3*h[i]*(ENa-(V[i]+65)) + gK0*n[i]**4*(EK-(V[i]+65)) + gL0*(EL-(V[i]+65)) + I0
-                   -- dv = (- GL * (state - EL) - Gna * m ** 3.0 * h * (state - Ena) - Gk * n ** 4.0 * (state - Ek) + Ie ) ÷ C
-
+                   -- dv = (- GL * (state - EL) - Gna * m ** 3.0 * h * (state - Ena) - Gk * n ** 4.0 * (state - Ek) + Ie ) 
 -- Helper functions -----
 αₘ : ℝ → ℝ
 --           (2.5 - 0.1 * (V+65))           / (np.exp(2.5-0.1 * (V        + 65))    -1)
@@ -67,56 +68,73 @@ voltage = MkDynamicalSystem ℝ (mkpoly ℝ λ _ → ℝ × ℝ × ℝ × ℝ) (
 -------------------------
 
 -- First order differential equations
-potassiumActivation : DynamicalSystem
-potassiumActivation = MkDynamicalSystem ℝ (mkpoly ℝ λ _ → ℝ) (readout ⇆ update)
+potassiumActivation :  ℝ → DynamicalSystem
+potassiumActivation dt = mkdyn ℝ (mkpoly ℝ λ _ → ℝ) (readout ⇆ update)
   where readout : ℝ → ℝ
         readout state = state
         update : ℝ → ℝ → ℝ
         update state voltage = state + dt * dₘ
           where dₘ = αₘ voltage * (1.0 - state) - βₘ voltage * state
 
-sodiumActivation : DynamicalSystem
-sodiumActivation = MkDynamicalSystem ℝ (mkpoly ℝ λ _ → ℝ) (readout ⇆ update)
+sodiumActivation : ℝ → DynamicalSystem
+sodiumActivation dt = mkdyn ℝ (mkpoly ℝ λ _ → ℝ) (readout ⇆ update)
   where readout : ℝ → ℝ
         readout state = state
         update : ℝ → ℝ → ℝ
         update state voltage = state + dt * dₕ
           where dₕ = αₕ voltage * (1.0 - state) - βₕ voltage * state
 
-sodiumInactivation : DynamicalSystem
-sodiumInactivation = MkDynamicalSystem ℝ (mkpoly ℝ λ _ → ℝ) (readout ⇆ update)
+sodiumInactivation : ℝ → DynamicalSystem
+sodiumInactivation dt = mkdyn ℝ (mkpoly ℝ λ _ → ℝ) (readout ⇆ update)
   where readout : ℝ → ℝ
         readout state = state
         update : ℝ → ℝ → ℝ
         update state voltage = state + dt * dₙ
           where dₙ = αₙ voltage * (1.0 - state) - βₙ voltage * state   
 
-preHH : DynamicalSystem
-preHH = voltage &&& potassiumActivation &&& sodiumActivation &&& sodiumInactivation
+preHH : ℝ → DynamicalSystem
+preHH dt = voltage dt &&& potassiumActivation dt &&& sodiumActivation dt &&& sodiumInactivation dt
 
--- Wiring diagram is an lens between monomials (lens)
--- The first function in the lens simply selects something to be the output of the larger system.
--- The second one deals with wiring inputs. It has access to all outputs plus Ie, which is an input to
--- the outer box. Wonder why the first lens doesn't have access to Ie though.
-hodgkinHuxleyWiringDiagram : Lens (DynamicalSystem.interface preHH) (selfMonomial ℝ)
+hodgkinHuxleyWiringDiagram : Lens (interface (preHH 0.0)) (selfMonomial ℝ)
 hodgkinHuxleyWiringDiagram = (λ {(v , m , h , n) → v }) ⇆ (λ {((v , m , h , n)) Ie → (Ie , m , h , n) , v , v , v })
 
--- Final system is composition of wiring diagram and dynamics
-hodgkinHuxley : DynamicalSystem
-hodgkinHuxley = install preHH (selfMonomial ℝ) hodgkinHuxleyWiringDiagram
+hodgkinHuxley : ℝ → DynamicalSystem
+hodgkinHuxley dt = install (preHH dt) (selfMonomial ℝ) hodgkinHuxleyWiringDiagram
 
-hhSeq : Stream ℝ _
-hhSeq = run hodgkinHuxley (constI Ie) (V₀ , m∞ V₀ , n∞ V₀ , h∞ V₀)
+preHHWithInput : ℝ → DynamicalSystem
+preHHWithInput dt = hodgkinHuxley dt &&& functionToDynamicalSystem ℝ ℝ λ x → x + (dt * 0.02)
+
+hhWithInputWiring : Lens (interface (preHHWithInput 0.0)) (emitter ℝ)
+hhWithInputWiring = (λ { (hhOut , _) → hhOut}) ⇆ λ { (hhOut , fnOut) _ → fnOut , fnOut }
+
+hhWithInput : ℝ → DynamicalSystem
+hhWithInput dt = install (preHHWithInput dt) (emitter ℝ) hhWithInputWiring
+
+hhSeqWithInput : ℝ → Stream ℝ _
+hhSeqWithInput dt = run (hhWithInput dt) auto ((V₀ , m∞ , n∞ , h∞) , -5.0)
   where V₀ : ℝ
         V₀ = -70.0
-        m∞ : ℝ → ℝ
-        m∞ v = 0.05 -- αₘ v ÷ (αₘ v + βₘ v)
-        n∞ : ℝ → ℝ
-        n∞ v = 0.54 -- αₙ v ÷ (αₙ v + βₙ v)
-        h∞ : ℝ → ℝ
-        h∞ v = 0.34 -- αₙ v ÷ (αₙ v + βₙ v)
+        m∞ : ℝ
+        m∞ = 0.05
+        n∞ : ℝ
+        n∞ = 0.54
+        h∞ : ℝ
+        h∞ = 0.34
+
+hhSeq : ℝ → Stream ℝ _
+hhSeq dt = run (hodgkinHuxley dt) (constI Ie) (V₀ , m∞ , n∞ , h∞)
+  where V₀ : ℝ
+        V₀ = -70.0
+        m∞ : ℝ
+        m∞ = 0.05
+        n∞ : ℝ
+        n∞ = 0.54
+        h∞ : ℝ
+        h∞ = 0.34
         Ie : ℝ
         Ie = 10.0
 
-hhList : Vec ℝ 1000
-hhList = take 1000 hhSeq
+
+hhList : ℝ → Vec ℝ 15000
+hhList dt = take 15000 (hhSeqWithInput dt)
+

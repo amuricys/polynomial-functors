@@ -39,10 +39,10 @@ compositePower p (suc n) = p ◂ (compositePower p n)
 ~ᴸ =  (λ x → tt , const x) ⇆ λ _ → proj₂
 
 -- Apply lenses to both sides of the monoidal structure
-⟨_◂_⟩ : {p q r s : Polynomial} → Lens p r → Lens q s → Lens (p ◂ q) (r ◂ s)
-⟨_◂_⟩ {p} {q} {r} {s} (f ⇆ f♯) (g ⇆ g♯) = mapPos ⇆ mapDir
-  where mapPos : position (p ◂ q) → position (r ◂ s)
+⟨_◂_⟩ : {p q r w : Polynomial} → Lens p r → Lens q w → Lens (p ◂ q) (r ◂ w)
+⟨_◂_⟩ {p} {q} {r} {w} (f ⇆ f♯) (g ⇆ g♯) = mapPos ⇆ mapDir
+  where mapPos : position (p ◂ q) → position (r ◂ w)
         mapPos (posP , dirPToPosQ) = f posP , g ∘ dirPToPosQ ∘ f♯ posP
-        mapDir : (fromPos : position (p ◂ q)) → direction (r ◂ s) (mapPos fromPos) → direction (p ◂ q) fromPos
-        mapDir (posP , dirPToPosQ) (dirR , dirS) = (f♯ posP dirR) , g♯ (dirPToPosQ (f♯ posP dirR)) dirS
+        mapDir : (fromPos : position (p ◂ q)) → direction (r ◂ w) (mapPos fromPos) → direction (p ◂ q) fromPos
+        mapDir (posP , dirPToPosQ) (dirR , dirW) = (f♯ posP dirR) , g♯ (dirPToPosQ (f♯ posP dirR)) dirW
 infixl 28 ⟨_◂_⟩

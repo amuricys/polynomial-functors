@@ -20,7 +20,7 @@ open import CategoryData.Everything
 
 -- Creating dynamical systems.
 record DynamicalSystem : Set₁ where
-    constructor MkDynamicalSystem
+    constructor mkdyn
     field
         state : Set -- S
         interface : Polynomial -- p
@@ -34,35 +34,30 @@ record InitializedDynamicalSystem : Set₁ where
         initialState : Lens Y (selfMonomial (state dynamicalSystem))
 
 functionToDynamicalSystem : (A B : Set) → (A → B) → DynamicalSystem
-functionToDynamicalSystem A B f = MkDynamicalSystem B (monomial B A) (id ⇆ (\_ → f))
-
-delay : (A : Set) → DynamicalSystem
-delay A = functionToDynamicalSystem A A id
+functionToDynamicalSystem A B f = mkdyn B (monomial B A) (id ⇆ (\_ → f))
 
 _&&&_ : DynamicalSystem → DynamicalSystem → DynamicalSystem
-MkDynamicalSystem stateA interfaceA dynamicsA &&& MkDynamicalSystem stateB interfaceB dynamicsB 
-    = MkDynamicalSystem (stateA × stateB) (interfaceA ⊗ interfaceB) (readout ⇆ update)
-        where
-            readout : (stateA × stateB) → Polynomial.position (interfaceA ⊗ interfaceB)
-            readout (stateA , stateB) = (Lens.mapPosition dynamicsA stateA) , (Lens.mapPosition dynamicsB stateB)
-            update : (state : (stateA × stateB)) → Polynomial.direction (interfaceA ⊗ interfaceB) (readout state) → stateA × stateB
-            update (sA , sB) (dirA , dirB) = (Lens.mapDirection dynamicsA sA dirA) , (Lens.mapDirection dynamicsB sB dirB)
+mkdyn stateA interfaceA dynamicsA &&& mkdyn stateB interfaceB dynamicsB 
+    = mkdyn (stateA × stateB) (interfaceA ⊗ interfaceB) ⟨ dynamicsA ⊗ dynamicsB ⟩
+
 infixr 10 _&&&_
 
-Emitter : Set → Polynomial
-Emitter = linear
+emitter : Set → Polynomial
+emitter = linear
 
 install : (d : DynamicalSystem) → (a : Polynomial) → Lens (DynamicalSystem.interface d) a → DynamicalSystem
-install d a l = MkDynamicalSystem (DynamicalSystem.state d) a (l ∘ₚ (DynamicalSystem.dynamics d))
+install d a l = mkdyn (DynamicalSystem.state d) a (l ∘ₚ (DynamicalSystem.dynamics d))
 
 encloseFunction : {t u : Set} → (t → u) → Lens (monomial t u) Y
 encloseFunction f = (λ _ → tt) ⇆ (λ fromPos _ → f fromPos)
 
-auto : {m : Set} → enclose (Emitter m)
+auto : {m : Set} → enclose (emitter m)
 auto = encloseFunction λ _ → tt
 
 constI : {m : Set} → (i : m) → enclose (selfMonomial m)
 constI i = encloseFunction λ _ → i
+
+
 
 -- open import Data.Nat using (ℕ; zero; suc)
 
@@ -107,4 +102,3 @@ run d e initialState =  [ output ] ++ (run d e next)
         output = (Lens.mapPosition (DynamicalSystem.dynamics d) initialState)
         next : DynamicalSystem.state d
         next = Lens.mapDirection (DynamicalSystem.dynamics d) initialState (Lens.mapDirection e output tt)
-

@@ -32,7 +32,7 @@ data SystemParams where
     , dt'       :: Double
     } -> SystemParams
   HodgkinHuxleyParams ::
-    { }
+    { dt'' :: Double }
     -> SystemParams
   LotkaVolterraParams ::
     { alpha :: Double
@@ -41,7 +41,7 @@ data SystemParams where
     , gamma :: Double
     , r0 :: Double
     , f0 :: Double
-    , dt'' :: Double }
+    , dt''' :: Double }
     -> SystemParams
 deriving instance Show SystemParams
 
@@ -87,7 +87,7 @@ lotkaVolterraParamsParser = LotkaVolterraParams
   <*> option auto (long "dt" <> short 't' <> metavar "DT" <> help "Time step")
 
 hodgkinHuxleyParamsParser :: Parser SystemParams
-hodgkinHuxleyParamsParser = pure HodgkinHuxleyParams
+hodgkinHuxleyParamsParser = HodgkinHuxleyParams <$> option auto (long "dt" <> short 't' <> metavar "DT" <> help "Time step")
 
 optionsParser :: Parser Options
 optionsParser = Options <$> systemParser
