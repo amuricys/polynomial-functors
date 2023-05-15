@@ -159,7 +159,7 @@ rest (ReservoirParams rdim trainSteps touchSteps outputLength lorinitx lorinity 
   -- _ ← printOneMatrix o
   -- _ ← IO.run {Level.zero} $ IO.putStrLn "predictions:"
   -- _ ← printLists $ List.zip pred_x $ List.zip pred_y pred_z
-  plotDynamics "seconds" "" "Reservoir computer" 0.1 (("actual_x", x) ∷ ("actual_y", y) ∷ ("actual_z", z) ∷ ("pred_x", pred_x) ∷ ("pred_y", pred_y) ∷ ("pred_z", pred_z) ∷ []) 
+  plotDynamics "seconds" "" "Reservoir computer" dt₁ (("actual_x", x) ∷ ("actual_y", y) ∷ ("actual_z", z) ∷ ("pred_x", pred_x) ∷ ("pred_y", pred_y) ∷ ("pred_z", pred_z) ∷ []) 
 rest (LorenzParams lorinitx lorinity lorinitz dt₁) = do 
   let x , yz = fromSigma (List.unzip (Vec.toList $ lorenzList lorinitx lorinity lorinitz dt₁))
   let y , z = fromSigma (List.unzip yz)

@@ -70,3 +70,43 @@ lorenzList x0 y0 z0 dt = Data.Vec.map (\{(xnt x , ynt y , znt z) → x , y , z }
 
 outToVec : X × Y × Z → Vec ℝ 3
 outToVec (xnt x , ynt y , znt z) = (x Vec.∷ y Vec.∷ z Vec.∷ Vec.[])
+open import Data.Sum
+-- First order differential equations
+xᶜ : ℝ → DynamicalSystem
+xᶜ dt = mkdyn X (mkpoly X λ _ → X ⊎ Y) (readout ⇆ update)
+  where readout : X → X
+        readout state = state
+        update : X → X ⊎ Y → X
+        update _ (inj₁ x) = x
+        update (xnt state) (inj₂ (ynt y)) = xnt (state + dt * (σ * (y - state)))
+
+yᶜ : ℝ → DynamicalSystem
+yᶜ dt = mkdyn Y (mkpoly Y λ _ → Y ⊎ (X × Z)) (readout ⇆ update)
+  where readout : Y → Y
+        readout state = state
+        update : Y →  Y ⊎ (X × Z) → Y
+        update _ (inj₁ y) = y
+        update (ynt state) (inj₂ ( xnt x , znt z )) = ynt (state + dt * (x * (ρ - z) - state))
+
+zᶜ : ℝ → DynamicalSystem
+zᶜ dt = mkdyn Z (mkpoly Z λ _ →  Z ⊎ (X × Y)) (readout ⇆ update)
+  where readout : Z → Z
+        readout state = state
+        update : Z →  Z ⊎ (X × Y) → Z
+        update _ (inj₁ z) = z
+        update (znt state) (inj₂ (xnt x , ynt y)) = znt (state + dt * (x * y - β * state))
+
+preCRLorenz : ℝ → DynamicalSystem
+preCRLorenz dt = xᶜ dt &&& yᶜ dt &&& zᶜ dt
+
+open import Data.Bool
+lorenzCRWiringDiagram : Lens (DynamicalSystem.interface (preCRLorenz 0.0)) (monomial (X × Y × Z) (⊤ ⊎ (X × Y × Z)))
+lorenzCRWiringDiagram = mp ⇆ md
+  where mp : X × Y × Z → X × Y × Z
+        mp (x , y , z) = x , y , z
+        md :  X × Y × Z → (⊤ ⊎ (X × Y × Z)) → (X ⊎ Y) × (Y ⊎ ( X × Z)) × (Z ⊎ (X × Y))
+        md (x , y , z) (inj₁ tt) = inj₂ y , inj₂ (x , z) , inj₂ (x , y)
+        md _ (inj₂ (x , y , z)) = inj₁ x , inj₁ y , inj₁ z
+
+canResetLorenz : ℝ → DynamicalSystem
+canResetLorenz dt = install (preCRLorenz dt) (monomial (X × Y × Z) (⊤ ⊎ (X × Y × Z))) lorenzCRWiringDiagram
