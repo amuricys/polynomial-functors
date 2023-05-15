@@ -4,7 +4,7 @@ module Categorical.Poly.Monoidal.ParallelProduct where
 
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
-open import Cubical.Foundations.Isomorphism
+open import Cubical.Foundations.Isomorphism hiding (iso)
 open import Agda.Builtin.Unit
 open import Cubical.PolynomialEquals
 open import Cubical.Proofs
@@ -55,12 +55,30 @@ monoidal = record
     ; pentagon = refl
     }
 open import Categories.Category.Monoidal.Symmetric monoidal
-
+open import Categories.Category.Monoidal.Braided monoidal
+open import Categories.NaturalTransformation.NaturalIsomorphism hiding (refl)
+open import Categories.NaturalTransformation
+open Symmetric
+open Braided
+open NaturalIsomorphism
+open NaturalTransformation
+open import Data.Product using (_×_)
 symmetricMonoidal : Symmetric
-symmetricMonoidal = record 
-    { braided = record 
-        { braiding = record { F⇒G = record { η = λ X → {!   !} ; commute = {!   !} ; sym-commute = {!   !} } ; F⇐G = {!   !} ; iso = {!   !} } 
-        ; hexagon₁ = {!   !} 
-        ; hexagon₂ = {!   !} } 
-    ; commutative = {!   !} 
-    }
+η (F⇒G (braiding (braided symmetricMonoidal))) (obj₁ , obj₂) = mp ⇆ md
+    where mp : (position obj₁) × (position obj₂) → (position obj₂) × (position obj₁)
+          mp (a , b) = b , a
+          md : ((pos₁ , pos₂) : (position obj₁ × position obj₂)) → (direction obj₂ pos₂) × (direction obj₁ pos₁) → (direction obj₁ pos₁) × (direction obj₂ pos₂)
+          md _ (dir₁ , dir₂) = dir₂ , dir₁
+commute (F⇒G (braiding (braided symmetricMonoidal))) = λ f → refl
+sym-commute (F⇒G (braiding (braided symmetricMonoidal))) = λ f → refl
+η (F⇐G (braiding (braided symmetricMonoidal))) (obj₁ , obj₂) = mp ⇆ md
+    where mp : (position obj₂) × (position obj₁) → (position obj₁) × (position obj₂)
+          mp (a , b) = b , a
+          md : (fromPos : (position obj₂) × (position obj₁)) → (direction obj₁ (snd fromPos)) × (direction obj₂ (fst fromPos)) → (direction obj₂ (fst fromPos)) × (direction obj₁ (snd fromPos))
+          md _ (dir₁ , dir₂) = dir₂ , dir₁
+commute (F⇐G (braiding (braided symmetricMonoidal))) = λ f → refl
+sym-commute (F⇐G (braiding (braided symmetricMonoidal))) = λ f → refl
+iso (braiding (braided symmetricMonoidal)) = λ _ → record { isoˡ = refl ; isoʳ = refl }
+hexagon₁ (braided symmetricMonoidal) = refl
+hexagon₂ (braided symmetricMonoidal) = refl
+commutative symmetricMonoidal = refl  
