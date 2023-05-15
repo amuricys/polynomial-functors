@@ -42,8 +42,8 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
          -- And in the dependent part of the polynomial's definition here, the set of directions for each position is the SetCoequalizer
          -- of the maps on directions *partially applied* the direction from which it came. This would normally be different types, but 
          -- the positions of the equalizer have a proof that mpf posp = mpg posp, which we use to subst below.
-         eqPoly : Polynomial
-         eqPoly = mkpoly EqualizedPosition $ λ intele@( posp , equal ) → SetCoequalizer (mdf posp) (λ x → mdg posp (subst (λ diffPosQ → direction q diffPosQ) equal x))
+
+         
          eqPosSet : isSet (position eqPoly)
          eqPosSet = isSetΣ pposSet λ x → isProp→isSet (qposSet (mpf x) (mpg x))
          eqDirSet : ∀ {po : position eqPoly} → isSet (direction eqPoly po)
@@ -109,19 +109,7 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
                                 ≡ 
                                 (λ i → mapPosition (lens (eq i)) x)
                          wat = {! cong mapPosition $ rapaz eq !}
-      --      record { 
-      --       equality = cong ⇆ˢ equal ;
-            --  equalize = λ { {X} {h = ⇆ˢ (mph ⇆ mdh)} x → ⇆ˢ 
-            --                ((λ x₁ → mph x₁ , funExt⁻ (cong mapPosition $ rapaz x) x₁) 
-            --                   ⇆ λ fromPos → inducedHom (λ x₁ y → isDirSet X x₁ y) (mdh fromPos) (lens≡→mapDir≡' (rapaz x) fromPos) ) }  ;
-      --       universal = λ {X} {(⇆ˢ (mph ⇆ mdh))} {eq2} → cong ⇆ˢ (lensesEqual3 refl λ x y → {!   !}  ); -- commutativity (isDirSet X) (\y →  mdh x {!  !}) (λ a → lens≡→mapDir≡' (cong lens eq2) x a) {!   !}) ; 
-      --       unique = λ {X} {h@(⇆ˢ (mph ⇆ mdh))} {(⇆ˢ (mpi ⇆ mdi))} x → cong ⇆ˢ (lensesEqual3 (funExt λ { posX → {! mpi posX  !} }) {!   !}) 
-      --       }
---            where 
-                  -- universal : ∀ {X p q : SetPolynomial} {h : Lens X p}  → {!   !}
-                  -- universal = λ {X} {(⇆ˢ (mph ⇆ mdh))} {eq2} → cong ⇆ˢ (lensesEqual3 refl λ x y → commutativity (isDirSet X) (\y →  mdh x {!  !}) (λ a → lens≡→mapDir≡' (cong lens eq2) x a) {!   !}) 
-                  
-                  
+
                   
 import Categories.Diagram.Equalizer (Sets Level.zero) as SetsEq
 eqSets : {A B : Set} → (f g : A → B) → SetsEq.Equalizer f g
