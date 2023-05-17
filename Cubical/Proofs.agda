@@ -12,6 +12,7 @@ open import Cubical.Core.Everything
 open import Cubical.Categories.Category
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.HLevels
+open import Cubical.Foundations.Transport
 open import Cubical.Categories.Limits.Terminal
 open import Cubical.Foundations.Isomorphism
 open import Cubical.Data.Sigma.Properties

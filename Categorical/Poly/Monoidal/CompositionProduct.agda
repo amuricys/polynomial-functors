@@ -48,6 +48,29 @@ rightUnit {p} = poly≡∀' pos≡ dir≡
         dir≡ : (posA : position (p ◂ Y)) → direction (p ◂ Y) posA ≡ subst (λ x → x → Type) (sym pos≡) (direction p) posA
         dir≡ posA = lemmaDir ∙ cong (direction p) (sym (transportRefl (fst posA)))
 
+
+-- transportRefl : (x : A) → transport refl x ≡ x
+-- transportRefl {A = A} x i = transp (λ _ → A) i x
+
+halp : {p : Polynomial} {posp : position p} {dirp : direction p posp} → dirp ≡ 
+    transport (λ j → direction p (transp (λ i → position p) j posp))
+    (transport
+       (λ i → direction p (transp (λ _ → position p) (~ i) posp))
+       dirp)
+halp {p} {posp} {dirp} = sym {!   !}
+  where lemma : (j : I) → transp (λ i → position p) j posp ≡ posp
+        lemma j i = transp (λ _ → position p) (i ∨ j) posp
+        lemma2 : ∀ {a} → transport (λ j → direction p posp) a ≡ a
+        lemma2 {a} = transportRefl a
+
+  -- lemma pr x y i =
+  -- transp (λ j → direction p (transp (λ _ → position p) (j ∨ i) x))
+  --        i
+  --        (mapDirection f (transp (λ _ → position p) i x)
+  --                        (transp (λ j → direction q (pr (~ j) (transp (λ _ → position p) (~ j ∨ i) x)))
+  --                                i0
+  --                                y))
+
 open import CategoryData.Composition
 assoc : {p q r : Polynomial} → (p ◂ q) ◂ r ≡ p ◂ (q ◂ r)
 assoc {p} {q} {r} = poly≡∀ pos≡ dir≡
@@ -87,10 +110,24 @@ assoc {p} {q} {r} = poly≡∀ pos≡ dir≡
                     subst (λ x → x → Type) pos≡ (dir (p ◂ q) r) posB 
                   ≡
                  dir p (q ◂ r) posB
-          dir≡ gm = isoToPath (iso (λ { ((dirp , dirq) , dirr) → subst (direction p) (transportRefl (fst gm)) dirp , subst (direction q) (transportRefl (fst (snd gm  (transp (λ j → direction p (transp (λ i → position p) j (fst gm))) i0 dirp)))) dirq , subst (direction r) {!   !} dirr })
-                                        (λ { (dirp , dirq , dirr) → (subst (direction p) (sym (transportRefl (fst gm))) dirp , {! subst (direction q)   !}) , {!   !} }) 
-                                        {!   !}
-                                        {!   !})
+          dir≡ gm = isoToPath (iso (λ { ((dirp , dirq) , dirr) →  subst (direction p) (transportRefl (fst gm)) dirp , subst (direction q) (transportRefl (fst (snd gm  (transp (λ j → direction p (transp (λ i → position p) j (fst gm))) i0 dirp)))) dirq , subst (direction r) (transportRefl ((snd
+                                      (snd gm
+                                        (transp (λ j → direction p (transp (λ i → position p) j (fst gm)))
+                                        i0 dirp))
+                                      (transp
+                                        (λ j →
+                                          direction q
+                                          (transp (λ i → position q) j
+                                            (fst
+                                            (snd gm
+                                              (transp
+                                              (λ j₁ → direction p (transp (λ i → position p) j₁ (fst gm))) i0
+                                              dirp)))))
+                                        i0 dirq)))) dirr })
+                                   (λ { (dirp , dirq , dirr)   → (subst (direction p) (sym (transportRefl (fst gm))) dirp , subst (direction q) (sym ((transportRefl (fst (snd gm  (transp (λ j → direction p (transp (λ i → position p) j (fst gm))) i0 (subst (direction p) (sym (transportRefl (fst gm))) dirp))))))) (subst (λ diff → direction q (fst (snd gm diff)) ) (halp {p}) dirq)) , {!   !} }) 
+                                   {!   !}
+                                   {!   !})
+
 open Functor
 bifunctor : Bifunctor Poly Poly Poly
 F₀ bifunctor (p , q) = p ◂ q
@@ -127,4 +164,4 @@ monoidal = record
     ; triangle = refl
     ; pentagon = refl
     }
-   
+      
