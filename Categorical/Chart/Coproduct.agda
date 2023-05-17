@@ -9,18 +9,18 @@ open import Categories.Object.Coproduct ChartCat
 open import Data.Sum
 open import Cubical.Foundations.Prelude
 open import Cubical.ChartEquality
+open import Function
 
 i₁ : {p q : Polynomial} → Chart p (p + q)
-i₁ = inj₁ ⇉ λ i x → x
+i₁ = inj₁ ⇉ λ _ → id
 
 i₂ : {p q : Polynomial} → Chart q (p + q)
-i₂ = inj₂ ⇉ λ i x → x
+i₂ = inj₂ ⇉ λ _ → id
 
 open Chart
 [_,_]c : {p q r : Polynomial} → Chart p r → Chart q r → Chart (p + q) r
-[_,_]c f g = (λ {(inj₁ x) → mapPos f x
-                       ; (inj₂ y) → mapPos g y}) ⇉ λ {(inj₁ x₁) x → mapDir f x₁ x
-                                                  ; (inj₂ y) x → mapDir g y x}
+[ f ⇉ f♭ , g ⇉ g♭ ]c = [ f , g ] ⇉ [ f♭ , g♭ ]
+
 
 unique : {p q r : Polynomial} {h : Chart (p + q) r} {f₁ : Chart p r} {f₂ : Chart q r}
     → ((h ∘c i₁) ≡ f₁)

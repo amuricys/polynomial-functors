@@ -17,7 +17,7 @@ open import Cubical.ChartEquality
 
 open Chart
 ⟨_,_⟩ : {p q r : Polynomial} → Chart p q → Chart p r → Chart p (q ⊗ r)
-⟨ f , g ⟩ = (λ p → mapPos f p , mapPos g p) ⇉ λ p x → mapDir f p x , mapDir g p x
+⟨ f ⇉ f♭ , g ⇉ g♭ ⟩ = (λ i → (f i , g i)) ⇉ (λ i d → f♭ i d , g♭ i d)
 
 prod : {A B : Polynomial} → Product A B
 prod {A = A} {B = B} = record
