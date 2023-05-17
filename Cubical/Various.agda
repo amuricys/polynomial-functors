@@ -63,4 +63,4 @@ productIsΠPoly {p} {q} = poly≡∀' posEq dirEq
 -- hej A B f = {! isoToPath  !}
 
 -- functionToDynamicalSystem₂ : {A B : Set} → (A → B) → DynamicalSystem
--- functionToDynamicalSystem₂ {A} {B} f = MkDynamicalSystem A (monomial B A) (f ⇆ λ _ → id)
+-- functionToDynamicalSystem₂ {A} {B} f = mkdyn A (monomial B A) (f ⇆ λ _ → id)

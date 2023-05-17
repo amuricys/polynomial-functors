@@ -36,21 +36,21 @@ lensIsDynamics = isoToPath (iso f f⁻ (λ b → refl) λ a → refl)
         f (MkMooreMachine State Input Output update readout) = MkSimpleDynamicalSystem State Input Output (readout ⇆ update) 
 
         -- record { State = State ; Input = Input ; Output = Output ; update = update ; readout = readout }
-        --  = MkDynamicalSystem State (monomial Output Input) (readout ⇆ update) , record { input = Input ; output = Output ; proof = refl }
+        --  = mkdyn State (monomial Output Input) (readout ⇆ update) , record { input = Input ; output = Output ; proof = refl }
 
         f⁻ : SimpleDynamicalSystem → MooreMachine
         f⁻ (MkSimpleDynamicalSystem state input output dynamics) = MkMooreMachine state input output (mapDirection dynamics) (mapPosition dynamics)
 
         -- f : MooreMachine → Σ[ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn)
         -- f record { State = State ; Input = Input ; Output = Output ; update = update ; readout = readout }
-        --  = MkDynamicalSystem State (monomial Output Input) (readout ⇆ update) , record { input = Input ; output = Output ; proof = refl }
+        --  = mkdyn State (monomial Output Input) (readout ⇆ update) , record { input = Input ; output = Output ; proof = refl }
 
         -- f⁻ : (Σ[ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn)) → MooreMachine
-        -- f⁻ (MkDynamicalSystem state interface dynamics , record { input = input ; output = output ; proof = proof })
+        -- f⁻ (mkdyn state interface dynamics , record { input = input ; output = output ; proof = proof })
         -- -- state → input → state
         --     = record { State = state ; Input = input ; Output = output ; update = J (λ y x → state → input → state) {! mapDirection dynamics  !} proof ; readout = {!  mapPosition dynamics !} }
-            -- f⁻ (MkDynamicalSystem state₁ interface₁ dynamics₁ , snd₁) = ? -- record { State = {! fst₁  !} ; Input = {!   !} ; Output = {!   !} ; update = {!   !} ; readout = {!   !} } 
-        -- (MkDynamicalSystem state interface dynamics) 
+            -- f⁻ (mkdyn state₁ interface₁ dynamics₁ , snd₁) = ? -- record { State = {! fst₁  !} ; Input = {!   !} ; Output = {!   !} ; update = {!   !} ; readout = {!   !} } 
+        -- (mkdyn state interface dynamics) 
         --     = record { State = state ; Input = {! direction interface   !} ; Output = position interface ; update = {!  mapDirection dynamics !} ; readout = mapPosition dynamics }
 
 -- lensIsDynamicsInitialed : chine ≡ 

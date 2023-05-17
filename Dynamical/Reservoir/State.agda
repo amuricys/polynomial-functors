@@ -9,6 +9,7 @@ open import Data.Vec hiding (_>>=_)
 open import Data.List
 open import Level
 import Category.Monad.Reader
+open import Data.Bool
 
 OutputWeights : (numNodes systemDim : ℕ) → Set
 OutputWeights numNodes systemDim = Matrix ℝ numNodes systemDim

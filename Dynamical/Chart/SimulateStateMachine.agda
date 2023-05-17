@@ -65,7 +65,7 @@ bigLens = output ⇆ input
         input five orange = two
 
 bigSystem : DynamicalSystem
-bigSystem = MkDynamicalSystem S p bigLens
+bigSystem = mkdyn S p bigLens
 
 smallLens : Lens (selfMonomial T) p
 smallLens = output ⇆ input
@@ -85,7 +85,7 @@ smallLens = output ⇆ input
 
 -- | More compact version of big system with same semantics
 smallSystem : DynamicalSystem
-smallSystem = MkDynamicalSystem T p smallLens
+smallSystem = mkdyn T p smallLens
 
 
 morphSystem : S → T
