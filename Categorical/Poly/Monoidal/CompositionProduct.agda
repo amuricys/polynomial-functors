@@ -11,8 +11,10 @@ open import Cubical.Proofs
 open import Categories.Category.Monoidal
 open import Categorical.Poly.Instance
 open import Categories.Functor.Bifunctor
+open import Categories.Functor
 open import Cubical.LensEquality
 open import Cubical.Data.Sigma.Properties
+open import Cubical.Foundations.Transport
 
 open Polynomial
 
@@ -85,15 +87,17 @@ assoc {p} {q} {r} = poly≡∀ pos≡ dir≡
                     subst (λ x → x → Type) pos≡ (dir (p ◂ q) r) posB 
                   ≡
                  dir p (q ◂ r) posB
-          dir≡ (a , b) = {!   !}
+          dir≡ gm = isoToPath (iso (λ { ((dirp , dirq) , dirr) → subst (direction p) (transportRefl (fst gm)) dirp , subst (direction q) (transportRefl (fst (snd gm  (transp (λ j → direction p (transp (λ i → position p) j (fst gm))) i0 dirp)))) dirq , subst (direction r) {!   !} dirr })
+                                        (λ { (dirp , dirq , dirr) → (subst (direction p) (sym (transportRefl (fst gm))) dirp , {! subst (direction q)   !}) , {!   !} }) 
+                                        {!   !}
+                                        {!   !})
+open Functor
 bifunctor : Bifunctor Poly Poly Poly
-bifunctor = record
-    { F₀ = λ  { (p , q) → p ◂ q }
-    ; F₁ = λ { ((mpf ⇆ mdf) , (mpg ⇆ mdg)) → (λ { (a , b) → mpf a , λ { x → mpg (b (mdf a x)) } }) ⇆ λ { (x , y) (w , z) → (mdf x w) , (mdg (y (mdf x w)) z) } }
-    ; identity = refl
-    ; homomorphism = refl
-    ; F-resp-≈ = λ x → lens≡ {!   !} {!   !}
-    }
+F₀ bifunctor (p , q) = p ◂ q
+F₁ bifunctor ((mpf ⇆ mdf) , (mpg ⇆ mdg)) = (λ { (a , b) → mpf a , λ { x → mpg (b (mdf a x)) } }) ⇆ λ { (x , y) (w , z) → (mdf x w) , (mdg (y (mdf x w)) z) }
+identity bifunctor = refl
+homomorphism bifunctor = refl
+F-resp-≈ bifunctor {f} {g} pr = lensesEqual3 {!   !} {!   !}
 
 monoidal : Monoidal Poly
 monoidal = record
@@ -123,4 +127,4 @@ monoidal = record
     ; triangle = refl
     ; pentagon = refl
     }
- 
+   

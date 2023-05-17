@@ -48,7 +48,7 @@ postulate trace : ∀ {A : Set} → String → A → A
 
 data ReadoutOutput (numNodes systemDim : ℕ) : Set where
   CD : ReadoutOutput numNodes systemDim
-  R : Vec ℝ systemDim → OutputWeights numNodes systemDim → ReadoutOutput numNodes systemDim
+  R : Vec ℝ systemDim → ReadoutOutput numNodes systemDim
 
 record CollectingDataInput (numNodes systemDim : ℕ) : Set where
   constructor CDI
@@ -61,7 +61,7 @@ RunningInput = ReservoirState
 
 DependentInput : {numNodes systemDim : ℕ} → ReadoutOutput numNodes systemDim → Set
 DependentInput {numNodes} {systemDim} CD = CollectingDataInput numNodes systemDim
-DependentInput {numNodes} (R _ _ ) = RunningInput numNodes
+DependentInput {numNodes} (R _ ) = RunningInput numNodes
 
 reservoir : (numNodes systemDim : ℕ) → DynamicalSystem
 reservoir numNodes systemDim = mkdyn (ReservoirState numNodes) interface (readout ⇆ update)
@@ -88,7 +88,7 @@ readoutLayer numNodes systemDim trainingSteps = mkdyn (ReadoutLayerState numNode
         interface = mkpoly (ReadoutOutput numNodes systemDim) DependentInput
         readout : ReadoutLayerState numNodes systemDim → ReadoutOutput numNodes systemDim
         readout (Coll _) = CD -- don't care when training
-        readout (Run (Running outputWeights (Res lastSeenNodeStates))) = R (outputWeights ᵀ *ᴹⱽ lastSeenNodeStates) outputWeights
+        readout (Run (Running outputWeights (Res lastSeenNodeStates))) = R (outputWeights ᵀ *ᴹⱽ lastSeenNodeStates)
         update : (fromPos : ReadoutLayerState numNodes systemDim) → DependentInput (readout fromPos) → ReadoutLayerState numNodes systemDim
         update (Coll (Collecting counter statesHistory systemHistory)) (CDI newNodeStates systemOutput) = 
           if is-< counter trainingSteps then keepCollecting else trainThenRun
@@ -107,27 +107,20 @@ readoutLayer numNodes systemDim trainingSteps = mkdyn (ReadoutLayerState numNode
                           trainedOutputWeights = (statesHist ᵀ *ᴹ statesHist +ᴹ ridge *ˢᴹ eye {n = numNodes})⁻¹ *ᴹ (statesHist ᵀ *ᴹ systemHist)
         update (Run (Running outputWeights (Res lastSeenNodeStates))) (Res nodeStateFromReservoir) = 
           Run (Running outputWeights (Res nodeStateFromReservoir))
-          -- where str =
-          --             "Readout's conception of node states (what you'd get from a readout): \n"
-          --             ++ Matrix.showVec (outputWeights ᵀ *ᴹⱽ lastSeenNodeStates)
-          --             -- ++ "\nResult of multiplying owᵀ = \n"
-          --             -- ++ Matrix.showMatrix (outputWeights ᵀ)
-          --             -- ++ "with its current nodeStates = \n"
-          --             -- ++ Matrix.showVec lastSeenNodeStates
 
 data TouchCtrl : Set where
-  touching : Bool → TouchCtrl
-  going : TouchCtrl
+  touching : ℕ → TouchCtrl
+  going : ℕ → TouchCtrl
 ctr : {numNodes systemDim : ℕ} → ℕ → DynamicalSystem
 ctr {nN} {sd} touchSteps = mkdyn ℕ (mkpoly TouchCtrl (λ x₁ → ReadoutOutput nN sd)) (crossThreshold ⇆ countUp)
   where crossThreshold : ℕ → TouchCtrl
         crossThreshold st = 
           if is-< st touchSteps then 
-            touching (is-≡ st 0) else 
-            going
+            touching st else 
+            going st
         countUp : ℕ → ReadoutOutput nN sd → ℕ
         countUp st CD = st
-        countUp st (R _ _) = st +ℕ 1
+        countUp st (R _) = st +ℕ 1
 
 
 
@@ -149,6 +142,29 @@ OuterOutputType numNodes = ℝ × ℝ × ℝ × ℝ × ℝ × ℝ ⊎ ⊤
 OuterOutput : (numNodes : ℕ) → Polynomial
 OuterOutput numNodes = emitter (OuterOutputType numNodes)
 
+
+outerOutputsFrom : {numNodes : ℕ} {inputWeights : InputWeights numNodes 3} {reservoirWeights : ReservoirWeights numNodes} →
+        position (interfaceₚ (preLorRes numNodes 3 3 0.0 inputWeights reservoirWeights)) →
+        position (OuterOutput numNodes)
+-- When collecting data, the outermost box's output doesn't matter 
+outerOutputsFrom (_ , _ , _ , _ , CD) = inj₂ tt
+-- When touching AND trained, we want to give the test output + the readout's
+-- prediction as output. The readout's prediction shouldn't be very meaningful yet.
+outerOutputsFrom (_ ,                                -- lorTrainOutput
+                 (xnt x , ynt y , znt z) ,           -- lorTestOutput
+                 touching _ ,                        -- touchController output
+                 _ ,                                 -- reservoir output
+                 R (predx ∷ predy ∷ predz ∷ Vec.[])) -- readout layer output
+    = inj₁ (x , y , z , predx , predy , predz)
+-- When GOING and trained, we want the same output. The readout's prediction should
+-- now slowly start creating distance 
+outerOutputsFrom (_ ,                                 -- lorTrainOutput
+                 (xnt x , ynt y , znt z) ,            -- lorTestOutput
+                 going _ ,                            -- touchController output
+                 _ ,                                  -- reservoir output
+                 R (predx ∷ predy ∷ predz ∷ Vec.[]))  -- readout layer output
+    = inj₁ (x , y , z , predx , predy , predz)
+
 lorenzReservoirWiringDiagram :
   (numNodes : ℕ) →
   (inputWeights : InputWeights numNodes 3) →
@@ -156,36 +172,82 @@ lorenzReservoirWiringDiagram :
    Lens 
     (interfaceₚ (preLorRes numNodes 3 3 0.0 inputWeights reservoirWeights))
     (OuterOutput numNodes)
-lorenzReservoirWiringDiagram numNodes inputWeights reservoirWeights = outerOutputsFrom ⇆ innerInputsFrom
-  where outerOutputsFrom : position
-                           (interfaceₚ (preLorRes numNodes 3 3 0.0 inputWeights reservoirWeights)) →
-                           position (OuterOutput numNodes)
-        outerOutputsFrom (_ , _ , _ , _ , CD) = inj₂ tt
-        outerOutputsFrom (_ , (xnt x , ynt y , znt z) , touching _ , _ , R (predx ∷ predy ∷ predz ∷ Vec.[]) ow) = inj₁ (x , y , z , predx , predy , predz)
-        outerOutputsFrom ((xnt x , ynt y , znt z) , _ , going , res , R (predx ∷ predy ∷ predz ∷ Vec.[]) ow) = inj₁ (x , y , z , predx , predy , predz)
-        innerInputsFrom : (fromPos : (X × Y × Z) × (X × Y × Z) × TouchCtrl × (ReservoirState numNodes) × (ReadoutOutput numNodes 3)) → 
-                          ⊤ → 
-                          (direction (interfaceₚ (preLorRes numNodes 3 3 0.0 inputWeights reservoirWeights)) fromPos)
-                          
-        innerInputsFrom (_ , lorTestOutput , touching true , resOutput , ro@(R readOutput ow )) dir = tt , inj₂ ((xnt 4.0 , ynt 4.0 , znt 4.0)) , ro , resInputTouching , readInputTouching
-          where resInputTouching : direction (interfaceₚ (reservoir numNodes 3)) resOutput
-                resInputTouching = Lorenz.outToVec lorTestOutput , inputWeights , reservoirWeights , true
-                readInputTouching : RunningInput numNodes
-                readInputTouching = resOutput
-        innerInputsFrom (_ , lorTestOutput , touching false , resOutput , ro@(R readOutput ow )) dir = tt , inj₁ tt , ro , resInputTouching , readInputTouching
-          where resInputTouching : direction (interfaceₚ (reservoir numNodes 3)) resOutput
-                resInputTouching = Lorenz.outToVec lorTestOutput , inputWeights , reservoirWeights , false
-                readInputTouching : RunningInput numNodes
-                readInputTouching = resOutput
-        innerInputsFrom (lorTrainingOutput , _ , going , resOutput , ro@(R readOutput ow)) dir = -- trace str $ 
-          tt , inj₁ tt , ro , resInputRunning , readInputRunning
-          where resInputRunning : direction (interfaceₚ (reservoir numNodes 3)) resOutput
-                resInputRunning = readOutput , inputWeights , reservoirWeights , false
-                readInputRunning : RunningInput numNodes
-                readInputRunning = resOutput
-                str = "GOING. readout layer output to res:\n"
-                      ++ Matrix.showVec readOutput
-        innerInputsFrom (lorTrainingOutput , _ , _ , resOutput , CD) dir = tt , inj₁ tt , CD , resInputTraining , CDI resOutput (outToVec lorTrainingOutput)
+lorenzReservoirWiringDiagram numNodes inputWeights reservoirWeights = 
+        outerOutputsFrom {inputWeights = inputWeights} {reservoirWeights = reservoirWeights} 
+        ⇆ 
+        innerInputsFrom
+  where 
+        innerInputsFrom : 
+          (fromPos : (X × Y × Z) ×                 -- lorTrainOutput
+                     (X × Y × Z) ×                 -- lorTestOutput
+                     TouchCtrl ×                   -- touchCtrller output
+                     (ReservoirState numNodes) ×   -- reservoir output
+                     (ReadoutOutput numNodes 3)) → -- readout layer output
+           ⊤ →                                     -- input to outer box 
+          (direction (interfaceₚ (preLorRes numNodes 3 3 0.0 inputWeights reservoirWeights)) fromPos)
+        -- When touching zero AND readout is trained
+        innerInputsFrom (_ , 
+                        lorTestOutput , 
+                        touching zero , 
+                        resOutput , 
+                        ro@(R readOutput )
+                        ) dir = 
+              tt ,                                      -- always tt for lorenz training
+              inj₂ (xnt 4.0 , ynt 4.0 , znt 4.0) ,      -- reset test with 4.0 4.0 4.0
+              ro ,                                      -- always readout output to touchController
+              (
+                Lorenz.outToVec (xnt 4.0 , ynt 4.0 , znt 4.0) , -- reservoir gets: DOESNT MATTER because will be reset
+                inputWeights ,                                  -- input and
+                reservoirWeights ,                              -- reservoir weights as usual
+                true                                            -- TRUE for the reset
+              ) ,
+              resOutput
+        -- When touching > zero AND readout is trained
+        innerInputsFrom (_ , 
+                        lorTestOutput , 
+                        touching ctrVal , 
+                        resOutput , 
+                        ro@(R readOutput)) dir = 
+              tt ,                                      -- always tt for lorenz training
+              inj₁ tt ,                                 -- do not rest lorenz test
+              ro ,                                      -- always readout output to touchController
+              (Lorenz.outToVec lorTestOutput ,                 -- reservoir gets: TEST output
+                               inputWeights ,                  -- input and
+                               reservoirWeights ,              -- reservoir weights as usual
+                               false) ,                        -- FALSE for the reset. keep what it has
+              resOutput
+        -- When going AND readout is trained
+        innerInputsFrom (_ , 
+                         _ , 
+                         going ctrVal , 
+                         resOutput , 
+                         ro@(R readOutput)) dir = 
+              tt ,                                      -- always tt for lorenz training
+              inj₁ tt ,                                 -- do not rest lorenz test
+              ro ,                                      -- always readout output to touchController
+              (
+                readOutput ,                 -- reservoir gets: THE READOUT output
+                inputWeights ,               -- input and
+                reservoirWeights ,           -- reservoir weights as usual
+                false                        -- FALSE for the reset. keep what it has
+              ) , 
+              resOutput
+        -- When TRAINING / COLLECTING DATA
+        innerInputsFrom (lorTrainingOutput , 
+                        _ , 
+                        _ , 
+                        resOutput ,
+                        CD) dir = 
+                        tt , 
+                        inj₁ tt , 
+                        CD , 
+                        (
+                          Lorenz.outToVec lorTrainingOutput , 
+                          inputWeights , 
+                          reservoirWeights , 
+                          false
+                        ) , 
+                        CDI resOutput (outToVec lorTrainingOutput)
            where resInputTraining : direction (interfaceₚ (reservoir numNodes 3)) resOutput
                  resInputTraining = Lorenz.outToVec lorTrainingOutput , inputWeights , reservoirWeights , false
 

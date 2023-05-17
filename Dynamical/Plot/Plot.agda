@@ -35,7 +35,7 @@ postulate
 open import Dynamical.LotkaVolterra
 open import Dynamical.HodgkinHuxley
 open import Dynamical.Lorenz
-open import Dynamical.Reservoir.ModeDependent
+open import Dynamical.Reservoir.ModeDependentNew
 open import Dynamical.Reservoir.Initialize
 import Data.Vec as Vec
 open import Dynamical.Plot.Optparse
@@ -128,26 +128,26 @@ printOneMatrixAsListFromList _ = IO.run $ IO.pure tt
 
 rest : SystemParams → IO ⊤
 rest (ReservoirParams rdim trainSteps touchSteps outputLength lorinitx lorinity lorinitz dt₁ variance) = do 
-  let rdim = 3
+  -- let rdim = 3
 
   -- variance etc
   inputWeights ← IO.run $ initInputWeights 0.0316 rdim 3
   resWeights ← IO.run $ initReservoirWeights 0.0632 rdim
   let 
-      inputWeights = 𝕄 ((-0.064975537042022 Vec.∷ -0.065251741398635 Vec.∷ 0.058517783986069 Vec.∷ Vec.[]) Vec.∷ 
-                        (0.076889134463803 Vec.∷ -0.013081902744785 Vec.∷ 0.009235160871493 Vec.∷ Vec.[]) Vec.∷ 
-                        (0.027362146117304 Vec.∷ 0.007721283721158 Vec.∷ 0.042541281223982 Vec.∷ Vec.[]) Vec.∷ 
-                        Vec.[])
-      resWeights = 𝕄 ((0.197316884195857 Vec.∷ -0.574663634125314 Vec.∷ 0.784674814076449 Vec.∷ Vec.[]) Vec.∷ 
-                      (0.145047612964489 Vec.∷ 0.407975310337146 Vec.∷ -0.029230453464976 Vec.∷ Vec.[]) Vec.∷ 
-                      (1.227628071998505 Vec.∷ 0.636586542258952 Vec.∷ 0.623759334372951 Vec.∷ Vec.[]) Vec.∷ 
-                      Vec.[])
+      -- inputWeights = 𝕄 ((-0.064975537042022 Vec.∷ -0.065251741398635 Vec.∷ 0.058517783986069 Vec.∷ Vec.[]) Vec.∷ 
+      --                   (0.076889134463803 Vec.∷ -0.013081902744785 Vec.∷ 0.009235160871493 Vec.∷ Vec.[]) Vec.∷ 
+      --                   (0.027362146117304 Vec.∷ 0.007721283721158 Vec.∷ 0.042541281223982 Vec.∷ Vec.[]) Vec.∷ 
+      --                   Vec.[])
+      -- resWeights = 𝕄 ((0.197316884195857 Vec.∷ -0.574663634125314 Vec.∷ 0.784674814076449 Vec.∷ Vec.[]) Vec.∷ 
+      --                 (0.145047612964489 Vec.∷ 0.407975310337146 Vec.∷ -0.029230453464976 Vec.∷ Vec.[]) Vec.∷ 
+      --                 (1.227628071998505 Vec.∷ 0.636586542258952 Vec.∷ 0.623759334372951 Vec.∷ Vec.[]) Vec.∷ 
+      --                 Vec.[])
       resVec = lorenzResList rdim trainSteps touchSteps outputLength ( lorinitx , lorinity , lorinitz ) dt₁ inputWeights resWeights
-      x , yzabc = fromSigma (List.unzip (Vec.toList resVec))
-      y , zabc = fromSigma (List.unzip yzabc)
-      z , abc = fromSigma (List.unzip zabc)
-      pred_x , bc = fromSigma (List.unzip abc)
-      pred_y , pred_z = fromSigma (List.unzip bc)
+      pred_x , yzabc = fromSigma (List.unzip (Vec.toList resVec))
+      pred_y , zabc = fromSigma (List.unzip yzabc)
+      pred_z , abc = fromSigma (List.unzip zabc)
+      x , bc = fromSigma (List.unzip abc)
+      y , z = fromSigma (List.unzip bc)
      --  pred_z , ohs = fromSigma (List.unzip co)
       -- o , hs = fromSigma (List.unzip ohs)
       -- h , s = fromSigma (List.unzip hs)

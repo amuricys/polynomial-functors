@@ -13,32 +13,26 @@ record Comonoid (c : Polynomial) : Set where
   field
     ε : Lens c Y
     δ : Lens c (c ◂ c)
-    assoc : ⟨ idLens {c} ◂ δ ⟩ ∘ₚ δ ≡ subst (λ x → Lens (c ◂ c) {! x -- refining with x goes into an infinite loop O_O  !}) (assoc◂ {c} {c} {c}) ⟨ δ ◂ idLens {c} ⟩ ∘ₚ δ
+    assoc : ⟨ idLens {c} ◂ δ ⟩ ∘ₚ δ ≡ subst (λ x → Lens (c ◂ c) {!   !}) (assoc◂ {c} {c} {c}) ⟨ δ ◂ idLens {c} ⟩ ∘ₚ δ
     leftCounit :  ~ᴸ ≡ ⟨ ε ◂ idLens {c} ⟩ ∘ₚ δ
     rightCounit : ~ᴿ ≡ ⟨ idLens {c} ◂ ε ⟩ ∘ₚ δ
 
-open import Relation.Binary.Core
-record SmallArrow {emanator : Polynomial} (dom : position emanator) (cod : position emanator) : Set where
-  constructor _⟫_
-
 comonoidsAreCategories : {emanator : Polynomial} → Comonoid emanator → Category zero zero zero
-comonoidsAreCategories {emanator@(mkpoly pos dir)} (Com ε δ assoc leftCounit rightCounit) = 
-  record
-    { Obj = pos
-    ; _⇒_ = smallArrow
-    ; _≈_ = _≡_ 
-    ; id = {!   !}
-    ; _∘_ = {!   !}
-    ; assoc = refl
-    ; sym-assoc = refl
-    ; identityˡ = {!   !}
-    ; identityʳ = {!   !}
-    ; identity² = {!   !}
-    ; equiv = {!   !}
-    ; ∘-resp-≈ = {!   !}
-    }
-    where smallArrow : Rel pos zero
-          smallArrow = λ x x₁ → SmallArrow {emanator} x x₁
-
-categoriesAreComonoids : {emanator : Polynomial} → Category zero zero zero → Comonoid emanator
-categoriesAreComonoids cat = {!   !} 
+comonoidsAreCategories {em@(mkpoly pos dir)} (Com ε δ assoc leftCounit rightCounit) = record
+  { Obj = pos
+  ; _⇒_ = {!   !}
+  ; _≈_ = {!   !}
+  ; id = {!   !}
+  ; _∘_ = {!   !}
+  ; assoc = {!   !}
+  ; sym-assoc = {!   !}
+  ; identityˡ = {!   !}
+  ; identityʳ = {!   !}
+  ; identity² = {!   !}
+  ; equiv = {!   !}
+  ; ∘-resp-≈ = {!   !}
+  }
+  where bookkeeping : {x : pos} → fst (mapPosition δ x) ≡ x
+        bookkeeping = {! rightCounit  !} -- use rightCounit
+-- categoriesAreComonoids : {emanator : Polynomial} → Category zero zero zero → Comonoid emanator
+-- categoriesAreComonoids cat = {!   !}  

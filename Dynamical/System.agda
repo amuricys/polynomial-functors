@@ -59,17 +59,17 @@ constI i = encloseFunction λ _ → i
 
 
 
--- open import Data.Nat using (ℕ; zero; suc)
+open import Data.Nat using (ℕ; zero; suc)
 
--- record Dimension (A : Set) : Set where
---   constructor Dim
---   field
---     dim : ℕ
+record Dimension (A : Set) : Set where
+  constructor Dim
+  field
+    dim : ℕ
 
--- open Dimension public
+open Dimension public
 
 -- dimProd : ∀ {A B} {{dimA : Dimension A}} {{dimB : Dimension B}} → Dimension (A × B)
--- dimProd {A} {B} {{dimA}} {{dimB}} = Dim (suc (dim dimA +ℕ dim dimB))
+-- dimProd {A} {B} {{dimA}} {{dimB}} = Dim (dim dimA +ℕ dim dimB)
 
 -- dimNonProd : (A : Set) → ∀ {B C} → { ¬ (A ≡ (B × C))} → Dimension A
 -- dimNonProd typ = Dim (suc zero)
@@ -80,15 +80,17 @@ constI i = encloseFunction λ _ → i
 --   recur = dimProd
 
 -- instance
---   base : ∀ {A} → ∀ {B C} → { ¬ (A ≡ (B × C))} → Dimension A
+--   base : ∀ {A} → ∀ {B C : Set} → { ¬ (A ≡ (B × C))} → Dimension A
 --   base {A} {B} {C} {p} = dimNonProd A {B} {C} {p}
 
 -- -- Helper function to extract the dimension of a Set with a Dimension instance
 -- dimOf : ∀ {A} {{_ : Dimension A}} → ℕ
 -- dimOf {{d}} = dim d
 
+-- proof : ∀ {B C : Set} → { ¬ (A ≡ (B × C))}
+
 -- example1 : ℕ
--- example1 = dimOf {ℕ} {{base {ℕ}}}
+-- example1 = dimOf {ℕ} {{base {ℕ} {_} {_} {refl}}}
 
 -- example2 : ℕ
 -- example2 = dimOf {ℕ × ℕ × ℕ}
