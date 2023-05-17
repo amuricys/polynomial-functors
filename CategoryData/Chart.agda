@@ -12,7 +12,7 @@ record Chart (p q : Polynomial) : Set where
         mapDir : (i : position p) → direction p i → direction q (mapPos i)
 
 _∘c_ : {p q r : Polynomial} → Chart q r → Chart p q → Chart p r
-(f ⇉ f♭) ∘c (g ⇉ g♭) = (f ∘ g) ⇉ λ i x → f♭ (g i) (g♭ i x)
+(f ⇉ f♭) ∘c (g ⇉ g♭) = (f ∘ g) ⇉ (λ i → f♭ (g i) ∘ g♭ i)
 
 idChart : {p : Polynomial} → Chart p p
 idChart = id ⇉ λ _ → id

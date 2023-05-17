@@ -22,5 +22,5 @@ idLens = id ⇆ λ _ → id
 -- | p  -- f -- > q -- g -- > r
 -- |    <- f♯ ---   <- g♯ --- 
 _∘ₚ_ : {A B C : Polynomial} → Lens B C → Lens A B → Lens A C
-_∘ₚ_ (f ⇆ f♯) (g ⇆ g♯) = (f ∘ g) ⇆ (λ fromPos z → g♯ fromPos (f♯ (g fromPos) z))
+_∘ₚ_ (f ⇆ f♯) (g ⇆ g♯) = (f ∘ g) ⇆ (λ i → g♯ i ∘ f♯ (g i))
 infixl 25 _∘ₚ_
