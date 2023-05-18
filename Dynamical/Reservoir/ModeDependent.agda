@@ -293,4 +293,4 @@ lorenzResList numNodes trainingSteps touchSteps outputLength lorenzInitialCondit
        where discr : OuterOutputType numNodes → (ℝ × ℝ × ℝ × ℝ × ℝ × ℝ)
              discr (inj₁ x) = x
              discr (inj₂ tt) = 0.0 , 0.0 , 0.0 , 0.0 , 0.0 , 0.0 
-  
+   

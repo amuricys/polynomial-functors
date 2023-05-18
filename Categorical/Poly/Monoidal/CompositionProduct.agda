@@ -15,7 +15,7 @@ open import Categories.Functor
 open import Cubical.LensEquality
 open import Cubical.Data.Sigma.Properties
 open import Cubical.Foundations.Transport
-
+open import Function
 open Polynomial
 
 leftUnit : {p : Polynomial} → Y ◂ p ≡ p
@@ -52,16 +52,60 @@ rightUnit {p} = poly≡∀' pos≡ dir≡
 -- transportRefl : (x : A) → transport refl x ≡ x
 -- transportRefl {A = A} x i = transp (λ _ → A) i x
 
-halp : {p : Polynomial} {posp : position p} {dirp : direction p posp} → dirp ≡ 
+open import Data.String
+open import Data.Nat
+someFn : String → ℕ
+someFn _ = zero
+
+halp : {p : Polynomial} {posp : position p} {dirp : direction p posp} → dirp ≡
     transport (λ j → direction p (transp (λ i → position p) j posp))
     (transport
        (λ i → direction p (transp (λ _ → position p) (~ i) posp))
        dirp)
-halp {p} {posp} {dirp} = sym {!   !}
-  where lemma : (j : I) → transp (λ i → position p) j posp ≡ posp
-        lemma j i = transp (λ _ → position p) (i ∨ j) posp
+halp {p} {posp} {dirp} = sym (aa {B = direction p} ∙ bbb ∙ ccc)
+  where 
+        lemma : {j : I} → transp (λ i → position p) j posp ≡ posp
+        lemma {j} i = transp (λ _ → position p) (i ∨ j) posp
         lemma2 : ∀ {a} → transport (λ j → direction p posp) a ≡ a
-        lemma2 {a} = transportRefl a
+        lemma2 {a} = transportRefl a  
+        aa : {A : Set} {a : A} {B : A → Set} {b : B a} →
+             transport
+             (λ j → B (transp (λ _ → A) j a))
+             (transport
+              (sym (λ i → B (transp (λ _ → A) i a))) b)
+             ≡
+             transport
+             (λ _ → B a)
+             (transport
+             (λ _ → B a) b)            
+        -- direction p (transp (λ i₃ → position p) i1 posp)
+        aa {A} {a} {B} {b} i = subst {!   !} {!   !} {!   !}
+        exe : {A : Set} {a : A} {B : A → Set} {b : B a} →
+              transport
+              (λ j → B (transp (λ _ → A) j a))
+              (subst (λ x → B x) (sym (transportRefl a)) b)
+              ≡
+
+
+            -- transport
+            --   (λ j → B a)
+            --   (subst (λ x → B x) (sym (transportRefl a)) b)
+
+
+              transport
+              (λ _ → B a)
+              b
+        exe {A} {a} {B} {b} i = subst {!   !} {!   !} $ subst (λ diff → {! transport
+              (λ j → B diff)
+              (subst (λ x → B x) (sym (transportRefl a)) b)  !}) {!  !} (transport
+            (λ j → B (transp (λ _ → A) j a))
+            (subst (λ x → B x) (sym (transportRefl a)) b))
+        bbb : transport (λ j → direction p posp) (transport (λ i → direction p posp) dirp) ≡ transport (λ i → direction p posp) dirp
+        bbb = transportRefl (transport (λ i → direction p posp) dirp)
+        ccc : (transport (λ i → direction p posp) dirp) ≡ dirp
+        ccc = transportRefl dirp
+
+
 
   -- lemma pr x y i =
   -- transp (λ j → direction p (transp (λ _ → position p) (j ∨ i) x))
@@ -164,4 +208,4 @@ monoidal = record
     ; triangle = refl
     ; pentagon = refl
     }
-      
+ 
