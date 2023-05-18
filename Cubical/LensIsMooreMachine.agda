@@ -2,55 +2,44 @@
 
 module Cubical.LensIsMooreMachine where
 
-open import Dynamical.MooreMachine
-open import Dynamical.System
-open import Cubical.Foundations.Prelude
-open import Cubical.Foundations.Isomorphism
-open import Cubical.Core.Everything
+open import Cubical.Foundations.Everything
+open import Cubical.Proofs
 open import CategoryData.Everything
-open import Cubical.Data.Sigma.Properties
+open import Data.Product
+open import Data.Unit
 
-open Polynomial
-open Lens
-open DynamicalSystem
-
--- record IsMonomial (p : Polynomial): Set₁ where
---     field
---         input : Set
---         output : Set
---         proof : p ≡ monomial output input
-
-record SimpleDynamicalSystem : Set₁ where
-    constructor MkSimpleDynamicalSystem
+record MooreMachine {State Input Output : Set} : Set where
+    constructor mkMooreMachine
     field
-        state : Set -- S
-        -- interface : Polynomial -- p
-        input : Set
-        output : Set
-        dynamics : Lens (selfMonomial state) (monomial output input) -- Sy^S → p
+        readout : State → Output
+        update : State → Input → State
 
-lensIsDynamics : MooreMachine ≡ SimpleDynamicalSystem -- (Σ[ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn))
-lensIsDynamics = isoToPath (iso f f⁻ (λ b → refl) λ a → refl)
+InitializedMooreMachine : {State Input Output : Set} →  Set
+InitializedMooreMachine {State} {Input} {Output} = MooreMachine {State} {Input} {Output} × State 
+
+-- A dynamical system lens (domain polynomial is selfMonomial) where the interface is a monomial is the same as a moore machine.
+simpleLensIsMooreMachine : {State Input Output : Set} → Lens (selfMonomial State) (monomial Output Input) ≡ MooreMachine {State} {Input} {Output}
+simpleLensIsMooreMachine {State} {Input} {Output} = isoToPath (iso go back (λ _ → refl) λ _ → refl)
     where
-        f : MooreMachine → SimpleDynamicalSystem -- [ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn)
-        f (MkMooreMachine State Input Output update readout) = MkSimpleDynamicalSystem State Input Output (readout ⇆ update) 
+        go : Lens (selfMonomial State) (monomial Output Input) → MooreMachine {State} {Input} {Output}
+        go (f ⇆ f♯) = mkMooreMachine f f♯
 
-        -- record { State = State ; Input = Input ; Output = Output ; update = update ; readout = readout }
-        --  = mkdyn State (monomial Output Input) (readout ⇆ update) , record { input = Input ; output = Output ; proof = refl }
+        back : MooreMachine {State} {Input} {Output} → Lens (selfMonomial State) (monomial Output Input)
+        back (mkMooreMachine readout update) = readout ⇆ update
 
-        f⁻ : SimpleDynamicalSystem → MooreMachine
-        f⁻ (MkSimpleDynamicalSystem state input output dynamics) = MkMooreMachine state input output (mapDirection dynamics) (mapPosition dynamics)
+-- Having a lens from Y to selfMonomial S is the same thing as picking a state.
+pickInitialState : {S : Set} → Lens Y (selfMonomial S) ≡ S
+pickInitialState {S} = isoToPath (iso go back (λ _ → refl) λ _ → refl)
+    where
+        go : Lens Y (selfMonomial S) → S
+        go (f ⇆ f♯) = f tt
 
-        -- f : MooreMachine → Σ[ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn)
-        -- f record { State = State ; Input = Input ; Output = Output ; update = update ; readout = readout }
-        --  = mkdyn State (monomial Output Input) (readout ⇆ update) , record { input = Input ; output = Output ; proof = refl }
+        back : S → Lens Y (selfMonomial S)
+        back s = (λ _ → s) ⇆ (λ _ _ → tt)
 
-        -- f⁻ : (Σ[ dyn ∈ DynamicalSystem ] IsMonomial (interface dyn)) → MooreMachine
-        -- f⁻ (mkdyn state interface dynamics , record { input = input ; output = output ; proof = proof })
-        -- -- state → input → state
-        --     = record { State = state ; Input = input ; Output = output ; update = J (λ y x → state → input → state) {! mapDirection dynamics  !} proof ; readout = {!  mapPosition dynamics !} }
-            -- f⁻ (mkdyn state₁ interface₁ dynamics₁ , snd₁) = ? -- record { State = {! fst₁  !} ; Input = {!   !} ; Output = {!   !} ; update = {!   !} ; readout = {!   !} } 
-        -- (mkdyn state interface dynamics) 
-        --     = record { State = state ; Input = {! direction interface   !} ; Output = position interface ; update = {!  mapDirection dynamics !} ; readout = mapPosition dynamics }
+×≡ : {A B C D : Set} → (A ≡ B) → (C ≡ D) → (A × C) ≡ (B × D)
+×≡ p1 p2 i = p1 i × p2 i
 
--- lensIsDynamicsInitialed : chine ≡ 
+-- Therefore, an initialized moore machine consists of the two lenses: Y -> selfMonomial S -> monomial Output Input
+initializedMooreMachineIsTwoLenses : {State Input Output : Set} → (Lens (selfMonomial State) (monomial Output Input) × Lens Y (selfMonomial State)) ≡ InitializedMooreMachine {State} {Input} {Output}
+initializedMooreMachineIsTwoLenses = ×≡ simpleLensIsMooreMachine pickInitialState
