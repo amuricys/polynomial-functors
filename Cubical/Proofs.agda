@@ -159,6 +159,12 @@ linearClosedUnderPlus isLinearP isLinearQ (inj₂ y) = isLinearQ y
 isMonomial : Polynomial → Type₁
 isMonomial (mkpoly pos dir) = ∀ {p₁ : pos} {p₂ : pos} → dir p₁ ≡ dir p₂
 
+isMonomialΣ : Polynomial → Type₁
+isMonomialΣ (mkpoly pos dir) = Σ[ A ∈ Set ] ({p : pos} → dir p ≡ A)   -- ∀ {p₁ : pos} {p₂ : pos} → dir p₁ ≡ dir p₂
+
+-- equalProofs : {p : Polynomial} → isMonomial p ≡ isMonomialΣ p
+-- equalProofs {mkpoly pos dir} = {!   !} -- isoToPath (iso (λ x → _ , λ {po} → {!   !}) {!   !} {!   !} {!   !})
+
 monomialClosedUnderMult : {p q : Polynomial} → isMonomial p → isMonomial q → isMonomial (p * q)
 monomialClosedUnderMult isMonP isMonQ {posp₁ , posq₁} {posp₂ , posq₂} = cong (λ { (a , b) → a ⊎ b }) (ΣPathP (leftEqual , rightEqual))
   where leftEqual = isMonP {posp₁} {posp₂}
