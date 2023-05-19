@@ -79,27 +79,7 @@ halp {p} {posp} {dirp} = sym (aa {B = direction p} ∙ bbb ∙ ccc)
              (transport
              (λ _ → B a) b)            
         -- direction p (transp (λ i₃ → position p) i1 posp)
-        aa {A} {a} {B} {b} i = subst {!   !} {!   !} {!   !}
-        exe : {A : Set} {a : A} {B : A → Set} {b : B a} →
-              transport
-              (λ j → B (transp (λ _ → A) j a))
-              (subst (λ x → B x) (sym (transportRefl a)) b)
-              ≡
-
-
-            -- transport
-            --   (λ j → B a)
-            --   (subst (λ x → B x) (sym (transportRefl a)) b)
-
-
-              transport
-              (λ _ → B a)
-              b
-        exe {A} {a} {B} {b} i = subst {!   !} {!   !} $ subst (λ diff → {! transport
-              (λ j → B diff)
-              (subst (λ x → B x) (sym (transportRefl a)) b)  !}) {!  !} (transport
-            (λ j → B (transp (λ _ → A) j a))
-            (subst (λ x → B x) (sym (transportRefl a)) b))
+        aa {A} {a} {B} {b} i = transport (λ j → B (transp (λ _ → A) (i ∨ j) a)) (transport (λ j → B (transp (λ _ → A) (i ∨ ~ j) a)) b)
         bbb : transport (λ j → direction p posp) (transport (λ i → direction p posp) dirp) ≡ transport (λ i → direction p posp) dirp
         bbb = transportRefl (transport (λ i → direction p posp) dirp)
         ccc : (transport (λ i → direction p posp) dirp) ≡ dirp
@@ -114,6 +94,74 @@ halp {p} {posp} {dirp} = sym (aa {B = direction p} ∙ bbb ∙ ccc)
   --                        (transp (λ j → direction q (pr (~ j) (transp (λ _ → position p) (~ j ∨ i) x)))
   --                                i0
   --                                y))
+
+
+
+-- snd (snd gm dirp) dirq ≡
+--       transp (λ i → position r) i0
+--       (snd
+--        (snd gm
+--         (transp (λ j → direction p (transp (λ i → position p) j (fst gm)))
+--          i0
+--          (transp
+--           (λ i → direction p (transp (λ _ → position p) (~ i) (fst gm))) i0
+--           dirp)))
+--        (transp
+--         (λ j →
+--            direction q
+--            (transp (λ i → position q) j
+--             (fst
+--              (snd gm
+--               (transp
+--                (λ j₁ → direction p (transp (λ i → position p) j₁ (fst gm))) i0
+--                (transp
+--                 (λ i → direction p (transp (λ _ → position p) (~ i) (fst gm))) i0
+--                 dirp))))))
+--         i0
+--         (transp
+--          (λ i →
+--             direction q
+--             (transp (λ _ → position q) (~ i)
+--              (fst
+--               (snd gm
+--                (transp (λ j → direction p (transp (λ i₃ → position p) j (fst gm)))
+--                 i0
+--                 (transp
+--                  (λ i₃ → direction p (transp (λ _ → position p) (~ i₃) (fst gm))) i0
+--                  dirp))))))
+--          i0
+--          (transp
+--           (λ i →
+--              direction q
+--              (fst
+--               (snd gm
+--                (hcomp
+--                 (doubleComp-faces
+--                  (λ _ →
+--                     transp (λ i₃ → direction p (transp (λ _ → position p) i₃ (fst gm)))
+--                     i0
+--                     (transp
+--                      (λ i₃ → direction p (transp (λ _ → position p) (~ i₃) (fst gm))) i0
+--                      dirp))
+--                  (λ i₃ →
+--                     hcomp
+--                     (doubleComp-faces
+--                      (λ _ →
+--                         transp (λ i₄ → direction p (fst gm)) i0
+--                         (transp (λ i₄ → direction p (fst gm)) i0 dirp))
+--                      (λ i₄ → transp (λ _ → direction p (fst gm)) i₄ dirp) i₃)
+--                     (transp (λ _ → direction p (fst gm)) i₃
+--                      (transp (λ i₄ → direction p (fst gm)) i0 dirp)))
+--                  (~ i))
+--                 (transp
+--                  (λ i₃ →
+--                     direction p (transp (λ _ → position p) (~ i ∨ i₃) (fst gm)))
+--                  i0
+--                  (transp
+--                   (λ i₃ →
+--                      direction p (transp (λ _ → position p) (~ i ∨ ~ i₃) (fst gm)))
+--                   i0 dirp))))))
+--           i0 dirq))))
 
 open import CategoryData.Composition
 assoc : {p q r : Polynomial} → (p ◂ q) ◂ r ≡ p ◂ (q ◂ r)
@@ -168,17 +216,32 @@ assoc {p} {q} {r} = poly≡∀ pos≡ dir≡
                                               (λ j₁ → direction p (transp (λ i → position p) j₁ (fst gm))) i0
                                               dirp)))))
                                         i0 dirq)))) dirr })
-                                   (λ { (dirp , dirq , dirr)   → (subst (direction p) (sym (transportRefl (fst gm))) dirp , subst (direction q) (sym ((transportRefl (fst (snd gm  (transp (λ j → direction p (transp (λ i → position p) j (fst gm))) i0 (subst (direction p) (sym (transportRefl (fst gm))) dirp))))))) (subst (λ diff → direction q (fst (snd gm diff)) ) (halp {p}) dirq)) , {!   !} }) 
+                                   (λ { (dirp , dirq , dirr)   → (subst (direction p) (sym (transportRefl (fst gm))) dirp , subst (direction q) (sym ((transportRefl (fst (snd gm  (transp (λ j → direction p (transp (λ i → position p) j (fst gm))) i0 (subst (direction p) (sym (transportRefl (fst gm))) dirp))))))) (subst (λ diff → direction q (fst (snd gm diff)) ) (halp {p}) dirq)) , 
+                                              subst (direction r) (sym {!   !}) dirr }) 
                                    {!   !}
                                    {!   !})
 
 open Functor
+open import Function
 bifunctor : Bifunctor Poly Poly Poly
 F₀ bifunctor (p , q) = p ◂ q
 F₁ bifunctor ((mpf ⇆ mdf) , (mpg ⇆ mdg)) = (λ { (a , b) → mpf a , λ { x → mpg (b (mdf a x)) } }) ⇆ λ { (x , y) (w , z) → (mdf x w) , (mdg (y (mdf x w)) z) }
 identity bifunctor = refl
 homomorphism bifunctor = refl
-F-resp-≈ bifunctor {f} {g} pr = lensesEqual3 {!   !} {!   !}
+F-resp-≈ bifunctor {p , r} {q , s} {(fpq ⇆ fpq♯) , (frs ⇆ frs♯)} {(gpq ⇆ gpq♯) , (grs ⇆ grs♯)} (fst≡ , snd≡) 
+  = lensesEqual3 pos≡ {!   !}
+     where pqPosEq : fpq ≡ gpq
+           pqPosEq = lens≡→mapPos≡ fst≡
+           pos≡ : (λ { (a , b) → fpq a , (λ { x → frs (b (fpq♯ a x)) }) }) ≡ (λ { (a , b) → gpq a , (λ { x → grs (b (gpq♯ a x)) }) })
+           iwant : (x : pos p r) → (λ { (a , b) → fpq a , (λ { x → frs (b (fpq♯ a x)) }) }) x ≡ (λ { (a , b) → gpq a , (λ { x → grs (b (gpq♯ a x)) }) }) x
+           iwant (posp , fromdirqtoposr ) = 
+             ΣPathP $ funExt⁻ pqPosEq posp , toPathP t
+               where t : transport
+                         (λ i → direction q (funExt⁻ pqPosEq posp i) → position s)
+                         (λ { x → frs (fromdirqtoposr (fpq♯ posp x)) })
+                         ≡ (λ { x → grs (fromdirqtoposr (gpq♯ posp x)) })
+                     t i = transp (λ j → transport (λ i₃ → {!  !}) (λ { x → frs (fromdirqtoposr (fpq♯ posp x)) })) {!   !} {!   !}
+           pos≡ = funExt iwant
 
 monoidal : Monoidal Poly
 monoidal = record

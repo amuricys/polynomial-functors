@@ -134,7 +134,6 @@ import Relation.Binary.PropositionalEquality as Eq
 isConstant : Polynomial → Type₁
 isConstant (mkpoly pos dir) = (p : pos) → dir p ≡ ⊥
 
-
 -- Exercise 4.1
 constantClosedUnderPlus : {p q : Polynomial} → isConstant p → isConstant q → isConstant (p + q)
 constantClosedUnderPlus isConstantP isConstantQ (inj₁ x) = isConstantP x
@@ -236,3 +235,93 @@ ex⦅2⦆≡4 = isoToPath $
           ret (true , fromboo) with fromboo tt in eq
           ... | false         = ΣPathP (refl , funExt (λ { tt → eqToPath (Eq.sym eq) } ))
           ... | true          = ΣPathP (refl , funExt (λ { tt → eqToPath (Eq.sym eq) } ))
+
+       
+
+data ThreeSet : Set where
+  three1 three2 three3 : ThreeSet
+
+data TwoSet : Set where
+  two1 two2 : TwoSet
+
+data NineSet : Set where
+  nine1 nine2 nine3 nine4 nine5 nine6 nine7 nine8 nine9 : NineSet
+
+Three : Polynomial
+Three = mkpoly ThreeSet λ x → ⊥
+
+Two : Polynomial
+Two = mkpoly TwoSet (λ x → ⊥)
+
+Nine : Polynomial
+Nine = mkpoly NineSet (λ x → ⊥)
+
+open import Cubical.Data.Equality using (pathToEq ; eqToPath) renaming (_≡_ to _≡p_)
+
+3^2≡9 : Three ^ Two ≡ Nine
+3^2≡9 = poly≡∀' pos≡ dir≡
+  where other : ((index : TwoSet) → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)) ≡ NineSet
+        other = isoToPath (iso go back proofSection proofRetract)
+                where go : (TwoSet → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)) → NineSet
+                      go two with ( two two1 , two two2 )
+                      ... | (three1 , snd₁) , three1 , snd₂ = nine1
+                      ... | (three1 , snd₁) , three2 , snd₂ = nine2
+                      ... | (three1 , snd₁) , three3 , snd₂ = nine3
+                      ... | (three2 , snd₁) , three1 , snd₂ = nine4
+                      ... | (three2 , snd₁) , three2 , snd₂ = nine5
+                      ... | (three2 , snd₁) , three3 , snd₂ = nine6
+                      ... | (three3 , snd₁) , three1 , snd₂ = nine7
+                      ... | (three3 , snd₁) , three2 , snd₂ = nine8
+                      ... | (three3 , snd₁) , three3 , snd₂ = nine9
+                      back : NineSet → TwoSet → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)
+                      back nine1 two1 = three1 , λ ()
+                      back nine1 two2 = three1 , (λ ())
+                      back nine2 two1 = three1 , (λ ())
+                      back nine2 two2 = three2 , (λ ())
+                      back nine3 two1 = three1 , (λ ())
+                      back nine3 two2 = three3 , (λ ())
+                      back nine4 two1 = three2 , (λ ())
+                      back nine4 two2 = three1 , (λ ())
+                      back nine5 two1 = three2 , (λ ())
+                      back nine5 two2 = three2 , (λ ())
+                      back nine6 two1 = three2 , (λ ())
+                      back nine6 two2 = three3 , (λ ())
+                      back nine7 two1 = three3 , (λ ())
+                      back nine7 two2 = three1 , (λ ())
+                      back nine8 two1 = three3 , (λ ())
+                      back nine8 two2 = three2 , (λ ())
+                      back nine9 two1 = three3 , (λ ())
+                      back nine9 two2 = three3 , (λ ())
+                      proofSection : (b : NineSet) → go (back b) ≡ b
+                      proofSection nine1 = refl
+                      proofSection nine2 = refl
+                      proofSection nine3 = refl
+                      proofSection nine4 = refl
+                      proofSection nine5 = refl
+                      proofSection nine6 = refl
+                      proofSection nine7 = refl
+                      proofSection nine8 = refl
+                      proofSection nine9 = refl
+                      helper :  ∀ {X Y} {some : ⊥ → ⊤ ⊎ ⊥} → X ≡p (Y , some) → X ≡p (Y , (λ ()))
+                      helper {X} {Y} one = pathToEq (eqToPath one ∙ cong (λ a → Y , a) functionFromFalse)
+                        where functionFromFalse : {some : ⊥ → ⊤ ⊎ ⊥} → some ≡ λ ()
+                              functionFromFalse = funExt (λ ())
+                      proofRetract : (a : TwoSet → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)) → back (go a) ≡ a
+                      proofRetract a with a two1 | a two2 | (Eq.inspect a two1) | (Eq.inspect a two2)
+                      ... | (three1 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three1 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three1 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three2 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three2 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three2 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three3 , snd₁) | (three1 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three3 , snd₁) | (three2 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+                      ... | (three3 , snd₁) | (three3 , snd₂) | Eq.[ eq₁ ] | Eq.[ eq₂ ] = funExt λ {two1 → sym ∘ eqToPath ∘ helper $ eq₁; two2 → sym ∘ eqToPath ∘ helper $ eq₂}
+        pos≡ : position (Three ^ Two) ≡ position Nine
+        pos≡ = other
+        dir≡ : (posA : (index : TwoSet) → Σ ThreeSet (λ i → ⊥ → ⊤ ⊎ ⊥)) →
+            Σ TwoSet
+            (λ index →
+              Σ ⊥ (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (posA index) a)))
+            ≡ ⊥
+        dir≡ p = isoToPath (iso (λ { () }) (λ ()) (λ ()) λ { () i })
