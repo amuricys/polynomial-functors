@@ -325,3 +325,9 @@ open import Cubical.Data.Equality using (pathToEq ; eqToPath) renaming (_≡_ to
               Σ ⊥ (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (posA index) a)))
             ≡ ⊥
         dir≡ p = isoToPath (iso (λ { () }) (λ ()) (λ ()) λ { () i })
+
+linear^linear≡pos→pos : {A B : Set} → Lens 𝟙 (linear B ^ linear A) ≡ (A → B)
+linear^linear≡pos→pos = isoToPath (iso (λ l x → fst (mapPosition l tt x))
+                                       (λ f → (λ _ index → (f index) , inj₂) ⇆ λ { fromPos () })
+                                       (λ b → refl)
+                                       λ a → {!   !}) -- it's actually kind of hard to prove this

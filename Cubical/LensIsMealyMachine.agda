@@ -19,27 +19,37 @@ input : (p : Polynomial) → {isMonomialΣ p} → Set
 input _ {i , _} = i
 
 
-go : {State Input Output : Set} → Lens (selfMonomial (State × Input)) (monomial Output Input) → MealyMachine {State} {Input} {Output}
-go {State} {Input} {Output}  (readout ⇆ update) =
-  mkmealy runner 
-    where runner : State → Input → State × Output
-          runner oldState input = newState , output
-              where updated = update (oldState , input) input
-                    newState : State
-                    newState = fst (update (oldState , input) input)
-                    output : Output
-                    output = readout (oldState , input)
-back : {State Input Output : Set} → MealyMachine {State} {Input} {Output} → Lens (selfMonomial (State × Input)) (monomial Output Input)
-back {State} {Input} {Output}  (mkmealy runner)  = readout ⇆ update
-   where readout : State × Input → Output
-         readout (state , input) = snd (runner state input)
-         update : State × Input → Input → State × Input
-         update (state , oldInput) newInput = fst (runner state oldInput) , newInput 
+-- go : {State Input Output : Set} → Lens (selfMonomial (State × Input)) (monomial Output Input) → MealyMachine {State} {Input} {Output}
+-- go {State} {Input} {Output}  (readout ⇆ update) =
+--   mkmealy runner 
+--     where runner : State → Input → State × Output
+--           runner oldState input = newState , output
+--               where updated = update (oldState , input) input
+--                     newState : State
+--                     newState = fst (update (oldState , input) input)
+--                     output : Output
+--                     output = readout (oldState , input)
+-- back : {State Input Output : Set} → MealyMachine {State} {Input} {Output} → Lens (selfMonomial (State × Input)) (monomial Output Input)
+-- back {State} {Input} {Output}  (mkmealy runner)  = readout ⇆ update
+--    where readout : State × Input → Output
+--          readout (state , input) = snd (runner state input)
+--          update : State × Input → Input → State × Input
+--          update (state , oldInput) newInput = fst (runner state oldInput) , newInput 
 
+
+open import Data.Unit
+open import Data.Sum
 
 -- A dynamical system lens (domain polynomial is selfMonomial) where the interface is a monomial is the same as a moore machine.
-simpleLensIsMealyMachine : {State Input Output : Set} → Lens (selfMonomial (State × Input)) (monomial Output Input) ≡ MealyMachine {State} {Input} {Output}
-simpleLensIsMealyMachine {State} {Input} {Output} = isoToPath (iso go back (λ _ → refl) λ _ → {!   !})
+simpleLensIsMealyMachine : {State Input Output : Set} → Lens (selfMonomial State) (linear Output ^ linear Input) ≡ MealyMachine {State} {Input} {Output}
+simpleLensIsMealyMachine {State} {Input} {Output} = isoToPath (iso hehef 
+                                                                   heheb 
+                                                                   (λ b → refl) 
+                                                                   (λ b → refl))
+      where hehef : Lens (selfMonomial State) (linear Output ^ linear Input) → MealyMachine
+            hehef (f ⇆ f♯) = mkmealy (λ x x₁ → (f♯ x (x₁ , (tt , {!  tt !}))) , proj₁ (f x x₁))
+            heheb : MealyMachine → Lens (selfMonomial State) (linear Output ^ linear Input)
+            heheb (mkmealy runner) = (λ x index → (snd (runner x index)) , (λ _ → inj₁ tt)) ⇆ (λ fromPos _ → fromPos)
 
 -- lensIsDynamics : MealyMachine ≡ (Σ[ dyn ∈ DynamicalSystem ] isMonomialΣ (DynamicalSystem.interface dyn))
 -- lensIsDynamics = isoToPath (iso f f⁻ (λ b → {!   !}) λ a → {!  !})
@@ -61,4 +71,4 @@ simpleLensIsMealyMachine {State} {Input} {Output} = isoToPath (iso go back (λ _
 --                         where dir≡inp : inpType ≡ direction interface (readout oldSt)
 --                               dir≡inp = sym (snd isMon)
 --                               newState : st
---                               newState = update oldSt (transport dir≡inp newInp)   
+--                               newState = update oldSt (transport dir≡inp newInp)    
