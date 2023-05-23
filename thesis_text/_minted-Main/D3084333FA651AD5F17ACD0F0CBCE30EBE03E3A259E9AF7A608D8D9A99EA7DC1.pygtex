@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{data}\PYG{+w}{ }ReservoirOutput\PYG{+w}{ }\PYG{o}{(}systemDim\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℕ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{n+nf}{stillColl}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ReservoirOutput\PYG{+w}{ }systemDim
+\PYG{+w}{    }\PYG{n+nf}{stillTouch}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ReservoirOutput\PYG{+w}{ }systemDim
+\PYG{+w}{    }\PYG{n+nf}{predicting}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Vec\PYG{+w}{ }ℝ\PYG{+w}{ }systemDim\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ReservoirOutput\PYG{+w}{ }systemDim
+\end{Verbatim}

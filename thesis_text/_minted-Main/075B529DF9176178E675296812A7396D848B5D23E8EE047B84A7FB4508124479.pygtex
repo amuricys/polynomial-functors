@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{o+ow}{...}
+\PYG{k+kr}{open}\PYG{+w}{ }\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n}{Relation.Binary.PropositionalEquality.TrustMe}
+\PYG{o+ow}{...}
+\PYG{n+nf}{fl}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o+ow}{∀}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}n\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}l\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }List\PYG{+w}{ }A\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{\PYGZob{}}l\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }L.length\PYG{+w}{ }l\PYG{+w}{ }≡\PYG{+w}{ }n\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Vec\PYG{+w}{ }A\PYG{+w}{ }n
+fl\PYG{+w}{ }l\PYG{+w}{ }\PYG{o}{\PYGZob{}}refl\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }fromList\PYG{+w}{ }l
+
+\PYG{n+nf}{fromListOfLists}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o+ow}{∀}\PYG{+w}{ }\PYG{o}{\PYGZob{}}n\PYG{+w}{ }m\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{o}{(}l\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }List\PYG{+w}{ }\PYG{o}{(}List\PYG{+w}{ }ℝ\PYG{o}{)}\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{o}{\PYGZob{}}p₁\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }L.length\PYG{+w}{ }l\PYG{+w}{ }≡\PYG{+w}{ }n\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{o}{\PYGZob{}}p₂\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }M.map\PYG{+w}{ }L.length\PYG{+w}{ }\PYG{o}{(}L.head\PYG{+w}{ }l\PYG{o}{)}\PYG{+w}{ }≡\PYG{+w}{ }M.just\PYG{+w}{ }m\PYG{o}{\PYGZcb{}}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Matrix\PYG{+w}{ }ℝ\PYG{+w}{ }n\PYG{+w}{ }m
+fromListOfLists\PYG{+w}{ }[]\PYG{+w}{ }\PYG{o}{\PYGZob{}}refl\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{esc}{$\mathbb{M}$}\PYG{+w}{ }[]
+fromListOfLists\PYG{+w}{ }\PYG{o}{(}x\PYG{+w}{ }\PYG{o+ow}{:}\PYG{o+ow}{:}\PYG{+w}{ }xs\PYG{o}{)}\PYG{+w}{ }\PYG{o}{\PYGZob{}}refl\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{esc}{$\mathbb{M}$}\PYG{+w}{ }\PYG{o}{(}fl\PYG{+w}{ }x\PYG{+w}{ }\PYG{o}{\PYGZob{}}maybepr\PYG{+w}{ }p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{o+ow}{:}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{o}{(}V.map\PYG{+w}{ }\PYG{o}{(}\PYGZbs{}x\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }fl\PYG{+w}{ }x\PYG{+w}{ }\PYG{o}{\PYGZob{}}trustMe\PYG{o}{\PYGZcb{}}\PYG{o}{)}\PYG{+w}{ }\PYGZdl{}\PYG{+w}{ }fl\PYG{+w}{ }xs\PYG{+w}{ }\PYG{o}{\PYGZob{}}trustMe\PYG{o}{\PYGZcb{}}\PYG{o}{)}\PYG{o}{)}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{k+kr}{where}\PYG{+w}{ }maybepr\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o+ow}{∀}\PYG{+w}{ }\PYG{o}{\PYGZob{}}m\PYG{+w}{ }n\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }M.just\PYG{+w}{ }m\PYG{+w}{ }≡\PYG{+w}{ }M.just\PYG{+w}{ }n\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }m\PYG{+w}{ }≡\PYG{+w}{ }n
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }maybepr\PYG{+w}{ }refl\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }refl
+
+\PYG{n+nf}{\PYGZus{}⁻¹}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o+ow}{∀}\PYG{+w}{ }\PYG{o}{\PYGZob{}}n\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℕ\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Matrix\PYG{+w}{ }ℝ\PYG{+w}{ }n\PYG{+w}{ }n\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Matrix\PYG{+w}{ }ℝ\PYG{+w}{ }n\PYG{+w}{ }n
+\PYGZus{}⁻¹\PYG{+w}{ }\PYG{o}{\PYGZob{}}n\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{(}\PYG{esc}{$\mathbb{M}$}\PYG{+w}{ }m\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{k+kr}{let}\PYG{+w}{ }asList\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }toList\PYG{+w}{ }\PYGZdl{}\PYG{+w}{ }V.map\PYG{+w}{ }toList\PYG{+w}{ }m
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }inverted\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }invertMatrixAsListTrusted\PYG{+w}{ }asList
+\PYG{+w}{ }\PYG{+w}{ }\PYG{k+kr}{in}\PYG{+w}{ }fromListOfLists\PYG{+w}{ }inverted\PYG{+w}{ }\PYG{o}{\PYGZob{}}trustMe\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}trustMe\PYG{o}{\PYGZcb{}}
+\PYG{k+kr}{infixl}\PYG{+w}{ }\PYG{l+m+mi}{40}\PYG{+w}{ }\PYGZus{}⁻¹
+\end{Verbatim}

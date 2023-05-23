@@ -1,0 +1,79 @@
+% CREATED BY DAVID FRISK, 2016
+\chapter{Discussion}\label{chapter:discussion}
+This chapter covers a discussion on certain topics about the formalization of \textbf{Poly}. The characterization of equality between lenses is discussed, as well as the ease of use of \textbf{Poly} in the implementation of dynamical systems. Further, the consequence of mixing Cubical Agda with agda-categories is discussed. Finally, some areas of future work is given.
+
+\section{Equality of lenses}
+The fact that lenses (as well as polynomials and charts) are defined as (dependent) sigma types makes equality of lenses (as well as polynomials and charts) a major pain point. The first component of the sigma type is directly comparable, but for the second component, \mintinline{agda}{subst} is needed to make the types comparable. This problem shows up every time an equality between lenses needs to be proved. If the proof of the first component being equal is \mintinline{agda}{refl}, the \mintinline{agda}{subst} is easily removed by using \mintinline{agda}{substRefl}. But, anytime the proof of the first component is non-trivial, the complexity of the equality proof quickly increases. Therefore, the more powerful variant of lens equality were developed, \mintinline{agda}{lensEquals3}, where the \mintinline{agda}{subst} is pushed inside the term as much as possible. This variant of lens equality showed to be very useful and is used in most of the places in the code. Hopefully, the efforts put in to characterize lens equality is useful to any future formalizations of \textbf{Poly}.
+
+\todo{Rename lensEquals3}
+
+\section{Ease of implementation}
+The implementation of a couple of dynamical systems has led us, the authors of the thesis, to an impression of how it is to use \textbf{Poly} in practical implementation. There are some pain points, such as dealing with time, getting lost in data types, and debugging. There are also some nice points, such as the use of interfaces. % and mode dependence.
+
+When designing and implementing a dynamical system, it is important to consider the time and flow of information. For example, given an input to a system, the output for that input is not received until the next time step. This creates a delay, which in fact was used by the Fibonacci example, where the identity system simply delayed the input by 1 frame. However, taking into account into these delays in bigger systems creates a lot of complexity to keep track of. 
+
+% IT is difficult to implement things in Poly, given the current ecosystem. E.g. time needs to be taken into consideration as every component in the wiring diagram adds one timestep of delay. 
+
+When creating dynamical systems a lot of data types needs to be created, which ends up making it easy to get lost in the details. There needs to be data types for the state of each system, for the positions and output of each system, as well as for each input at each output. On paper, this is easier to handle, since it is possible to abuse notation and leave details out, but in Agda everything is explicit making it a bit verbose. Also, using polynomials created by the operators defined such as addition or parallel product is annoying. In these cases the data types used behind the scenes are coproduct and product, which have general constructor names that is terrible to work with when implementing the dynamical system, or wiring the wiring diagram. 
+
+% Hard to debug, although a trace functionality was introduced.
+A problem, most likely due to the early state of the ecosystem of \textbf{Poly}, is how to debug systems. When the systems didn't work as expected a lot of effort was put into figuring out what was going wrong. A tool more similar to debuggers for imperative languages would have been useful, to step through the dynamical systems and look into their internal state. To make it possible to do some debugging, functionality similar to Haskell's trace was added, as a somewhat better, but still far from perfect way to debug systems.
+\todo{Explain how we debug systems, better than I do in the last sentence above.}
+
+The importance put on interfaces provides a nice way of reasoning about and building systems. Each system is given a polynomial that represent the interface, then wiring systems together in a wiring diagram is done entirely in terms of the interfaces of the involved systems. Different implementations with the same interface is can then be installed as a last step to get the full system. This provides a good level of abstraction when developing programs.
+
+% Another good thing is mode dependence, which provides a way to 
+
+
+% Reasoning of interfaces is good, instantiate wiring diagram to implementation is useful. Mode dependence is useful thought, were input depends on the state you are in.
+
+
+
+\section{Mixing Cubical Agda with agda-categories}
+A big consequence of mixing Cubical Agda with agda-categories is that it hinders the formalization to be merged into either of the repositories. The choice were to use Cubical Agda for its usefulness in proofs, and agda-categories for its richness of categorical constructs. However, Cubical Agda has its own category theory library, and would not want any code using agda-categories to be merged into it. At the same time, agda-categories would not want any code that depends on Cubical Agda. This hinders the code to be merged into any of these repositories.
+
+The code could be modified to be mergable into the Cubical Agda library. All the categorical constructs used from agda-categories could be rewritten to use the Cubical Agda's constructs. The constructs only available in agda-categories could be defined and added to the Cubical library. At the core, all the proofs should remain the same, although they might need some slight modifications. An important detail that is needed to be considered when adapting the code to only use Cubical Agda is the notion of wild polynomials.
+
+\section{Wild polynomials}
+There are some requirements differing between providing an instance of a category in agda-categories versus in the Cubical Agda library. One important difference is that Cubical Agda requires the arrows to be sets, using the cubical notion \mintinline{agda}{isSet}. In order to provide a proof that arrows are sets, it is required that the positions and all directions of polynomials are sets. This gives rise to two different variants of polynomials. The normal polynomials, also called wild polynomials, without any requirement of the positions or directinos being sets, used to define a category in agda-categories. As well as the more strict variant of polynomials, called \mintinline{agda}{SetPolynomial}, which is needed to define an instance of a category in Cubical Agda library. 
+
+In the code, both variants of polynomials are provided, but wild polynomials are mostly used as they are more general. The use of wild polynomials also avoids the use of \mintinline{agda}{isSet}, which would add noise to the code. However, set polynomials together with an instance of a category for Cubical agda library can be found in the code. In fact, some constructs and proofs require polynomials to be sets, such as the proof showing that \textbf{Poly} has equalizers.
+
+
+%Definition of category differs between agda-categories and Cubical agda.
+% Cubical agda library requires the morphisms to be isSet. While this requirement is not needed for agda-categories. This makes agda-categories variant less strict and more general, and therefore the polynomials are considered "Wild". For cubical agda, to provide an instance, polynomials are more constrained, by forcing the position to be isSet, and for each direction to be isSet. This is needed to construct a proof that lenses between these strict polynomials are isSet. Which is needed to arrive at an instance for the. The same procedure would be needed for the category \textbf{Chart} in Cubical. 
+
+%In SetPoly, we add this strict polynomials and show that it also forms a category in agda-categories. But we also there provide an instance of a category in cubical. The fact that polynomials are sets, more specifcally teh directions, is also needed for the proof of showing poly has equalizers. But where possible, we use the normal polynomials in proofs, to be as general as possible, and avoiding the use of isSet which would add noise to the code.
+
+\todo{Is the terminology of Wild polynomial correct here, and is the name of Set Polynomial correct here as well?}
+
+
+\section{Future work}
+There are many areas for future work in formalizing \textbf{Poly}. 
+
+\subsection{Comonoids are small categories}
+The poly-book explains how comonoids in \textbf{Poly} are isomorphic to small categories. An interesting thing to do is to show this isomorphism in Agda. An initial attempt exists in the code, with the correspondance of objects with positions, as well as arrows with directions, also dealing with the codomain mismatch. But the correspondence between the comonoid laws and the category laws remains unfinished.
+
+\subsection{Bicomodules are parametric right adjoints}
+A construct covered in the poly-book is bicomodules, which relates to comonoids. Bicomodules has a practical use as data migration for databases \cite{bicomodulesBlog} as well as effect handlers. Therefore, implementation and use of bicomodules should be of special interest for software developers.
+
+\subsection{Composition of squares between charts and lenses}
+The commuting squares between charts and lenses have been defined, as \mintinline{agda}{LensChartCommute}. Showing that these squares compose both horizontally and vertically is an important step in finalizing the formalization of the double category between charts and lenses. The proof that the map on positions of the squares compose is done, but the proof for map on directions remains undone, due to an explosion of subst's.
+
+\subsection{Consistency of distributed data types}
+
+There is some speculation that polynomial functors can be a good model of consistent distributed data storage, like Conflict-Free Replicated Data Types, so the categorical setting could be fruitful for proving consistency of CRDTs.
+
+\subsection{Other categorical properties}
+The categorical constructs and properties formalized in this thesis comprise only a handful of all the properties that \textbf{Poly} exhibits. A natural extension would therefore be to formalize more constructs. For instance the coequalizer, which is described informally in natural language in the poly-book, is an important construct as it shows that \textbf{Poly} has all small colimits. The poly-book contains plenty of proofs and examples that could be formalized. 
+
+\subsection{Dynamical systems}
+This thesis implements several dynamical systems, but it is a large field. Systems come in all sorts of flavors: time delayed, open, closed, chaotic, stable, unstable, discrete, continuous, stochastic, deterministic, hybrid etc. It would be interesting to continue to explore this landscape while leveraging the properties of \textbf{Poly} in the dynamical systems. For instance, our use of mode-dependence, in which we believe lies the true potential of \textbf{Poly}, is minor. Implementing more types of dynamical systems could also lead to common patterns or problems arising, whose solutions could lead to a better ecosystem in using \textbf{Poly} for modeling dynamics.
+
+\subsection{Interaction between different fields that Poly models}
+
+\textbf{Poly} is good at modeling databases, dynamical systems and information theory, three fields that are connected in loose ways. \textbf{Poly} could be a setting in which to deepen these connections.
+% \subsection{\textbf{Poly} in software engineering}
+% An interesting research area is how \textbf{Poly} can be used in software engineering. Whether the tools provided by \textbf{Poly} can aid in the modeling of domain logic or state machines, or help software engineers in any other way. Perhaps mode dependence can add another dimension to state machines.
+
+

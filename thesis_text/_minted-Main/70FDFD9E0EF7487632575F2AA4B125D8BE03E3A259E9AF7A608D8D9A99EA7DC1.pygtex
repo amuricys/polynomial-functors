@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{o+ow}{...}
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} FOREIGN GHC}
+\PYG{c+cm}{import HsMatrix}
+\PYG{c+cm}{\PYGZsh{}\PYGZhy{}\PYGZcb{}}
+
+\PYG{k+kr}{postulate}
+\PYG{+w}{  }\PYG{n+nf}{invertMatrixAsListTrusted}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }List\PYG{+w}{ }\PYG{o}{(}List\PYG{+w}{ }ℝ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }List\PYG{+w}{ }\PYG{o}{(}List\PYG{+w}{ }ℝ\PYG{o}{)}
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} COMPILE GHC invertMatrixAsListTrusted = invertMatrixAsList \PYGZsh{}\PYGZhy{}\PYGZcb{}}
+\PYG{o+ow}{...}
+\end{Verbatim}

@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{eqPoly}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial
+eqPoly\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkpoly\PYG{+w}{ }EqualizedPosition\PYG{+w}{ }\PYGZdl{}
+\PYG{+w}{        }\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{(}\PYG{+w}{ }posp\PYG{+w}{ },\PYG{+w}{ }equal\PYG{+w}{ }\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{            }SetCoequalizer\PYG{+w}{ }\PYG{o}{(}mdf\PYG{+w}{ }posp\PYG{o}{)}
+\PYG{+w}{                           }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }x\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }mdg\PYG{+w}{ }posp
+\PYG{+w}{                                      }\PYG{o}{(}subst\PYG{+w}{ }\PYG{o}{(}direction\PYG{+w}{ }q\PYG{o}{)}\PYG{+w}{ }equal\PYG{+w}{ }x\PYG{o}{))}
+\end{Verbatim}

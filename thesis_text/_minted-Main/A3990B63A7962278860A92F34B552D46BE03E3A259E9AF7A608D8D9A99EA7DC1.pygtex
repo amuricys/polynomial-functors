@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{refl}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Type\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{\PYGZob{}}a\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }A\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }a\PYG{+w}{ }≡\PYG{+w}{ }a
+refl\PYG{+w}{ }\PYG{o}{\PYGZob{}}a\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }a\PYG{o}{\PYGZcb{}}\PYG{+w}{ }i\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }a
+\end{Verbatim}

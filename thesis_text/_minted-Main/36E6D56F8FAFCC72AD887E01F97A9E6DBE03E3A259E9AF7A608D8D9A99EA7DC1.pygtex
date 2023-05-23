@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} CategoryData/Exponential}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Exponential object.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Theroem 4.27, page 130 in Poly book.}
+\PYG{n+nf}{\PYGZus{}\PYGZca{}\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}r\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}q\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial
+r\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }posQ\PYG{+w}{ }dirQ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }ΠPoly\PYG{+w}{ }\PYG{o}{(}posQ\PYG{+w}{ },\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }j\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }r\PYG{+w}{ }◂\PYG{+w}{ }\PYG{o}{(}Y\PYG{+w}{ }+\PYG{+w}{ }Constant\PYG{+w}{ }\PYG{o}{(}dirQ\PYG{+w}{ }j\PYG{o}{)))}
+\PYG{k+kr}{infixl}\PYG{+w}{ }\PYG{l+m+mi}{30}\PYG{+w}{ }\PYGZus{}\PYGZca{}\PYGZus{}
+\end{Verbatim}

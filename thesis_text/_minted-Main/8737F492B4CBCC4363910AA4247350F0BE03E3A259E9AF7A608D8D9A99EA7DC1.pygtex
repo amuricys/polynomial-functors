@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{preLorRes}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}numNodes\PYG{+w}{ }trainingSteps\PYG{+w}{ }touchSteps\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℕ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{            }\PYG{o}{(}dt\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{            }InputWeights\PYG{+w}{ }numNodes\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{            }ReservoirWeights\PYG{+w}{ }numNodes\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{            }DynamicalSystem
+preLorRes\PYG{+w}{ }numNodes\PYG{+w}{ }trainingSteps\PYG{+w}{ }touchSteps\PYG{+w}{ }dt\PYG{+w}{ }inputWeights\PYG{+w}{ }reservoirWeights\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Training system}
+\PYG{+w}{  }lorenz\PYG{+w}{ }dt\PYG{+w}{ }\PYGZam{}\PYGZam{}\PYGZam{}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Test system}
+\PYG{+w}{  }lorenz\PYG{+w}{ }dt\PYG{+w}{ }\PYGZam{}\PYGZam{}\PYGZam{}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Reservoir of dynamics + readout layer}
+\PYG{+w}{  }reservoir\PYG{+w}{ }numNodes\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{+w}{ }trainingSteps\PYG{+w}{ }touchSteps\PYG{+w}{ }inputWeights\PYG{+w}{ }reservoirWeights
+\end{Verbatim}

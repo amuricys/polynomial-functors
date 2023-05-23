@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{functionToDynamicalSystem}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}A\PYG{+w}{ }B\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}A\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }B\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+functionToDynamicalSystem\PYG{+w}{ }A\PYG{+w}{ }B\PYG{+w}{ }f\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{  }mkdyn\PYG{+w}{ }B\PYG{+w}{ }\PYG{o}{(}monomial\PYG{+w}{ }B\PYG{+w}{ }A\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}id\PYG{+w}{ }⇆\PYG{+w}{ }\PYG{o}{(}\PYGZbs{}\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }f\PYG{o}{))}
+\end{Verbatim}

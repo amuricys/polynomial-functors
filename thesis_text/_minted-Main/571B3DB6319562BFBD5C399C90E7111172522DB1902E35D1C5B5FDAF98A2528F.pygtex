@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+./Plot LotkaVolterra \PYGZhy{}\PYGZhy{}alpha \PYG{l+m}{0}.2 \PYGZhy{}\PYGZhy{}beta \PYG{l+m}{0}.2 \PYGZhy{}\PYGZhy{}delta \PYG{l+m}{0}.5 \PYG{l+s+se}{\PYGZbs{}}
+                     \PYGZhy{}\PYGZhy{}gamma \PYG{l+m}{0}.4 \PYGZhy{}\PYGZhy{}r0 \PYG{l+m}{1}.0 \PYGZhy{}\PYGZhy{}f0 \PYG{l+m}{0}.9 \PYGZhy{}\PYGZhy{}dt \PYG{l+m}{0}.1
+\end{Verbatim}

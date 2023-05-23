@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{EqualizedPosition}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}
+EqualizedPosition\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Σ\PYG{+w}{ }\PYG{o}{(}position\PYG{+w}{ }p\PYG{o}{)}
+\PYG{+w}{                      }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }z\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }mapPosition\PYG{+w}{ }f\PYG{+w}{ }z\PYG{+w}{ }≡\PYG{+w}{ }mapPosition\PYG{+w}{ }g\PYG{+w}{ }z\PYG{o}{)}
+\end{Verbatim}

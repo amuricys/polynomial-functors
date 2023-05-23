@@ -1,0 +1,266 @@
+% CREATED BY DAVID FRISK, 2016
+\chapter{Appendix 1: Haskell supporting code}
+\label{app:haskell}
+
+We use the Agda FFI to interact with Haskell and its ecosystem for three main purposes: fast matrix inversion, plotting graphs, and a convenient command-line interface for running the continuous dynamical systems and plotting them. The way we plug the Haskell code and its ecosystem with the Agda code is by using the Nix package manager\cite{nix} and its tools.
+
+\section{Matrix inversion}
+In the reservoir example \ref{sec:reservoir}, many matrix operations are used. Many of these are implemented directly in Agda - see the \texttt{Dynamical/Reservoir/Matrix} folder - using facilities from the standard library's \texttt{Data.Vec} type, but inverting a matrix is an operation that requires a sophisticated algorithm that is quite performance-intensive. For this, we decided to rely on an existing implementation in the Haskell ecosystem, using the HMatrix \cite{hmatrix} library. This is done by declaring a postulate and using the \texttt{FOREIGN} pragma in the Agda module, and accessing the Haskell module by importing it in the generated Haskell code:
+\begin{minted}{agda}
+...
+{-# FOREIGN GHC
+import HsMatrix
+#-}
+
+postulate
+  invertMatrixAsListTrusted : List (List ℝ) → List (List ℝ)
+{-# COMPILE GHC invertMatrixAsListTrusted = invertMatrixAsList #-}
+...
+\end{minted}
+The matrix is temporarily represented as a list of lists, where each list is a row, to simplify translating the matrix dimensions to the Agda level - this way, we only need to care about type conversions directly in Agda. The code in the Haskell module is simply this:
+\begin{minted}{haskell}
+...
+import Numeric.LinearAlgebra qualified as HMat
+...
+invertMatrixAsList :: [[Double]] -> [[Double]]
+invertMatrixAsList = HMat.toLists . HMat.pinv . HMat.fromLists
+\end{minted}
+
+We then convert the matrix back to our Agda representation - a length-indexed vector of length-indexed vectors, by using the \texttt{trustMe} construct from the standard library to convince Agda that the matrix has the right dimensions.:
+
+\begin{minted}[escapeinside=||]{agda}
+...
+open import Relation.Binary.PropositionalEquality.TrustMe
+...
+fl : ∀ {A : Set} {n} → (l : List A) → {l : L.length l ≡ n} → Vec A n
+fl l {refl} = fromList l
+
+fromListOfLists : ∀ {n m} → 
+    (l : List (List ℝ)) → 
+    {p₁ : L.length l ≡ n} → 
+    {p₂ : M.map L.length (L.head l) ≡ M.just m}
+    → Matrix ℝ n m
+fromListOfLists [] {refl} = |$\mathbb{M}$| []
+fromListOfLists (x ∷ xs) {refl} {p} = 
+    |$\mathbb{M}$| (fl x {maybepr p} ∷ 
+            (V.map (\x → fl x {trustMe}) $ fl xs {trustMe}))
+    where maybepr : ∀ {m n} → M.just m ≡ M.just n → m ≡ n
+          maybepr refl = refl
+
+_⁻¹ : ∀ {n : ℕ} → Matrix ℝ n n → Matrix ℝ n n
+_⁻¹ {n} (|$\mathbb{M}$| m) =
+  let asList = toList $ V.map toList m
+      inverted = invertMatrixAsListTrusted asList
+  in fromListOfLists inverted {trustMe} {trustMe}
+infixl 40 _⁻¹
+\end{minted}
+
+In this way, the \texttt{\_⁻¹} operation can be made to take in square matrices and return square matrices of the same dimension.
+
+\section{Graph plotting}
+
+The figures in the continuous systems are all generated via the Haskell library Chart \cite{chart}. This case is similar to the above, with the simplification that there is no need to use \texttt{trustMe}, instead the Agda postulate for the plotting function runs in IO. There is the small issue of implementing our own product type to guarantee the FFI that there is no dependent typing involved. The postulate code is as follows:
+\begin{minted}{agda}
+open import Data.Product as P hiding (_×_) renaming (_,_ to _,p_)
+record _×_ (A B : Set) : Set where
+  constructor _,_
+  field
+    fst : A
+    snd : B
+
+fromSigma : {A B : Set} → A P.× B → A × B
+fromSigma ( a ,p b ) = a , b
+
+postulate
+  plotDynamics : String → 
+                 String → 
+                 String → 
+                 Float → 
+                 List (String × List Float) → IO ⊤
+
+{-# FOREIGN GHC import HsPlot #-}
+{-# COMPILE GHC plotDynamics = plotToFile #-}
+{-# COMPILE GHC _×_ = data (,) ((,)) #-}
+\end{minted}
+
+The corresponding Haskell code is small enough that we include the entire module:
+
+\begin{minted}{haskell}
+-- Dynamical/Plot/src/HsPlot.hs
+{-# LANGUAGE BlockArguments #-}
+{-# LANGUAGE ImportQualifiedPost #-}
+{-# LANGUAGE OverloadedStrings #-}
+
+module HsPlot where
+
+import Graphics.Rendering.Chart.Easy
+import Graphics.Rendering.Chart.Backend.Cairo
+import Control.Monad (forM_)
+import Data.Text qualified as T
+
+plotToFile :: T.Text ->
+              T.Text -> 
+              T.Text -> 
+              Double -> 
+              [(T.Text, [Double])] -> 
+              IO ()
+plotToFile xaxisTitle yaxisTitle title dt lines = 
+    toFile def (T.unpack . T.replace " " "_" $ T.toLower title <> ".png") $ 
+    do
+        layout_title .= T.unpack title
+        layout_x_axis . laxis_title .= T.unpack xaxisTitle
+        layout_y_axis . laxis_title .= T.unpack yaxisTitle
+        setColors . fmap opaque $ 
+            [purple, sienna, plum, 
+             powderblue, salmon, sandybrown, 
+             cornflowerblue, blanchedalmond, 
+             firebrick, gainsboro, honeydew]
+    forM_ lines \(name, l) ->
+        plot (line (T.unpack name) [zip [0, dt..] l ])
+\end{minted}
+
+The string arguments are given as \texttt{Data.Text.Text}, even though \texttt{Chart} handles \texttt{String}s, because that is what Agda's \texttt{Data.String.String} corresponds to; see \href{https://agda.readthedocs.io/en/v2.6.2.2/language/foreign-function-interface.html#built-in-types}{the table in the official documentation}.
+
+\section{Command-line interface}
+Finally, there is the issue being able to conveniently run a system of choice, with a given selection of parameters. This uses optparse-applicative \cite{optparse-applicative}, a well-established Haskell library. The FFI code looks much the same as above, but the main interest now is to convert between types that are pattern-matched on in the main Agda program. The Agda code, with the type containing the paramaters of the different systems is this
+\begin{minted}{agda}
+
+{-# FOREIGN GHC 
+import OptparseHs
+#-}
+
+data SystemParams : Set where
+  ReservoirParams : (rdim : ℕ) → 
+                    (trainSteps touchSteps outputLength : ℕ) → 
+                    (lorinitx lorinity lorinitz dt variance : Float) → 
+                    SystemParams
+  LorenzParams    : (lorinitx lorinity lorinitz dt : Float) → SystemParams
+  HodgkinHuxleyParams : (dt : Float) → SystemParams
+  LotkaVolterraParams : (α β δ γ r0 f0 dt : Float) → SystemParams
+{-# COMPILE GHC SystemParams = data SystemParams
+   (ReservoirParams | 
+    LorenzParams | 
+    HodgkinHuxleyParams | 
+    LotkaVolterraParams) #-}
+
+record Options : Set where
+  constructor mkopt
+  field
+    system  : SystemParams
+
+{-# COMPILE GHC Options = data Options (Options) #-}
+
+postulate 
+  parseOptions : IO Options
+{-# COMPILE GHC parseOptions = parseOptions #-} 
+\end{minted}
+
+And its corresponding Haskell type is:
+
+\begin{minted}{haskell}
+data SystemParams where
+  ReservoirParams :: 
+    { rdimf         :: Integer
+    , trainStepsf   :: Integer
+    , touchStepsf   :: Integer
+    , outputLengthf :: Integer
+    , lorinitx      :: Double
+    , lorinity      :: Double
+    , lorinitz      :: Double
+    , dt            :: Double
+    , variance       :: Double
+    } -> SystemParams
+  LorenzParams ::
+    { lorinitx' :: Double
+    , lorinity' :: Double
+    , lorinitz' :: Double
+    , dt'       :: Double
+    } -> SystemParams
+  HodgkinHuxleyParams ::
+    { dt'' :: Double }
+    -> SystemParams
+  LotkaVolterraParams ::
+    { alpha :: Double
+    , beta :: Double
+    , delta :: Double
+    , gamma :: Double
+    , r0 :: Double
+    , f0 :: Double
+    , dt''' :: Double }
+    -> SystemParams
+deriving instance Show SystemParams
+\end{minted}
+
+The code for parsing this type looks like this:
+\begin{minted}{haskell}
+systemParser :: Parser SystemParams
+systemParser = hsubparser $ 
+     command "Reservoir" 
+        (info reservoirParamsParser (progDesc "Reservoir system"))
+  <> command "Lorenz" 
+        (info lorenzParamsParser (progDesc "Lorenz system"))
+  <> command "HodgkinHuxley" 
+        (info hodgkinHuxleyParamsParser (progDesc "Hodgkin-Huxley system"))
+  <> command "LotkaVolterra" 
+        (info lotkaVolterraParamsParser (progDesc "Lotka-Volterra system"))
+
+reservoirParamsParser :: Parser SystemParams
+reservoirParamsParser = ReservoirParams
+  <$> option auto 
+    (long "numNodes" <> short 'n' <> metavar "NUMNODES" <> 
+        help "Number of nodes in the reservoir")
+  <*> option auto 
+    (long "trainingSteps" <> short 't' <> metavar "TRAINSTEPS" <> 
+        help "Number of data points to train on")
+  -- ... other params
+
+lorenzParamsParser :: Parser SystemParams
+lorenzParamsParser = LorenzParams <$> -- ... params
+-- other systems with a similar type signature
+\end{minted}
+
+It is worth remarking here that Haskell and optparse-applicative allow for a concise expression of more type safety than a simple sum type, through the use of the language extensions for GADTs \cite{ghc-gadts} and DataKinds \cite{ghc-data-kinds}, by having the \texttt{SystemParams} type be parametrized by the kind of a separate type called \texttt{ParamType}:
+
+\begin{minted}{agda}
+data ParamType
+    = ReservoirParamsType 
+    | LorenzParamsType 
+    | HodgkinHuxleyParamsType 
+    | LotkaVolterraParamsType
+  deriving Show
+\end{minted}
+
+Which we can then be given as an argument to \texttt{SystemParams}:
+\begin{minted}{haskell}
+data SystemParams (p :: ParamType) where
+  ReservoirParams :: 
+    { rdimf         :: Integer
+    , trainStepsf   :: Integer
+    , touchStepsf   :: Integer
+    , outputLengthf :: Integer
+    , lorinitx      :: Double
+    , lorinity      :: Double
+    , lorinitz      :: Double
+    , dt            :: Double
+    , variance       :: Double
+    } -> SystemParams ReservoirParamsType
+    ... other constructors
+\end{minted}
+
+This way, the individual parsers can be made to only parse specific sets of parameters. Forgetting an argument would give a compilation error:
+
+\begin{minted}{haskell}
+lorenzParamsParser :: Parser (SystemParams LorenzParamsType)
+lorenzParamsParser = LorenzParams
+  <$> option auto (long "x0" <> short 'x' <> metavar "X0" <> 
+    help "Initial x value")
+  <*> option auto (long "y0" <> short 'y' <> metavar "Y0" <> 
+    help "Initial y value")
+  -- <*> option auto (long "z0" <> short 'z' <> metavar "Z0" <> 
+  --  help "Initial z value") error! (SystemParams LorenzParamsType)
+  -- expects this float
+  <*> option auto (long "dt" <> short 't' <> metavar "DT" <> 
+    help "Time step")
+\end{minted}
+
+This is a preferable solution in the Haskell level, but converting the types given as arguments to a higher-kinded type in Agda to the DataKinds-produced types proved tricky, so we opted for the simpler solution of a pure sum type.

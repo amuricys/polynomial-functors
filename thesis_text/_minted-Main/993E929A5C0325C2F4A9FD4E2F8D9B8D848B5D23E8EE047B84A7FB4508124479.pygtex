@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{lensFromZeroUnique}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{esc}{$\mathbb{0}$}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }lensFromZero\PYG{+w}{ }≡\PYG{+w}{ }f
+lensFromZeroUnique\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }lens≡\PYG{+w}{ }\PYG{o}{(}funExt\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{(}\PYG{o}{)}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}funExt\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{(}\PYG{o}{)}\PYG{o}{)}
+\end{Verbatim}

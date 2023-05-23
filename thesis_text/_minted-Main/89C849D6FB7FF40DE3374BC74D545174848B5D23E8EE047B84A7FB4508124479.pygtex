@@ -1,0 +1,19 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{delay}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}A\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+delay\PYG{+w}{ }A\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }functionToDynamicalSystem\PYG{+w}{ }A\PYG{+w}{ }A\PYG{+w}{ }id
+
+\PYG{n+nf}{plus}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }DynamicalSystem
+plus\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }functionToDynamicalSystem\PYG{+w}{ }\PYG{o}{(}Nat\PYG{+w}{ }×\PYG{+w}{ }Nat\PYG{o}{)}\PYG{+w}{ }Nat\PYG{+w}{ }\PYG{o}{(}uncurry\PYG{+w}{ }\PYGZus{}+ℕ\PYGZus{}\PYG{o}{)}
+
+\PYG{n+nf}{prefib}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }DynamicalSystem
+prefib\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }plus\PYG{+w}{ }\PYGZam{}\PYGZam{}\PYGZam{}\PYG{+w}{ }delay\PYG{+w}{ }Nat
+
+\PYG{n+nf}{fibWiringDiagram}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}interface\PYG{+w}{ }prefib\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}emitter\PYG{+w}{ }Nat\PYG{o}{)}
+fibWiringDiagram\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{o}{(}sumOutput\PYG{+w}{ },\PYG{+w}{ }idOutput\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }idOutput\PYG{o}{\PYGZcb{}}\PYG{o}{)}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }⇆
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{o}{(}sumOutput\PYG{+w}{ },\PYG{+w}{ }idOutput\PYG{o}{)}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{o}{(}idOutput\PYG{+w}{ },\PYG{+w}{ }sumOutput\PYG{o}{)}\PYG{+w}{ },\PYG{+w}{ }sumOutput\PYG{+w}{ }\PYG{o}{\PYGZcb{}}\PYG{o}{)}
+
+\PYG{n+nf}{fibonacci}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }DynamicalSystem
+fibonacci\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }install\PYG{+w}{ }prefib\PYG{+w}{ }\PYG{o}{(}emitter\PYG{+w}{ }Nat\PYG{o}{)}\PYG{+w}{ }fibWiringDiagram
+\end{Verbatim}

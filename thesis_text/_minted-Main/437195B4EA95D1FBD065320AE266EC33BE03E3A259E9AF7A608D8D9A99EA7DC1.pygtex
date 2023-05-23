@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{data}\PYG{+w}{ }ParamType
+\PYG{+w}{    }\PYG{o+ow}{=}\PYG{+w}{ }ReservoirParamsType
+\PYG{+w}{    }\PYG{o+ow}{|}\PYG{+w}{ }LorenzParamsType
+\PYG{+w}{    }\PYG{o+ow}{|}\PYG{+w}{ }HodgkinHuxleyParamsType
+\PYG{+w}{    }\PYG{o+ow}{|}\PYG{+w}{ }LotkaVolterraParamsType
+\PYG{+w}{  }deriving\PYG{+w}{ }Show
+\end{Verbatim}

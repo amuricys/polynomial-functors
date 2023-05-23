@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{record}\PYG{+w}{ }DFS\PYG{+w}{ }\PYG{o}{\PYGZob{}}State\PYG{+w}{ }Alphabet\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{k+kr}{constructor}\PYG{+w}{ }mkDFS
+\PYG{+w}{    }\PYG{k+kr}{field}
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Transition function}
+\PYG{+w}{        }\PYG{n+nf}{update}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }State\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Alphabet\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }State
+\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Partitions all states into recognized and unrecognized states.}
+\PYG{+w}{        }\PYG{n+nf}{recognized}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }State\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Bool
+\end{Verbatim}

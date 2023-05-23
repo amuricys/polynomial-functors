@@ -1,0 +1,33 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{data}\PYG{+w}{ }\PYG{k+kt}{SystemParams}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{  }\PYG{k+kt}{ReservoirParams}\PYG{+w}{ }\PYG{o+ow}{::}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n}{rdimf}\PYG{+w}{         }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Integer}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{trainStepsf}\PYG{+w}{   }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Integer}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{touchStepsf}\PYG{+w}{   }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Integer}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{outputLengthf}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Integer}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{lorinitx}\PYG{+w}{      }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{lorinity}\PYG{+w}{      }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{lorinitz}\PYG{+w}{      }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{dt}\PYG{+w}{            }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{variance}\PYG{+w}{       }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{SystemParams}
+\PYG{+w}{  }\PYG{k+kt}{LorenzParams}\PYG{+w}{ }\PYG{o+ow}{::}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n}{lorinitx\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{lorinity\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{lorinitz\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{dt\PYGZsq{}}\PYG{+w}{       }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{SystemParams}
+\PYG{+w}{  }\PYG{k+kt}{HodgkinHuxleyParams}\PYG{+w}{ }\PYG{o+ow}{::}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n}{dt\PYGZsq{}\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{SystemParams}
+\PYG{+w}{  }\PYG{k+kt}{LotkaVolterraParams}\PYG{+w}{ }\PYG{o+ow}{::}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n}{alpha}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{beta}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{delta}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{gamma}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{r0}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{f0}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{dt\PYGZsq{}\PYGZsq{}\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}\PYG{+w}{ }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{SystemParams}
+\PYG{k+kr}{deriving}\PYG{+w}{ }\PYG{k+kr}{instance}\PYG{+w}{ }\PYG{k+kt}{Show}\PYG{+w}{ }\PYG{k+kt}{SystemParams}
+\end{Verbatim}

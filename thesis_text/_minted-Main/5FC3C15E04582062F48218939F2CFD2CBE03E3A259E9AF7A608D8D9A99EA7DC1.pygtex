@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{record}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}from\PYG{+w}{ }to\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{k+kr}{constructor}\PYG{+w}{ }\PYGZus{}⇆\PYGZus{}
+\PYG{+w}{    }\PYG{k+kr}{open}\PYG{+w}{ }Polynomial
+\PYG{+w}{    }\PYG{k+kr}{field}
+\PYG{+w}{        }\PYG{n+nf}{mapPosition}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }from\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }position\PYG{+w}{ }to
+\PYG{+w}{        }\PYG{n+nf}{mapDirection}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}fromPos\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }from\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                       }direction\PYG{+w}{ }to\PYG{+w}{ }\PYG{o}{(}mapPosition\PYG{+w}{ }fromPos\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                       }direction\PYG{+w}{ }from\PYG{+w}{ }fromPos
+\end{Verbatim}

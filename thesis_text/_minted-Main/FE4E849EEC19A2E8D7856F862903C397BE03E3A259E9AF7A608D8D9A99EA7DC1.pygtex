@@ -1,0 +1,22 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{open}\PYG{+w}{ }\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n}{Data.Product}\PYG{+w}{ }as\PYG{+w}{ }P\PYG{+w}{ }\PYG{k+kr}{hiding}\PYG{+w}{ }\PYG{o}{(}\PYGZus{}×\PYGZus{}\PYG{o}{)}\PYG{+w}{ }\PYG{k+kr}{renaming}\PYG{+w}{ }\PYG{o}{(}\PYGZus{},\PYGZus{}\PYG{+w}{ }to\PYG{+w}{ }\PYGZus{},p\PYGZus{}\PYG{o}{)}
+\PYG{k+kr}{record}\PYG{+w}{ }\PYGZus{}×\PYGZus{}\PYG{+w}{ }\PYG{o}{(}A\PYG{+w}{ }B\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{  }\PYG{k+kr}{constructor}\PYG{+w}{ }\PYGZus{},\PYGZus{}
+\PYG{+w}{  }\PYG{k+kr}{field}
+\PYG{+w}{    }\PYG{n+nf}{fst}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }A
+\PYG{+w}{    }\PYG{n+nf}{snd}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }B
+
+\PYG{n+nf}{fromSigma}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }B\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }A\PYG{+w}{ }P.×\PYG{+w}{ }B\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }A\PYG{+w}{ }×\PYG{+w}{ }B
+fromSigma\PYG{+w}{ }\PYG{o}{(}\PYG{+w}{ }a\PYG{+w}{ },p\PYG{+w}{ }b\PYG{+w}{ }\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }a\PYG{+w}{ },\PYG{+w}{ }b
+
+\PYG{k+kr}{postulate}
+\PYG{+w}{  }\PYG{n+nf}{plotDynamics}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }String\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                 }String\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                 }String\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                 }Float\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                 }List\PYG{+w}{ }\PYG{o}{(}String\PYG{+w}{ }×\PYG{+w}{ }List\PYG{+w}{ }Float\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }IO\PYG{+w}{ }⊤
+
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} FOREIGN GHC import HsPlot \PYGZsh{}\PYGZhy{}\PYGZcb{}}
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} COMPILE GHC plotDynamics = plotToFile \PYGZsh{}\PYGZhy{}\PYGZcb{}}
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} COMPILE GHC \PYGZus{}×\PYGZus{} = data (,) ((,)) \PYGZsh{}\PYGZhy{}\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+p\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkpoly\PYG{+w}{ }\PYG{o}{(}ℕ\PYG{+w}{ }⊎\PYG{+w}{ }⊤\PYG{o}{)}\PYG{+w}{  }\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}(}inj₁\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Bool\PYG{+w}{ };\PYG{+w}{ }\PYG{o}{(}inj₂\PYG{+w}{ }y\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }⊥\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{data}\PYG{+w}{ }⊥\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Type\PYG{+w}{ }\PYG{k+kr}{where}
+
+\PYG{n+nf}{absurd}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Type\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }⊥\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }A
+absurd\PYG{+w}{ }\PYG{o}{()}
+\end{Verbatim}

@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{\PYGZus{}+\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial
+\PYG{o}{(}mkpoly\PYG{+w}{ }posA\PYG{+w}{ }dirA\PYG{o}{)}\PYG{+w}{ }+\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }posB\PYG{+w}{ }dirB\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkpoly\PYG{+w}{ }\PYG{o}{(}posA\PYG{+w}{ }⊎\PYG{+w}{ }posB\PYG{o}{)}\PYG{+w}{ }[\PYG{+w}{ }dirA\PYG{+w}{ },\PYG{+w}{ }dirB\PYG{+w}{ }]
+\end{Verbatim}

@@ -1,0 +1,1018 @@
+
+% CREATED BY DAVID FRISK, 2016
+\chapter{Theory: Lenses}\label{chapter:lenses}
+This chapter covers the theory part of the formalization, consisting mainly of proofs of different categorical properties of the category \textbf{Poly}. All code is available open source at github \cite{githubRepo}, which is recommended to follow at the same time as reading the thesis.
+
+\section{The category \textbf{Poly}}
+
+The category \textbf{Poly} refers, in our context, to the category of polynomial endofunctors in \textbf{Set}, with morphisms as natural transformations. \textit{Polynomial} is used here because these functors can be written down as high-school algebraic expressions, like:
+$$p(y) = y^2 +4y + 10$$
+only instead of handling numbers, these polynomial expressions have \textit{sets} plugged into the variable \textit{y}. Sum, multiplication and exponentiation and numeric literals are all considered in the context of sets: a numeric literal like $7$ represents the set $\underline{7}$, a set with 7 elements. A $+$ symbol will correspond to \textit{the categorical coproduct}, multiplication (often written with no $*$ symbol, as in $7y$ represents $7 * y$) corresponds to \textit{the categorical product} and exponentiation to the exponential object: in our context, it means functions from the exponent to the base of a term. For example, $ f : 7^2 \cong f : 2 \rightarrow 7$. This way of thinking algebraically is very convenient for our purposes, because plugging in "numbers" into our polynomial expressions to get "numbers" back will turn out to be a very useful kind of operation.
+
+\subsection{Objects are polynomial functors}
+
+The objects of \textbf{Poly} are polynomial functors, which can be written as expressions like the one shown above. Since \textbf{Poly} handles sets, though, we can create much more unorthodox looking expressions. For instance, the below polynomial is perfectly coherent:
+\begin{equation}
+p(y) = \mathbb{N}y^2 + 1
+\label{eqn.natpoly}
+\end{equation}
+and we can think intuitively about what it does: it takes a set as input, and sends it to the set of: either infinitely long tuples of functions from $\underline{2}$ to this set, or to the only element of the singleton set. Like the poly-book, we refer to each summand of a power of $y$ in our polynomials as a \textit{position}, and the exponent of that power as a \textit{direction at that position}. This suggests that a polynomial has a set of positions, and for each element in this set, a set of directions. Therefore a natural way to represent these polynomials in Agda is as a dependent set:
+
+\begin{minted}{agda}
+record Polynomial : Set₁ where
+    constructor mkpoly
+    field
+        position : Set
+        direction : position → Set
+\end{minted}
+The way to write the example $p(y) = \mathbb{N}y^2 + 1$ in Agda using this type is then
+\mint{agda}{p = mkpoly (ℕ ⊎ ⊤)  λ {(inj₁ x) → Bool ; (inj₂ y) → ⊥}}
+
+We remark that we might sometimes refer to a polynomial as having "a single position" when it is a \textit{monomial}: what this really means is that, in the definition of such a polynomial, the set of directions does not depend on the set of positions. For instance, the monomial
+$$
+p(y) = \mathbb{R}y^{\{a, b, c, d\}}
+$$
+does not have any dependence between \textit{the set of positions} (the real numbers) and \textit{the sets of directions} (the set $\{a, b, c, d\}$). The sets of directions would normally be a family of sets, where each position could give a different one, but in this case, they're always the same set. This way of phrasing positions might be unsettling at first, but it makes more sense in everyday programming with polynomial functors, since what really matters when handling dependent sets is what distinction an indexing set performs. If two positions index the same set, we can almost always get away with thinking of them as the same thing.
+
+\remarktitle{More perspectives on polynomials}
+
+Understanding polynomial functors is crucial, and there are many ways to think about them. The book showcases other standard ways to visualize polynomials, which are helpful both to interpretations of the category in different applications and to build intuition about the purely categorical perspective, so we'll introduce them now. The first is of \textit{corolla forests}:
+
+\begin{align}
+\begin{tikzpicture}[trees]
+  \node (1) {$\bullet$} 
+    child {}
+    child {}
+    child {}
+    child {}
+    child {};
+  \node[right=1.5 of 1] (2) {$\bullet$} 
+    child {}
+    child {};
+  \node[right=1.5 of 2] (3) {$\bullet$} 
+    child {}
+    child {};
+  \node[right=1.5 of 3] (4) {$\bullet$};
+\end{tikzpicture}
+\end{align}
+
+The term \textit{corolla} refers to a tree that has a depth of 1, and \textit{forest} refers to the fact that there are many such small trees. The set of positions is the set of roots of the forest (in this case $\underline{4}$) and the set of directions at each position is the set of arrows at each root (in this case $\underline{5}$, $\underline{2}$, $\underline{2}$ and $\underline{0}$). This then corresponds to $p(y) = y^5 + y^2 + y^2 + 1 \approx y^5 + 2y^3 + 1$. This perspective lends intuition to the decision-making interpretation of polynomials. Very loosely speaking, the set of directions is "directions in which one can go" given that one is at that set's associated position. Since polynomials can handle infinite sets, even uncountably infinite ones, one can imagine such infinite corolla trees. For example, the polynomial \ref{eqn.natpoly} could be visualized as:
+
+\begin{align}
+\begin{tikzpicture}[trees]
+  \node (1) {$\bullet$}
+    ;
+  \node[right=0.5 of 1] (2) {$\bullet$} 
+    child {}
+    child {};
+  \node[right=0.5 of 2] (3) {$\bullet$} 
+    child {}
+    child {};
+  \node[right=0.5 of 3] (4) {$\bullet$} 
+    child {}
+    child {};
+  \node[right=.5 of 4] (5) {$\cdots$};
+\end{tikzpicture}
+\end{align}
+
+Another perspective on polynomials, emphasizing the container datatype view, is as Haskell algebraic data types. The polynomial above for instance can be written, in Haskell, as this:
+\begin{minted}{haskell}
+data P y = Fst y y y y y | Snd y y | Trd y y | Frth
+  deriving Functor
+\end{minted}
+And this type can trivially implement the \texttt{Functor} typeclass, so much so that it can be derived automatically as above (given that the language extension \texttt{DeriveFunctor} is enabled of course).
+
+% KEEP COMMENTED: Infinite set in directions
+% \[%\label{eqn.represented_interval}
+% \begin{tikzpicture}[trees, sibling distance=0.0625mm]
+%   \node (1) {$\bullet$} 
+%     child[sibling distance=3mm] foreach \i in {1,2,3}
+%     ;
+%   \node[right=1 of 1] (2) {$\bullet$} 
+%     child foreach \i in {1,...,160}
+%     ;
+%   \node[right=1 of 2] (3) {$\bullet$} 
+%     child foreach \i in {1,...,160}
+%     ;
+%   \node[right=1 of 3] (4) {$\bullet$} 
+%     child foreach \i in {1,...,160}
+%     ;
+%   \node[right=.7 of 4] (5) {$\cdots$};
+% \end{tikzpicture}
+% \]
+
+Since polynomials act on objects and on functions, we can define these applications as such:
+\begin{minted}{agda}
+_⦅_⦆ : Polynomial → Set → Set
+_⦅_⦆ (mkpoly position direction) Y = Σ position λ x → (direction x → Y)
+infixl 30 _⦅_⦆
+
+applyFn : {A B : Set} → (p : Polynomial) → (A → B) → p ⦅ A ⦆ → p ⦅ B ⦆
+applyFn (mkpoly position direction) f (fst , snd) = fst , λ x → f (snd x)
+\end{minted}
+
+And we can use these definitions to quickly prove that \textbf{Poly}'s objects really are functors, we formulate of a record in \texttt{agda-categories} corresponding to an endofunctor in the library's provided instance of \textbf{Set}:
+
+\begin{minted}{agda}
+F-resp : {p : Polynomial} {A B : Set} {f g : A → B} {x : p ⦅ A ⦆ } → 
+    f ≡ g → applyFn p f x ≡ applyFn p g x
+F-resp {x = posApp , dirApp} pr = λ i → posApp , (pr i) ∘  dirApp
+
+conv : {A B : Set} {f g : A → B} → ({x : A} → f x Eq.≡ g x) → f ≡ g
+conv p = funExt λ _ → eqToPath p
+
+asEndo : (p : Polynomial) → Functor (Sets zero) (Sets zero)
+asEndo p = record
+    { F₀ = λ x → p ⦅ x ⦆
+    ; F₁ = λ f → applyFn p f
+    ; identity = Eq.refl
+    ; homomorphism = Eq.refl
+    ; F-resp-≈ = λ {_} {_} {f} {g} proof → 
+        pathToEq (F-resp {f = f} {g = g} (conv proof))
+    }
+\end{minted}
+
+\textit{note}: The book acknowledges the unfortunate naming clash with the equivalent category of containers, where in that context, positions are called directions and directions are called shapes, but we will stick to the poly-book terminology from here on out.
+
+\subsection{Arrows are natural transformations - \textit{dependent lenses}}
+
+Arrows on \textbf{Poly} are so-called \textit{dependent lenses}. The reason for the naming is that, for arrows between monomials, we recover the usual definition of lenses in Haskell and other languages, as a pair of non-dependent "getter and setter" functions. A dependent lens has the additional property that "the types we are allowed to set depend on the value we get". We will explore this notion in depth, and in much more intuitive and concrete contexts, in the applications part of the thesis. Since non-dependent lenses (lenses between monomials) are a very special case of dependent lenses, we will refer to the arrows in \textbf{Poly} as simply \textit{lenses} from here on out, like the Agda definition.
+
+\remarktitle{Perspectives on lenses}
+
+Another use of the corolla forest perspective is that it makes visualizing maps between polynomials quite intuitive. Consider the polynomials $p(y) = y^5 + 2y^2 + y$ and $q(y) = y^3 + y^2 + 2y + 1$. First, their visualization as corollas is as such:
+
+
+\[
+\begin{tikzpicture}[rounded corners]
+	\node (p1) [draw, green!50!black, "$p$" above] {
+	\begin{tikzpicture}[trees, sibling distance=2.5mm]
+    \node["\tiny 1" below] (1) {$\bullet$} 
+      child {}
+      child {}
+      child {}
+      child {}
+      child {};
+    \node[right=1.0 of 1,"\tiny 2" below] (2) {$\bullet$} 
+      child {}
+      child {};
+    \node[right=1.0 of 2,"\tiny 3" below] (3) {$\bullet$}
+      child {}
+      child {};
+    \node[right=1.0 of 3,"\tiny 4" below] (4) {$\bullet$}
+      child {};
+  \end{tikzpicture}
+  };
+%
+	\node (p2) [draw, red!75!black, right=2 of p1, "$q$" above] {
+	\begin{tikzpicture}[trees, sibling distance=2.5mm]
+    \node["\tiny 1" below] (1) {$\bullet$} 
+      child {}
+      child {}
+      child {};
+    \node[right=1.0 of 1,"\tiny 2" below] (2) {$\bullet$} 
+      child {}
+      child {};
+    \node[right=1.0 of 2,"\tiny 3" below] (3) {$\bullet$}
+      child {};
+    \node[right=1.0 of 3,"\tiny 4" below] (4) {$\bullet$}
+      child {};
+    \node[right=1.0 of 4,"\tiny 5" below] (5) {$\bullet$}
+    ;
+  \end{tikzpicture}
+  };
+\end{tikzpicture}
+\]
+Now a map between them can be visualized in the following way. Each position in $p$ gets sent to a position in $q$, and for each of these sendings, the direction is sent back to the original position:
+\[
+\begin{tikzpicture}
+	\node (p1) {
+	\begin{tikzpicture}[trees, sibling distance=2.5mm]
+    \node[green!50!black, "{\color{green!50!black}\tiny 1}" below] (1) {$\bullet$} 
+      child[green!50!black] {coordinate (11)}
+      child[green!50!black] {coordinate (12)}
+      child[green!50!black] {coordinate (13)}
+      child[green!50!black] {coordinate (14)}
+      child[green!50!black] {coordinate (15)};
+    \node[right=1.5 of 1, red!75!black, "{\color{red!75!black}\tiny 1}" below] (2) {$\bullet$} 
+      child[red!75!black] {coordinate (21)}
+      child[red!75!black] {coordinate (22)}
+      child[red!75!black] {coordinate (23)};
+    \draw[|->, shorten <= 3pt, shorten >= 3pt] (1) -- (2);
+    \begin{scope}[densely dotted, bend right, decoration={markings, mark=at position 0.75 with \arrow{stealth}}]
+      \draw[postaction={decorate}] (21) to (11);
+      \draw[postaction={decorate}] (22) to (12);
+      \draw[postaction={decorate}] (23) to (13);
+    \end{scope}
+  \end{tikzpicture}	
+	};	
+%
+	\node (p2) [right=1 of p1] {
+	\begin{tikzpicture}[trees, sibling distance=2.5mm]
+    \node[green!50!black, "{\color{green!50!black}\tiny 2}" below] (1) {$\bullet$} 
+    child[green!50!black] {coordinate (11)}
+    child[green!50!black] {coordinate (12)};
+    \node[right=of 1, red!75!black, "{\color{red!75!black}\tiny 1}" below] (2) {$\bullet$} 
+      child[red!75!black] {coordinate (21)}
+      child[red!75!black] {coordinate (22)}
+      child[red!75!black] {coordinate (23)};
+    \draw[|->, shorten <= 3pt, shorten >= 3pt] (1) -- (2);
+    \begin{scope}[densely dotted, bend right, decoration={markings, mark=at position 0.75 with \arrow{stealth}}]
+      \draw[postaction={decorate}] (21) to (11);
+      \draw[postaction={decorate}] (22) to (11);
+      \draw[postaction={decorate}] (23) to (12);
+    \end{scope}
+  \end{tikzpicture}	
+	};	
+%
+	\node (p3) [right=1 of p2] {
+	\begin{tikzpicture}[trees, sibling distance=2.5mm]
+    \node[green!50!black, "{\color{green!50!black}\tiny 3}" below] (1) {$\bullet$} 
+      child[green!50!black] {coordinate (11)}
+      child[green!50!black] {coordinate (12)};
+    \node[right=of 1, red!75!black, "{\color{red!75!black}\tiny 4}" below] (2) {$\bullet$} 
+      child[red!75!black] {coordinate (21)};
+		;
+    \draw[|->, shorten <= 3pt, shorten >= 3pt] (1) -- (2);
+    \begin{scope}[densely dotted, bend right, decoration={markings, mark=at position 0.75 with \arrow{stealth}}]
+      \draw[postaction={decorate}] (21) to (12);
+
+    \end{scope}
+  \end{tikzpicture}	
+	};	
+ 	\node (p4) [below right=-1.05cm and 1 of p3] {
+	\begin{tikzpicture}[trees, sibling distance=2.5mm]
+    \node[green!50!black, "{\color{green!50!black}\tiny 4}" below] (1) {$\bullet$} 
+    child[green!50!black];
+    \node[right=of 1, red!75!black, "{\color{red!75!black}\tiny 5}" below] (2) {$\bullet$} 
+		;
+    \draw[|->, shorten <= 3pt, shorten >= 3pt] (1) -- (2);
+  \end{tikzpicture}	
+	};	
+\end{tikzpicture}
+\]
+
+
+In the Haskell view of polynomials, lenses can be given as the following type synonym (requires \texttt{RankNTypes} language extension):
+\begin{minted}{haskell}
+type Lens f g = forall a. f a -> g a
+\end{minted}
+
+An example of a lens between the two polynomials above would look like the following (requires \texttt{LambdaCase} language extension):
+\begin{minted}{haskell}
+data P y = Fst y y y y y | Snd y y | Trd y y | Frth
+  deriving Functor
+
+data Q y = A y y y | B y y | C y | D y | E
+  deriving Functor
+
+exampleLens :: Lens P Q
+exampleLens = \case
+  Fst y1 y2 y3 y4 y5 -> _
+  Snd y1 y2 -> _
+  Trd y1 y2 -> _
+  Frth -> _
+\end{minted}
+
+Here we can see that the map on positions translates to a map on value constructors; for each of the summands of $p$, first a value constructor in $q$ must be chosen. Once we fill that in we get:
+
+\begin{minted}{haskell}
+exampleLens :: Lens P Q
+exampleLens = \case
+  Fst y1 y2 y3 y4 y5 -> A y1 y2 y3
+  Snd y1 y2 -> A y1 y1 y2
+  Trd y1 y2 -> C y2
+  Frth -> E
+\end{minted}
+
+And now we recover the idea of a function "back", that is a map on directions \textit{at that position}: for each of the targeted value constructors in $q$, a lens must fill its slots with the source constructor's $y$ values. For example, in this case, the three slots of the \texttt{A} constructor in the first branch must be filled by the five available choices in the source constructor \texttt{Fst}. In an abstract sense, we can see this as a function of type $\underline{3} \rightarrow \underline{5}$ - a choice of source out of 5 possible sources for each of the 3 slots.
+
+Expressing more general kinds of lenses in Haskell using this scheme becomes hard quickly however. The dependency between the value of the map on positions and the type of the map of directions is hidden and baked into the syntax of the language. There are attempts to do this in Haskell \cite{iceland_jack_thread} \cite{sjoerd_gist}, but we only give this Haskell perspective for the sake of intuition. Polynomials and lenses are much more natural in Agda.
+
+\remarktitle{Lenses in Agda}
+
+Here is their definition:
+
+\begin{minted}{agda}
+record Lens (from to : Polynomial) : Set where
+    constructor _⇆_
+    open Polynomial
+    field
+        mapPosition : position from → position to
+        mapDirection : (fromPos : position from) → 
+                       direction to (mapPosition fromPos) → 
+                       direction from fromPos
+\end{minted}
+
+The constructor \mintinline{agda}{_⇆_} is an attempt at representing the two maps: on positions below and going forward (because they are the coefficients of the polynomials) and on directions on top going backwards (because they are exponents of $y$ at each position).
+
+As they are maps between functors, one can expect that lenses are natural transformations. Indeed, they are, and here's how to formulate them as such in the context of \texttt{agda-categories}:
+
+\begin{minted}{agda}
+asNatTransLens : {p q : Polynomial} → 
+            Lens p q → 
+            NaturalTransformation (asEndo p) (asEndo q)
+asNatTransLens (f ⇆ f♯) = record { 
+    η = λ { X (posP , dirP) → f posP , dirP ∘ f♯ posP } ; 
+    commute = λ f₁ → Eq.refl ; 
+    sym-commute = λ f₁ → Eq.refl 
+    }
+\end{minted}
+
+Now in order to have something that we can even test forms a valid category, we need two more pieces of data: the identity arrow, and a description of how arrows compose. Here are these definitions in Agda.
+
+\subsubsection{The identity lens}
+
+It is what one would expect: A polynomial remains untouched in both its set of positions and the direction at each position, by having the \mintinline{agda}{fromPos} argument ignored by the map on directions:
+
+\begin{minted}{agda}
+idLens : {A : Polynomial} → Lens A A
+idLens = id ⇆ λ _ → id
+\end{minted}
+
+\subsubsection{Composing lenses}
+
+Again it is done in the "obvious" way: 
+\begin{minted}{agda}
+_∘ₚ_ : {A B C : Polynomial} → Lens B C → Lens A B → Lens A C
+_∘ₚ_ (f ⇆ f♯) (g ⇆ g♯) = (f ∘ g) ⇆ (λ i → g♯ i ∘ f♯ (g i))
+\end{minted}
+
+The map on positions of the resulting lens is straightforward function composition of the maps on positions of the composing lenses, and the map on directions is also a composition with the care that maps on directions are dependent.
+
+\subsection{Categorical axioms}
+
+That the associativity and identity laws hold for \textbf{Poly} follows directly from the definitions of these types, which means that they can be proved via Cubical Agda's \mintinline{agda}{refl}. We take this chance to show just how \textbf{Poly} is represented as a category in \texttt{agda-categories}' formulation:
+
+\begin{minted}{agda}
+-- Categorical/Instance/Poly.agda
+∘-resp-≈ : {A B C : Polynomial} 
+           {f h : Lens B C} 
+           {g i : Lens A B} → 
+           f ≡ h → g ≡ i → (f ∘ₚ g) ≡ (h ∘ₚ i)
+∘-resp-≈  p q ii = (p ii) ∘ₚ (q ii)
+
+Poly : Category (lsuc lzero) lzero lzero
+Poly = record
+    { Obj = Polynomial
+    ; _⇒_ = Lens
+    ; _≈_ = _≡_
+    ; id = idLens
+    ; _∘_ = _∘ₚ_
+    ; assoc = refl
+    ; sym-assoc = refl
+    ; identityˡ = refl
+    ; identityʳ = refl
+    ; identity² = refl
+    ; equiv = record { refl = refl ; sym = sym ; trans = _∙_ }
+    ; ∘-resp-≈ = ∘-resp-≈
+    }
+\end{minted}
+
+This record definition should not be surprising: \textbf{Poly}'s objects are \mintinline{agda}{Polynomial}s, its arrows are dependent \mintinline{agda}{Lens}es, our notion of equality between arrows is the cubical equality \mintinline{agda}{_≡_}, the identity lens and composition are the previously defined values in Agda. The rest of the data provided to the record correspond to the categorical laws plus some convenience that \texttt{agda-categories} provides: for instance, the proof \mintinline{agda}{sym-assoc} is not normally needed, but it makes it so that the opposite of opposite categories are equal "on the nose" to the original categories, and not just provably equal. We will not spend time going over design decisions of \texttt{agda-categories}, but for a more detailed account of the reasoning behind the library, see the authors' paper \cite{agda-cats} on it.
+
+\section{Polynomial equality}
+There are some occasions where polynomials need to be compared for equality. For example, a convenient way of characterizing monoidal structures in \textbf{Poly} is by simply expressing the laws on types, which requires polynomials to be compared; the right unit law for instance says can be written as \mint{agda}{rightUnit : (p q : Polynomial) → p ⊗ Y ≡ p}
+(in the case of monoidal structures, we stick to the \texttt{agda-categories} framework and don't rely on equality of objects at all, but polynomial equality is both useful elsewhere and an illuminating exercise).
+
+Since a polynomial is a record consisting of the \mintinline{agda}{position : Set} and \newline \mintinline{agda}{direction : position → Set} a characterization of equality for this record is needed, to make it easy to use and prove equalities between polynomials. It is very directly expressible as a Σ-type, on which there are already many properties and lemmas in the Cubical library. Here's that representation, along with proofs that it's equal to the record one:
+
+\begin{minted}{agda}
+PolyAsSigma : Set₁
+PolyAsSigma = Σ[ position ∈ Set ] (position → Set)
+
+polyToSigma : Polynomial → PolyAsSigma
+polyToSigma (mkpoly position direction) = position , direction
+    
+polyFromSigma : PolyAsSigma → Polynomial
+polyFromSigma (position , direction) = mkpoly position direction
+
+poly≡polySigma : Polynomial ≡ PolyAsSigma
+poly≡polySigma = isoToPath (iso polyToSigma 
+                                polyFromSigma 
+                                (λ _ → refl) 
+                                (λ _ → refl))
+\end{minted}
+
+add code we actually use for poly equality
+
+\section{Lens equality}
+In category theory, we are usually interested instead in the algebra of morphisms, that is, we want to know when morphisms are equal; very often we want to ascertain that a composite of two arrows is equal to some induced morphism, for instance. We often want to prove that a morphism is unique. For this we need a good way of characterizing equality of lenses, and this characterization of equality needs to be convenient enough to be usable in practical proofs about \textbf{Poly}.
+
+A lens consists of two components, with the second component depending on the first. This suggests a Σ-type structure, which inclines us to use the same strategy as with polynomial equality, but in lenses things are slightly more complicated, since the second field depends on the first field \textit{applied} to something. Still, representing lenses as Σ-types is relatively straightforward:
+
+\begin{minted}{agda}
+LensAsSigma : Polynomial → Polynomial → Type
+LensAsSigma (mkpoly posP dirP) (mkpoly posQ dirQ)
+    = Σ[ mapPos ∈ (posP → posQ) ]
+    ((fromPos : posP) → dirQ (mapPos fromPos) → dirP fromPos)
+    
+sigmaToLens : LensAsSigma p q → Lens p q
+sigmaToLens (mapPos , mapDir) = mapPos ⇆ mapDir
+
+lensToSigma : Lens p q → LensAsSigma p q
+lensToSigma  (mapPos ⇆ mapDir) = mapPos , mapDir
+
+lens≡lensSigma : (Lens p q) ≡ (LensAsSigma p q)
+lens≡lensSigma = isoToPath (iso lensToSigma
+                                sigmaToLens 
+                                (λ _ → refl)
+                                (λ _ → refl))
+\end{minted}
+
+As for the equality itself, we must have some dependency expressed in the types of the two arrows provided. This is unlike polynomial equality, since polynomials require only equality of types, whereas lenses requires both equality of types and of values.
+
+\remarktitle{If lenses and polynomials are both Σ-types in disguise, why not just use Σ-types?}
+
+The main reason is \textit{usability}. This is a convenience-driven decision: we want our implementation of \textbf{Poly} to not only be amenable to formalization and having theorems proven about it, but also to be \textit{nice to program in}. Working with Σ-types causes readability to suffer too much, because the names of the constructor and fields are lost. We then make the compromise of converting between the record Σ-type representations only in the equality modules, since the proofs that the representations are equal allows use to carry equality over between the types, a very useful feature of Cubical Agda.
+
+
+
+\section{Initial object}
+A category has an initial object if there exists an (initial) object that has an unique arrow from every other object. In \textbf{Poly}, the initial object is the polynomial $p(y) = 0$ with no positions (and therefore also no directions). It is the functor that sends any set to the empty set.
+
+\begin{minted}[escapeinside=||]{agda}
+|$\mathbb{0}$| : Polynomial
+|$\mathbb{0}$| = mkpoly ⊥ λ ()
+\end{minted}
+
+The steps to prove that $0$ is an initial object is to firstly construct a lens to every other object, and to secondly show that this each of these lenses are unique. 
+
+Since $0$ has no positions (nor directions) both the map on positions and the map on directions to any other polynomial $p$ is given by the function \mintinline{agda}{λ ()} (often named absurd) from the empty type.
+\begin{minted}[escapeinside=||]{agda}
+lensFromZero : {p : Polynomial} → Lens |$\mathbb{0}$| p
+lensFromZero = (λ ()) ⇆ (λ ())
+\end{minted}
+
+The final step is to show that this lensFromZero from $0$ to $p$ is unique. This is done by assuming that there exists another lens $f$ from $0$ to $p$ and then prove that $f$ actually is the same lens as lensFromZero. 
+
+\begin{minted}[escapeinside=||]{agda}
+lensFromZeroUnique : {p : Polynomial} (f : Lens |$\mathbb{0}$| p) → lensFromZero ≡ f
+lensFromZeroUnique _ = lens≡ (funExt λ ()) (funExt λ ())
+\end{minted}
+
+This is implemented by using the lens equality function and the fact that the absurd function (from the empty type) is unique utilizing function extensionality. We plug these proofs in to the \texttt{agda-categories} characterization of the initial object:
+
+\begin{minted}[escapeinside=||]{agda}
+open import Categories.Object.Initial Poly
+
+zeroIsInitial : IsInitial |$\mathbb{0}$|
+zeroIsInitial = record { ! = lensFromZero ; !-unique = lensFromZeroUnique }
+
+initialZero : Initial
+initialZero = record { ⊥ = |$\mathbb{0}$| ; ⊥-is-initial = zeroIsInitial }
+\end{minted}
+
+
+
+\section{Terminal object}
+Dually to the initial object, the terminal object is an object such that there is an arrow to every other object in the category. In \textbf{Poly}, the terminal object is defined as the polynomial with a single position, but no directions for that position. It is the functor that sends all sets to the singleton set.
+
+\begin{minted}[escapeinside=||]{agda}
+|$\mathbb{1}$| : Polynomial
+|$\mathbb{1}$| = mkpoly ⊤ (λ _ → ⊥)
+\end{minted}
+
+Similarly to the initial object, to show that 1 is a terminal object is to first construct a lens \textbf{from} every other object, and to show that each of these lenses is unique.
+
+The map on positions from any other polynomial to 1 is the function always returning unit (often also named unit). For this position, the map on directions goes from $\bot$ since 1 has no directions, thus the map on directions is again the absurd function.
+
+\begin{minted}[escapeinside=||]{agda}
+lensToOne : {p : Polynomial} → Lens p |$\mathbb{1}$|
+lensToOne = (λ _ → tt) ⇆ λ _ ()
+\end{minted}
+
+Finally, for uniqueness, any other lens $f$ from $p$ to $1$ is the same as lensToOne. For map on positions equality, refl is used to show that any two functions (with same domain) to $\top$ is the same. For map on directions equality, uniqueness of the absurd function is used, as in the initial object. The more advanced version of lens equality is used to do the function extensionality in the background, allowing for more concise syntax.
+
+\begin{minted}[escapeinside=||]{agda}
+lensToOneUnique : {p : Polynomial} (f : Lens p |$\mathbb{1}$|) →  lensToOne ≡ f
+lensToOneUnique _ = lens≡∀∀ refl (λ _ ())
+\end{minted}
+
+And again we plug these proofs in to the \texttt{agda-categories} characterization of the initial object:
+
+\begin{minted}[escapeinside=||]{agda}
+open import Categories.Object.Terminal Poly
+
+oneIsTerminal : IsTerminal
+oneIsTerminal = record { ! = lensToOne ; !-unique = lensToOneUnique }
+
+terminalOne : Terminal
+terminalOne = record { ⊤ = |$\mathbb{1}$| ; ⊤-is-terminal = oneIsTerminal }
+\end{minted}
+
+\section{Product}
+The product of two objects $A$ and $B$ is an object $A \times B$ together with arrows $\pi_1$ and $\pi_2$ such that, given any other object $T$ and arrows from $T$ to $A$ and $B$, the following diagram commutes and the arrow $!$ exists and is unique:
+
+% https://q.uiver.app/?q=WzAsNCxbMCwzLCJBIl0sWzQsMywiQiJdLFsyLDIsIkEgXFx0aW1lcyBCIl0sWzIsMCwiVCJdLFsyLDAsIlxccGlfMSIsMV0sWzIsMSwiXFxwaV8yIiwxXSxbMywyLCIhIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzMsMCwiaCIsMV0sWzMsMSwiayIsMV1d
+\[\begin{tikzcd}
+	&& T \\
+	\\
+	&& {A \times B} \\
+	A &&&& B
+	\arrow["{\pi_1}"{description}, from=3-3, to=4-1]
+	\arrow["{\pi_2}"{description}, from=3-3, to=4-5]
+	\arrow["{!}"{description}, dashed, from=1-3, to=3-3]
+	\arrow["h"{description}, from=1-3, to=4-1]
+	\arrow["k"{description}, from=1-3, to=4-5]
+\end{tikzcd}\]
+
+The arbitrary object $T$ can be intuitively thought of as a "candidate" object to be the product. This is an example of a \textit{universal property} in category theory and the arrows $h$ and $k$ are said to be \textit{factorized} through the compositions $\pi_1 \circ  !$ and $\pi_2 \circ !$ respectively.
+
+\textbf{Poly} has all products, which means that for any two polynomials $p$ and $q$ we can construct their product as the polynomial $p*q$.
+
+Firstly, the product polynomial of two polynomials is defined. The position set is the product of $p$'s and $q$'s position sets, while the direction at a position is either a direction of $p$ or a direction of $q$. This is another instance of the fact that these polynomials behave just like the ones in high school algebra: for example, given $p(y) = y^2$ and $q(y) = 5y^3 + 2y$, their product is given by $p * q (y) = 5y^5 + 2y^3$. In Agda, the product is given as:
+
+\begin{minted}{agda}
+_*_ : Polynomial → Polynomial → Polynomial
+(mkpoly posP dirP) * (mkpoly posQ dirQ) =
+    mkpoly (posP × posQ) (λ {(posP , posQ) → (dirP posP) ⊎ (dirQ posQ)})
+\end{minted}
+
+A simple example of the product is provided in figure \ref{fig:productExample}.
+\begin{figure}
+    \centering
+    \includegraphics{figure/productExample.png}
+    \caption{The polynomial $p$ has $2$ positions, and $q$ has $3$ positions. Their product $p*q$ has both $p$ and $q$'s positions, totaling $2*3=6$ positions. The directions at each position is the disjoint union of $p$' and $q$'s directions at that position.}
+    \label{fig:productExample}
+\end{figure}
+
+Continuing with figure \ref{fig:productDiagram}, it is natural to ask how $\pi_1$ and $\pi_2$ are defined. They are defined to take the projections on the positions, and injections on the map on the directions back. Figure \ref{fig:productExample} makes this clear with the black dotted line projecting one of the positions $p*q$ to $p$ and then injecting the direction back to $p*q$. 
+
+\begin{minted}{agda}
+π₁ : {p q : Polynomial} → Lens (p * q) p
+π₁ = proj₁ ⇆ λ _ → inj₁
+
+π₂ : {p q : Polynomial} → Lens (p * q) q
+π₂ = proj₂ ⇆ λ _ → inj₂
+\end{minted}
+
+Given an object $c$ as the domain of two lenses $f$ and $g$, $\langle f,g \rangle$ should be the factorization lens of $f$ and $g$. This factorization must be unique, which is proved later as the last step. The factorization lens is defined by taking the pair of functions for map on positions. For the map on directions either f or g is used depending on the direction.
+
+\begin{minted}{agda}
+⟨_,_⟩ : {p q r : Polynomial} → Lens p q → Lens p r → Lens p (q * r)
+⟨ f ⇆ f♯ , g ⇆ g♯ ⟩ = < f , g > ⇆ λ posP → [ f♯ posP , g♯ posP ]
+\end{minted}
+
+Finally, we need to supply the proofs associated with the product. There are two proofs needed to show that the diagram \ref{fig:productDiagram} commutes, and one for showing the uniqueness of $\langle f,g \rangle$. The proofs for commuting is shown with refl, but the uniqueness is left out for space reasons - we will do this relatively frequently in the rest of the thesis, since many of these proofs get quite long. Interested readers can of course see the code for the formalization\cite{code}. But the idea is that if we have another factorization function $h$ it must be the same as $\langle f,g \rangle$. 
+
+\begin{minted}{agda}
+project₁ : {p q r : Polynomial} {f : Lens r p} {g : Lens r q} →
+           π₁ ∘ₚ ⟨ f , g ⟩ ≡ f
+project₁ = refl
+
+project₂ : {p q r : Polynomial} {f : Lens r p} {g : Lens r q} →
+           π₂ ∘ₚ ⟨ f , g ⟩ ≡ g
+project₂ = refl
+
+unique : {p q r : Polynomial} {h : Lens p (q * r)} {f : Lens p q} 
+    {g : Lens p r → (π₁ ∘ₚ h) ≡ f} →
+    (π₂ ∘ₚ h) ≡ g → 
+    ⟨ f , g ⟩ ≡ h
+unique = ...
+    where
+        lemma : ⟨ π₁ ∘ₚ h , π₂ ∘ₚ h ⟩ ≡ h
+        lemma = ...
+\end{minted}
+
+\subsection{Productized lens}
+Two lenses between different pairs of polynomials can be represented as a single lens between two products, as follows.
+
+\begin{minted}{agda}
+⟨_×_⟩ : {a b c d : Polynomial} → (f : Lens a c) (g : Lens b d)
+    → Lens (a * b) (c * d)
+⟨ (f ⇆ f♯) × (g ⇆ g♯) ⟩ 
+    = (λ {(a , b) → f a , g b}) ⇆
+        λ {(a , b) (inj₁ dirC) → inj₁ (f♯ a dirC)
+         ; (a , b) (inj₂ dirD) → inj₂ (g♯ b dirD)}
+\end{minted}
+
+\subsection{Generalized product}
+Similarly to how the pi type is a generalization of the product type in \textbf{Type}, we can create the product of all polynomials indexed by any type. Think of it as a "fold", in the sense that each element of a set produces a new polynomial that is productized with the "accumulator" of this fold (all the products taken so far). This construction will be particularly important for the exponential object.
+
+\begin{minted}{agda}
+ΠPoly : Σ[ indexType ∈ Set ] (indexType → Polynomial) → Polynomial
+ΠPoly (indexType , generatePoly) = mkpoly pos dir
+  where
+    -- Embedding all polynomial positions into one position
+    pos : Set
+    pos = (index : indexType) → position (generatePoly index)
+
+    -- Direction is exactly one of the polynomials' directions
+    dir : pos → Set
+    dir pos = Σ[ index ∈ indexType ] direction (generatePoly index) (pos index) 
+\end{minted}
+
+Using this generalized product type with $Bool$ as the index type is equivalent to having a normal product - which makes sense, since it means taking a product of two polynomials. This is proved in \texttt{Various.agda}.
+
+\begin{minted}{agda}
+productIsΠPoly : {p q : Polynomial}
+    → ΠPoly (Bool , tupleToFunFromBool (p , q)) ≡ (p * q) 
+productIsΠPoly = ...
+
+tupleToFunFromBool : {ℓ : Level} {A : Set ℓ} → (A × A) → Bool → A
+tupleToFunFromBool (a , b) true = a
+tupleToFunFromBool (a , b) false = b
+\end{minted}
+
+With the generalized product it is also useful to have the factorizer $\langle f,g \rangle$ generalized, now factorizing a generalized amount of lenses instead of just $f$ and $g$.
+
+\begin{minted}{agda}
+-- A function A→(B*C) is the same as two functions A→B and A→C
+universalPropertyProduct : {p : Polynomial} {Index : Type} 
+    {generate : Index → Polynomial}
+    → Lens p (ΠPoly (Index , generate)) ≡ ((i : Index) → Lens p (generate i))
+universalPropertyProduct = ...
+\end{minted}
+
+\subsection{Monoid}
+
+The product forms a monoid with $1$, which we show by constructing a monoidal category (\textbf{Poly}, $\times$, $1$). Any In fact, the product is a \textit{symmetric} monoidal structure, since $A \times B$ is isomorphic to $B \times A$. This is one place where the existing structure of \texttt{agda-categories} is extremely useful, as we only need to call some of its helpers to prove this and rely on the fact that all cartesian categories form monoidal categories with respect to the product. The code for it is:
+
+\begin{minted}{agda}
+-- Categorical/Poly/Monoidal/Product.agda
+
+open import Categories.Category.Monoidal
+import Categories.Category.Cartesian as Cartesian
+
+binaryProducts : Cartesian.BinaryProducts Poly
+binaryProducts = record { product = prod }
+
+cartesian : Cartesian.Cartesian Poly
+cartesian = record { terminal = terminalOne ; 
+                     products = binaryProducts }
+
+productMonoidal : Monoidal Poly
+productMonoidal 
+    = Cartesian.CartesianMonoidal.monoidal Poly cartesian
+
+open import Categories.Category.Monoidal.Symmetric productMonoidal
+productSymmetricMonoidal : Symmetric
+productSymmetricMonoidal 
+    = Cartesian.CartesianSymmetricMonoidal.symmetric Poly cartesian
+\end{minted}
+
+\section{Coproduct}
+The coproduct is the dual construction to the product, obtained from reversing all arrows. If we do this to the product diagram shown before, this is obtained:
+
+% https://q.uiver.app/?q=WzAsNCxbMCwzLCJBIl0sWzQsMywiQiJdLFsyLDIsIkEgKyBCIl0sWzIsMCwiVCJdLFswLDIsIlxcdGV4dHtpbmp9XzEiLDFdLFsxLDIsIlxcdGV4dHtpbmp9XzIiLDFdLFsyLDMsIiEiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMCwzLCJoIiwxXSxbMSwzLCJrIiwxXV0=
+\[\begin{tikzcd}
+	&& T \\
+	\\
+	&& {A + B} \\
+	A &&&& B
+	\arrow["{\text{inj}_1}"{description}, from=4-1, to=3-3]
+	\arrow["{\text{inj}_2}"{description}, from=4-5, to=3-3]
+	\arrow["{!}"{description}, dashed, from=3-3, to=1-3]
+	\arrow["h"{description}, from=4-1, to=1-3]
+	\arrow["k"{description}, from=4-5, to=1-3]
+\end{tikzcd}\]
+
+\textbf{Poly} also has all coproducts. The coproduct $p+q$ of any $p$ and $q$ is defined by taking the coproduct on just the positions and the \textit{projection} on the directions. Again, consider the analogy with high-school algebra. Given two polynomials $p(y) = 4y^2$ and $q(y) = y^2 + 3y$, their sum is given by $(p + q)(y) = 5y^2 + 3y$. In this example, four of the positions with $2$ as a direction came from $p$ and one of them came from $q$, hence we pattern match on the resulting polynomials's position. As a shorthand, we use Agda's \mintinline{agda}{[_,_]} function.
+
+\begin{minted}{agda}
+_+_ : Polynomial → Polynomial → Polynomial
+(mkpoly posA dirA) + (mkpoly posB dirB) = mkpoly (posA ⊎ posB) [ dirA , dirB ]
+\end{minted}
+
+The example of coproduct is provided in figure \ref{fig:coproductExample}.\todo{reverse the black dotted arrow}
+
+
+\begin{figure}
+    \centering
+    \includegraphics{figure/coproductExample.png}
+    \caption{The polynomial $p$ has $2$ positions, and $q$ has $3$ positions. Their coproduct $p+q$ has the union of $p$ and $q$'s positions, totaling $2+3=5$ positions. The directions at each position is the corresponding direction at that position.}
+    \label{fig:coproductExample}
+\end{figure}
+
+The injections $i_1$ and $i_2$ are defined by taking the injections on the positions and keeping the directions on that position using $id$. The example \ref{fig:coproductDiagram} shows how $i_1$ behave for one position. 
+
+\begin{minted}{agda}
+i₁ : {p q : Polynomial} → Lens p (p + q)
+i₁ = inj₁ ⇆ λ _ → id
+
+i₂ : {p q : Polynomial} → Lens q (p + q)
+i₂ = inj₂ ⇆ λ _ → id
+\end{minted}
+
+
+Given an object $c$ as the codomain of two functions $f$ and $g$, $[f,g]$ should be the (unique) factorization lens of f and g. This function is defined by using $f$ or $g$' behavior depending what the position corresponds to.
+
+
+\begin{minted}{agda}
+[_,_]ₚ : {p q r : Polynomial} → Lens p r → Lens q r → Lens (p + q) r
+[ f ⇆ f♯ , g ⇆ g♯ ]ₚ = [ f , g ] ⇆ [ f♯ , g♯ ]
+\end{minted}
+
+The proofs needed correspond to the ones from the product. 
+\begin{minted}{agda}
+inject₁ : {f : Lens p a} {g : Lens q a} → [ f , g ]ₚ ∘ₚ i₁ ≡ f
+inject₁ = refl
+
+inject₂ : {f : Lens p a} {g : Lens q a} → [ f , g ]ₚ ∘ₚ i₂ ≡ g
+inject₂ = refl
+
+unique : {F : Polynomial} {h : Lens (A + B) F} {f₁ : Lens A F} {f₂ : Lens B F} 
+    → (h ∘ₚ i₁) ≡ f₁
+    → (h ∘ₚ i₂) ≡ f₂
+    → [ f₁ , f₂ ]ₚ ≡ h
+unique p₁ p₂ = ...
+    where
+        lemma : [ h ∘ₚ i₁ , h ∘ₚ i₂ ]ₚ ≡ h
+        lemma = ...
+        
+\end{minted}
+
+
+\subsection{Generalized coproduct}
+The coproduct can also be generalized to work with any amount of polynomials indexed by an index-type. This corresponds to the sigma type, or exists operator.
+\begin{minted}{agda}
+ΣPoly : Σ[ indexType ∈ Set ] (indexType → Polynomial) → Polynomial
+ΣPoly (indexType , generatePoly) = mkpoly pos dir
+  where
+    -- It is the positions of one of the polynomials
+    pos : Set 
+    pos = Σ[ index ∈ indexType ] (position (generatePoly index))
+
+    -- It is the direction of the polynomial for the position
+    dir : pos → Set
+    dir (index , positionAtIndex) = direction (generatePoly index)
+                                              positionAtIndex
+\end{minted}
+
+Using the generalized coproduct with bool as index type is the same as the normal coproduct. This is proved in Various.agda.
+
+\begin{minted}{agda}
+coproductIsΣPoly : {p q : Polynomial} → ΣPoly (Bool , tupleToFunFromBool (p , q)) ≡ p + q
+coproductIsΣPoly = ...
+\end{minted}
+
+The generalized factorizer for the generalized coproduct can now be defined.
+
+\begin{minted}{agda}
+-- A function (A+B)→C is the same as two functions A→C and B→C
+universalPropertyCoproduct : {Index : Type} {generate : Index → Polynomial}
+   → Lens (ΣPoly (Index , generate)) p ≡ ((i : Index) → Lens (generate i) p)
+universalPropertyCoproduct = ...
+\end{minted}
+
+\subsection{Monoid}
+To show the coproduct is a monoid, we do almost the same as for the product. Again we rely on \texttt{agda-categories}' helpers to define the monoidal category (\textbf{Poly}, $+$, $0$) - which is also \textit{symmetric} monoidal. This time we rely on the fact that the category is \textit{co-}cartesian, but the code is almost identical:
+\begin{minted}{agda}
+-- Categorical/Poly/Monoidal/Coproduct.agda
+
+open import Categories.Category.Monoidal
+import Categories.Category.Cocartesian as Cocartesian
+
+binaryCoproducts : Cocartesian.BinaryCoproducts Poly
+binaryCoproducts = record { coproduct = coprod }
+
+coproductCocartesian  : Cocartesian.Cocartesian Poly
+coproductCocartesian = record { initial = initialZero ;
+                                coproducts = binaryCoproducts }
+
+coproductMonoidal : Monoidal Poly
+coproductMonoidal = 
+  Cocartesian.CocartesianMonoidal.+-monoidal Poly coproductCocartesian
+
+open import Categories.Category.Monoidal.Symmetric coproductMonoidal
+productSymmetricMonoidal : Symmetric
+productSymmetricMonoidal = 
+  Cocartesian.CocartesianSymmetricMonoidal.+-symmetric Poly coproductCocartesian
+\end{minted}
+
+\subsection{Coproductized lens}
+It is also easy to define a parallel coproduct lens. Like for the product, two lenses can be made to represent a single lens between coproducts.
+\begin{minted}{agda}
+⟨_⊎_⟩ : {p q r w : Polynomial} → (f : Lens p r) (g : Lens q w)
+         → Lens (p + q) (r + w)
+⟨_⊎_⟩ {p} {q} {r} {w} (f ⇆ f♯) (g ⇆ g♯) = mp ⇆ md
+    where mp : position (p + q) → position (r + w)
+          mp = map f g
+          md : (fromPos : position (p + q)) → 
+               direction (r + w) (mp fromPos) → 
+               direction (p + q) fromPos
+          md (inj₁ x) d = f♯ x d
+          md (inj₂ y) d = g♯ y d
+infixl 30 ⟨_⊎_⟩
+\end{minted}
+
+\section{Parallel product} \label{section:parallelProduct}
+The parallel product (also called Dirichlet product) is another useful binary operator on polynomials. It is defined as the pair of positions and pair of directions. This is the first operator that does not have a direct high school algebra correspondence, as it multiplies on both coefficients and exponents: given $p(y) = 2y^4 + 3y2$ and $q(y) = 2y^3$, $(p \otimes q)(y) = 4y^12 + 6y^6$.
+
+\begin{minted}{agda}
+_⊗_ : Polynomial → Polynomial → Polynomial
+(mkpoly posA dirA) ⊗ (mkpoly posB dirB)
+    = mkpoly (posA × posB) (λ (posA , posB) → (dirA posA) × (dirB posB))
+\end{minted}
+
+The parallel product will turn out to be extremely important in the context of dynamical systems. More on this in the applications chapter.
+
+\subsection{Monoid}
+
+The parallel product forms a monoid with $y$. Since it is not the canonical product (or coproduct), as far as we know, we can't rely on the previous tricks to construct a monoidal category out of it. However, we can define the monoidal category construction manually, which is a lot of code in "volume". This is done, for consistency in \texttt{Categorical/Poly/Monoidal/ParallelProduct.agda}, but an alternative proof of the monoidality and symmetry of $\otimes$ is offered here, by using polynomial equality.
+
+
+
+\section{Composition product}
+Since polynomials are functors, and they are in fact \textit{endo}functors, they can be composed to give rise to new polynomial functors. The composition operator is given by the symbol ◂. Here we can recover high-school algebra intuition. Composing functors corresponds to plugging in entire expressions, instead of numbers, into a polynomial. For instance, given $p(y) = y^2$ and $q(y) = y^2 + 3y$, the composition product is given as $(p \triangleleft q)(y) = (y^2 + 3y)^2$.
+
+\begin{minted}{agda}
+-- Proposition 5.2, page 158. Note: not same definition used. We here treat positions
+-- as inhabitants of the same set, which makes a lot of proofs easier down the line.
+_◂_ : Polynomial → Polynomial → Polynomial
+p ◂ q = mkpoly pos dir
+  where
+    module p = Polynomial p
+    module q = Polynomial q
+
+    pos : Set
+    pos = (Σ[ i ∈ p.position ] (p.direction i → q.position))
+
+    dir : pos → Set
+    dir (i , j) = Σ[ a ∈ p.direction i ] q.direction (j a)
+infixl 27 _◂_
+\end{minted}
+
+This definition is heavily inspired by David Orion Girardo's implementation here \cite{daig}. The key insight from his implementation is that the positions in the resulting polynomial are a pair, the first element of which is the same set as the postcomposed polynomial. This sticks closer to the idea that polynomials are in fact being composed. In terms of corolla forests, the composition product stacks trees on top of one another:
+
+\todo{Give an example as a drawing.}
+
+\subsection{Monoid}
+% Show it forms a monoid with Y.
+The composition product is an important monoidal structure in \textbf{Poly}. It is not symmetric, like the previous three structures, but it has massive consequences from both a theoretical as well as application point of view.
+
+\subsection{Composite power}
+% Show composition power.
+
+\section{Cartesian closure}
+
+\textbf{Poly} has exponential objects, that is, the family of lenses from any polynomial $p$ to any polynomial $q$ is found as an object $q^p$ in \textbf{Poly}, and it is given by the following polynomial:
+$$
+\Pi
+$$
+
+We define this polynomial as follows in Agda:
+\begin{minted}{agda}
+-- CategoryData/Exponential
+
+-- Exponential object.
+-- Theroem 4.27, page 130 in Poly book.
+_^_ : (r : Polynomial) → (q : Polynomial) → Polynomial
+r ^ (mkpoly posQ dirQ) = ΠPoly (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
+infixl 30 _^_
+\end{minted}
+where \mintinline{agda}{Constant} is a helper function that takes a set to the constant polynomial sending every set to that set.
+
+We do not prove that this object is the exponential object via the universal property of exponential objects, which would employ \texttt{agda-categories}' \texttt{Exponential} construction. Instead, we prove an equivalent statement, related to currying: that the following natural isomorphism exists 
+\todo{write isomorphism given by currying}
+$$
+$$
+
+This statement is the same as the poly-book proves. In fact, we follow the same chain of isomorphisms as the book to conclude this. In Agda, this looks like:
+\todo{write finished exponential}
+
+The existence of the exponential object implies the existence of the canonical evaluation lens. Its implementation is as follows:
+
+\todo{write eval arrow}
+
+The cartesian closure of \textbf{Poly} has interesting implications, which we will consider when we talk about future work possibilities from this thesis.
+
+\section{Quadruple adjunction}
+
+\textbf{Poly} has a deep relationship with \textbf{Set}. One place where this is reflected is with the connection between the following functors:
+
+\begin{itemize}
+    \item Constant functor $C : \textbf{Set} \rightarrow \textbf{Poly}$, which sends a set $A$ to the constant polynomial $p(y) = A$; that is, the polynomial that sends all sets to $A$. This is a fully faithful functor, which means \textbf{Set} is a full subcategory of \textbf{Poly}.
+    \item Linear functor $L : \textbf{Set} \rightarrow \textbf{Poly}$,  which sends a set $A$ to the linear polynomial $p(y) = Ay$; that is, the polynomial that sends a set $y$ to the set of $A$-tuples of $y$. This is also a fully faithful functor.
+    \item Plug in \underline{0} functor $p(0) : \textbf{Poly} \rightarrow \textbf{Set}$, which sends a polynomial to a subset of its positions, namely the constant ones. For example, its action on $p(y) = 5y^{\mathbb{R}} + \mathbb{N}$ is $p(y) = 5*0^{\mathbb{R}} + \mathbb{N} = \mathbb{N}$. Again, \underline{0} here stands for the set with 0 elements.
+    \item Plug in \underline{1} functor $p(1) : \textbf{Poly} \rightarrow \textbf{Set}$, which sends a polynomial to the set of its positions. Its action on the example polynomial above is $p(y) = 5*1^{\mathbb{R}} + \mathbb{N} = 5 + \mathbb{N}$.
+\end{itemize}
+
+Note that the notation $p(1)$ here is being used to represent a functor from \textbf{Poly} to \textbf{Set}, but most of the time it is used to talk about the set of positions directly.
+
+These functors turn out to form a chain of adjunctions: $L \dashv p(1) \dashv C \dashv p(0)$. Adjunctions are forms of weak equivalences between categories, given by pairs of functors: the left and right adjoints. The intuition is that the left adjoint "adds as much information" as possible to the objects and morphisms it acts on, whereas the right adjoint "removes as little information" as possible in order to make the objects and morphisms it acts on "fit" in its target category. In the case of the relationship between \textbf{Poly} and \textbf{Set}, there are two functors putting different copies of \textbf{Set} inside \textbf{Poly} (the fully faithful ones), and two functors that "forget" that they act on something \textit{contains} sets. 
+
+For an illustration of what is meant by "forgetting", take the the first adjoint pair $L \dashv p(1)$ as an example. It acts the following way: $p(1)$ makes a polynomial functor "forget" it's a functor, while $L$ "reminds" a set of "how to be" a functor.
+
+The proof that this adjunction exists is relatively trivial for these functors, so we won't include it in the main text, but it is of course present in the accompanying formalization, under \texttt{Categorical/Adjunction}. It is done via the \texttt{agda-categories} scaffolding and via the unit-counit definition of adjunctions.
+
+\section{Equalizer}
+
+Equalizers are an important categorical structure, because when they exist in a category that also has products, it can be shown that the category is complete - in other words, it has all finite limits. A limit is an object, together with several morphisms from that object, in a category that "represent" or somehow summarize diagrams in that category.
+
+An equalizer in general is an object $E$ and a morphism $eq$, such that the following diagram commutes:
+
+% https://q.uiver.app/?q=WzAsNCxbMCwwLCJFIl0sWzIsMCwiQSJdLFs0LDAsIkIiXSxbMCwyLCJUIl0sWzEsMiwiZyIsMix7Im9mZnNldCI6Mn1dLFsxLDIsImYiLDAseyJvZmZzZXQiOi0yfV0sWzAsMSwiZXEiLDJdLFszLDEsImgiLDJdLFszLDAsIiEiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+\[\begin{tikzcd}
+	E && A && B \\
+	\\
+	T
+	\arrow["g"', shift right=2, from=1-3, to=1-5]
+	\arrow["f", shift left=2, from=1-3, to=1-5]
+	\arrow["eq"', from=1-1, to=1-3]
+	\arrow["h"', from=3-1, to=1-3]
+	\arrow["{!}"{description}, dashed, from=3-1, to=1-1]
+\end{tikzcd}\]
+
+The objects $A$, $B$ and $T$ and the arrows $f$ and $g$ are arbitrary, and the morphism $h$ is such that $f \circ h = g \circ h$. The equalizer object and its arrow are named this way for the intuitive reason that they select the part of $A$ under which both arrows $f$ and $g$ agree, i.e. they "give the same output" in $B$. The notion of "giving output" is perhaps exploiting a \textbf{Set}-based intuition, but we believe \textbf{Poly} is close enough to \textbf{Set} to justify this. The object $T$ relates to the universal property of the equalizer, in that it can be thought of as another "candidate" for the equalizer object along with its arrow $h$. What makes the actual equalizer $E$ special is that, for any such candidate, there exists a unique arrow $!$ from that object to the equalizer, such that $eq \circ ! = h$.
+
+The dual construction to the equalizer is the coequalizer, and as usual, is obtained by reversing all the arrows:
+
+% https://q.uiver.app/?q=WzAsNCxbMCwwLCJBIl0sWzIsMCwiQiJdLFs0LDAsIkMiXSxbNCwyLCJUIl0sWzAsMSwiZiIsMCx7Im9mZnNldCI6LTJ9XSxbMCwxLCJnIiwyLHsib2Zmc2V0IjoyfV0sWzEsMiwiaW5jIiwyXSxbMiwzLCIhIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzEsMywiaCIsMl1d
+\[\begin{tikzcd}
+	A && B && C \\
+	\\
+	&&&& T
+	\arrow["f", shift left=2, from=1-1, to=1-3]
+	\arrow["g"', shift right=2, from=1-1, to=1-3]
+	\arrow["inc"', from=1-3, to=1-5]
+	\arrow["{!}"{description}, dashed, from=1-5, to=3-5]
+	\arrow["h"', from=1-3, to=3-5]
+\end{tikzcd}\]
+
+The intuition behind the coequalizer, in a \textbf{Set} context, is that it inspects the functions $f$ and $g$, and any time these functions disagree on an input $a : A$, the two targets $b_1 : B$ and $b_2 : B$ get collapsed together by the arrow $inc$. This is done for all inputs. So, for example, if the functions disagree on all inputs, the set $C$ becomes the singleton set, because $inc$ will have to collapse every disagreeing output, eventually collecting all of them.
+
+In \textbf{Poly}, the equalizer has two parts, as most constructions. For two given lenses $f : p \rightarrow q$ and $g : p \rightarrow q$, the equalizer is a polynomial that:
+\begin{itemize}
+    \item Has the equalizer set of the map on positions of these lenses. This easily expressible with $\Sigma$-types:
+    \begin{minted}{agda}
+EqualizedPosition : Set
+EqualizedPosition = Σ (position p)
+                      (λ z → mapPosition f z ≡ mapPosition g z)
+    \end{minted}
+    \item Has the \textit{co}equalizer set of the map on directions of these lenses \textit{at their equalized positions}. Normally, the partially applied functions \texttt{mapDirection f posp} and \texttt{mapDirection g posp} would have different types, since the second argument (a direction in q) depends on on the values of \texttt{mapPosition f posp} and \texttt{mapPosition g posp}. But in this case, we know these values to be the same, since the map on positions is the equalizer map, so the partially applied maps on directions have the same type, which means they can be coequalized. Cubical has a construction for this, \texttt{SetCoequalizer}.
+\end{itemize}
+
+Before we can introduce the equalizer polynomial and lens, we must address an issue: in the Cubical setting, SetCoequalizers can only be constructed out of functions that target types that are sets in the HoTT sense, so types of truncation level 0. In our case, this means that the directions of our polynomials must be sets, which is not a guarantee we have in the \textbf{Poly} category we've been working with; we only guarantee that these polynomials' targeted sets have \textit{universe} level 0. To get around this, we work in a category that is identical to \textbf{Poly}, except the directions of the polynomials are guaranteed to be sets. This is the category \textbf{SetPoly}, where the objects are:
+
+\begin{minted}{agda}
+record SetPolynomial : Set₁ where
+    constructor mksetpoly
+    field
+        poly : Polynomial
+        isDirSet : ∀ {p : position poly} → isSet (direction poly p)
+\end{minted}
+and the morphisms are lenses as usual, just wrapped in a new type constructor:
+\begin{minted}{agda}
+record SetLens (from to : SetPolynomial) : Set where
+    constructor ⇆ˢ
+    field
+        lens : Lens (poly from) (poly to)
+\end{minted}
+
+With that, we can introduce the equalizer polynomial, which is then given by:
+\begin{minted}{agda}
+eqPoly : Polynomial
+eqPoly = mkpoly EqualizedPosition $ 
+        λ ( posp , equal ) → 
+            SetCoequalizer (mdf posp) 
+                           (λ x → mdg posp 
+                                      (subst (direction q) equal x))
+\end{minted}
+and the equalizer lens is:
+\begin{minted}{agda}
+mpe : position (eqObj) → position p
+mpe = fst
+mde : (fromPos : position (poly eqObj)) → 
+      direction p (mpe fromPos) → 
+      direction (poly eqObj) fromPos
+mde _ dir = inc dir
+eqLens : SetLens eqObj pˢ
+eqLens = ⇆ˢ (mpe ⇆ mde)
+\end{minted}
+
+Proving that this is in fact the equalizer of the \textbf{SetPoly} category is quite involved, so we will omit it from the text. It is of course included in the code. The idea behind the proof, however, is simple: since an equalizing lens of two lenses $f,g : p \rightarrow q$ must make sure following it with either $f$ or $g$ is equal, then the maps comprising $f$ and $g$ must be guaranteed to land in the same results after it. That is, the map on positions must be equalized on the inputs, and the map on directions must be equalized on the outputs. Equalizing two functions on outputs is, loosely speaking, what a coequalizer map does: it identifies potentially differing outputs of two functions.
+
+\section{Coequalizer}
+\todo{move coequalizer to future work. It's going to be really hard}
+
+
+\section{Various properties of polynomials}
+
+We went over the intuition for polynomial functors as algebraic polynomials the beginning of this chapter, and many of these properties have been formalized. For example, here's a proof that the sum of two constant polynomials is still constant, exercise 4.1 in the poly-book:
+
+\begin{minted}{agda}
+isConstant : Polynomial → Type₁
+isConstant (mkpoly pos dir) = (p : pos) → dir p ≡ ⊥
+
+constantClosedUnderPlus : {p q : Polynomial} → 
+    isConstant p → 
+    isConstant q → 
+    isConstant (p + q)
+constantClosedUnderPlus isConstantP isConstantQ (inj₁ x) = isConstantP x
+constantClosedUnderPlus isConstantP isConstantQ (inj₂ y) = isConstantQ y
+\end{minted}
+
+Other proofs of this kind are provided in the files \texttt{Cubical/Proofs.agda} and 
+\texttt{Cubical/Various.agda}. Here's a list of them:
+\begin{itemize}
+    \item The coproduct is the generalized coproduct indexed by \underline{2}.
+    \item The product is the generalized product indexed by \underline{2}.
+    \item A sum of two linear polynomials is still linear.
+    \item A multiplication of two monomials is still a monomial.
+    \item A lens to $y$ is the same thing as a function from positions to directions. The idea is that the map on positions has no choice (a single position), and the map on directions is then a choice of position in the source polynomial.
+    \item Given $p(y) = y^2 + y$, $p(\underline{2}) = \underline{6}$.
+    \item $p(1)$ is equal to the set of positions of $p$.
+    \item Given two constant polynomials $p(y) = \underline{3}$ and $q(y) = \underline{2}$, $p^q(y) = \underline{9}$.
+\end{itemize}

@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{\PYGZus{}⦅\PYGZus{}⦆}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{k+kt}{Set}
+\PYGZus{}⦅\PYGZus{}⦆\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }position\PYG{+w}{ }direction\PYG{o}{)}\PYG{+w}{ }Y\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Σ\PYG{+w}{ }position\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }x\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}direction\PYG{+w}{ }x\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Y\PYG{o}{)}
+\PYG{k+kr}{infixl}\PYG{+w}{ }\PYG{l+m+mi}{30}\PYG{+w}{ }\PYGZus{}⦅\PYGZus{}⦆
+
+\PYG{n+nf}{applyFn}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }B\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}A\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }B\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }p\PYG{+w}{ }⦅\PYG{+w}{ }A\PYG{+w}{ }⦆\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }p\PYG{+w}{ }⦅\PYG{+w}{ }B\PYG{+w}{ }⦆
+applyFn\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }position\PYG{+w}{ }direction\PYG{o}{)}\PYG{+w}{ }f\PYG{+w}{ }\PYG{o}{(}fst\PYG{+w}{ },\PYG{+w}{ }snd\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }fst\PYG{+w}{ },\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }x\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }f\PYG{+w}{ }\PYG{o}{(}snd\PYG{+w}{ }x\PYG{o}{)}
+\end{Verbatim}

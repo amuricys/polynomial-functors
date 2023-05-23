@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{record}\PYG{+w}{ }SetPolynomial\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set₁}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{k+kr}{constructor}\PYG{+w}{ }mksetpoly
+\PYG{+w}{    }\PYG{k+kr}{field}
+\PYG{+w}{        }\PYG{n+nf}{poly}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial
+\PYG{+w}{        }\PYG{n+nf}{isDirSet}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o+ow}{∀}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }poly\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }isSet\PYG{+w}{ }\PYG{o}{(}direction\PYG{+w}{ }poly\PYG{+w}{ }p\PYG{o}{)}
+\end{Verbatim}

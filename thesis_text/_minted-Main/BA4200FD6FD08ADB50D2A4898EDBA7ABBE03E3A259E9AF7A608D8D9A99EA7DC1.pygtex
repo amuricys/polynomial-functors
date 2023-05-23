@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{coproductIsΣPoly}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ΣPoly\PYG{+w}{ }\PYG{o}{(}Bool\PYG{+w}{ },\PYG{+w}{ }tupleToFunFromBool\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ },\PYG{+w}{ }q\PYG{o}{))}\PYG{+w}{ }≡\PYG{+w}{ }p\PYG{+w}{ }+\PYG{+w}{ }q
+coproductIsΣPoly\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o+ow}{...}
+\end{Verbatim}

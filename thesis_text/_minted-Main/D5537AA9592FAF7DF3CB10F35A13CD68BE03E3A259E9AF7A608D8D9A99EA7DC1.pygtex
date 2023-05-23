@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{idLens}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }A\PYG{+w}{ }A
+idLens\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }id\PYG{+w}{ }⇆\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }id
+\end{Verbatim}

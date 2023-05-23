@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{absurdUnique}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Type\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }⊥\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }A\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }f\PYG{+w}{ }≡\PYG{+w}{ }absurd
+absurdUnique\PYG{+w}{ }f\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }funExt\PYG{+w}{ }lemma
+\PYG{+w}{    }\PYG{k+kr}{where}
+\PYG{+w}{        }\PYG{n+nf}{lemma}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}x\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }⊥\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }f\PYG{+w}{ }x\PYG{+w}{ }≡\PYG{+w}{ }absurd\PYG{+w}{ }x
+\PYG{+w}{        }lemma\PYG{+w}{ }\PYG{o}{()}
+\end{Verbatim}

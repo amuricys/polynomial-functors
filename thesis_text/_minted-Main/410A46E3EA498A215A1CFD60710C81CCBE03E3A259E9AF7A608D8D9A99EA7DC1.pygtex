@@ -1,0 +1,16 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} TERMINATING \PYGZsh{}\PYGZhy{}\PYGZcb{}}
+\PYG{n+nf}{run}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}d\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }DynamicalSystem\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{      }enclose\PYG{+w}{ }\PYG{o}{(}DynamicalSystem.interface\PYG{+w}{ }d\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{      }DynamicalSystem.state\PYG{+w}{ }d\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{      }Stream\PYG{+w}{ }\PYG{o}{(}Polynomial.position\PYG{+w}{ }\PYG{o}{(}DynamicalSystem.interface\PYG{+w}{ }d\PYG{o}{))}\PYG{+w}{ }\PYGZus{}
+run\PYG{+w}{ }d\PYG{+w}{ }e\PYG{+w}{ }initialState\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{  }[\PYG{+w}{ }output\PYG{+w}{ }]\PYG{+w}{ }++\PYG{+w}{ }\PYG{o}{(}run\PYG{+w}{ }d\PYG{+w}{ }e\PYG{+w}{ }next\PYG{o}{)}
+\PYG{+w}{    }\PYG{k+kr}{where}
+\PYG{+w}{        }\PYG{n+nf}{output}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial.position\PYG{+w}{ }\PYG{o}{(}DynamicalSystem.interface\PYG{+w}{ }d\PYG{o}{)}
+\PYG{+w}{        }output\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Lens.mapPosition\PYG{+w}{ }\PYG{o}{(}DynamicalSystem.dynamics\PYG{+w}{ }d\PYG{o}{)}
+\PYG{+w}{                                  }initialState
+\PYG{+w}{        }\PYG{n+nf}{next}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }DynamicalSystem.state\PYG{+w}{ }d
+\PYG{+w}{        }next\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Lens.mapDirection\PYG{+w}{ }\PYG{o}{(}DynamicalSystem.dynamics\PYG{+w}{ }d\PYG{o}{)}
+\PYG{+w}{                                 }initialState
+\PYG{+w}{                                 }\PYG{o}{(}Lens.mapDirection\PYG{+w}{ }e\PYG{+w}{ }output\PYG{+w}{ }tt\PYG{o}{)}
+\end{Verbatim}

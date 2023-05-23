@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{project₁}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }r\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}f\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }r\PYG{+w}{ }p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}g\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }r\PYG{+w}{ }q\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{           }π₁\PYG{+w}{ }∘ₚ\PYG{+w}{ }⟨\PYG{+w}{ }f\PYG{+w}{ },\PYG{+w}{ }g\PYG{+w}{ }⟩\PYG{+w}{ }≡\PYG{+w}{ }f
+project₁\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }refl
+
+\PYG{n+nf}{project₂}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }r\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}f\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }r\PYG{+w}{ }p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}g\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }r\PYG{+w}{ }q\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{           }π₂\PYG{+w}{ }∘ₚ\PYG{+w}{ }⟨\PYG{+w}{ }f\PYG{+w}{ },\PYG{+w}{ }g\PYG{+w}{ }⟩\PYG{+w}{ }≡\PYG{+w}{ }g
+project₂\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }refl
+
+\PYG{n+nf}{unique}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }r\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}h\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }\PYG{o}{(}q\PYG{+w}{ }*\PYG{+w}{ }r\PYG{o}{)\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}f\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }q\PYG{o}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{o}{\PYGZob{}}g\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }r\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}π₁\PYG{+w}{ }∘ₚ\PYG{+w}{ }h\PYG{o}{)}\PYG{+w}{ }≡\PYG{+w}{ }f\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{    }\PYG{o}{(}π₂\PYG{+w}{ }∘ₚ\PYG{+w}{ }h\PYG{o}{)}\PYG{+w}{ }≡\PYG{+w}{ }g\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{    }⟨\PYG{+w}{ }f\PYG{+w}{ },\PYG{+w}{ }g\PYG{+w}{ }⟩\PYG{+w}{ }≡\PYG{+w}{ }h
+unique\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o+ow}{...}
+\PYG{+w}{    }\PYG{k+kr}{where}
+\PYG{+w}{        }\PYG{n+nf}{lemma}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }⟨\PYG{+w}{ }π₁\PYG{+w}{ }∘ₚ\PYG{+w}{ }h\PYG{+w}{ },\PYG{+w}{ }π₂\PYG{+w}{ }∘ₚ\PYG{+w}{ }h\PYG{+w}{ }⟩\PYG{+w}{ }≡\PYG{+w}{ }h
+\PYG{+w}{        }lemma\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o+ow}{...}
+\end{Verbatim}

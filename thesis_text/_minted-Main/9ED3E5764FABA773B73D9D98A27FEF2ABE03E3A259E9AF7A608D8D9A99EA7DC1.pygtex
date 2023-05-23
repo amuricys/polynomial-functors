@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{encloseFunction}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}t\PYG{+w}{ }u\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}t\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }u\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}monomial\PYG{+w}{ }t\PYG{+w}{ }u\PYG{o}{)}\PYG{+w}{ }Y
+encloseFunction\PYG{+w}{ }f\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }tt\PYG{o}{)}\PYG{+w}{ }⇆\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }fromPos\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }f\PYG{+w}{ }fromPos\PYG{o}{)}
+
+\PYG{n+nf}{auto}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}m\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }enclose\PYG{+w}{ }\PYG{o}{(}emitter\PYG{+w}{ }m\PYG{o}{)}
+auto\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }encloseFunction\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }tt
+
+\PYG{n+nf}{constI}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}m\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}i\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }m\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }enclose\PYG{+w}{ }\PYG{o}{(}selfMonomial\PYG{+w}{ }m\PYG{o}{)}
+constI\PYG{+w}{ }i\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }encloseFunction\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }i
+\end{Verbatim}

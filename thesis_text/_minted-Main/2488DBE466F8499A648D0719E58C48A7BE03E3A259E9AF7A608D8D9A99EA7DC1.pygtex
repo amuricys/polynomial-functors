@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{⟨\PYGZus{},\PYGZus{}⟩}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }r\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }r\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }\PYG{o}{(}q\PYG{+w}{ }*\PYG{+w}{ }r\PYG{o}{)}
+⟨\PYG{+w}{ }f\PYG{+w}{ }⇆\PYG{+w}{ }f♯\PYG{+w}{ },\PYG{+w}{ }g\PYG{+w}{ }⇆\PYG{+w}{ }g♯\PYG{+w}{ }⟩\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYGZlt{}\PYG{+w}{ }f\PYG{+w}{ },\PYG{+w}{ }g\PYG{+w}{ }\PYGZgt{}\PYG{+w}{ }⇆\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }posP\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }[\PYG{+w}{ }f♯\PYG{+w}{ }posP\PYG{+w}{ },\PYG{+w}{ }g♯\PYG{+w}{ }posP\PYG{+w}{ }]
+\end{Verbatim}

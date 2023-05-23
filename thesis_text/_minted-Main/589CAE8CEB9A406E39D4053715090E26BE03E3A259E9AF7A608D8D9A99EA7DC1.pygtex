@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}(}sumOutput\PYG{+w}{ },\PYG{+w}{ }idOutput\PYG{o}{)}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{    }\PYG{o}{(}idOutput\PYG{+w}{ },\PYG{+w}{ }sumOutput\PYG{o}{)}\PYG{+w}{ },\PYG{+w}{ }sumOutput\PYG{+w}{ }\PYG{o}{\PYGZcb{})}
+\end{Verbatim}

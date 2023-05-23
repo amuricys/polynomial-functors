@@ -1,0 +1,62 @@
+% CREATED BY DAVID FRISK, 2016
+\chapter{Introduction}
+Category theory is an area of mathematics concerned with abstraction and mathematical structure. The category of polynomial functors, named \textbf{Poly}, has been studied for over two decades. \textbf{Poly}\footnote{\textbf{Poly} is also known as the category of containers.} is known for its relevance to computer science, as well as for its deep mathematical structure. In recent years, researchers in the field of applied category theory have found interpretations of \textbf{Poly} in dynamical systems theory. The purpose of this thesis is to contribute to the code ecosystem of \textbf{Poly} and its use in dynamical systems.
+
+
+%In complex systems theory, it is of interest to find a level of abstraction that brings out commonalities between different systems. Sometimes, unrelated systems might reveal themselves to have some deep structural similarity. However, arriving at a fundamental mathematical theory of complex systems is difficult. 
+
+%Category theory is an area of mathematics that is concerned with abstraction and finding common concepts between different branches of mathematics. The power of category theory has been used in type theory and programming language theory for many decades and is now finding its  applications in scientific fields.  
+
+
+%Recently, the book "Polynomial Functors: A Mathematical Theory of Interaction" was written, hereafter referred to as the poly-book. It However, laou.
+
+%The goal of this thesis is to contribute to this 
+%there is concern of finding the right level of abstraction, to seek commonalities between systems. 
+
+
+%Do funneling. Short and easy, last sentence should be purpose of report.
+
+\section{Polynomial functors and dynamical systems}
+Write more about the background / problemification.
+
+% The book
+Many aspects of the behavior and richness of \textbf{Poly} are collected in a newly written textbook, aoeu, hereafter called the poly-book. 
+
+However, the surrounding ecosystem of \textbf{Poly} is lacking. It is difficult to find straightforward formalization and programs that use \textbf{Poly} to their advantage. 
+% Ecosystem lacking.
+
+\section{Purpose}
+Give a more detailed description of the purpose of the thesis
+The intro is under reconstruction :) And the abstract will be reconstructed to be more of an abstract as well.
+
+
+% Formalization of Poly in Agda. Prove many theorems and categorical constructs of Poly, and the related category of charts. 
+% Many well known dynamical systems as examples.  
+% Will follow the poly book as blueprint.
+
+\section{Delimitations}
+
+Not everything from the poly-book will be proved. Guideline. The proof of theorems might differ, one reason being that 
+Can write about some delimations, some differentiation
+
+\section{Outline}
+The outline of the thesis is as follows; first, some of the background needed is explained in chapter \ref{chapter:background}. Then, the theoretical part of the thesis is given, formalizing the two categories of polynomial functors and their categorical constructs. The primary category, of lenses, is given in chapter \ref{chapter:lenses} and charts in chapter \ref{chapter:charts}. Chapter \ref{chapter:application} consists of the practice part of the thesis, how \textbf{Poly} is used for dynamical systems, together with several examples. After, in chapter \ref{chapter:discussion}, a discussion of the formalization is given, as well as future work. Finally, in chapter \ref{chapter:conclusion}, conclusions are drawn about how well the result of the thesis met the purpose.
+
+% Purpose: Formalize categoriy theory of Poly. Showing how dynamical systems can be implemented using poly.
+
+%In the field of complex systems theory, there is a concern of finding the right level of abstraction at which to seek commonalities between different systems. Sometimes, seemingly unrelated systems might reveal themselves to have some deep structural similarity, like critical transitions in ecosystems \cite{catastrophic}. However, arriving at a fundamental mathematical theory of complex systems is profoundly difficult. The immense expressive power of category theory has been a staple of type theory and programming language theory for many decades, and this robust mathematical language is now finding its footing in expressing ideas from wider scientific fields as well. It is a goal of this thesis to contribute to this movement.
+
+%Category theorists have been thinking about complex systems for some time \cite{complexcatsadjunction}, and advances in applied category theory have been inching closer to applications to fields commonly studied under the umbrella of complexity. Some examples are game theory \cite{compositional-gt}, probability \cite{markov-categories}, systems biology \cite{compositional-react-net} and dynamical systems \cite{operad-dynsys}. 
+
+%We see the poly-book another contribution to this landscape, as well as to category theory at large. It is a proper deep dive on \textbf{Poly}, and frequently oscillates between explaining the mathematical structure of the category and providing interpretations of it in real-world contexts. 
+%In particular, it turns out that a subset of arrows in \textbf{Poly} corresponds to mode-dependent open dynamical systems. The "open" part of this class of systems refers to the fact that they not only have an internal dynamics and state space, but can interact with their environment by accepting external inputs and providing external outputs. The "mode-dependent" part refers to the fact that this paradigm of interaction \textit{can change} depending on the internal state of the system, meaning they can, throughout time, accept inputs and provide outputs to different environments.
+%This is a remarkably general form of system that is fully embedded in the categorical context, which means questions like "what does it mean to take the product of two systems?" often have a concrete and intuitive meaning for the dynamics of the resulting system.
+
+%Like the book, this thesis is perhaps unusual in the sense that, as the title suggests, it is equally concerned with the extremely abstract side of thinking about \textbf{Poly} (the \textit{Theory} part of the subtitle), as well as with the extremely concrete and mundane side of it (the \textit{Applications} part). 
+%In this sense, we straddle a line between two extremes. This divide is exhibited clearly in the style of code that pertains to each part, and by the style of reasoning required to understand and appreciate each one. One might find oneself mentally "juggling" very different cognitive contexts if the change between the two subjects happens too frequently, and so we prefer to make this split explicit upfront, to the extent that we can, and reflect it in the structure of the writing itself by having two parts. This also has the benefit of being a more faithful representation of how the work was actually done: many evenings were spent struggling with only attempting to formalize categorical concepts, and many others with struggling to tune dynamical systems parameters to get the right behavior and plots. Of course, when theory is directly relevant to our example applications, we pay it due mention, but that is more the exception than the rule.
+
+%This divide is not meant to be taken too literally: some of our applications are to fields that have their own rich theories to which lifetimes of study could be dedicated, like neuromorphic computing and reservoir computers, and some of the applications "loop back" into the theory of \textbf{Poly} itself, it is merely meant as a reflection of the two general fronts in which we're using and thinking about \textbf{Poly}.
+
+%Another aspect of the work is that \textbf{Poly} is not the only category with polynomial functors as objects. There is also the category of so-called \textit{charts} on polynomials, a different kind of morphism. It turns out that these two kinds of morphisms gives rise to an even richer, double category. We do some work on charts and their associated formalisms, and recover some direct applications of these formalisms, mostly based on David Jaz Myers' work. The main focus of the thesis, however, is the category \textbf{Poly}.
+
+

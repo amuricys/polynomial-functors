@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{record}\PYG{+w}{ }DynamicalSystem\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set₁}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{k+kr}{constructor}\PYG{+w}{ }mkdyn
+\PYG{+w}{    }\PYG{k+kr}{field}
+\PYG{+w}{        }\PYG{n+nf}{state}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} S}
+\PYG{+w}{        }\PYG{n+nf}{interface}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} p}
+\PYG{+w}{        }\PYG{n+nf}{dynamics}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}selfMonomial\PYG{+w}{ }state\PYG{o}{)}\PYG{+w}{ }interface\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Sy\PYGZca{}S → p}
+\end{Verbatim}

@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{preHHWithInput}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+preHHWithInput\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }hodgkinHuxley\PYG{+w}{ }dt\PYG{+w}{ }\PYGZam{}\PYGZam{}\PYGZam{}
+\PYG{+w}{                    }functionToDynamicalSystem\PYG{+w}{ }ℝ\PYG{+w}{ }ℝ
+\PYG{+w}{                                              }\PYG{o+ow}{λ}\PYG{+w}{ }x\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }x\PYG{+w}{ }+\PYG{+w}{ }\PYG{o}{(}dt\PYG{+w}{ }*\PYG{+w}{ }\PYG{l+m+mf}{0.02}\PYG{o}{)}
+\end{Verbatim}

@@ -1,0 +1,33 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Dynamical/Plot/src/HsPlot.hs}
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} LANGUAGE BlockArguments \PYGZsh{}\PYGZhy{}\PYGZcb{}}
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} LANGUAGE ImportQualifiedPost \PYGZsh{}\PYGZhy{}\PYGZcb{}}
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} LANGUAGE OverloadedStrings \PYGZsh{}\PYGZhy{}\PYGZcb{}}
+
+\PYG{k+kr}{module}\PYG{+w}{ }\PYG{n+nn}{HsPlot}\PYG{+w}{ }\PYG{k+kr}{where}
+
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Graphics.Rendering.Chart.Easy}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Graphics.Rendering.Chart.Backend.Cairo}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Control.Monad}\PYG{+w}{ }\PYG{p}{(}\PYG{n+nf}{forM\PYGZus{}}\PYG{p}{)}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Data.Text}\PYG{+w}{ }\PYG{n}{qualified}\PYG{+w}{ }\PYG{n}{as}\PYG{+w}{ }\PYG{k+kt}{T}
+
+\PYG{n+nf}{plotToFile}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{              }\PYG{k+kt}{T}\PYG{o}{.}\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{              }\PYG{k+kt}{T}\PYG{o}{.}\PYG{k+kt}{Text}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{              }\PYG{k+kt}{Double}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{              }\PYG{p}{[(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{k+kt}{Text}\PYG{p}{,}\PYG{+w}{ }\PYG{p}{[}\PYG{k+kt}{Double}\PYG{p}{])]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{              }\PYG{k+kt}{IO}\PYG{+w}{ }\PYG{n+nb}{()}
+\PYG{n+nf}{plotToFile}\PYG{+w}{ }\PYG{n}{xaxisTitle}\PYG{+w}{ }\PYG{n}{yaxisTitle}\PYG{+w}{ }\PYG{n}{title}\PYG{+w}{ }\PYG{n}{dt}\PYG{+w}{ }\PYG{n}{lines}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{n}{toFile}\PYG{+w}{ }\PYG{n}{def}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{unpack}\PYG{+w}{ }\PYG{o}{.}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{replace}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{} \PYGZdq{}}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}\PYGZus{}\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{toLower}\PYG{+w}{ }\PYG{n}{title}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}.png\PYGZdq{}}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}
+\PYG{+w}{    }\PYG{k+kr}{do}
+\PYG{+w}{        }\PYG{n}{layout\PYGZus{}title}\PYG{+w}{ }\PYG{o}{.=}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{unpack}\PYG{+w}{ }\PYG{n}{title}
+\PYG{+w}{        }\PYG{n}{layout\PYGZus{}x\PYGZus{}axis}\PYG{+w}{ }\PYG{o}{.}\PYG{+w}{ }\PYG{n}{laxis\PYGZus{}title}\PYG{+w}{ }\PYG{o}{.=}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{unpack}\PYG{+w}{ }\PYG{n}{xaxisTitle}
+\PYG{+w}{        }\PYG{n}{layout\PYGZus{}y\PYGZus{}axis}\PYG{+w}{ }\PYG{o}{.}\PYG{+w}{ }\PYG{n}{laxis\PYGZus{}title}\PYG{+w}{ }\PYG{o}{.=}\PYG{+w}{ }\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{unpack}\PYG{+w}{ }\PYG{n}{yaxisTitle}
+\PYG{+w}{        }\PYG{n}{setColors}\PYG{+w}{ }\PYG{o}{.}\PYG{+w}{ }\PYG{n}{fmap}\PYG{+w}{ }\PYG{n}{opaque}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}
+\PYG{+w}{            }\PYG{p}{[}\PYG{n}{purple}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{sienna}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{plum}\PYG{p}{,}
+\PYG{+w}{             }\PYG{n}{powderblue}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{salmon}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{sandybrown}\PYG{p}{,}
+\PYG{+w}{             }\PYG{n}{cornflowerblue}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{blanchedalmond}\PYG{p}{,}
+\PYG{+w}{             }\PYG{n}{firebrick}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{gainsboro}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{honeydew}\PYG{p}{]}
+\PYG{+w}{    }\PYG{n}{forM\PYGZus{}}\PYG{+w}{ }\PYG{n}{lines}\PYG{+w}{ }\PYG{n+nf}{\PYGZbs{}}\PYG{p}{(}\PYG{n}{name}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{l}\PYG{p}{)}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}
+\PYG{+w}{        }\PYG{n}{plot}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{line}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{T}\PYG{o}{.}\PYG{n}{unpack}\PYG{+w}{ }\PYG{n}{name}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{[}\PYG{n}{zip}\PYG{+w}{ }\PYG{p}{[}\PYG{l+m+mi}{0}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{dt}\PYG{o}{..}\PYG{p}{]}\PYG{+w}{ }\PYG{n}{l}\PYG{+w}{ }\PYG{p}{])}
+\end{Verbatim}

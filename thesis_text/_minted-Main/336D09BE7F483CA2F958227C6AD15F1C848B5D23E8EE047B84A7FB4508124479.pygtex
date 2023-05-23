@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kr}{open}\PYG{+w}{ }\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n}{Categories.Object.Initial}\PYG{+w}{ }Poly
+
+\PYG{n+nf}{zeroIsInitial}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }IsInitial\PYG{+w}{ }\PYG{esc}{$\mathbb{0}$}
+zeroIsInitial\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }!\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }lensFromZero\PYG{+w}{ };\PYG{+w}{ }!\PYGZhy{}unique\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }lensFromZeroUnique\PYG{+w}{ }\PYG{o}{\PYGZcb{}}
+
+\PYG{n+nf}{initialZero}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Initial
+initialZero\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }⊥\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{esc}{$\mathbb{0}$}\PYG{+w}{ };\PYG{+w}{ }⊥\PYGZhy{}is\PYGZhy{}initial\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }zeroIsInitial\PYG{+w}{ }\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

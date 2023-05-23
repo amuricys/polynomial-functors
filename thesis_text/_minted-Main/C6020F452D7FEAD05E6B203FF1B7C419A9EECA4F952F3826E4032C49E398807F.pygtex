@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{exampleLens}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Lens}\PYG{+w}{ }\PYG{k+kt}{P}\PYG{+w}{ }\PYG{k+kt}{Q}
+\PYG{n+nf}{exampleLens}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n+nf}{\PYGZbs{}}\PYG{k+kr}{case}
+\PYG{+w}{  }\PYG{k+kt}{Fst}\PYG{+w}{ }\PYG{n}{y1}\PYG{+w}{ }\PYG{n}{y2}\PYG{+w}{ }\PYG{n}{y3}\PYG{+w}{ }\PYG{n}{y4}\PYG{+w}{ }\PYG{n}{y5}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{A}\PYG{+w}{ }\PYG{n}{y1}\PYG{+w}{ }\PYG{n}{y2}\PYG{+w}{ }\PYG{n}{y3}
+\PYG{+w}{  }\PYG{k+kt}{Snd}\PYG{+w}{ }\PYG{n}{y1}\PYG{+w}{ }\PYG{n}{y2}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{A}\PYG{+w}{ }\PYG{n}{y1}\PYG{+w}{ }\PYG{n}{y1}\PYG{+w}{ }\PYG{n}{y2}
+\PYG{+w}{  }\PYG{k+kt}{Trd}\PYG{+w}{ }\PYG{n}{y1}\PYG{+w}{ }\PYG{n}{y2}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{C}\PYG{+w}{ }\PYG{n}{y2}
+\PYG{+w}{  }\PYG{k+kt}{Frth}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{E}
+\end{Verbatim}
