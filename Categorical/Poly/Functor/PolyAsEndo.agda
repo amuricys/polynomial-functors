@@ -85,5 +85,14 @@ asNatTransArr (f ⇆ f♯) = record {
     sym-commute = λ f₁ → Eq.refl 
     }
 
+open import CategoryData.Chart
+
+asNatTransChart : {p q : Polynomial} → Chart p q → NaturalTransformation (asEndo p) (asEndo q)
+asNatTransChart (f ⇉ f♯) = record { 
+    η = λ { X (posP , dirP) → (f posP) , (λ x → dirP {!   !}) } ; 
+    commute = λ f₁ → {!   !} ; 
+    sym-commute = λ f₁ → {!   !} 
+    }
+
 monomialsAreRepresentables : {A B : Set} → Representable {C = (Sets zero)} {!   !}
 monomialsAreRepresentables = {!   !} 

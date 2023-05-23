@@ -13,11 +13,15 @@ import OptparseHs
 #-}
 
 data SystemParams : Set where
-  ReservoirParams : (rdim : ℕ) → (trainSteps touchSteps outputLength : ℕ) → (lorinitx lorinity lorinitz dt variance : Float) → SystemParams
+  ReservoirParams : (rdim : ℕ) → 
+                    (trainSteps touchSteps outputLength : ℕ) → 
+                    (lorinitx lorinity lorinitz dt variance : Float) → 
+                    SystemParams
   LorenzParams    : (lorinitx lorinity lorinitz dt : Float) → SystemParams
   HodgkinHuxleyParams : (dt : Float) → SystemParams
   LotkaVolterraParams : (α β δ γ r0 f0 dt : Float) → SystemParams
-{-# COMPILE GHC SystemParams = data SystemParams (ReservoirParams | LorenzParams | HodgkinHuxleyParams | LotkaVolterraParams) #-}
+{-# COMPILE GHC SystemParams = data SystemParams
+   (ReservoirParams | LorenzParams | HodgkinHuxleyParams | LotkaVolterraParams) #-}
 
 record Options : Set where
   constructor mkopt

@@ -1,0 +1,52 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{o}{//} agda\PYG{o}{.}nix
+  \PYG{p}{\PYGZob{}} pkgs \PYG{o}{?} \PYG{n+nb}{import} \PYG{l}{\PYGZlt{}nixpkgs\PYGZgt{}} \PYG{p}{\PYGZob{}} \PYG{p}{\PYGZcb{}} \PYG{p}{\PYGZcb{}:}
+
+  \PYG{k}{let}
+    \PYG{l+s+ss}{agdaDepsNames =} \PYG{p}{[} \PYG{l+s+s2}{\PYGZdq{}standard\PYGZhy{}library\PYGZdq{}} \PYG{l+s+s2}{\PYGZdq{}agda\PYGZhy{}categories\PYGZdq{}} \PYG{l+s+s2}{\PYGZdq{}cubical\PYGZdq{}} \PYG{p}{];}
+    \PYG{l+s+ss}{agdaDeps =} \PYG{n+nb}{builtins}\PYG{o}{.}\PYG{n+nb}{map} \PYG{p}{(}n\PYG{p}{:}
+      \PYG{k}{if} \PYG{l+s+ss}{n =}\PYG{o}{=} \PYG{l+s+s2}{\PYGZdq{}cubical\PYGZdq{}} \PYG{k}{then}
+        pkgs\PYG{o}{.}agdaPackages\PYG{o}{.}\PYG{err}{\PYGZdl{}}\PYG{p}{\PYGZob{}}n\PYG{p}{\PYGZcb{}}\PYG{o}{.}overrideAttrs \PYG{p}{(}old\PYG{p}{:} \PYG{p}{\PYGZob{}}
+          \PYG{l+s+ss}{version =} \PYG{l+s+s2}{\PYGZdq{}0.4\PYGZdq{}}\PYG{p}{;}
+          \PYG{l+s+ss}{src =} pkgs\PYG{o}{.}fetchFromGitHub \PYG{p}{\PYGZob{}}
+            \PYG{l+s+ss}{repo =} \PYG{l+s+s2}{\PYGZdq{}cubical\PYGZdq{}}\PYG{p}{;}
+            \PYG{l+s+ss}{owner =} \PYG{l+s+s2}{\PYGZdq{}agda\PYGZdq{}}\PYG{p}{;}
+            \PYG{l+s+ss}{rev =} \PYG{l+s+s2}{\PYGZdq{}v0.4\PYGZdq{}}\PYG{p}{;}
+            \PYG{l+s+ss}{sha256 =} \PYG{l+s+s2}{\PYGZdq{}0ca7s8vp8q4a04z5f9v1nx7k43kqxypvdynxcpspjrjpwvkg6wbf\PYGZdq{}}\PYG{p}{;}
+          \PYG{p}{\PYGZcb{};}
+        \PYG{p}{\PYGZcb{})}
+      \PYG{k}{else}
+        pkgs\PYG{o}{.}agdaPackages\PYG{o}{.}\PYG{err}{\PYGZdl{}}\PYG{p}{\PYGZob{}}n\PYG{p}{\PYGZcb{})} agdaDepsNames\PYG{p}{;}
+    \PYG{l+s+ss}{getCabalStuff =} name\PYG{p}{:} path\PYG{p}{:}
+      \PYG{p}{(}\PYG{n+nb}{builtins}\PYG{o}{.}filter \PYG{p}{(}d\PYG{p}{:} \PYG{o}{!}\PYG{p}{(}\PYG{n+nb}{isNull} d\PYG{p}{))}
+        \PYG{p}{(}pkgs\PYG{o}{.}haskellPackages\PYG{o}{.}callCabal2nix name path \PYG{p}{\PYGZob{}} \PYG{p}{\PYGZcb{})}\PYG{o}{.}propagatedBuildInputs\PYG{p}{);}
+    \PYG{l+s+ss}{haskellDeps =} \PYG{p}{(}getCabalStuff \PYG{l+s+s2}{\PYGZdq{}HsPlot\PYGZdq{}} \PYG{o}{.}\PYG{l}{/Dynamical/Plot/HsPlot.cabal}\PYG{p}{);}
+    \PYG{l+s+ss}{customGhc =} pkgs\PYG{o}{.}haskellPackages\PYG{o}{.}ghcWithPackages \PYG{p}{(}ps\PYG{p}{:} haskellDeps\PYG{p}{);}
+    \PYG{l+s+ss}{nativeBuildInputs =} \PYG{k}{with} pkgs\PYG{p}{;} \PYG{p}{[}
+      customGhc
+      \PYG{p}{(}agda\PYG{o}{.}withPackages \PYG{p}{(}p\PYG{p}{:} agdaDeps\PYG{p}{))}
+    \PYG{p}{];}
+    \PYG{l+s+ss}{commonConfigurePhase =} \PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}
+\PYG{l+s+s1}{      export AGDA\PYGZus{}DIR=\PYGZdl{}PWD/.agda}
+\PYG{l+s+s1}{      mkdir \PYGZhy{}p \PYGZdl{}AGDA\PYGZus{}DIR}
+
+\PYG{l+s+s1}{      for dep in }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}pkgs\PYG{o}{.}lib\PYG{o}{.}concatStringsSep \PYG{l+s+s2}{\PYGZdq{} \PYGZdq{}} agdaDepsNames\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{; do}
+\PYG{l+s+s1}{        echo \PYGZdl{}dep \PYGZgt{}\PYGZgt{} \PYGZdl{}AGDA\PYGZus{}DIR/defaults}
+\PYG{l+s+s1}{      done}
+\PYG{l+s+s1}{    \PYGZsq{}\PYGZsq{}}\PYG{p}{;}
+    \PYG{l+s+ss}{buildCommand =} haskellSourcePaths\PYG{p}{:} \PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}
+\PYG{l+s+s1}{      agda \PYGZhy{}c \PYGZbs{}}
+\PYG{l+s+s1}{        }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}
+          pkgs\PYG{o}{.}lib\PYG{o}{.}concatMapStrings \PYG{p}{(}path\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}\PYGZhy{}\PYGZhy{}ghc\PYGZhy{}flag=\PYGZhy{}i}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}path\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{ \PYGZdq{}}\PYG{p}{)}
+          haskellSourcePaths
+        \PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{ \PYGZbs{}}
+\PYG{l+s+s1}{        }\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}
+          pkgs\PYG{o}{.}lib\PYG{o}{.}concatMapStrings \PYG{p}{(}dep\PYG{p}{:} \PYG{l+s+s2}{\PYGZdq{}\PYGZhy{}\PYGZhy{}ghc\PYGZhy{}flag=\PYGZhy{}package=}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}dep\PYG{o}{.}name\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s2}{ \PYGZdq{}}\PYG{p}{)}
+          haskellDeps
+        \PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{ \PYGZbs{}}
+\PYG{l+s+s1}{        \PYGZhy{}\PYGZhy{}ghc\PYGZhy{}flag=\PYGZhy{}package\PYGZhy{}db=}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}customGhc\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{/lib/ghc\PYGZhy{}}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}customGhc\PYG{o}{.}version\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{/ \PYGZbs{}\PYGZbs{}}
+\PYG{l+s+s1}{          package.conf.d \PYGZbs{}}
+\PYG{l+s+s1}{        Dynamical/Plot/Plot.agda}
+\PYG{l+s+s1}{    \PYGZsq{}\PYGZsq{}}\PYG{p}{;}
+  \PYG{k}{in} \PYG{p}{\PYGZob{}} \PYG{k}{inherit} commonConfigurePhase nativeBuildInputs buildCommand\PYG{p}{;} \PYG{p}{\PYGZcb{}}
+\end{Verbatim}

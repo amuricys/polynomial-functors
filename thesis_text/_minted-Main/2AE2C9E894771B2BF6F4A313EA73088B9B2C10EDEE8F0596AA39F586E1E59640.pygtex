@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{o}{//} shell\PYG{o}{.}nix
+\PYG{p}{\PYGZob{}} pkgs \PYG{o}{?} \PYG{n+nb}{import} \PYG{l}{\PYGZlt{}nixpkgs\PYGZgt{}} \PYG{p}{\PYGZob{}\PYGZcb{}} \PYG{p}{\PYGZcb{}:}
+
+\PYG{k}{let}
+  \PYG{l+s+ss}{agda =} \PYG{n+nb}{import} \PYG{o}{.}\PYG{l}{/agda.nix} \PYG{p}{\PYGZob{}} \PYG{k}{inherit} pkgs\PYG{p}{;} \PYG{p}{\PYGZcb{};}
+\PYG{k}{in} pkgs\PYG{o}{.}mkShell \PYG{p}{\PYGZob{}}
+  \PYG{l+s+ss}{nativeBuildInputs =} agda\PYG{o}{.}nativeBuildInputs\PYG{p}{;}
+  \PYG{l+s+ss}{configurePhase =} agda\PYG{o}{.}commonConfigurePhase\PYG{p}{;}
+  \PYG{l+s+ss}{shellHook =} \PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}
+\PYG{l+s+s1}{    export build=\PYGZdq{}}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}agda\PYG{o}{.}buildCommand
+      \PYG{p}{[} \PYG{l+s+s2}{\PYGZdq{}Dynamical/Plot/src\PYGZdq{}} \PYG{l+s+s2}{\PYGZdq{}Dynamical/Matrix/src\PYGZdq{}} \PYG{p}{]}\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{\PYGZdq{}}
+\PYG{l+s+s1}{  \PYGZsq{}\PYGZsq{}}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}
