@@ -2,10 +2,10 @@
 \chapter{Appendix 1: Haskell supporting code}
 \label{app:haskell}
 
-We use the Agda FFI to interact with Haskell and its ecosystem for three main purposes: fast matrix inversion, plotting graphs, and a convenient command-line interface for running the continuous dynamical systems and plotting them. The way we plug the Haskell code and its ecosystem with the Agda code is by using the Nix package manager\cite{nix} and its tools.
+The Agda FFI is used to interact with Haskell and its ecosystem for three main purposes: fast matrix inversion, plotting graphs, and a convenient command-line interface for running and plotting the continuous dynamical systems. The Nix package manager \cite{nix} is used to plug the Haskell code and its ecosystem with the Agda code.
 
 \section{Matrix inversion}
-In the reservoir example \ref{sec:reservoir}, many matrix operations are used. Many of these are implemented directly in Agda - see the \texttt{Dynamical/Reservoir/Matrix} folder - using facilities from the standard library's \texttt{Data.Vec} type, but inverting a matrix is an operation that requires a sophisticated algorithm that is quite performance-intensive. For this, we decided to rely on an existing implementation in the Haskell ecosystem, using the HMatrix \cite{hmatrix} library. This is done by declaring a postulate and using the \texttt{FOREIGN} pragma in the Agda module, and accessing the Haskell module by importing it in the generated Haskell code:
+In the reservoir example \ref{sec:reservoir}, many matrix operations are used. Many of these operations are implemented directly in Agda - see the \texttt{Dynamical/Reservoir/Matrix} folder - using facilities from the standard library's \texttt{Data.Vec} type. However, inverting a matrix is an expensive operation that requires an algorithm that is quite performance-intensive. For this reason, an existing implementation in the Haskell ecosystem from the HMatrix \cite{hmatrix} library is used. This is done by declaring a postulate and using the \texttt{FOREIGN} pragma in the Agda module, and accessing the Haskell module by importing it in the generated Haskell code:
 \begin{minted}{agda}
 ...
 {-# FOREIGN GHC
@@ -17,7 +17,7 @@ postulate
 {-# COMPILE GHC invertMatrixAsListTrusted = invertMatrixAsList #-}
 ...
 \end{minted}
-The matrix is temporarily represented as a list of lists, where each list is a row, to simplify translating the matrix dimensions to the Agda level - this way, we only need to care about type conversions directly in Agda. The code in the Haskell module is simply this:
+The matrix is temporarily represented as a list of lists, where each list is a row, to simplify translating the matrix dimensions to the Agda level. In this way, only the type conversions directly in Agda have to be taken care of. The code in the Haskell module is simply this:
 \begin{minted}{haskell}
 ...
 import Numeric.LinearAlgebra qualified as HMat
@@ -26,7 +26,7 @@ invertMatrixAsList :: [[Double]] -> [[Double]]
 invertMatrixAsList = HMat.toLists . HMat.pinv . HMat.fromLists
 \end{minted}
 
-We then convert the matrix back to our Agda representation - a length-indexed vector of length-indexed vectors, by using the \texttt{trustMe} construct from the standard library to convince Agda that the matrix has the right dimensions.:
+The matrix is then converted back to the Agda representation - a length-indexed vector of length-indexed vectors, by using the \texttt{trustMe} construct from the standard library to convince Agda that the matrix has the right dimensions:
 
 \begin{minted}[escapeinside=||]{agda}
 ...
@@ -59,7 +59,7 @@ In this way, the \texttt{\_⁻¹} operation can be made to take in square matric
 
 \section{Graph plotting}
 
-The figures in the continuous systems are all generated via the Haskell library Chart \cite{chart}. This case is similar to the above, with the simplification that there is no need to use \texttt{trustMe}, instead the Agda postulate for the plotting function runs in IO. There is the small issue of implementing our own product type to guarantee the FFI that there is no dependent typing involved. The postulate code is as follows:
+The figures in the continuous systems are all generated via the Haskell library Chart \cite{chart}. This case is similar to the above, with the simplification that there is no need to use \texttt{trustMe}. Instead, the Agda postulate for the plotting function runs in IO. A minor issue is solved by implementing a custom product type to guarantee the FFI that no dependent typing is involved. The postulate code is as follows:
 \begin{minted}{agda}
 open import Data.Product as P hiding (_×_) renaming (_,_ to _,p_)
 record _×_ (A B : Set) : Set where
@@ -83,7 +83,7 @@ postulate
 {-# COMPILE GHC _×_ = data (,) ((,)) #-}
 \end{minted}
 
-The corresponding Haskell code is small enough that we include the entire module:
+The corresponding Haskell code is small enough that the entire module is included:
 
 \begin{minted}{haskell}
 -- Dynamical/Plot/src/HsPlot.hs
@@ -122,7 +122,7 @@ plotToFile xaxisTitle yaxisTitle title dt lines =
 The string arguments are given as \texttt{Data.Text.Text}, even though \texttt{Chart} handles \texttt{String}s, because that is what Agda's \texttt{Data.String.String} corresponds to; see \href{https://agda.readthedocs.io/en/v2.6.2.2/language/foreign-function-interface.html#built-in-types}{the table in the official documentation}.
 
 \section{Command-line interface}
-Finally, there is the issue being able to conveniently run a system of choice, with a given selection of parameters. This uses optparse-applicative \cite{optparse-applicative}, a well-established Haskell library. The FFI code looks much the same as above, but the main interest now is to convert between types that are pattern-matched on in the main Agda program. The Agda code, with the type containing the paramaters of the different systems is this
+Finally, there is the issue of conveniently running a system of choice, with a given selection of parameters. This is solved by using optparse-applicative \cite{optparse-applicative}, a well-established Haskell library. The FFI code looks similar to above, but the main interest is now to convert between types that are pattern-matched on in the main Agda program. The Agda code, with the type containing the paramaters of the different systems is as follows:
 \begin{minted}{agda}
 
 {-# FOREIGN GHC 
@@ -219,7 +219,7 @@ lorenzParamsParser = LorenzParams <$> -- ... params
 -- other systems with a similar type signature
 \end{minted}
 
-It is worth remarking here that Haskell and optparse-applicative allow for a concise expression of more type safety than a simple sum type, through the use of the language extensions for GADTs \cite{ghc-gadts} and DataKinds \cite{ghc-data-kinds}, by having the \texttt{SystemParams} type be parametrized by the kind of a separate type called \texttt{ParamType}:
+It is worth remarking that Haskell and optparse-applicative allow for a concise expression of more type safety than a simple sum type, through the use of the language extensions for GADTs \cite{ghc-gadts} and DataKinds \cite{ghc-data-kinds}, by having the \texttt{SystemParams} type be parametrized by the kind of a separate type called \texttt{ParamType}:
 
 \begin{minted}{agda}
 data ParamType
@@ -230,7 +230,7 @@ data ParamType
   deriving Show
 \end{minted}
 
-Which we can then be given as an argument to \texttt{SystemParams}:
+Which can then be given as an argument to \texttt{SystemParams}:
 \begin{minted}{haskell}
 data SystemParams (p :: ParamType) where
   ReservoirParams :: 
@@ -263,4 +263,4 @@ lorenzParamsParser = LorenzParams
     help "Time step")
 \end{minted}
 
-This is a preferable solution in the Haskell level, but converting the types given as arguments to a higher-kinded type in Agda to the DataKinds-produced types proved tricky, so we opted for the simpler solution of a pure sum type.
+This is a preferable solution in the Haskell level, but converting the types given as arguments to a higher-kinded type in Agda to the DataKinds-produced types proved tricky, so the simpler solution of a pure sum type is used.
