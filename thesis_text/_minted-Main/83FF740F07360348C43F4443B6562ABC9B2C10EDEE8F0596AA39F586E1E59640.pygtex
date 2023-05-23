@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+  \PYG{o}{//} default\PYG{o}{.}nix
+  \PYG{p}{\PYGZob{}} pkgs \PYG{o}{?} \PYG{n+nb}{import} \PYG{l}{\PYGZlt{}nixpkgs\PYGZgt{}} \PYG{p}{\PYGZob{}} \PYG{p}{\PYGZcb{}} \PYG{p}{\PYGZcb{}:}
+
+  \PYG{k}{let}
+    \PYG{l+s+ss}{agda =} \PYG{n+nb}{import} \PYG{o}{.}\PYG{l}{/agda.nix} \PYG{p}{\PYGZob{}} \PYG{k}{inherit} pkgs\PYG{p}{;} \PYG{p}{\PYGZcb{};}
+    \PYG{l+s+ss}{binName =} \PYG{l+s+s2}{\PYGZdq{}plot\PYGZdq{}}\PYG{p}{;}
+  \PYG{k}{in} pkgs\PYG{o}{.}stdenv\PYG{o}{.}mkDerivation \PYG{p}{\PYGZob{}}
+    \PYG{l+s+ss}{name =} binName\PYG{p}{;}
+    \PYG{l+s+ss}{src =} \PYG{o}{.}\PYG{l}{/.}\PYG{p}{;}
+    \PYG{l+s+ss}{nativeBuildInputs =} agda\PYG{o}{.}nativeBuildInputs\PYG{p}{;}
+    \PYG{l+s+ss}{configurePhase =} agda\PYG{o}{.}commonConfigurePhase\PYG{p}{;}
+    \PYG{l+s+ss}{buildPhase =} agda\PYG{o}{.}buildCommand
+      \PYG{p}{[} \PYG{l+s+s2}{\PYGZdq{}Dynamical/Plot/src\PYGZdq{}} \PYG{l+s+s2}{\PYGZdq{}Dynamical/Matrix/src\PYGZdq{}} \PYG{p}{]} \PYG{p}{;}
+    \PYG{l+s+ss}{installPhase =} \PYG{l+s+s1}{\PYGZsq{}\PYGZsq{}}
+\PYG{l+s+s1}{      mkdir \PYGZhy{}p \PYGZdl{}out/bin}
+\PYG{l+s+s1}{      cp \PYGZdl{}TMP/poly/}\PYG{l+s+si}{\PYGZdl{}\PYGZob{}}binName\PYG{l+s+si}{\PYGZcb{}}\PYG{l+s+s1}{ \PYGZdl{}out/bin}
+\PYG{l+s+s1}{    \PYGZsq{}\PYGZsq{}}\PYG{p}{;}
+  \PYG{p}{\PYGZcb{}}
+\end{Verbatim}

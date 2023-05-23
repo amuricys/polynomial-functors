@@ -100,3 +100,6 @@
 \contentsline {section}{\numberline {A.1}Matrix inversion}{I}{section.A.1}%
 \contentsline {section}{\numberline {A.2}Graph plotting}{II}{section.A.2}%
 \contentsline {section}{\numberline {A.3}Command-line interface}{IV}{section.A.3}%
+\contentsline {section}{\numberline {A.4}Building}{VII}{section.A.4}%
+\contentsline {subsection}{\numberline {A.4.1}Nix}{VII}{subsection.A.4.1}%
+\contentsline {subsection}{\numberline {A.4.2}Building Agda with Nix}{VII}{subsection.A.4.2}%
