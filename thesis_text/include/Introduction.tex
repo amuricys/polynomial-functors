@@ -1,6 +1,6 @@
 % CREATED BY DAVID FRISK, 2016
 \chapter{Introduction}
-Category theory is an area of mathematics concerned with abstraction and mathematical structure. The category of polynomial functors, named \textbf{Poly}, has been studied for over two decades. \textbf{Poly}\footnote{\textbf{Poly} is also known as the category of containers.} is known for its relevance to computer science, as well as for its deep mathematical structure. In recent years, researchers in the field of applied category theory have found interpretations of \textbf{Poly} in dynamical systems theory. The purpose of this thesis is to contribute to the code ecosystem of \textbf{Poly} and its use in dynamical systems.
+Category theory is an area of mathematics concerned with abstraction and mathematical structure. The category of polynomial functors, named \textbf{Poly}, has been studied for over two decades. \textbf{Poly}\footnote{\textbf{Poly} is also known as the category of containers.} is known for its relevance to computer science, as well as for its deep mathematical structure. In recent years, researchers in the emerging field of applied category theory have found interpretations of \textbf{Poly} in several fields of science and engineering, including dynamical systems theory. The purpose of this thesis is to contribute to the code ecosystem of \textbf{Poly} and its use in dynamical systems.
 
 
 %In complex systems theory, it is of interest to find a level of abstraction that brings out commonalities between different systems. Sometimes, unrelated systems might reveal themselves to have some deep structural similarity. However, arriving at a fundamental mathematical theory of complex systems is difficult. 
@@ -16,41 +16,41 @@ Category theory is an area of mathematics concerned with abstraction and mathema
 
 %Do funneling. Short and easy, last sentence should be purpose of report.
 
-\section{Polynomial functors and dynamical systems}
-Write more about the background / problemification.
+\section{Applied category theory and complex systems}
+In the study of complex systems, there is a concern of finding the right level of abstraction at which to seek commonalities between different systems. Sometimes, seemingly unrelated systems might reveal themselves to have some deep structural similarity, like critical transitions in ecosystems \cite{catastrophic}. However, arriving at a fundamental mathematical theory of complex systems is profoundly difficult. The immense expressive power of category theory has been a staple of type theory and programming language theory for many decades, and this robust mathematical language is now finding its footing in expressing ideas from wider scientific fields as well, including fields under the umbrella of complex systems. Some of the applications include foundations of complex systems \cite{complexcatsadjunction}, game theory \cite{compositional-gt}, probability \cite{markov-categories}, systems biology \cite{compositional-react-net} and dynamical systems theory\cite{operad-dynsys}.
 
-% The book
-Many aspects of the behavior and richness of \textbf{Poly} are collected in a newly written textbook, aoeu, hereafter called the poly-book. 
+\remarktitle{Polynomial functors and dynamical systems}
+In particular, \textbf{Poly} turns out to be useful in the modeling of so-called mode-dependent open dynamical systems. The "open" part of this class of systems refers to the fact that they not only have an internal dynamics and state space, but can interact with their environment by accepting external inputs and providing external outputs. The "mode-dependent" part refers to the fact that this paradigm of interaction \textit{can change} depending on the internal state of the system, meaning they can, throughout time, accept inputs and provide outputs to different environments.
 
-However, the surrounding ecosystem of \textbf{Poly} is lacking. It is difficult to find straightforward formalization and programs that use \textbf{Poly} to their advantage. 
-% Ecosystem lacking.
+This is a remarkably general form of system which \textbf{Poly} fully embeds in the categorical context, which means questions like "what does it mean to take the product of two systems?" often have a concrete and intuitive meaning for the dynamics of the resulting system.
 
-\section{Purpose}
-Give a more detailed description of the purpose of the thesis
-The intro is under reconstruction :) And the abstract will be reconstructed to be more of an abstract as well.
+\section{The \textit{poly-book}}
+Many aspects of the behavior and richness of \textbf{Poly} are collected in a newly written (still in draft at the time of writing) textbook, \textit{Polynomial Functors: A Mathematical Theory of Interaction}, hereafter called the poly-book. The book is being written by David Spivak and Nelson Niu and consists of a deep dive into \textbf{Poly}, explaining its mathematical structure in detail as well as providing many practical consequences of this structure to modeling dynamical systems. The authors also gave a course based on the book, and the lectures are freely available on YouTube. In this lecture series, some categories closely related to \textbf{Poly} are explored, which hint at an even bigger potential for application.
+
+
+\section{Goal of this thesis}
+We believe that the surrounding ecosystem of \textbf{Poly} is lacking. It is difficult to find straightforward formalizations of the category, or programs/dynamical systems models that use its structure to their advantage. The goal of this thesis is to advance this ecosystem. We follow the poly-book and its associated lecture series as a blueprint, and rely on the explanations therein to contribute several categorical formalizations, as well as show how \textbf{Poly} can be used to model different examples of dynamical systems by providing implementations. Some of these examples are described informally in the poly-book, others we come up with. We don't aim to formalize all theorems or implement all the examples in the book, as this would be simply too much work for this thesis. Instead, we constrain ourselves to what we deem the most essential constructs and illustrative examples.
+% The intro is under reconstruction :) And the abstract will be reconstructed to be more of an abstract as well.
 
 
 % Formalization of Poly in Agda. Prove many theorems and categorical constructs of Poly, and the related category of charts. 
 % Many well known dynamical systems as examples.  
 % Will follow the poly book as blueprint.
 
-\section{Delimitations}
+% \section{Delimitations}
 
-Not everything from the poly-book will be proved. Guideline. The proof of theorems might differ, one reason being that 
-Can write about some delimations, some differentiation
+% Not everything from the poly-book will be proved. Guideline. The proof of theorems might differ, one reason being that 
+% Can write about some delimations, some differentiation
 
 \section{Outline}
-The outline of the thesis is as follows; first, some of the background needed is explained in chapter \ref{chapter:background}. Then, the theoretical part of the thesis is given, formalizing the two categories of polynomial functors and their categorical constructs. The primary category, of lenses, is given in chapter \ref{chapter:lenses} and charts in chapter \ref{chapter:charts}. Chapter \ref{chapter:application} consists of the practice part of the thesis, how \textbf{Poly} is used for dynamical systems, together with several examples. After, in chapter \ref{chapter:discussion}, a discussion of the formalization is given, as well as future work. Finally, in chapter \ref{chapter:conclusion}, conclusions are drawn about how well the result of the thesis met the purpose.
+The outline of the thesis is as follows; first, some of the needed background is explained in chapter \ref{chapter:background}. Then, the theoretical part of the thesis is given, formalizing two categories of polynomial functors and their categorical constructs. The primary category, of lenses, is given in chapter \ref{chapter:lenses} and charts in chapter \ref{chapter:charts}. Chapter \ref{chapter:application} consists of the practice part of the thesis, how \textbf{Poly} is used for dynamical systems, together with several examples. After, in chapter \ref{chapter:discussion}, a discussion of the formalization is given, as well as future work. Finally, in chapter \ref{chapter:conclusion}, conclusions are drawn about how well the result of the thesis met its purpose.
 
 % Purpose: Formalize categoriy theory of Poly. Showing how dynamical systems can be implemented using poly.
 
-%In the field of complex systems theory, there is a concern of finding the right level of abstraction at which to seek commonalities between different systems. Sometimes, seemingly unrelated systems might reveal themselves to have some deep structural similarity, like critical transitions in ecosystems \cite{catastrophic}. However, arriving at a fundamental mathematical theory of complex systems is profoundly difficult. The immense expressive power of category theory has been a staple of type theory and programming language theory for many decades, and this robust mathematical language is now finding its footing in expressing ideas from wider scientific fields as well. It is a goal of this thesis to contribute to this movement.
 
-%Category theorists have been thinking about complex systems for some time \cite{complexcatsadjunction}, and advances in applied category theory have been inching closer to applications to fields commonly studied under the umbrella of complexity. Some examples are game theory \cite{compositional-gt}, probability \cite{markov-categories}, systems biology \cite{compositional-react-net} and dynamical systems \cite{operad-dynsys}. 
 
 %We see the poly-book another contribution to this landscape, as well as to category theory at large. It is a proper deep dive on \textbf{Poly}, and frequently oscillates between explaining the mathematical structure of the category and providing interpretations of it in real-world contexts. 
-%In particular, it turns out that a subset of arrows in \textbf{Poly} corresponds to mode-dependent open dynamical systems. The "open" part of this class of systems refers to the fact that they not only have an internal dynamics and state space, but can interact with their environment by accepting external inputs and providing external outputs. The "mode-dependent" part refers to the fact that this paradigm of interaction \textit{can change} depending on the internal state of the system, meaning they can, throughout time, accept inputs and provide outputs to different environments.
-%This is a remarkably general form of system that is fully embedded in the categorical context, which means questions like "what does it mean to take the product of two systems?" often have a concrete and intuitive meaning for the dynamics of the resulting system.
+
 
 %Like the book, this thesis is perhaps unusual in the sense that, as the title suggests, it is equally concerned with the extremely abstract side of thinking about \textbf{Poly} (the \textit{Theory} part of the subtitle), as well as with the extremely concrete and mundane side of it (the \textit{Applications} part). 
 %In this sense, we straddle a line between two extremes. This divide is exhibited clearly in the style of code that pertains to each part, and by the style of reasoning required to understand and appreciate each one. One might find oneself mentally "juggling" very different cognitive contexts if the change between the two subjects happens too frequently, and so we prefer to make this split explicit upfront, to the extent that we can, and reflect it in the structure of the writing itself by having two parts. This also has the benefit of being a more faithful representation of how the work was actually done: many evenings were spent struggling with only attempting to formalize categorical concepts, and many others with struggling to tune dynamical systems parameters to get the right behavior and plots. Of course, when theory is directly relevant to our example applications, we pay it due mention, but that is more the exception than the rule.

@@ -323,7 +323,7 @@ record DFS {State Alphabet : Set} : Set where
 
 The equality can be defined as a simple isomorphism.
 
-The same trick as for the moore machine can be used to provide an initial state to the DFA.
+The same trick as for the Moore machine can be used to provide an initial state to the DFA.
 
 
 \subsubsection{Turing machines}
@@ -339,6 +339,7 @@ Unfortunately, not all the code in this thesis could be kept in Agda, since it w
     \item A plotting library, which renders each system as a collection of values of the system at a sequence of timsteps, written using the \texttt{Chart}\cite{chart-lib} library (not to be confused, of course, with the Chart arrow between polynomials).
     \item A matrix-multiplication library with a single function which takes a list-of-lists representation of a matrix and returns its pseudoinverse. This is needed for the last example. Taking the pseudoinverse of a matrix is a costly operation, and there was an attempt to do it in Agda, but the associated proofs were not trivial and the performance was prohibitively slow. Therefore, we outsource matrix multiplication to the \texttt{hmatrix}\cite{hmatrix} Haskell library, which relies on underlying BLAS \cite{blas} algorithms for speed, while passing \texttt{trustMe} proofs to guarantee matrix sizes at the Agda level.
 \end{itemize}
+For more information on this supporting code, see the Appendix \ref{app:haskell}.
 With this context, we move on the the systems in question.
 
 \subsubsection{Lotka-Volterra}

@@ -166,24 +166,24 @@ Another use of the corolla forest perspective is that it makes visualizing maps 
 %
 	\node (p2) [draw, red!75!black, right=2 of p1, "$q$" above] {
 	\begin{tikzpicture}[trees, sibling distance=2.5mm]
-    \node["\tiny 1" below] (1) {$\bullet$} 
+    \node["\tiny A" below] (1) {$\bullet$} 
       child {}
       child {}
       child {};
-    \node[right=1.0 of 1,"\tiny 2" below] (2) {$\bullet$} 
+    \node[right=1.0 of 1,"\tiny B" below] (2) {$\bullet$} 
       child {}
       child {};
-    \node[right=1.0 of 2,"\tiny 3" below] (3) {$\bullet$}
+    \node[right=1.0 of 2,"\tiny C" below] (3) {$\bullet$}
       child {};
-    \node[right=1.0 of 3,"\tiny 4" below] (4) {$\bullet$}
+    \node[right=1.0 of 3,"\tiny D" below] (4) {$\bullet$}
       child {};
-    \node[right=1.0 of 4,"\tiny 5" below] (5) {$\bullet$}
+    \node[right=1.0 of 4,"\tiny E" below] (5) {$\bullet$}
     ;
   \end{tikzpicture}
   };
 \end{tikzpicture}
 \]
-Now a map between them can be visualized in the following way. Each position in $p$ gets sent to a position in $q$, and for each of these sendings, the direction is sent back to the original position:
+Now a map between them can be visualized in the following way. Each position in $p$ gets sent to a position in $q$, and for each of these sendings, its directions are sent back to the directions at the original position:
 \[
 \begin{tikzpicture}
 	\node (p1) {
@@ -194,7 +194,7 @@ Now a map between them can be visualized in the following way. Each position in 
       child[green!50!black] {coordinate (13)}
       child[green!50!black] {coordinate (14)}
       child[green!50!black] {coordinate (15)};
-    \node[right=1.5 of 1, red!75!black, "{\color{red!75!black}\tiny 1}" below] (2) {$\bullet$} 
+    \node[right=1.5 of 1, red!75!black, "{\color{red!75!black}\tiny A}" below] (2) {$\bullet$} 
       child[red!75!black] {coordinate (21)}
       child[red!75!black] {coordinate (22)}
       child[red!75!black] {coordinate (23)};
@@ -212,7 +212,7 @@ Now a map between them can be visualized in the following way. Each position in 
     \node[green!50!black, "{\color{green!50!black}\tiny 2}" below] (1) {$\bullet$} 
     child[green!50!black] {coordinate (11)}
     child[green!50!black] {coordinate (12)};
-    \node[right=of 1, red!75!black, "{\color{red!75!black}\tiny 1}" below] (2) {$\bullet$} 
+    \node[right=of 1, red!75!black, "{\color{red!75!black}\tiny A}" below] (2) {$\bullet$} 
       child[red!75!black] {coordinate (21)}
       child[red!75!black] {coordinate (22)}
       child[red!75!black] {coordinate (23)};
@@ -230,7 +230,7 @@ Now a map between them can be visualized in the following way. Each position in 
     \node[green!50!black, "{\color{green!50!black}\tiny 3}" below] (1) {$\bullet$} 
       child[green!50!black] {coordinate (11)}
       child[green!50!black] {coordinate (12)};
-    \node[right=of 1, red!75!black, "{\color{red!75!black}\tiny 4}" below] (2) {$\bullet$} 
+    \node[right=of 1, red!75!black, "{\color{red!75!black}\tiny C}" below] (2) {$\bullet$} 
       child[red!75!black] {coordinate (21)};
 		;
     \draw[|->, shorten <= 3pt, shorten >= 3pt] (1) -- (2);
@@ -244,7 +244,7 @@ Now a map between them can be visualized in the following way. Each position in 
 	\begin{tikzpicture}[trees, sibling distance=2.5mm]
     \node[green!50!black, "{\color{green!50!black}\tiny 4}" below] (1) {$\bullet$} 
     child[green!50!black];
-    \node[right=of 1, red!75!black, "{\color{red!75!black}\tiny 5}" below] (2) {$\bullet$} 
+    \node[right=of 1, red!75!black, "{\color{red!75!black}\tiny E}" below] (2) {$\bullet$} 
 		;
     \draw[|->, shorten <= 3pt, shorten >= 3pt] (1) -- (2);
   \end{tikzpicture}	
@@ -259,6 +259,7 @@ type Lens f g = forall a. f a -> g a
 \end{minted}
 
 An example of a lens between the two polynomials above would look like the following (requires \texttt{LambdaCase} language extension):
+\newpage
 \begin{minted}{haskell}
 data P y = Fst y y y y y | Snd y y | Trd y y | Frth
   deriving Functor
