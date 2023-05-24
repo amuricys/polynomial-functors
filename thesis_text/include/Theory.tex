@@ -1,22 +1,23 @@
 
 % CREATED BY DAVID FRISK, 2016
 \chapter{Theory: Lenses}\label{chapter:lenses}
-This chapter covers the theory part of the formalization, consisting mainly of proofs of different categorical properties of the category \textbf{Poly}. All code is available open source at github \cite{githubRepo}, which is recommended to follow at the same time as reading the thesis.
+This chapter covers the theory part of the formalization, consisting mainly of proofs of different categorical properties of the category \textbf{Poly}. All code is available open source at GitHub \cite{githubRepo}, which is recommended to follow while reading the thesis.
 
 \section{The category \textbf{Poly}}
 
-The category \textbf{Poly} refers, in our context, to the category of polynomial endofunctors in \textbf{Set}, with morphisms as natural transformations. \textit{Polynomial} is used here because these functors can be written down as high-school algebraic expressions, like:
+The category \textbf{Poly} refers, to the category of polynomial endofunctors in \textbf{Set}, with morphisms as natural transformations. They are called \textit{Polynomial} because these functors can be written down as high-school algebraic expressions, like:
 $$p(y) = y^2 +4y + 10$$
-only instead of handling numbers, these polynomial expressions have \textit{sets} plugged into the variable \textit{y}. Sum, multiplication and exponentiation and numeric literals are all considered in the context of sets: a numeric literal like $7$ represents the set $\underline{7}$, a set with 7 elements. A $+$ symbol will correspond to \textit{the categorical coproduct}, multiplication (often written with no $*$ symbol, as in $7y$ represents $7 * y$) corresponds to \textit{the categorical product} and exponentiation to the exponential object: in our context, it means functions from the exponent to the base of a term. For example, $ f : 7^2 \cong f : 2 \rightarrow 7$. This way of thinking algebraically is very convenient for our purposes, because plugging in "numbers" into our polynomial expressions to get "numbers" back will turn out to be a very useful kind of operation.
+But instead of handling numbers, these polynomial expressions have \textit{sets} plugged into the variable \textit{y}.
+Sum, multiplication, exponentiation, and numeric literals, are all considered in the context of sets. A numeric literal such as $7$ represents the set $\underline{7}$, a set with 7 elements. A $+$ symbol corresponds to \textit{the categorical coproduct}, multiplication  corresponds to \textit{the categorical product} and exponentiation to the exponential object: in this context, it is the type of functions from the exponent to the base of the term. For example, $ f : 7^2 \cong f : 2 \rightarrow 7$. This way of thinking algebraically is very convenient, because plugging in "numbers" into the polynomial expressions to get "numbers" back will turn out to be a very useful kind of operation.
 
 \subsection{Objects are polynomial functors}
 
-The objects of \textbf{Poly} are polynomial functors, which can be written as expressions like the one shown above. Since \textbf{Poly} handles sets, though, we can create much more unorthodox looking expressions. For instance, the below polynomial is perfectly coherent:
+The objects of \textbf{Poly} are polynomial functors, which can be written as expressions like the one shown above. Since \textbf{Poly} handles sets, though, more unorthodox looking expressions can be created. For instance, the polynomial below is perfectly coherent:
 \begin{equation}
 p(y) = \mathbb{N}y^2 + 1
 \label{eqn.natpoly}
 \end{equation}
-and we can think intuitively about what it does: it takes a set as input, and sends it to the set of: either infinitely long tuples of functions from $\underline{2}$ to this set, or to the only element of the singleton set. Like the poly-book, we refer to each summand of a power of $y$ in our polynomials as a \textit{position}, and the exponent of that power as a \textit{direction at that position}. This suggests that a polynomial has a set of positions, and for each element in this set, a set of directions. Therefore a natural way to represent these polynomials in Agda is as a dependent set:
+and it can be thought of as taking a set as input, and sends it to the set of: either infinitely long tuples of functions from $\underline{2}$ to this set, or to the only element of the singleton set. Like the poly-book, each summand of a power of $y$ in the polynomials are referred to as a \textit{position}, and the exponent of that power as a \textit{direction at that position}. This suggests that a polynomial has a set of positions, and for each element in this set, a set of directions. Therefore a natural way to represent these polynomials in Agda is as a dependent set:
 
 \begin{minted}{agda}
 record Polynomial : Set₁ where
@@ -28,15 +29,22 @@ record Polynomial : Set₁ where
 The way to write the example $p(y) = \mathbb{N}y^2 + 1$ in Agda using this type is then
 \mint{agda}{p = mkpoly (ℕ ⊎ ⊤)  λ {(inj₁ x) → Bool ; (inj₂ y) → ⊥}}
 
-We remark that we might sometimes refer to a polynomial as having "a single position" when it is a \textit{monomial}: what this really means is that, in the definition of such a polynomial, the set of directions does not depend on the set of positions. For instance, the monomial
+Sometimes, a polynomial is referred to as having "a single position" when it is a \textit{monomial}.
+This means that, in the definition of such a polynomial, the set of directions does not depend on the set of positions.
+For instance, the monomial
 $$
 p(y) = \mathbb{R}y^{\{a, b, c, d\}}
 $$
-does not have any dependence between \textit{the set of positions} (the real numbers) and \textit{the sets of directions} (the set $\{a, b, c, d\}$). The sets of directions would normally be a family of sets, where each position could give a different one, but in this case, they're always the same set. This way of phrasing positions might be unsettling at first, but it makes more sense in everyday programming with polynomial functors, since what really matters when handling dependent sets is what distinction an indexing set performs. If two positions index the same set, we can almost always get away with thinking of them as the same thing.
+does not have any dependence between \textit{the set of positions} (the real numbers) and \textit{the sets of directions} (the set $\{a, b, c, d\}$).
+The sets of directions would normally be a family of sets, where each position could give a different one, but in this case, they're always the same set.
+This way of phrasing positions might be unsettling at first, but it makes more sense in everyday programming with polynomial functors, since what really matters when handling dependent sets is what distinction an indexing set performs. 
+If two positions index the same set, they can be thought as the same thing.
 
 \remarktitle{More perspectives on polynomials}
 
-Understanding polynomial functors is crucial, and there are many ways to think about them. The book showcases other standard ways to visualize polynomials, which are helpful both to interpretations of the category in different applications and to build intuition about the purely categorical perspective, so we'll introduce them now. The first is of \textit{corolla forests}:
+Understanding polynomial functors is crucial, and there are many ways to think about them.
+The book showcases other standard ways to visualize polynomials, which are helpful to interpret the category in different applications and to build intuition about the purely categorical perspective.
+The first is of \textit{corolla forests}:
 
 \begin{align}
 \begin{tikzpicture}[trees]
@@ -56,7 +64,9 @@ Understanding polynomial functors is crucial, and there are many ways to think a
 \end{tikzpicture}
 \end{align}
 
-The term \textit{corolla} refers to a tree that has a depth of 1, and \textit{forest} refers to the fact that there are many such small trees. The set of positions is the set of roots of the forest (in this case $\underline{4}$) and the set of directions at each position is the set of arrows at each root (in this case $\underline{5}$, $\underline{2}$, $\underline{2}$ and $\underline{0}$). This then corresponds to $p(y) = y^5 + y^2 + y^2 + 1 \approx y^5 + 2y^3 + 1$. This perspective lends intuition to the decision-making interpretation of polynomials. Very loosely speaking, the set of directions is "directions in which one can go" given that one is at that set's associated position. Since polynomials can handle infinite sets, even uncountably infinite ones, one can imagine such infinite corolla trees. For example, the polynomial \ref{eqn.natpoly} could be visualized as:
+The term \textit{corolla} refers to a tree with a depth of one, and \textit{forest} refers to the fact that there are many such small trees.
+The set of positions is the set of roots of the forest (in this case $\underline{4}$), and the set of directions at each position is the set of arrows at each root (in this case $\underline{5}$, $\underline{2}$, $\underline{2}$ and $\underline{0}$).
+This then corresponds to $p(y) = y^5 + y^2 + y^2 + 1 \approx y^5 + 2y^3 + 1$. This perspective lends intuition to the decision-making interpretation of polynomials. Very loosely speaking, the set of directions is "directions in which one can go" given that one is at that set's associated position. Since polynomials can handle infinite sets, even uncountably infinite ones, one can imagine such infinite corolla trees. For example, the polynomial \ref{eqn.natpoly} could be visualized as:
 
 \begin{align}
 \begin{tikzpicture}[trees]
@@ -75,12 +85,13 @@ The term \textit{corolla} refers to a tree that has a depth of 1, and \textit{fo
 \end{tikzpicture}
 \end{align}
 
-Another perspective on polynomials, emphasizing the container datatype view, is as Haskell algebraic data types. The polynomial above for instance can be written, in Haskell, as this:
+Another perspective on polynomials, emphasizing the container datatype view, is as Haskell algebraic data types.
+The polynomial above, for instance, can be written in Haskell as:
 \begin{minted}{haskell}
 data P y = Fst y y y y y | Snd y y | Trd y y | Frth
   deriving Functor
 \end{minted}
-And this type can trivially implement the \texttt{Functor} typeclass, so much so that it can be derived automatically as above (given that the language extension \texttt{DeriveFunctor} is enabled of course).
+This type can trivially implement the \texttt{Functor} typeclass, so much so that it can be derived automatically as above (given that the language extension \texttt{DeriveFunctor} is enabled).
 
 % KEEP COMMENTED: Infinite set in directions
 % \[%\label{eqn.represented_interval}
@@ -101,7 +112,7 @@ And this type can trivially implement the \texttt{Functor} typeclass, so much so
 % \end{tikzpicture}
 % \]
 
-Since polynomials act on objects and on functions, we can define these applications as such:
+Since polynomials act on objects and functions, application can be defined as:
 \begin{minted}{agda}
 _⦅_⦆ : Polynomial → Set → Set
 _⦅_⦆ (mkpoly position direction) Y = Σ position λ x → (direction x → Y)
@@ -111,7 +122,8 @@ applyFn : {A B : Set} → (p : Polynomial) → (A → B) → p ⦅ A ⦆ → p �
 applyFn (mkpoly position direction) f (fst , snd) = fst , λ x → f (snd x)
 \end{minted}
 
-And we can use these definitions to quickly prove that \textbf{Poly}'s objects really are functors, we formulate of a record in \texttt{agda-categories} corresponding to an endofunctor in the library's provided instance of \textbf{Set}:
+Then, these definitions can be used to prove that \textbf{Poly}'s objects really are functors. 
+A record in \texttt{agda-categories} is formulated corresponding to an endofunctor in the library's provided instance of \textbf{Set}:
 
 \begin{minted}{agda}
 F-resp : {p : Polynomial} {A B : Set} {f g : A → B} {x : p ⦅ A ⦆ } → 
@@ -132,15 +144,21 @@ asEndo p = record
     }
 \end{minted}
 
-\textit{note}: The book acknowledges the unfortunate naming clash with the equivalent category of containers, where in that context, positions are called directions and directions are called shapes, but we will stick to the poly-book terminology from here on out.
+\textit{Note}: The book acknowledges the unfortunate naming clash with the equivalent category of containers, where in that context, positions are called directions and directions are called shapes.
 
 \subsection{Arrows are natural transformations - \textit{dependent lenses}}
 
-Arrows on \textbf{Poly} are so-called \textit{dependent lenses}. The reason for the naming is that, for arrows between monomials, we recover the usual definition of lenses in Haskell and other languages, as a pair of non-dependent "getter and setter" functions. A dependent lens has the additional property that "the types we are allowed to set depend on the value we get". We will explore this notion in depth, and in much more intuitive and concrete contexts, in the applications part of the thesis. Since non-dependent lenses (lenses between monomials) are a very special case of dependent lenses, we will refer to the arrows in \textbf{Poly} as simply \textit{lenses} from here on out, like the Agda definition.
+Arrows on \textbf{Poly} are so-called \textit{dependent lenses}.
+The reason is that arrows between monomials are the usual definition of lenses in Haskell, as a pair of non-dependent "getter and setter" functions. \todo{Show types of the getter and setter}
+A dependent lens has the additional property that "the types we are allowed to set depend on the value we get".
+This notion is explored further in the applications part of the thesis. 
+Since non-dependent lenses (lenses between monomials) are a very special case of dependent lenses, the arrows in \textbf{Poly} is referred to as simply \textit{lenses}, like the Agda definition.
 
 \remarktitle{Perspectives on lenses}
 
-Another use of the corolla forest perspective is that it makes visualizing maps between polynomials quite intuitive. Consider the polynomials $p(y) = y^5 + 2y^2 + y$ and $q(y) = y^3 + y^2 + 2y + 1$. First, their visualization as corollas is as such:
+Another use of the corolla forest perspective is that it makes visualizing maps between polynomials intuitive.
+Consider the polynomials $p(y) = y^5 + 2y^2 + y$ and $q(y) = y^3 + y^2 + 2y + 1$.
+First, their visualization as corollas is as:
 
 
 \[
@@ -183,7 +201,8 @@ Another use of the corolla forest perspective is that it makes visualizing maps 
   };
 \end{tikzpicture}
 \]
-Now a map between them can be visualized in the following way. Each position in $p$ gets sent to a position in $q$, and for each of these sendings, its directions are sent back to the directions at the original position:
+A map between $p$ and $q$ can be visualized in the following way.
+Each position in $p$ is sent to a position in $q$, and for each of these sendings, its directions are sent back to the directions at the original position:
 \[
 \begin{tikzpicture}
 	\node (p1) {
@@ -252,6 +271,7 @@ Now a map between them can be visualized in the following way. Each position in 
 \end{tikzpicture}
 \]
 
+If instead, also the map on the directions also goes forward, it would be another kind of arrow called charts. Charts is the arrows in the category \textbf{Chart}, which is the second category this thesis explores, in section \ref{chapter:charts}.
 
 In the Haskell view of polynomials, lenses can be given as the following type synonym (requires \texttt{RankNTypes} language extension):
 \begin{minted}{haskell}
@@ -275,7 +295,7 @@ exampleLens = \case
   Frth -> _
 \end{minted}
 
-Here we can see that the map on positions translates to a map on value constructors; for each of the summands of $p$, first a value constructor in $q$ must be chosen. Once we fill that in we get:
+The map on positions translates to a map on value constructors; for each of the summands of $p$, first a value constructor in $q$ must be chosen. After choosing a constructor:
 
 \begin{minted}{haskell}
 exampleLens :: Lens P Q
@@ -286,9 +306,13 @@ exampleLens = \case
   Frth -> E
 \end{minted}
 
-And now we recover the idea of a function "back", that is a map on directions \textit{at that position}: for each of the targeted value constructors in $q$, a lens must fill its slots with the source constructor's $y$ values. For example, in this case, the three slots of the \texttt{A} constructor in the first branch must be filled by the five available choices in the source constructor \texttt{Fst}. In an abstract sense, we can see this as a function of type $\underline{3} \rightarrow \underline{5}$ - a choice of source out of 5 possible sources for each of the 3 slots.
+This recovers the idea of a function "back", that is a map on directions \textit{at that position}: for each of the targeted value constructors in $q$, a lens must fill its slots with the source constructor's $y$ values. 
+For example, in this case, the three slots of the \texttt{A} constructor in the first branch must be filled by the five available choices in the source constructor \texttt{Fst}.
+In an abstract sense, we can see this as a function of type $\underline{3} \rightarrow \underline{5}$ - a choice of source out of 5 possible sources for each of the 3 slots.
 
-Expressing more general kinds of lenses in Haskell using this scheme becomes hard quickly however. The dependency between the value of the map on positions and the type of the map of directions is hidden and baked into the syntax of the language. There are attempts to do this in Haskell \cite{iceland_jack_thread} \cite{sjoerd_gist}, but we only give this Haskell perspective for the sake of intuition. Polynomials and lenses are much more natural in Agda.
+Expressing more general kinds of lenses in Haskell using this scheme becomes hard quickly however.
+The dependency between the value of the map on positions and the type of the map of directions is hidden and baked into the syntax of the language. 
+There are attempts to do this in Haskell \cite{iceland_jack_thread} \cite{sjoerd_gist}, but the Haskell perspective is only given for the sake of perspective. Polynomials and lenses are much more natural in Agda.
 
 \remarktitle{Lenses in Agda}
 
@@ -320,11 +344,10 @@ asNatTransLens (f ⇆ f♯) = record {
     }
 \end{minted}
 
-Now in order to have something that we can even test forms a valid category, we need two more pieces of data: the identity arrow, and a description of how arrows compose. Here are these definitions in Agda.
+Two more pieces of data are needed to form a valid category: the identity arrow and composition. 
 
 \subsubsection{The identity lens}
-
-It is what one would expect: A polynomial remains untouched in both its set of positions and the direction at each position, by having the \mintinline{agda}{fromPos} argument ignored by the map on directions:
+The identity lens leaves the polynomial untouched in both the positions and the direction at each position, which is implemented by the identity function.
 
 \begin{minted}{agda}
 idLens : {A : Polynomial} → Lens A A
@@ -332,18 +355,17 @@ idLens = id ⇆ λ _ → id
 \end{minted}
 
 \subsubsection{Composing lenses}
+Composition of lenses is done in the natural way. The map positions composed is straightforward function composition. The map on directions is also function composition, but with some extra work dealing with maps on directions being dependent.
 
-Again it is done in the "obvious" way: 
 \begin{minted}{agda}
 _∘ₚ_ : {A B C : Polynomial} → Lens B C → Lens A B → Lens A C
 _∘ₚ_ (f ⇆ f♯) (g ⇆ g♯) = (f ∘ g) ⇆ (λ i → g♯ i ∘ f♯ (g i))
 \end{minted}
 
-The map on positions of the resulting lens is straightforward function composition of the maps on positions of the composing lenses, and the map on directions is also a composition with the care that maps on directions are dependent.
-
 \subsection{Categorical axioms}
 
-That the associativity and identity laws hold for \textbf{Poly} follows directly from the definitions of these types, which means that they can be proved via Cubical Agda's \mintinline{agda}{refl}. We take this chance to show just how \textbf{Poly} is represented as a category in \texttt{agda-categories}' formulation:
+That the associativity and identity laws hold for \textbf{Poly} follows directly from the definitions of these types, which means that they can be proved via Cubical Agda's \mintinline{agda}{refl}.
+With all pieces in place, the full formulation of \textbf{Poly} as a category in \texttt{agda-categories}' is provided:
 
 \begin{minted}{agda}
 -- Categorical/Instance/Poly.agda
@@ -370,13 +392,17 @@ Poly = record
     }
 \end{minted}
 
-This record definition should not be surprising: \textbf{Poly}'s objects are \mintinline{agda}{Polynomial}s, its arrows are dependent \mintinline{agda}{Lens}es, our notion of equality between arrows is the cubical equality \mintinline{agda}{_≡_}, the identity lens and composition are the previously defined values in Agda. The rest of the data provided to the record correspond to the categorical laws plus some convenience that \texttt{agda-categories} provides: for instance, the proof \mintinline{agda}{sym-assoc} is not normally needed, but it makes it so that the opposite of opposite categories are equal "on the nose" to the original categories, and not just provably equal. We will not spend time going over design decisions of \texttt{agda-categories}, but for a more detailed account of the reasoning behind the library, see the authors' paper \cite{agda-cats} on it.
+This record definition should not be surprising: \textbf{Poly}'s objects are \mintinline{agda}{Polynomial}s, its arrows are dependent \mintinline{agda}{Lens}es, the notion of equality between arrows is defined to be cubical equality \mintinline{agda}{_≡_}, the identity lens and composition are the previously defined values in Agda.
+The rest of the data provided to the record correspond to the categorical laws plus some convenience that \texttt{agda-categories} provides: for instance, the proof \mintinline{agda}{sym-assoc} is not normally needed, but it makes it so that the opposite of opposite categories are equal "on the nose" to the original categories, and not just provably equal. 
+No more time will be spent going over design decisions of \texttt{agda-categories}, a more detailed account of the reasoning behind the library can be found in \cite{agda-cats}.
 
 \section{Polynomial equality}
-There are some occasions where polynomials need to be compared for equality. For example, a convenient way of characterizing monoidal structures in \textbf{Poly} is by simply expressing the laws on types, which requires polynomials to be compared; the right unit law for instance says can be written as \mint{agda}{rightUnit : (p q : Polynomial) → p ⊗ Y ≡ p}
-(in the case of monoidal structures, we stick to the \texttt{agda-categories} framework and don't rely on equality of objects at all, but polynomial equality is both useful elsewhere and an illuminating exercise).
+There are some occasions where polynomials need to be compared for equality. For example, a convenient way of characterizing monoidal structures in \textbf{Poly} is by simply expressing the laws on types, which requires polynomials to be compared; the right unit law for instance can be written as: \mint{agda}{rightUnit : (p q : Polynomial) → p ⊗ Y ≡ p}
+%(in the case of monoidal structures, we stick to the \texttt{agda-categories} framework and don't rely on equality of objects at all, but polynomial equality is both useful elsewhere and an illuminating exercise).
 
-Since a polynomial is a record consisting of the \mintinline{agda}{position : Set} and \newline \mintinline{agda}{direction : position → Set} a characterization of equality for this record is needed, to make it easy to use and prove equalities between polynomials. It is very directly expressible as a Σ-type, on which there are already many properties and lemmas in the Cubical library. Here's that representation, along with proofs that it's equal to the record one:
+Since a polynomial is a record consisting of the \mintinline{agda}{position : Set} and \newline \mintinline{agda}{direction : position → Set} a characterization of equality for this record is needed to make it easy to use and prove equalities between polynomials.
+An alternative definition of a polynomial as a Σ-type is used in aid to characterize the equality, to use the many properties and lemmas about Σ-type in the Cubical library .
+That Σ-type, along with proofs that the definitiions are the same are:
 
 \begin{minted}{agda}
 PolyAsSigma : Set₁
@@ -395,12 +421,47 @@ poly≡polySigma = isoToPath (iso polyToSigma
                                 (λ _ → refl))
 \end{minted}
 
-add code we actually use for poly equality
+Equality for the Σ-type is then implemented by using \mintinline{agda}{ΣPathTransport→PathΣ} from the Cubical library.
+It is important to note that an equality of a Σ-type is a Σ of equalities.
+This means that a proof that the map on positions is equals is needed, as well as a proof that the map on directions is equal.
+Subst is needed for the proof on the directions to make the types match.
+
+\begin{minted}{agda}
+polySigmas≡ : (a b : PolyAsSigma)
+    → (fstA≡fstB : fst a ≡ fst b)
+    → (subst (λ x → x → Type) fstA≡fstB (snd a)) ≡ snd b
+    → a ≡ b
+polySigmas≡ a b fstA≡fstB sndA≡sndB
+  = ΣPathTransport→PathΣ a b (fstA≡fstB , sndA≡sndB)
+\end{minted}
+
+This definition of equality is then transferred to the record definition of Polynomials leading to the final characterization of polynomials equality:
+\begin{minted}{agda}
+poly≡ : {a b : Polynomial}
+    → (fstA≡fstB : position a ≡ position b)
+    → (subst (λ x → x → Type) fstA≡fstB (direction a)) ≡ direction b
+    → a ≡ b
+poly≡ {a} {b} fstA≡fstB sndA≡sndB i
+  = polyFromSigma (polySigmas≡ (polyToSigma a) (polyToSigma b) fstA≡fstB sndA≡sndB i)
+\end{minted}
+
+In addition, an all quantified version of equality is used which simplifies some proofs:
+\begin{minted}{agda}
+poly≡∀ : {a b : Polynomial}
+    → (fstA≡fstB : position a ≡ position b)
+    → ((posB : position b) → subst (λ x → x → Type) fstA≡fstB (direction a) posB ≡ direction b posB)
+    → a ≡ b
+poly≡∀ {a} {b} fstA≡fstB sndA≡sndB = poly≡ fstA≡fstB λ i x → sndA≡sndB x i
+
+\end{minted}
 
 \section{Lens equality}
-In category theory, we are usually interested instead in the algebra of morphisms, that is, we want to know when morphisms are equal; very often we want to ascertain that a composite of two arrows is equal to some induced morphism, for instance. We often want to prove that a morphism is unique. For this we need a good way of characterizing equality of lenses, and this characterization of equality needs to be convenient enough to be usable in practical proofs about \textbf{Poly}.
+In category theory, it is of interest to know when two morphisms are equal. Therefore, also a characterization of equality for lenses are needed. 
+This characterization of equality needs to be convenient enough to be usable in practical proofs about \textbf{Poly}.
 
-A lens consists of two components, with the second component depending on the first. This suggests a Σ-type structure, which inclines us to use the same strategy as with polynomial equality, but in lenses things are slightly more complicated, since the second field depends on the first field \textit{applied} to something. Still, representing lenses as Σ-types is relatively straightforward:
+A lens consists of two components, with the second component depending on the first. 
+This suggests a Σ-type structure, which leads to a strategy similar to polynomial equality, but in lenses things are more complicated, since the underlying types are functions instead of simple sets.
+Still, representing lenses as Σ-types is straightforward:
 
 \begin{minted}{agda}
 LensAsSigma : Polynomial → Polynomial → Type
@@ -421,23 +482,42 @@ lens≡lensSigma = isoToPath (iso lensToSigma
                                 (λ _ → refl))
 \end{minted}
 
-As for the equality itself, we must have some dependency expressed in the types of the two arrows provided. This is unlike polynomial equality, since polynomials require only equality of types, whereas lenses requires both equality of types and of values.
+Equality for this sigma is defined and then transferred to the lens type:
+
+\begin{minted}{agda}
+lensSigmas≡ : {p q : Polynomial} (f g : LensAsSigma p q)
+    → (fstF≡fstG : fst f ≡ fst g)
+    → subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) fstF≡fstG
+      (snd f) ≡ snd g
+    → f ≡ g
+lensSigmas≡ f g fstF≡fstG sndF≡sndG 
+  = ΣPathTransport→PathΣ f g (fstF≡fstG , sndF≡sndG)
+
+lens≡ : {p q : Polynomial} {f g : Lens p q}
+    → (mapPos≡ : mapPosition f ≡ mapPosition g) 
+    → subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) mapPos≡ 
+      (mapDirection f) ≡ mapDirection g
+    → f ≡ g
+lens≡ {p} {q} {f} {g} mapPos≡ mapDir≡ i
+  = sigmaToLens ((lensSigmas≡ {q = q} (lensToSigma f) (lensToSigma g) mapPos≡ mapDir≡ i))
+\end{minted}
+
 
 \remarktitle{If lenses and polynomials are both Σ-types in disguise, why not just use Σ-types?}
 
-The main reason is \textit{usability}. This is a convenience-driven decision: we want our implementation of \textbf{Poly} to not only be amenable to formalization and having theorems proven about it, but also to be \textit{nice to program in}. Working with Σ-types causes readability to suffer too much, because the names of the constructor and fields are lost. We then make the compromise of converting between the record Σ-type representations only in the equality modules, since the proofs that the representations are equal allows use to carry equality over between the types, a very useful feature of Cubical Agda.
+The main reason is \textit{usability}. This is a convenience-driven decision: we want our implementation of \textbf{Poly} to not only be amenable to formalization and having theorems proven about it, but also to be \textit{nice to program in}. Working with Σ-types causes readability to suffer too much, because the names of the constructor and fields are lost. We then make the compromise of converting between the record Σ-type representations only in the equality modules, since the proofs that the representations are equal allows us to carry equality over between the types, a very useful feature of Cubical Agda.
 
 
 
 \section{Initial object}
-A category has an initial object if there exists an (initial) object that has an unique arrow from every other object. In \textbf{Poly}, the initial object is the polynomial $p(y) = 0$ with no positions (and therefore also no directions). It is the functor that sends any set to the empty set.
+An object is called initial if there exists an unique arrow from every other object. In \textbf{Poly}, the initial object is the polynomial $p(y) = 0$ with no positions (and therefore also no directions). It is the functor that sends any set to the empty set.
 
 \begin{minted}[escapeinside=||]{agda}
 |$\mathbb{0}$| : Polynomial
 |$\mathbb{0}$| = mkpoly ⊥ λ ()
 \end{minted}
 
-The steps to prove that $0$ is an initial object is to firstly construct a lens to every other object, and to secondly show that this each of these lenses are unique. 
+The steps to prove that $0$ is an initial object is to firstly construct a lens to every other object, and to secondly show that this lens is unique. 
 
 Since $0$ has no positions (nor directions) both the map on positions and the map on directions to any other polynomial $p$ is given by the function \mintinline{agda}{λ ()} (often named absurd) from the empty type.
 \begin{minted}[escapeinside=||]{agda}
@@ -452,7 +532,7 @@ lensFromZeroUnique : {p : Polynomial} (f : Lens |$\mathbb{0}$| p) → lensFromZe
 lensFromZeroUnique _ = lens≡ (funExt λ ()) (funExt λ ())
 \end{minted}
 
-This is implemented by using the lens equality function and the fact that the absurd function (from the empty type) is unique utilizing function extensionality. We plug these proofs in to the \texttt{agda-categories} characterization of the initial object:
+This is implemented by using the lens equality function and the fact that the absurd function (from the empty type) is unique utilizing function extensionality. We plug these proofs into the \texttt{agda-categories} characterization of the initial object:
 
 \begin{minted}[escapeinside=||]{agda}
 open import Categories.Object.Initial Poly
