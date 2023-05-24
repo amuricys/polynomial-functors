@@ -1078,7 +1078,7 @@ We will show an implementation of a reservoir computer that learns the dynamics 
         \node[below=0 of outer.north] {Going};
     \end{tikzpicture}
 \]
-The outputs we'll care to plot are those at \textit{Going} stage, when the reservoir is outputting its attempt at predicting the input sequence from the point it was left off from the touching stage. Not all of the Agda code is included, since it is quite big and again, readers can consult the implementation in \texttt{Dynamical/Reservoir/ModeDependent.agda}. But some key areas to highlight are the following definitions.
+The boxes \texttt{train} and \texttt{test} represent instances of the previously implemented Lorenz system, starting at different initial conditions. The outputs we'll care to plot are those at \textit{Going} stage, when the reservoir is outputting its attempt at predicting the input sequence from the point it was left off from the touching stage. Not all of the Agda code is included, since it is quite big and again, readers can consult the implementation in \texttt{Dynamical/Reservoir/ModeDependent.agda}. But some key areas to highlight are the following definitions.
 
 Firstly, the state of the reservoir system:
 
