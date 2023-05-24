@@ -22,41 +22,39 @@ Finally, \textit{mode-dependent} open dynamical systems are ones in which the se
 
 \subsection{Wiring diagrams}
 
-Wiring diagrams are a way of expressing morphisms of monoidal categories that is much more visually intuitive and applies to a wide array of contexts, including dynamical systems\cite{operadwd}. In our case, we will use them to express open dynamical systems and their connections.
+Wiring diagrams are a way of expressing morphisms of monoidal categories that is much more visually intuitive and applies to a wide array of contexts, including dynamical systems\cite{operadwd}. In our case, we will use them to express wiring patterns between open dynamical systems, and sometimes the systems themselves. A wiring pattern independent of the systems it's applied to might look the same as a concrete system in this scheme, but the distinction between them is important and will be explained. Here's an example of a wiring diagram, where each box represents an open system and the wires between them represents connections.
 
-\begin{tikzpicture}[
-    box/.style={rectangle, draw, minimum size=2cm},
-    dashedbox/.style={rectangle, draw, dashed},
-    every node/.style={midway}
-]
+\begin{equation}\label{eqn.control_diag}
+    \begin{tikzpicture}[oriented WD, baseline=(B)]
+        \node[bb={2}{1}, fill=orange!15] (sys1) {\text{System 1}};
+        \node[bb={1}{2}, below left=0.6 and .8 of sys1, fill=orange!15]  (sys2) {\text{System 2}};
+        \node[circle, inner sep=1.5pt, fill=black, right=.1] at (sys1_out1) (pdot) {};
+        \node[circle, inner sep=1.5pt, fill=black, right=.3] at (sys2_out2) (wdot) {};
+        \node[bb={0}{0}, inner ysep=25pt, inner xsep=1cm, fit=(sys1) (pdot) (wdot) (sys2)] (outer) {};
+        \coordinate (outer_out1) at (outer.east|-sys1_out1);
+        \coordinate (outer_in1) at (outer.west|-sys1_in1);
+        \begin{scope}[above, font=\footnotesize]
+          \draw (outer_in1) -- node {$A$} (sys1_in1);
+          \draw (sys2_out1) to node (B) {$B$} (sys1_in2);
+          \draw (sys2_out2) to node (X) {$D$} (wdot);
+          \draw (sys1_out1) to node {$C$} (outer_out1);
+          \draw
+              let 
+                  \p1 = (sys2.south west-| pdot),
+                  \p2 = (sys2.south west),
+                  \n1 = \bby,
+                  \n2 = \bbportlen
+              in
+                  (pdot) to[out=0, in=0]
+                  (\x1+\n2, \y1-\n1) --
+                  (\x2-\n2, \y2-\n1) to[out=180, in=180]
+                  (sys2_in1);
+            \end{scope}
+        \node[below=0of outer.north] {\text{Composite system}};
+    \end{tikzpicture}
+    \end{equation}
 
-% Draw boxes p and q
-\node[inner sep=0.5cm] (center) {};
-\node[box, above = 0.25cm of center] (p) {$p$};
-\node[box, below = 0.25cm of center] (q) {$q$};
-
-% Draw an invisible node around the whole thing
-\node[fit margins={left=0.25cm,right=0.5cm,bottom=0.25cm,top=0.25cm},fit=(p) (q)] (outer) {};
-
-% Draw the dashed box using the coordinates of the invisible node
-\draw[dashedbox] (outer.south west) rectangle (outer.north east);
-
-% Draw input wire for the dashed box
-\draw[-] (outer.west) -- ++(-1,0) node[midway,above] {$A$};
-
-% Draw input wires for p
-\draw[-] (p.west) -- (outer.west);
-
-% Draw output wire for p
-\draw[-] (p.east) -- ++(0.5,0) node[midway,above] {$B$};
-\draw (p.east) -- ++(0.5,0) circle (2pt);
-
-\end{tikzpicture}
-
-
-
-
-An important fact about a system like the one above shows is that they give morphisms in \textbf{Poly}. In this case, this system gives a composition of several arrows, which we will break down exactly how.
+$A$, $B$, $C$ and $D$ here all abstractly represent sets/types. The wires don't have just any quantity flowing through them, but instead a specific kind of information. The outer system here arises out of a specific combination of the inner systems. An important fact about wiring patterns like the one above is that they give morphisms in \textbf{Poly}, while boxes give objects. This connection will be explored more deeply now.
 
 \section{Polynomial functors in dynamical systems}
 
@@ -64,26 +62,86 @@ The three main objects of our study - polynomials, lenses and charts - have impo
 
 \subsection{Polynomials as interfaces}
 
-A polynomial can be seen as the interface or "API" of a dynamical system, by describing what its outputs and inputs are. In particular, the set of positions of a polynomial gives the possible outputs of a system, while the directions at a given position $p$ are the possible inputs given that the state is such that the output from that state is $p$. In this way, the system is mode-dependent. Take the polynomial below for instance.
+A polynomial can be seen as the interface or "API" of a dynamical system, by describing what its outputs and inputs are - the outputs are the set of positions, while the inputs correspond to directions at a particular position. The simplest way to visualize a polynomial as an interface is in the case of the monomial. Consider the monomial $r$, whose interface uses familiar types. $r(y) = \texttt{(IO Int)}y^{\top}$. As a box in the wiring diagram scheme, this corresponds to:
+
+
+\begin{equation}\label{eqn.control_diag}
+    \begin{tikzpicture}[oriented WD, baseline=(B)]
+        \node[bb={1}{1}, fill=orange!15] (sys1) {\text{$r$}};
+        \node[circle, fill=white, left=1] at (sys1_in1) (invis1) {};
+        \node[circle, fill=white, right=1] at (sys1_out1) (invis2) {};
+        \begin{scope}[above, font=\footnotesize]
+            \draw (invis1) to node {$\top$} (sys1_in1);
+            \draw (invis2) to node {\texttt{IO Int}} (sys1_out1);
+        \end{scope}
+    \end{tikzpicture}
+\end{equation}
+
+This is a straightforward view of an interface, because monomials cannot represent mode-dependence; that is, the types of outputs and inputs to a box like the one above cannot change, no matter what the state of a machine that implements this box is. If we consider a polynomial with different sets of summands however, the situation changes. Take the polynomial below for instance.
 $$
 p(y) = \mathbb{R}y^{\texttt{string}} + \top y^{\mathbb{N} \times \mathbb{N}}
 $$
-As an interface to an abstract system, it applies to any system that, when its state is such that it outputs real numbers, the possible inputs are strings. When its state is such that it's outputting $\top$ (the singleton set), then the possible inputs to give it are pairs of natural numbers. Notice that this says nothing about what the state space of a system should concretely be, only that its state can specify its interface. Mode-dependence makes it so that writing a polynomial as an abstract box in a wiring diagram is hard, because the input and output wires change. Consider the polynomial above. As boxes, its interface would be both boxes below, depending again on the state:
+As an interface to an abstract system, it applies to any system that, when its state is such that it outputs real numbers, the possible inputs are strings. When its state is such that it's outputting $\top$ (the singleton set), then the possible inputs to give it are pairs of natural numbers. Notice that this says nothing about what the state space of a system should concretely be, only that its state can specify its interface. Mode-dependence makes it so that writing a polynomial as an abstract box in a wiring diagram is hard, because the input and output wires change. Consider the polynomial above. There are two possible boxes that it corresponds to, depending on its state. One of them looks like this:
 
-\todo{draw}
+\begin{equation}\label{eqn.control_diag}
+    \begin{tikzpicture}[oriented WD, baseline=(B)]
+        \node[bb={1}{1}, fill=orange!15] (sys1) {\text{$r$}};
+        \node[circle, fill=white, left=1] at (sys1_in1) (invis1) {};
+        \node[circle, fill=white, right=1] at (sys1_out1) (invis2) {};
+        \begin{scope}[above, font=\footnotesize]
+            \draw (invis1) to node {\texttt{string}} (sys1_in1);
+            \draw (invis2) to node {$\mathbb{R}$} (sys1_out1);
+        \end{scope}
+    \end{tikzpicture}
+\end{equation}
+
+And the second looks like this:
+
+\begin{equation}\label{eqn.control_diag}
+    \begin{tikzpicture}[oriented WD, baseline=(B)]
+        \node[bb={2}{1}, fill=orange!15] (sys1) {\text{$r$}};
+        \node[circle, fill=white, left=1] at (sys1_in1) (invis1) {};
+        \node[circle, fill=white, left=1] at (sys1_in2) (invis3) {};
+        \node[circle, fill=white, right=1] at (sys1_out1) (invis2) {};
+        \begin{scope}[above, font=\footnotesize]
+            \draw (invis1) to node {$\mathbb{N}$} (sys1_in1);
+            \draw (invis3) to node [below] {$\mathbb{N}$} (sys1_in2);
+            \draw (invis2) to node {$\top$} (sys1_out1);
+        \end{scope}
+    \end{tikzpicture}
+\end{equation}
 
 A good way of integrating this mode dependence inherent to polynomials into regular wiring diagrams is an open problem.
 
 \subsection{The parallel product $\otimes$}
-We come to a great motivating factor for the naming of this structure: it corresponds to putting systems in parallel. Given two polynomials $p$ and $q$ with their own interfaces, taking their parallel product $p \otimes q$ corresponds to creating a polynomial that has \textit{both interfaces simultaneously}. Intuitively, one can think that any system that has this interface can only run one timestep upon being given both inputs, and it will output both outputs. The structure, in some sense, doesn't "touch" the behavior of the systems at all. In the below picture:
+We come to a great motivating factor for the naming of this structure: it corresponds to putting systems in parallel. Given two polynomials $p$ and $q$ with their own interfaces, taking their parallel product $p \otimes q$ corresponds to creating a polynomial that has \textit{both interfaces simultaneously}. Intuitively, one can think that any system that has this interface can only run one timestep upon being given both inputs, and it will output both outputs. The structure, in some sense, doesn't "touch" the behavior of the systems at all. This is represented in the below picture, by considering $p(y) = Dy^(A \times B)$ and $q(y) = (E \times F)y^C$: 
 
-\todo{draw}
+\begin{equation}\label{eqn.control_diag}
+    \begin{tikzpicture}[oriented WD, baseline=(B)]
+        \node[bb={2}{1}, fill=orange!15] (sys1) {$p$};
+        \node[bb={1}{2}, below=1 of sys1, fill=orange!15]  (sys2) {$q$};
+        \node[dashed, bb={0}{0}, inner ysep=25pt, inner xsep=1cm, fit=(sys1) (sys2)] (outer) {};
+        \coordinate (outer_out1) at (outer.east|-sys1_out1);
+        \coordinate (outer_out2) at (outer.east|-sys2_out1);
+        \coordinate (outer_out3) at (outer.east|-sys2_out2);
+        \coordinate (outer_in1) at (outer.west|-sys1_in1);
+        \coordinate (outer_in2) at (outer.west|-sys1_in2);
+        \coordinate (outer_in3) at (outer.west|-sys2_in1);
+        \draw (outer_in1) -- node[above] {$A$} (sys1_in1);
+        \draw (outer_in2) -- node[below] {$B$} (sys1_in2);
+        \draw (outer_in3) -- node[below] {$C$} (sys2_in1);
+        \draw (sys1_out1) to node[above] {$D$} (outer_out1);
+        \draw (sys2_out1) to node[above] {$E$} (outer_out2);
+        \draw (sys2_out2) to node[below] {$F$} (outer_out3);
+        \node[below=0of outer.north] {$p \otimes q$};
+    \end{tikzpicture}
+    \end{equation}
 
-The resulting polynomial functor is the dashed line around the two inner boxes, representing $p$ and $q$.
+The resulting polynomial functor is the dashed line around the two inner boxes, and as we've seen, is given by $p \otimes q(y) = DEFy^{ABC}$. The parallel product also has an important implication for the behavior of systems, as we'll see next.
 
 \subsection{Lenses as behaviors}
 
-A particular kind of lens specifies behaviours of systems, namely any lens of shape $f : Sy^S \rightarrow p$, where $p$ is a polynomial like the one described above and $S$ is the state space set. Since lenses are maps on positions and on directions, in this case we get $f : S \rightarrow p(1)$; and $f\# : (\texttt{curState}: S) \rightarrow A (\texttt{f curState}) \rightarrow S$. This corresponds to our definition of open systems, with the added mode dependence: the map on positions is exactly the \texttt{readout} function, and the map on directions is the \texttt{update} function with the added constraint that not any $A$ is valid - $A$ is now a type family, so only the fibrations of $A$ at the position (output) at the current state are valid.
+A particular kind of lens specifies behaviors/dynamics of systems, namely any lens of shape $f : Sy^S \rightarrow p$, where $p$ is any polynomial $S$ is the state space set. Since lenses are maps on positions and on directions, in this case we get $f : S \rightarrow p(1)$; and $f\# : (\texttt{curState}: S) \rightarrow A (\texttt{f curState}) \rightarrow S$. This corresponds to our definition of open systems, with the added mode dependence: the map on positions is exactly the \texttt{readout} function, and the map on directions is the \texttt{update} function with the added constraint that not any $A$ is valid - $A$ is now a type family, so only the fibrations of $A$ at the position (output) at the current state are valid.
 
 If we draw a behavior-specifying lens on our previous example, not much changes visually, but we denote the state inside the box space as below:
 
@@ -148,11 +206,11 @@ mkdyn stateA interfaceA dynamicsA &&& mkdyn stateB interfaceB dynamicsB
     \item Plugging dynamics and wiring patterns together. If lenses account both for dynamics \textit{and} wiring patterns, then it seems natural that a dynamical system (really a lens) that just contains several "free-floating" boxes that are simply sitting in parallel could be composed with a lens that represents a wiring pattern to give rise to a system that is actually usable. Indeed, this is the case, and the function that does this is called \texttt{install} by both us and the poly example code:
     \begin{minted}{agda}
 install : (d : DynamicalSystem) → 
-          (a : Polynomial) → 
-          Lens (DynamicalSystem.interface d) a → 
+          (p : Polynomial) → 
+          Lens (DynamicalSystem.interface d) p → 
           DynamicalSystem
-install d a l = mkdyn (DynamicalSystem.state d)
-                      a 
+install d p l = mkdyn (DynamicalSystem.state d)
+                      p 
                       (l ∘ₚ (DynamicalSystem.dynamics d))
 \end{minted}
     \item Outer box lens representations. An outer box that represents an enclosure, as well as enclosures of a couple different possible inputs are given: we use \texttt{auto} for most systems, since we're interested in just running them as closed systems and seeing what happens, but sometimes we're interested in giving constant inputs that come from outside the environment, and for that we use \texttt{constI}:
@@ -328,7 +386,7 @@ The same trick as for the Moore machine can be used to provide an initial state 
 
 \subsubsection{Turing machines}
 
-
+\todo{write up}
 
 \subsection{Examples: Continuous systems}
 Now we move on to discretized continuous-time systems. They may be treated in much more rigorous mathematical detail than we do here, by representing the state space as topological spaces or manifolds \cite{css}, but as we've mentioned, to showcase their implementation in \textbf{Poly} we discretize them simply according to a differential time $dt$ supplied by the user.
@@ -359,8 +417,8 @@ The logic of it is that, for rabbits, they will reproduce naturally at a rate $\
 This system can be represented in terms of our open dynamical systems by considering the rabbit and fox populations as each inhabited by an individual system. They output their population (so \texttt{readout} is the identity function) and that gets fed as an input to the other system, along with any other parameters - in this case $\alpha$, $\beta$, $\delta$ and $\gamma$.
 
 \begin{tikzpicture}[oriented WD, bb min width =.5cm, bbx=.5cm, bb port sep =1,bb port length=0, bby=.15cm, baseline=(Z.center)]
-  \node[bb={4}{1}, fill=blue!10] (rabbit) {Rabbits};
-  \node[bb={4}{1}, fill=blue!10, below = 8 of rabbit] (fox) {Foxes};
+  \node[bb={4}{1}, fill=blue!15] (rabbit) {Rabbits};
+  \node[bb={4}{1}, fill=blue!15, below = 8 of rabbit] (fox) {Foxes};
 
   \node[draw=blue, circle, inner sep = 0] (c2) at ($(fox_out1) + (2, 2)$){$c_2$};
   \node[draw=blue, circle, inner sep = 0, ] (c1) at ($(rabbit_out1-|fox_out1) + (2, -2)$) {$c_1$};
@@ -567,7 +625,7 @@ The interesting thing about the Hodgkin-Huxley model is that it actually lends i
 
 The variables here mean the following: $V$ is the resulting voltage between the intra and extracellular mediums, $m$ encodes potassium channel activation probability, $h$ encodes sodium channel activation probability and $n$ encodes sodium channel \textit{inactivation} probability, and $I_e$ is the driven input voltage. All other symbols are constants and helper functions that have their own deep theoretical justification which we will not get into, we'll just explain the basic logic of the system. The idea is that potassium and sodium channels are positively charged, so their flow across their membrane corresponds to current. However, their flow is not only affected by voltage, but also by concentration: in a chemical setting, substances can saturate a solution regardless of their charge. The interacting probabilities of channels activating (opening, thus allowing particles to flow from more to less concentrated environments) or inactivating give rise to interesting voltage dynamics - the voltage is in fact the output we're interested in for this particular application. Given a strong enough input current, the system can be made to display oscillating behavior, which corresponds to the neuron firing.
 
-The input current can be a constant value, in which case it might as well be treated as a parameter, or an input to an open dynamical system as we've been describing in the framework we work in. This allows us to model "changing a parameter" of a dynamical system, but in a way that is totally internal to our modeling language and does not rely on ad-hoc formulations or programming. For a description of the informal process of analyzing changing a parameter as "turning a knob" at a timescale that is much bigger than the system's dynamics, see this lecture by Shane Ross on the book Nonlinear Dynamics and Chaos by Strogatz: https://www.youtube.com/watch?v=BBd68\_q3Dgg.
+The input current can be a constant value, in which case it might as well be treated as a parameter, or an input to an open dynamical system as we've been describing in the framework we work in. This allows us to model "changing a parameter" of a dynamical system, but in a way that is totally internal to our modeling language and does not rely on ad-hoc formulations or programming. For a description of the informal process of analyzing changing a parameter as "turning a knob" at a timescale that is much bigger than the system's dynamics, see this lecture by Shane Ross on the book Nonlinear Dynamics and Chaos by Strogatz: https://www.youtube.com/watch?v=BBd68\_q3Dgg. \todo{fix this, make it look nicer}
 
 The code for the equations themselves, represented as systems, follows the same pattern as the two previous examples. It also involves many fixed constants, discovered experimentally, and so it is quite big, so for the sake of clarity we omit most of it for this system. Instead we focus on the wiring pattern, as well use of \texttt{constI} as a constant input to the system to showcase running a system:
 \begin{minted}{agda}

@@ -76,7 +76,7 @@ absurd : {A : Type} → ⊥ → A
 absurd ()
 \end{minted}
 
-The natOrBool function can be implemented as:
+The \texttt{natOrBool} function can be implemented as:
 \begin{minted}{agda}
 natOrBool : (b : Bool) → if b then ℕ else Bool
 natOrBool true = 0

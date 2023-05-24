@@ -255,7 +255,7 @@ Now a map between them can be visualized in the following way. Each position in 
 
 In the Haskell view of polynomials, lenses can be given as the following type synonym (requires \texttt{RankNTypes} language extension):
 \begin{minted}{haskell}
-type Lens f g = forall a. f a -> g a
+type Lens p q = forall y. p y -> q y
 \end{minted}
 
 An example of a lens between the two polynomials above would look like the following (requires \texttt{LambdaCase} language extension):
@@ -945,7 +945,7 @@ EqualizedPosition = Σ (position p)
     \item Has the \textit{co}equalizer set of the map on directions of these lenses \textit{at their equalized positions}. Normally, the partially applied functions \texttt{mapDirection f posp} and \texttt{mapDirection g posp} would have different types, since the second argument (a direction in q) depends on on the values of \texttt{mapPosition f posp} and \texttt{mapPosition g posp}. But in this case, we know these values to be the same, since the map on positions is the equalizer map, so the partially applied maps on directions have the same type, which means they can be coequalized. Cubical has a construction for this, \texttt{SetCoequalizer}.
 \end{itemize}
 
-Before we can introduce the equalizer polynomial and lens, we must address an issue: in the Cubical setting, SetCoequalizers can only be constructed out of functions that target types that are sets in the HoTT sense, so types of truncation level 0. In our case, this means that the directions of our polynomials must be sets, which is not a guarantee we have in the \textbf{Poly} category we've been working with; we only guarantee that these polynomials' targeted sets have \textit{universe} level 0. To get around this, we work in a category that is identical to \textbf{Poly}, except the directions of the polynomials are guaranteed to be sets. This is the category \textbf{SetPoly}, where the objects are:
+Before we can introduce the equalizer polynomial and lens, we must address an issue: in the Cubical setting, a value of type \texttt{SetCoequalizer} can only be constructed out of functions that target types that are sets in the HoTT sense, so types of truncation level 0. In our case, this means that the directions of our polynomials must be sets, which is not a guarantee we have in the \textbf{Poly} category we've been working with; we only guarantee that these polynomials' targeted sets have \textit{universe} level 0. To get around this, we work in a category that is identical to \textbf{Poly}, except the directions of the polynomials are guaranteed to be sets. This is the category \textbf{SetPoly}, where the objects are:
 
 \begin{minted}{agda}
 record SetPolynomial : Set₁ where
