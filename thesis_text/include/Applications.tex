@@ -111,7 +111,7 @@ And the second looks like this:
     \end{tikzpicture}
 \end{equation}
 
-A good way of integrating this mode dependence inherent to polynomials into regular wiring diagrams is an open problem.
+A good way of integrating this mode dependence inherent to polynomials into regular wiring diagrams is an open problem. Because of this, the wiring diagrams we will show are of non-mode dependent systems, and as such they represent only a small portion of the dynamical systems that \textbf{Poly} has the power to model.
 
 \subsection{The parallel product $\otimes$}
 We come to a great motivating factor for the naming of this structure: it corresponds to putting systems in parallel. Given two polynomials $p$ and $q$ with their own interfaces, taking their parallel product $p \otimes q$ corresponds to creating a polynomial that has \textit{both interfaces simultaneously}. Intuitively, one can think that any system that has this interface can only run one timestep upon being given both inputs, and it will output both outputs. The structure, in some sense, doesn't "touch" the behavior of the systems at all. This is represented in the below picture, by considering $p(y) = Dy^(A \times B)$ and $q(y) = (E \times F)y^C$: 
@@ -143,23 +143,148 @@ The resulting polynomial functor is the dashed line around the two inner boxes, 
 
 A particular kind of lens specifies behaviors/dynamics of systems, namely any lens of shape $f : Sy^S \rightarrow p$, where $p$ is any polynomial $S$ is the state space set. Since lenses are maps on positions and on directions, in this case we get $f : S \rightarrow p(1)$; and $f\# : (\texttt{curState}: S) \rightarrow A (\texttt{f curState}) \rightarrow S$. This corresponds to our definition of open systems, with the added mode dependence: the map on positions is exactly the \texttt{readout} function, and the map on directions is the \texttt{update} function with the added constraint that not any $A$ is valid - $A$ is now a type family, so only the fibrations of $A$ at the position (output) at the current state are valid.
 
-If we draw a behavior-specifying lens on our previous example, not much changes visually, but we denote the state inside the box space as below:
+A value of the type of lenses $f : Sy^S \rightarrow p$ can therefore be seen as a concrete dynamical system. At the end of the day, it is "only" a pair of functions: one to read out the exposed state of the system, and one to update the state of the system with some input. The way we will show behavior-specifying lenses in wiring diagrams is like the polynomials that represent their interfaces, but with the state space type denoted on the bottom like so:
 
-\todo{draw}
+\begin{equation}\label{eqn.control_diag}
+    \begin{tikzpicture}[oriented WD, baseline=(B)]
+        \node[bb={1}{1}, inner sep=25pt, fill=orange!15] (sys1) {\text{$p$}};
+        \node[circle, fill=white, left=1] at (sys1_in1) (invis1) {};
+        \node[circle, fill=white, right=1] at (sys1_out1) (invis2) {};
+        \begin{scope}[above, font=\footnotesize]
+            \draw (invis1) to node {$\mathbb{R}$} (sys1_in1);
+            \draw (invis2) to node {\texttt{string}} (sys1_out1);
+        \end{scope}
+        \node[above right=0 and 0.3 of sys1.south] {$\mathbb{N}$};
+    \end{tikzpicture}
+\end{equation}
 
-This can then be seen as a lens from $S^S \rightarrow p$.
+
+This can then be seen as a lens of type $S^S \rightarrow r$, where $S = \mathbb{N}$ and $r(y) = \texttt{string}y^{\mathbb{R}}$. Note that there are many values of this type, which is to say many ways to implement a dynamical system with this state space and this interface.
 
 \subsection{Lenses as wiring patterns}
 
-The other role that lenses play in systems of this kind is that they correspond to wiring patterns. For example, consider the abstract drawing of boxes below:
+The other role that lenses play in systems of this kind is that they correspond to wiring patterns. For example, consider the wiring diagram below:
 
-\todo{draw}
+\begin{equation}\label{eqn.control_diag}
+    \begin{tikzpicture}[oriented WD, baseline=(B)]
+        \node[bb={1}{2}, fill=orange!15] (p) {\text{p}};
+        \node[bb={2}{1}, below=.8 of p, fill=orange!15]  (q) {\text{q}};
+        \node[circle, inner sep=1.5pt, fill=black, right=.1] at (p_out2) (pdot) {};
+        \node[circle, inner sep=1.5pt, fill=black, right=.1] at (q_out1) (wdot) {};
+        \node[dashed, bb={0}{0}, inner ysep=4pt, inner xsep=4pt, fit=(p) (q)]  (ptensorq) {};
+        \node[bb={0}{0}, inner ysep=25pt, inner xsep=1cm, fit=(p) (pdot) (wdot) (q)] (outer) {};
+        \coordinate (outer_out1) at (outer.east);
+        \coordinate (outer_in1) at (outer.west|-p_in1);
+        \coordinate (outer_in2) at (outer.west|-q_in1);
+        \coordinate (outer_in3) at (outer.west|-q_in2);
+        \begin{scope}[above, font=\footnotesize]
+          \draw (outer_in1) -- node {$A$} (p_in1);
+          \draw (outer_in2) -- node {$B$} (q_in1);
+          \draw (outer_in3) -- node [below] {$C$} (q_in2);
+          \draw (p_out1) to node {$A$} (outer_out1);
+          \draw (p_out2) to node [below] {$B$} (pdot);
+          \draw (q_out1) to node {$C$} (wdot);
+        \end{scope}
+        \node[above=0 of ptensorq.north] {$p \otimes q$};
+        \node[above=0 of outer.north] {$Ay^{ABC}$};
+    \end{tikzpicture}
+\end{equation}
 
-This corresponds to a lens from an abstract polynomial placed in the inner box to the abstract polynomial corresponding to the outermost box. We say "abstract" because we need to know nothing about the dynamics or concrete behavior of the systems here, all we need is the types of the interfaces to match. Now there are other wiring patterns possible here:
-
-\todo{drawdrawdraw}
-
-And they all correspond to different lenses. The intuition for the lens structure is that the map on positions selects which of the outer outputs will be served by the inner outputs, and the map on directions will fill in the needed inputs to the inner boxes.
+This corresponds to a lens from an abstract polynomial of the dashed box to the abstract polynomial of the outermost box. The inner dashed box is the polynomial obtained by taking the parallel product of $p$ and $q$. We say "abstract" because we need to know nothing about the dynamics or concrete behavior of the systems here, all we need is the types of the interfaces to match, which means this particular lens is capable of wiring together \textit{any} two systems that have the interfaces in question. There are of course other ways to wire these boxes together. Here's two examples:
+\[
+    \begin{tikzpicture}
+    \node (wiring1) {
+        \begin{tikzpicture}[oriented WD, baseline=(B)]
+            \node[bb={1}{2}, fill=orange!15] (p) {\text{p}};
+            \node[bb={2}{1}, below=2 of p, fill=orange!15]  (q) {\text{q}};
+            \node[dashed, bb={0}{0}, inner ysep=4pt, inner xsep=4pt, fit=(p) (q)]  (ptensorq) {};
+            \node[bb={0}{0}, inner ysep=25pt, inner xsep=1cm, fit=(p) (pdot) (wdot) (q)] (outer) {};
+            \coordinate (outer_out1) at (outer.east|-p_out1);
+            \coordinate (outer_in1) at (outer.west|-p_in1);
+            \coordinate (outer_in2) at (outer.west|-q_in1);
+            \coordinate (outer_in3) at (outer.west|-q_in2);
+            \node[circle, inner sep=1.5pt, fill=black, right=.2] at (outer_in1) (adot) {};
+            \node[circle, inner sep=1.5pt, fill=black, right=.2] at (p_out1) (adot2) {};
+            \node[circle, inner sep=1.5pt, fill=black, right=.3] at (p_out2) (bdot) {};
+            \node[circle, inner sep=1.5pt, fill=black, right=.2] at (outer_in3) (cdot) {};
+            \node[circle, inner sep=1.5pt, fill=white, right=.15] at (q_out1) (qdot) {$C$};
+            \begin{scope}[above, font=\footnotesize]
+                \draw (outer_in1) to node {$A$} (adot);
+                \draw (outer_in3) to node [below] {$C$} (cdot);
+                
+                \draw
+                let 
+                    \p1 = (p.north west-| adot2),
+                    \p2 = (p.north west),
+                    \n1 = \bby,
+                    \n2 = \bbportlen
+                in
+                    (adot2) to[out=0, in=0]
+                    (\x1+\n2, \y1+\n1) --
+                    (\x2-\n2, \y2+\n1) to[out=180, in=180]
+                    (p_in1);
+                
+                \draw (p_out2) to node [below] {$B$} (bdot);
+                \draw (p_out1) to node {} (adot2);
+                \draw (adot2) -- node {$A$} (outer_out1);
+                \draw (p_out2) to node [below] {$B$} (bdot);
+                
+                \draw (outer_in2) to node [above] {$B$} (q_in1);
+                \draw
+                let 
+                    \p1 = (q.south west-| q_out1),
+                    \p2 = (q.south west),
+                    \n1 = \bby,
+                    \n2 = \bbportlen
+                in
+                    (q_out1) to[out=0, in=0]
+                    (\x1+\n2, \y1-\n1) --
+                    (\x2-\n2, \y2-\n1) to[out=180, in=180]
+                    (q_in2);
+            \end{scope}
+    \end{tikzpicture}
+    };
+    %
+    \node (wiring2) [right=1 of wiring1] {
+        \begin{tikzpicture}[oriented WD, baseline=(B)]
+            \node[bb={1}{2}, fill=orange!15] (p) {\text{p}};
+            \node[bb={2}{1}, below=2 of p, fill=orange!15]  (q) {\text{q}};
+            \node[dashed, bb={0}{0}, inner ysep=4pt, inner xsep=4pt, fit=(p) (q)]  (ptensorq) {};
+            \node[bb={0}{0}, inner ysep=25pt, inner xsep=1cm, fit=(p) (pdot) (wdot) (q)] (outer) {};
+            \coordinate (outer_out1) at (outer.east|-p_out1);
+            \coordinate (outer_in1) at (outer.west|-p_in1);
+            \coordinate (outer_in2) at (outer.west|-q_in1);
+            \coordinate (outer_in3) at (outer.west|-q_in2);
+            \node[circle, inner sep=1.5pt, fill=black, right=.3] at (p_out2) (bdot) {};
+            \node[circle, inner sep=1.5pt, fill=black, right=.2] at (outer_in3) (cdot) {};
+            \node[circle, inner sep=1.5pt, fill=white, right=.15] at (q_out1) (qdot) {$C$};
+            \begin{scope}[above, font=\footnotesize]
+                \draw (outer_in1) to node {$A$} (p_in1);
+                \draw (outer_in3) to node [below] {$C$} (cdot);
+                
+                \draw (p_out2) to node [below] {$B$} (bdot);
+                \draw (p_out1) to node {} (outer_out1);
+                \draw (adot2) -- node {$A$} (outer_out1);
+                \draw (p_out2) to node [below] {$B$} (bdot);
+                
+                \draw (outer_in2) to node [above] {$B$} (q_in1);
+                \draw
+                let 
+                    \p1 = (q.south west-| q_out1),
+                    \p2 = (q.south west),
+                    \n1 = \bby,
+                    \n2 = \bbportlen
+                in
+                    (q_out1) to[out=0, in=0]
+                    (\x1+\n2, \y1-\n1) --
+                    (\x2-\n2, \y2-\n1) to[out=180, in=180]
+                    (q_in2);
+            \end{scope}
+        \end{tikzpicture}
+    };
+\end{tikzpicture}
+\]
+And they all correspond to different lenses. The intuition for the lens structure is that the map on positions selects which of the outer outputs will be served by the inner outputs, and the map on directions will fill in the needed inputs to the inner boxes. Although sometimes lenses will feed an output of a system to itself, as above, a lens is still a morphism from some inner box (here the polynomial $p \otimes q(y) = ABCy^{ABC}$) to an outer one (here the polynomial $Ay^{ABC}$).
 
 \subsection{Charts as system transformations (??)}
 
@@ -253,7 +378,60 @@ We split the example implementations in the class of discrete- and continuous-ti
 
 \subsubsection{Fibonacci}
 We start with the most basic example of all: a Fibonacci sequence generator implemented as a dynamical system in \textbf{Poly}. The wiring diagram of this system is as follows:
-\todo{fibwd}
+
+\begin{equation}\label{eqn.control_diag}
+    \begin{tikzpicture}[oriented WD, baseline=(B)]
+        \node[bb={2}{1}, inner sep=20pt, fill=orange!15] (plus) {$+$};
+        \node[bb={1}{1}, inner sep=18pt, below=2 of plus, fill=orange!15]  (id) {\texttt{id}};
+        \node[circle, inner sep=1.5pt, fill=black, right=.1] at (plus_out1) (plusdot) {};
+        \node[circle, inner sep=1.5pt, fill=black, right=.1] at (id_out1) (iddot) {};
+        \node[bb={0}{0}, inner ysep=20pt, inner xsep=1cm, fit=(plus) (id) (plusdot) (iddot)] (outer) {};
+        \node[above right=0 and 0.22 of plus.south] {$\mathbb{N}$};
+        \node[above right=0 and 0.22 of id.south] {$\mathbb{N}$};
+        \node[font=\small, right=0.05 of plus_in1] {$\mathbb{N}$};
+        \node[font=\small, right=0.05 of plus_in2] {$\mathbb{N}$};
+        \node[font=\small, right=0.05 of id_in1]   {$\mathbb{N}$};
+        \node[above=0.05 of plusdot] {$\mathbb{N}$};
+        \coordinate (outer_out1) at (outer.east|-id_out1);
+        \begin{scope}[above, font=\footnotesize]
+            \draw (id_out1) to node [below] {$\mathbb{N}$} (outer_out1);
+            \draw (plus_out1) to node {} (plusdot);
+            \draw
+            let 
+                \p1 = (plus.south west-| plus_out1),
+                \p2 = (plus.south west),
+                \n1 = \bby,
+                \n2 = \bbportlen
+            in
+                (plusdot) to[out=0, in=0]
+                (\x1+\n2, \y1-\n1-\bbportlen) --
+                (\x2-\n2, \y2-\n1-\bbportlen) to[out=180, in=180]
+                (id_in1);
+            \draw
+                let 
+                    \p1 = (id.north west-| id_out1),
+                    \p2 = (id.north west),
+                    \n1 = \bby,
+                    \n2 = \bbportlen
+                in
+                    (iddot) to[out=0, in=0]
+                    (\x1+\n2, \y1+\n1+\bbportlen) --
+                    (\x2-\n2, \y2+\n1+\bbportlen) to[out=180, in=180]
+                    (plus_in2);
+            \draw
+            let 
+                \p1 = (plus.north west-| plus_out1),
+                \p2 = (plus.north west),
+                \n1 = \bby,
+                \n2 = \bbportlen
+            in
+                (plusdot) to[out=0, in=0]
+                (\x1+\n2, \y1+\n1) --
+                (\x2-\n2, \y2+\n1) to[out=180, in=180]
+                (plus_in1);
+        \end{scope}
+    \end{tikzpicture}
+\end{equation}
 
 To break it down: the $+$ function takes two natural numbers and produces one output, and the $id$ function takes a natural number and outputs a natural number. In terms of dynamical systems, however, we have to think about what the \texttt{readout} and \texttt{update} functions are doing for each system: \texttt{readout} can only read what the current state is, and \texttt{update} can only update the state given an input. At every timestep, all systems produce their outputs based on the current state, then all the inputs are read, and the states of all systems are updated. Therefore, the effect of the \texttt{id} function is only felt one timestep later. Hence it plays the subtle role of storing the Fibonacci value computed in the previous timestep, which is why its output is fed as an input to the $+$ function. The code for this system is this:
 
@@ -414,30 +592,60 @@ The Lotka-Volterra predator-prey model is an essential system \cite{Murray2002} 
 
 The logic of it is that, for rabbits, they will reproduce naturally at a rate $\alpha$, while being hunted at a rate $\beta f$. In other words, their encounters with and subsequent predation by foxes is modeled by multiplying the number of foxes by a "fox appetite" parameter $\beta$. For foxes, their population can be thought of as flourishing or growing at the rate that they can encounter and eat rabbits. This aspect is captured by the term $\delta f r$. They naturally die at a rate of $\gamma$. Note that $\delta$ doesn't have to match $\beta$ - the rate at which foxes eat rabbits is not necessarily the same as the rate at which fox populations grow as a result of being well-fed, though the intuitive relationship between these parameters could be captured by a more sophisticated model.
 
-This system can be represented in terms of our open dynamical systems by considering the rabbit and fox populations as each inhabited by an individual system. They output their population (so \texttt{readout} is the identity function) and that gets fed as an input to the other system, along with any other parameters - in this case $\alpha$, $\beta$, $\delta$ and $\gamma$.
+This system can be represented in terms of our open dynamical systems by considering the rabbit and fox populations as each inhabited by an individual system. They output their population (so \texttt{readout} is the identity function) and that gets fed as an input to the other system, along with any other parameters - in this case $\alpha$, $\beta$, $\delta$ and $\gamma$. Here's the wiring diagram for it:
 
-\begin{tikzpicture}[oriented WD, bb min width =.5cm, bbx=.5cm, bb port sep =1,bb port length=0, bby=.15cm, baseline=(Z.center)]
-  \node[bb={4}{1}, fill=blue!15] (rabbit) {Rabbits};
-  \node[bb={4}{1}, fill=blue!15, below = 8 of rabbit] (fox) {Foxes};
+\begin{equation}\label{wd:lotkavolterra}
+    \begin{tikzpicture}[oriented WD, baseline=(B)]
+        \node[bb={2}{1}, inner sep=20pt, fill=orange!15] (r) {rabbits};
+        \node[bb={2}{1}, below=3 of r, inner sep=23pt, fill=orange!15] (f) {foxes};
+        \node[circle, inner sep=1.5pt, fill=black, right=.1] at (r_out1) (rdot) {};
+        \node[circle, inner sep=1.5pt, fill=black, right=.1] at (f_out1) (fdot) {};
+        \node[bb={0}{0}, inner ysep=20pt, inner xsep=1cm, fit=(r) (f) (rdot) (fdot)] (outer) {};
+        \node[above right=0 and 0.45 of r.south] {$\mathbb{R}$};
+        \node[above right=0 and 0.42 of f.south] {$\mathbb{R}$};
+        \node[font=\small, right=0.05 of r_in1] {$\mathbb{R}$};
+        \node[font=\small, right=0.05 of r_in2] {$\mathbb{R}$};
+        \node[font=\small, right=0.05 of f_in1] {$\mathbb{R}$};
+        \node[font=\small, right=0.05 of f_in2] {$\mathbb{R}$};
+        \coordinate (outer_in1) at (outer.west|-r_in1);
+        \coordinate (outer_in2) at (outer.west|-f_in2);
+        \coordinate (outer_out1) at (outer.east|-r_out1);
+        \coordinate (outer_out2) at (outer.east|-f_out1);
+        \begin{scope}[above, font=\footnotesize]
+            \draw node [above] {} (outer_in1) to (r_in1);
+            \draw node [above] {} (outer_in2) to (f_in2);
+            
+            \draw (r_out1) to node [above] {$\mathbb{R}$} (outer_out1);
+            \draw (f_out1) to node [below] {$\mathbb{R}$} (outer_out2);
+            \draw
+            let 
+                \p1 = (r.south west-| r_out1),
+                \p2 = (r.south west),
+                \n1 = \bby,
+                \n2 = \bbportlen
+            in
+                (rdot) to[out=0, in=0]
+                (\x1+\n2, \y1-\n1-\bbportlen) --
+                (\x2-\n2, \y2-\n1-\bbportlen) to[out=180, in=180]
+                (f_in1);
+            \draw
+            let 
+                \p1 = (f.north west-| f_out1),
+                \p2 = (f.north west),
+                \n1 = \bby,
+                \n2 = \bbportlen
+            in
+                (fdot) to[out=0, in=0]
+                (\x1+\n2, \y1+\n1) --
+                (\x2-\n2, \y2+\n1) to[out=180, in=180]
+                (r_in2);
+            \node[draw=black, fill=white, circle, inner sep=1.2pt] (beta) at ($(r_in2) + (-0.2, -2.4)$){$\beta$};
+            \node[draw=black, fill=white, circle, inner sep=2pt] (delta) at ($(f_in1) + (-0.2, 0.2)$) {$\delta$};
+        \end{scope}
+    \end{tikzpicture}
+\end{equation}
 
-  \node[draw=blue, circle, inner sep = 0] (c2) at ($(fox_out1) + (2, 2)$){$c_2$};
-  \node[draw=blue, circle, inner sep = 0, ] (c1) at ($(rabbit_out1-|fox_out1) + (2, -2)$) {$c_1$};
-
-  \node[bb={2}{2}, fit = {($(rabbit.north east) + (5,2)$ ) ($(rabbit.north west) + (-2,0)$) ( $(fox.south east) + (5, -2)$ ) ($(fox.south west) + (-2, 0)$)}] (Z) {};
-
- \draw (rabbit_out1) to ($(rabbit_out1-|Z_out1) + (0,2)$);
- \draw (rabbit_out1) to[in=170] (c1);
- \draw (rabbit_in1-|Z_in1) to (rabbit_in1);
- \draw (fox_out1) to ($(fox_out1-|Z_out1) + (0,-2)$);
- \draw (fox_out1) to (c2);
- \draw (fox_in4-|Z_in1) to (fox_in4);
-
- \coordinate[below = 4 of rabbit] (midpoint);
- \draw (c1) to[out=350, in=10, looseness=2] (midpoint);
- \draw (midpoint) to[out=190, in=180, looseness=3] (fox_in1);
- \draw (c2) to[out=10, in=350, looseness=2] (midpoint);
- \draw (midpoint) to[out=170, in=180, looseness=3] (rabbit_in4);
-\end{tikzpicture}
+The circles with the constants signify multiplication of the values by the constants $\beta$ and $\delta$. This is something we express at the wiring pattern lens' level in this system. 
 
 Thinking of the systems individually allows us a "separation of concerns" in specifying these systems' behavior that isn't there in environments like Matlab or Python. The code for the rabbit system is:
 \begin{minted}[escapeinside=||]{agda}
@@ -463,13 +671,6 @@ foxes = mkdyn ℝ (mkpoly ℝ λ _ → ℝ × ℝ) (readout ⇆ update)
 \end{minted}
 
 Note that each of these systems have only two parameters, whereas by the equations \ref{eq:rabbits} and \ref{eq:foxes}, they ought to have three: \ref{eq:rabbits} should get $\alpha$ and $\beta$ from "outside" the system, whereas \ref{eq:foxes} should get $\delta$ and $\gamma$. It is a somewhat arbitrary choice that we make to make the $\beta$ and $\gamma$ parameters part of the larger system, that is the one given rise to by the composition of these systems tensored with the wiring diagram, and not constants within the system themselves, for instance.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=0.9\textwidth]{figure/lotka_volterra.png}
-    \caption{Lotka-Volterra oscillatory dynamics. As the population of rabbits grows, the population of foxes catches up, causing it to go down.}
-    \label{fig:lvfig}
-\end{figure}
 
 The final system is then a composition with a certain wiring diagram lens:
 
@@ -502,11 +703,17 @@ lotkaVolterra β γ = install preLV
 Running this system through the command line interface produces the expected oscillating dynamics of the Lotka-Volterra model, albeit with some numerical instability causing the oscillations to grow slightly. Figure \ref{fig:lvfig} shows this dynamics, obtained by running the system through the command line interface with the following parameters.
 
 \begin{minted}{shell}
-./Plot LotkaVolterra --alpha 0.2 --beta 0.2 --delta 0.5 \
-                     --gamma 0.4 --r0 1.0 --f0 0.9 --dt 0.1
-\end{minted}
+    ./Plot LotkaVolterra --alpha 0.2 --beta 0.2 --delta 0.5 \
+                         --gamma 0.4 --r0 1.0 --f0 0.9 --dt 0.1
+    \end{minted}
 
-\todo{make this pretty. perhaps improve the plotting code as well? it's a bit cringe}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figure/lotka_volterra.png}
+    \caption{Lotka-Volterra oscillatory dynamics. As the population of rabbits grows, the population of foxes catches up, causing it to go down.}
+    \label{fig:lvfig}
+\end{figure}
+
 
 \subsubsection{Lorenz system}
 The Lorenz system\cite{lorenz1963} is what is known as a chaotic system, in an elementary form. It was introduced by Edward Lorenz as a simplified model of atmospheric convection. The three dimensionless (as in, pure proportions with no physical units) variables $x$, $y$ and $z$ correspond to rate of convection, temperature difference between ascending and descending air currents, and how temperature changes with height. It's given by the following differential equations:
