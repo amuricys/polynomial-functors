@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/nixos.org) (preloaded format=pdflatex 1980.1.1)  24 MAY 2023 19:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/nixos.org) (preloaded format=pdflatex 1980.1.1)  24 MAY 2023 19:21
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -2789,13 +2789,14 @@ Chapter 4.
 
 (./_minted-Main/425675BD47D67659500FC1C099FAD381BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
+Missing character: There is no ; in font nullfont!
 <figure/chartExample.png, id=770, 462.528pt x 260.172pt>
 File: figure/chartExample.png Graphic file (type png)
 <use figure/chartExample.png>
-Package pdftex.def Info: figure/chartExample.png  used on input line 12.
+Package pdftex.def Info: figure/chartExample.png  used on input line 81.
 (pdftex.def)             Requested size: 462.52686pt x 260.17134pt.
 
-Overfull \hbox (35.7355pt too wide) in paragraph at lines 12--13
+Overfull \hbox (35.7355pt too wide) in paragraph at lines 81--82
  [][] 
  []
 
@@ -2825,12 +2826,12 @@ Overfull \hbox (35.7355pt too wide) in paragraph at lines 12--13
 
 
 (./_minted-Main/1F4D6A4449F3D89E695D0BF0E5864A0FBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex [34 <./figure/chartExample.png>])
 \openout5 = `Main.pyg'.
 
 
 (./_minted-Main/A23372F7B982E4D91217ADE0DB0A6F8ABE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [34 <./figure/chartExample.png>]
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
@@ -2851,7 +2852,7 @@ Overfull \hbox (35.7355pt too wide) in paragraph at lines 12--13
 
 (./_minted-Main/84DDDB831066F98FD1840A6968FA3182BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
-Overfull \hbox (17.47775pt too wide) in paragraph at lines 78--79
+Overfull \hbox (17.47775pt too wide) in paragraph at lines 147--148
 []\T1/lmr/m/n/12 (-20) The weak vari-ant of chart equal-ity, is di-rectly de-fi
 ned by us-ing, [].
  []
@@ -2870,7 +2871,7 @@ ned by us-ing, [].
 
 
 (./_minted-Main/2B657A9381AC025F272AC0A057081A5EBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [35]
+1.pygtex [35])
 \openout4 = `Main.pyg'.
 
 
@@ -2931,12 +2932,15 @@ ned by us-ing, [].
 
 (./_minted-Main/84575CAF974556E59755E20DF73C5D52BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
-Overfull \hbox (12.96927pt too wide) in paragraph at lines 176--177
+Overfull \hbox (12.96927pt too wide) in paragraph at lines 245--246
 []\T1/lmr/m/n/12 (-20) The proofs are also sim-i-lar, and can be found in \T1/l
 mr/bx/n/12 (-20) Cat-e-gor-i-cal/Chart/Coproduct.agda\T1/lmr/m/n/12 (-20) . 
  []
 
-[37]
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [37]
 \openout4 = `Main.pyg'.
 
 
@@ -2944,17 +2948,18 @@ mr/bx/n/12 (-20) Cat-e-gor-i-cal/Chart/Coproduct.agda\T1/lmr/m/n/12 (-20) .
 1.pygtex)
 
 LaTeX Warning: Reference `fig:commutingSquareCompose' on page 38 undefined on i
-nput line 228.
+nput line 297.
 
 
 LaTeX Warning: Reference `section:commutingSquaresCompose' on page 38 undefined
- on input line 237.
+ on input line 306.
 
+[38]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/D6206AAF7612C9C3802AF07CF81BCDA2BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [38])) (./include/Applications.tex [39] [40
+1.pygtex)) (./include/Applications.tex [39] [40
 
 ]
 Chapter 5.
@@ -3212,17 +3217,12 @@ LaTeX Warning: Citation 'Cucchi_2022' on page 64 undefined on input line 927.
 LaTeX Warning: Citation 'jaeger2001echo' on page 64 undefined on input line 931
 .
 
-[64 <./figure/reservoir_setup.png>]
-Overfull \hbox (17.5pt too wide) in paragraph at lines 1080--1082
-\T1/lmr/m/n/12 (-20) read-ers can con-sult the im-ple-men-ta-tion in \T1/lmtt/m
-/n/12 Dynamical/Reservoir/ModeDependent.agda\T1/lmr/m/n/12 (-20) .
- []
-
+[64 <./figure/reservoir_setup.png>] [65]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/133045115052CE59C76BB5627D5559E4BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [65])
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
@@ -3461,11 +3461,11 @@ Package logreq Info: Writing requests to 'Main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 49978 strings out of 478278
- 1121991 string characters out of 5819600
- 1785363 words of memory out of 5000000
- 66196 multiletter control sequences out of 15000+600000
- 611994 words of font info for 311 fonts, out of 8000000 for 9000
+ 49980 strings out of 478278
+ 1122036 string characters out of 5819600
+ 1785365 words of memory out of 5000000
+ 66200 multiletter control sequences out of 15000+600000
+ 611865 words of font info for 310 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  105i,17n,107p,1284b,2242s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final
@@ -3520,7 +3520,7 @@ c/amsfonts/symbols/msam10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texl
 ive-combined-full-2021-final/share/texmf/fonts/type1/urw/helvetic/uhvb8a.pfb></
 nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/sha
 re/texmf/fonts/type1/urw/helvetic/uhvr8a.pfb>
-Output written on Main.pdf (98 pages, 2689480 bytes).
+Output written on Main.pdf (98 pages, 2691616 bytes).
 PDF statistics:
  1278 PDF objects out of 1440 (max. 8388607)
  1060 compressed objects within 11 object streams

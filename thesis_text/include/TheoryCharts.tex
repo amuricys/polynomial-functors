@@ -7,6 +7,75 @@ The objects of \textbf{Chart} are exactly the same as \textbf{Poly}: polynomial 
 \subsection{Chart}
 Arrows in \textbf{Chart} are called charts. The difference between charts and lenses is that while lenses has the map on directions going backwards, charts has the map on directions going forwards. This makes charts easier to reason about, since the map on directions and the map on positions goes the same way. An example chart can be seen in figure \ref{fig:exampleChart}. The definition of \mintinline{agda}{Chart} in Agda is as follows:
 
+
+\[
+\begin{tikzpicture}
+	\node (p1) {
+	\begin{tikzpicture}[trees, sibling distance=2.5mm]
+    \node[green!50!black, "{\color{green!50!black}\tiny 1}" below] (1) {$\bullet$} 
+      child[green!50!black] {coordinate (11)}
+      child[green!50!black] {coordinate (12)}
+      child[green!50!black] {coordinate (13)}
+      child[green!50!black] {coordinate (14)}
+      child[green!50!black] {coordinate (15)};
+    \node[right=1.5 of 1, red!75!black, "{\color{red!75!black}\tiny A}" below] (2) {$\bullet$} 
+      child[red!75!black] {coordinate (21)}
+      child[red!75!black] {coordinate (22)}
+      child[red!75!black] {coordinate (23)};
+    \draw[|->, shorten <= 3pt, shorten >= 3pt] (1) -- (2);
+    \begin{scope}[densely dotted, bend right, decoration={markings, mark=at position 0.75 with \arrow{stealth}}]
+      \draw[postaction={decorate}] (21) to (11);
+      \draw[postaction={decorate}] (22) to (12);
+      \draw[postaction={decorate}] (23) to (13);
+    \end{scope}
+  \end{tikzpicture}	
+	};	
+%
+	\node (p2) [right=1 of p1] {
+	\begin{tikzpicture}[trees, sibling distance=2.5mm]
+    \node[green!50!black, "{\color{green!50!black}\tiny 2}" below] (1) {$\bullet$} 
+    child[green!50!black] {coordinate (11)}
+    child[green!50!black] {coordinate (12)};
+    \node[right=of 1, red!75!black, "{\color{red!75!black}\tiny A}" below] (2) {$\bullet$} 
+      child[red!75!black] {coordinate (21)}
+      child[red!75!black] {coordinate (22)}
+      child[red!75!black] {coordinate (23)};
+    \draw[|->, shorten <= 3pt, shorten >= 3pt] (1) -- (2);
+    \begin{scope}[densely dotted, bend right, decoration={markings, mark=at position 0.75 with \arrow{stealth}}]
+      \draw[postaction={decorate}] (21) to (11);
+      \draw[postaction={decorate}] (22) to (11);
+      \draw[postaction={decorate}] (23) to (12);
+    \end{scope}
+  \end{tikzpicture}	
+	};	
+%
+	\node (p3) [right=1 of p2] {
+	\begin{tikzpicture}[trees, sibling distance=2.5mm]
+    \node[green!50!black, "{\color{green!50!black}\tiny 3}" below] (1) {$\bullet$} 
+      child[green!50!black] {coordinate (11)}
+      child[green!50!black] {coordinate (12)};
+    \node[right=of 1, red!75!black, "{\color{red!75!black}\tiny C}" below] (2) {$\bullet$} 
+      child[red!75!black] {coordinate (21)};
+		;
+    \draw[|->, shorten <= 3pt, shorten >= 3pt] (1) -- (2);
+    \begin{scope}[densely dotted, bend right, decoration={markings, mark=at position 0.75 with \arrow{stealth}}]
+      \draw[postaction={decorate}] (21) to (12);
+
+    \end{scope}
+  \end{tikzpicture}	
+	};	
+ 	\node (p4) [below right=-1.05cm and 1 of p3] {
+	\begin{tikzpicture}[trees, sibling distance=2.5mm]
+    \node[green!50!black, "{\color{green!50!black}\tiny 4}" below] (1) {$\bullet$} 
+    child[green!50!black];
+    \node[right=of 1, red!75!black, "{\color{red!75!black}\tiny E}" below] (2) {$\bullet$} 
+		;
+    \draw[|->, shorten <= 3pt, shorten >= 3pt] (1) -- (2);
+  \end{tikzpicture}	
+	};	
+\end{tikzpicture}
+\]
+
 \begin{figure}
     \centering
     \includegraphics{figure/chartExample.png}

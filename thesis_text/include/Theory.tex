@@ -5,7 +5,7 @@ This chapter covers the theory part of the formalization, consisting mainly of p
 
 \section{The category \textbf{Poly}}
 
-The category \textbf{Poly} refers, to the category of polynomial endofunctors in \textbf{Set}, with morphisms as natural transformations. They are called \textit{Polynomial} because these functors can be written down as high-school algebraic expressions, like:
+The category \textbf{Poly} is the category of polynomial endofunctors in \textbf{Set}, with morphisms as natural transformations. They are called \textit{Polynomial} because these functors can be written down as high-school algebraic expressions, like:
 $$p(y) = y^2 +4y + 10$$
 But instead of handling numbers, these polynomial expressions have \textit{sets} plugged into the variable \textit{y}.
 Sum, multiplication, exponentiation, and numeric literals, are all considered in the context of sets. A numeric literal such as $7$ represents the set $\underline{7}$, a set with 7 elements. A $+$ symbol corresponds to \textit{the categorical coproduct}, multiplication  corresponds to \textit{the categorical product} and exponentiation to the exponential object: in this context, it is the type of functions from the exponent to the base of the term. For example, $ f : 7^2 \cong f : 2 \rightarrow 7$. This way of thinking algebraically is very convenient, because plugging in "numbers" into the polynomial expressions to get "numbers" back will turn out to be a very useful kind of operation.
@@ -112,7 +112,7 @@ This type can trivially implement the \texttt{Functor} typeclass, so much so tha
 % \end{tikzpicture}
 % \]
 
-Since polynomials act on objects and functions, application can be defined as:
+Polynomials act on both objects and functions, and this is defined as:
 \begin{minted}{agda}
 _⦅_⦆ : Polynomial → Set → Set
 _⦅_⦆ (mkpoly position direction) Y = Σ position λ x → (direction x → Y)
@@ -152,7 +152,7 @@ Arrows on \textbf{Poly} are so-called \textit{dependent lenses}.
 The reason is that arrows between monomials are the usual definition of lenses in Haskell, as a pair of non-dependent "getter and setter" functions. \todo{Show types of the getter and setter}
 A dependent lens has the additional property that "the types we are allowed to set depend on the value we get".
 This notion is explored further in the applications part of the thesis. 
-Since non-dependent lenses (lenses between monomials) are a very special case of dependent lenses, the arrows in \textbf{Poly} is referred to as simply \textit{lenses}, like the Agda definition.
+Since non-dependent lenses (lenses between monomials) are a very special case of dependent lenses, the arrows in \textbf{Poly} are referred to as simply \textit{lenses}, like the Agda definition.
 
 \remarktitle{Perspectives on lenses}
 
@@ -271,7 +271,7 @@ Each position in $p$ is sent to a position in $q$, and for each of these sending
 \end{tikzpicture}
 \]
 
-If instead, also the map on the directions also goes forward, it would be another kind of arrow called charts. Charts is the arrows in the category \textbf{Chart}, which is the second category this thesis explores, in section \ref{chapter:charts}.
+If instead the map on the directions also goes forward, it would be another kind of arrow called charts. Charts are the arrows in the category \textbf{Chart}, which is the second category this thesis explores, in section \ref{chapter:charts}.
 
 In the Haskell view of polynomials, lenses can be given as the following type synonym (requires \texttt{RankNTypes} language extension):
 \begin{minted}{haskell}
@@ -295,7 +295,7 @@ exampleLens = \case
   Frth -> _
 \end{minted}
 
-The map on positions translates to a map on value constructors; for each of the summands of $p$, first a value constructor in $q$ must be chosen. After choosing a constructor:
+The map on positions translates to a map on value constructors; for each of the summands of $p$, first a value constructor in $q$ must be chosen. After choosing a constructor, its values must be filled in:
 
 \begin{minted}{haskell}
 exampleLens :: Lens P Q
@@ -312,7 +312,7 @@ In an abstract sense, we can see this as a function of type $\underline{3} \righ
 
 Expressing more general kinds of lenses in Haskell using this scheme becomes hard quickly however.
 The dependency between the value of the map on positions and the type of the map of directions is hidden and baked into the syntax of the language. 
-There are attempts to do this in Haskell \cite{iceland_jack_thread} \cite{sjoerd_gist}, but the Haskell perspective is only given for the sake of perspective. Polynomials and lenses are much more natural in Agda.
+There are attempts to do this in Haskell \cite{iceland_jack_thread} \cite{sjoerd_gist}, but the Haskell view is given only for the sake of perspective. Polynomials and lenses are much more natural in Agda.
 
 \remarktitle{Lenses in Agda}
 
@@ -355,7 +355,7 @@ idLens = id ⇆ λ _ → id
 \end{minted}
 
 \subsubsection{Composing lenses}
-Composition of lenses is done in the natural way. The map positions composed is straightforward function composition. The map on directions is also function composition, but with some extra work dealing with maps on directions being dependent.
+Composition of lenses is done in the natural way. The composed maps on positions are obtained with straightforward function composition. The same is true of the maps on directions, but with some extra work to deal with the fact that they are dependent functions.
 
 \begin{minted}{agda}
 _∘ₚ_ : {A B C : Polynomial} → Lens B C → Lens A B → Lens A C
@@ -365,7 +365,7 @@ _∘ₚ_ (f ⇆ f♯) (g ⇆ g♯) = (f ∘ g) ⇆ (λ i → g♯ i ∘ f♯ (g 
 \subsection{Categorical axioms}
 
 That the associativity and identity laws hold for \textbf{Poly} follows directly from the definitions of these types, which means that they can be proved via Cubical Agda's \mintinline{agda}{refl}.
-With all pieces in place, the full formulation of \textbf{Poly} as a category in \texttt{agda-categories}' is provided:
+With all the pieces in place, the full formulation of \textbf{Poly} as a category in \texttt{agda-categories}' is provided:
 
 \begin{minted}{agda}
 -- Categorical/Instance/Poly.agda
@@ -456,7 +456,7 @@ poly≡∀ {a} {b} fstA≡fstB sndA≡sndB = poly≡ fstA≡fstB λ i x → sndA
 \end{minted}
 
 \section{Lens equality}
-In category theory, it is of interest to know when two morphisms are equal. Therefore, also a characterization of equality for lenses are needed. 
+In category theory, it is frequently of interest to know when two morphisms are equal. Therefore, also a characterization of equality for lenses are needed. 
 This characterization of equality needs to be convenient enough to be usable in practical proofs about \textbf{Poly}.
 
 A lens consists of two components, with the second component depending on the first. 
@@ -482,7 +482,7 @@ lens≡lensSigma = isoToPath (iso lensToSigma
                                 (λ _ → refl))
 \end{minted}
 
-Equality for this sigma is defined and then transferred to the lens type:
+Equality for this $\Sigma$-type is defined and then transferred to the lens type:
 
 \begin{minted}{agda}
 lensSigmas≡ : {p q : Polynomial} (f g : LensAsSigma p q)
@@ -510,7 +510,7 @@ The main reason is \textit{usability}. This is a convenience-driven decision: we
 
 
 \section{Initial object}
-An object is called initial if there exists an unique arrow from every other object. In \textbf{Poly}, the initial object is the polynomial $p(y) = 0$ with no positions (and therefore also no directions). It is the functor that sends any set to the empty set.
+An object is called initial if there exists an unique arrow from it to every other object in the category. In \textbf{Poly}, the initial object is the polynomial $p(y) = 0$ with no positions (and therefore also no directions). It is the functor that sends any set to the empty set.
 
 \begin{minted}[escapeinside=||]{agda}
 |$\mathbb{0}$| : Polynomial
