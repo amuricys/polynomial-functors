@@ -955,9 +955,130 @@ To explain the variables in order: $H_{states}$ is a matrix representation of th
 
 We will show an implementation of a reservoir computer that learns the dynamics of the Lorenz system, whose implementation we have already shown. The dashed box in Figure \ref{fig:reservoirsetup} is reminiscent of a polynomial as an interface, and the system taking in inputs from different sources depending on its outputs suggests a mode-dependent dynamical system. Mode-dependence on the type level is not needed, since the systems in question always receive inputs and provide outputs of the same types, but the wiring pattern changes through time. Our situation is with the three wiring patterns below, each corresponding to one of the stages mentioned:
 
-\todo{draw}
+\[
+    \begin{tikzpicture}
+    \node (wiring1) {
+        \begin{tikzpicture}[oriented WD, baseline=(B)]
+            \node[bb={0}{3}, fill=orange!15] (lortrain) {\text{train}};
+            \node[bb={0}{3}, below=2 of lortrain,fill=orange!15] (lortest) {\text{test}};
+            \node[bb={3}{0}, below right=-2 and 1 of lortrain, fill=orange!15]  (res) {\text{RC}};
+            \node[bb={0}{0}, inner ysep=25pt, inner xsep=1cm, fit=(lortrain) (lortest) (res)] (outer) {};
 
-Not all of the Agda code is included, since it is quite big and again, readers can consult the implementation in \texttt{Dynamical/Reservoir/ModeDependent.agda}. But some key areas to highlight are the following definitions.
+            \node[circle, inner sep=1.5pt, fill=black, right=.2] at (lortest_out1) (ltd1) {};
+            \node[circle, inner sep=1.5pt, fill=black, right=.2] at (lortest_out2) (ltd2) {};
+            \node[circle, inner sep=1.5pt, fill=black, right=.2] at (lortest_out3) (ltd3) {};
+
+            \begin{scope}[above, font=\footnotesize]
+                \draw (lortrain_out1) to node {} (res_in1);
+                \draw (lortrain_out2) to node {} (res_in2);
+                \draw (lortrain_out3) to node {} (res_in3);
+                
+                \draw (lortest_out1) to node {} (ltd1);
+                \draw (lortest_out2) to node {} (ltd2);
+                \draw (lortest_out3) to node {} (ltd3);
+                
+            \end{scope}
+            \node[below=0 of outer.north] {Training};
+            
+        \end{tikzpicture}
+    };
+    \node (wiring2) [below right=-5.9 and 1 of wiring1] {
+        \begin{tikzpicture}[oriented WD, baseline=(B)]
+            \node[bb={0}{3}, fill=orange!15] (lortrain) {\text{train}};
+            \node[bb={0}{3}, below=2 of lortrain,fill=orange!15] (lortest) {\text{test}};
+            \node[bb={3}{0}, below right=-1 and 1 of lortrain, fill=orange!15]  (res) {\text{RC}};
+            \node[bb={0}{0}, inner ysep=25pt, inner xsep=1cm, fit=(lortrain) (lortest) (res)] (outer) {};
+
+            \node[circle, inner sep=1.5pt, fill=black, right=.2] at (lortrain_out1) (ltd1) {};
+            \node[circle, inner sep=1.5pt, fill=black, right=.2] at (lortrain_out2) (ltd2) {};
+            \node[circle, inner sep=1.5pt, fill=black, right=.2] at (lortrain_out3) (ltd3) {};
+
+            \begin{scope}[above, font=\footnotesize]
+                
+                \draw (lortest_out1) to node {} (res_in1);
+                \draw (lortest_out2) to node {} (res_in2);
+                \draw (lortest_out3) to node {} (res_in3);
+
+                \draw (lortrain_out1) to node {} (ltd1);
+                \draw (lortrain_out2) to node {} (ltd2);
+                \draw (lortrain_out3) to node {} (ltd3);
+                
+            \end{scope}
+            \node[below=0 of outer.north] {Touching};
+        \end{tikzpicture}
+    };
+    %
+\end{tikzpicture}
+\]
+\[
+    \begin{tikzpicture}[oriented WD, baseline=(B)]
+        \node[bb={0}{3}, fill=orange!15] (lortrain) {\text{train}};
+        \node[bb={0}{3}, below=2 of lortrain,fill=orange!15] (lortest) {\text{test}};
+        \node[bb={3}{3}, right=1 of lortrain, fill=orange!15]  (res) {\text{RC}};
+
+        \node[circle, inner sep=1.5pt, fill=black, right=.2] at (lortrain_out1) (ltd1) {};
+        \node[circle, inner sep=1.5pt, fill=black, right=.2] at (lortrain_out2) (ltd2) {};
+        \node[circle, inner sep=1.5pt, fill=black, right=.2] at (lortrain_out3) (ltd3) {};
+        \node[circle, inner sep=1.5pt, fill=black, right=.1] at (res_out1) (resdot1) {};
+        \node[circle, inner sep=1.5pt, fill=black, right=.1] at (res_out2) (resdot2) {};
+        \node[circle, inner sep=1.5pt, fill=black, right=.1] at (res_out3) (resdot3) {};
+        \node[bb={0}{0}, inner ysep=35pt, inner xsep=1cm, fit=(lortrain) (lortest) (res) (ltd1) (ltd2) (ltd3) (resdot1) (resdot2) (resdot3)] (outer) {};
+        \coordinate (outer_out1) at (outer.east|-res_out1);
+        \coordinate (outer_out2) at (outer.east|-res_out2);
+        \coordinate (outer_out3) at (outer.east|-res_out3);
+        \coordinate (outer_out4) at (outer.east|-lortest_out1);
+        \coordinate (outer_out5) at (outer.east|-lortest_out2);
+        \coordinate (outer_out6) at (outer.east|-lortest_out3);
+
+        \begin{scope}[above, font=\footnotesize]
+            \draw (lortrain_out1) to node {} (ltd1);
+            \draw (lortrain_out2) to node {} (ltd2);
+            \draw (lortrain_out3) to node {} (ltd3);
+            \draw (res_out1) to node {} (outer_out1);
+            \draw (res_out2) to node {} (outer_out2);
+            \draw (res_out3) to node {} (outer_out3);
+            \draw (lortest_out1) to node {} (outer_out4);
+            \draw (lortest_out2) to node {} (outer_out5);
+            \draw (lortest_out3) to node {} (outer_out6);
+
+            \draw
+            let 
+                \p1 = (res.north west-| res_out1),
+                \p2 = (res.north west),
+                \n1 = \bby,
+                \n2 = \bbportlen
+            in
+                (resdot1) to[out=0, in=0]
+                (\x1+\n2, \y1+\n1) --
+                (\x2-\n2, \y2+\n1) to[out=180, in=180]
+                (res_in1);
+            \draw
+            let 
+                \p1 = (res.north west-| res_out2),
+                \p2 = (res.north west),
+                \n1 = \bby,
+                \n2 = \bbportlen
+            in
+                (resdot2) to[out=0, in=0]
+                (\x1+\n2, \y1+\n1+\n2) --
+                (\x2-\n2, \y2+\n1+\n2) to[out=180, in=180]
+                (res_in2);
+            \draw
+            let 
+                \p1 = (res.north west-| res_out3),
+                \p2 = (res.north west),
+                \n1 = \bby,
+                \n2 = \bbportlen
+            in
+                (resdot3) to[out=0, in=0]
+                (\x1+\n2, \y1+\n1+\n2+\n2) --
+                (\x2-\n2, \y2+\n1+\n2+\n2) to[out=180, in=180]
+                (res_in3);
+        \end{scope}
+        \node[below=0 of outer.north] {Going};
+    \end{tikzpicture}
+\]
+The outputs we'll care to plot are those at \textit{Going} stage, when the reservoir is outputting its attempt at predicting the input sequence from the point it was left off from the touching stage. Not all of the Agda code is included, since it is quite big and again, readers can consult the implementation in \texttt{Dynamical/Reservoir/ModeDependent.agda}. But some key areas to highlight are the following definitions.
 
 Firstly, the state of the reservoir system:
 
