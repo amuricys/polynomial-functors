@@ -581,22 +581,24 @@ terminalOne = record { ⊤ = |$\mathbb{1}$| ; ⊤-is-terminal = oneIsTerminal }
 \end{minted}
 
 \section{Product}
-The product of two objects $A$ and $B$ is an object $A \times B$ together with arrows $\pi_1$ and $\pi_2$ such that, given any other object $T$ and arrows from $T$ to $A$ and $B$, the following diagram commutes and the arrow $!$ exists and is unique:
-
 % https://q.uiver.app/?q=WzAsNCxbMCwzLCJBIl0sWzQsMywiQiJdLFsyLDIsIkEgXFx0aW1lcyBCIl0sWzIsMCwiVCJdLFsyLDAsIlxccGlfMSIsMV0sWzIsMSwiXFxwaV8yIiwxXSxbMywyLCIhIiwxLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzMsMCwiaCIsMV0sWzMsMSwiayIsMV1d
-\[\begin{tikzcd}
-	&& T \\
-	\\
-	&& {A \times B} \\
-	A &&&& B
-	\arrow["{\pi_1}"{description}, from=3-3, to=4-1]
-	\arrow["{\pi_2}"{description}, from=3-3, to=4-5]
-	\arrow["{!}"{description}, dashed, from=1-3, to=3-3]
-	\arrow["h"{description}, from=1-3, to=4-1]
-	\arrow["k"{description}, from=1-3, to=4-5]
-\end{tikzcd}\]
+\begin{figure}
+  \[\begin{tikzcd}
+    && T \\
+    \\
+    && {A \times B} \\
+    A &&&& B
+    \arrow["{\pi_1}"{description}, from=3-3, to=4-1]
+    \arrow["{\pi_2}"{description}, from=3-3, to=4-5]
+    \arrow["{!}"{description}, dashed, from=1-3, to=3-3]
+    \arrow["h"{description}, from=1-3, to=4-1]
+    \arrow["k"{description}, from=1-3, to=4-5]
+  \end{tikzcd}\]
+  \caption{Product diagram of two objects $A$ and $B$.}
+  \label{fig:productDiagram}
+\end{figure}
 
-The arbitrary object $T$ can be intuitively thought of as a "candidate" object to be the product. This is an example of a \textit{universal property} in category theory and the arrows $h$ and $k$ are said to be \textit{factorized} through the compositions $\pi_1 \circ  !$ and $\pi_2 \circ !$ respectively.
+The product of two objects $A$ and $B$ is an object $A \times B$ together with arrows $\pi_1$ and $\pi_2$ such that, given any other object $T$ and arrows from $T$ to $A$ and $B$, the diagram in Figure \ref{fig:productDiagram} commutes and the arrow $!$ exists and is unique. The arbitrary object $T$ can be intuitively thought of as a "candidate" object to be the product. This is an example of a \textit{universal property} in category theory and the arrows $h$ and $k$ are said to be \textit{factorized} through the compositions $\pi_1 \circ  !$ and $\pi_2 \circ !$ respectively.
 
 \textbf{Poly} has all products, which means that for any two polynomials $p$ and $q$ we can construct their product as the polynomial $p*q$.
 
@@ -608,15 +610,161 @@ _*_ : Polynomial → Polynomial → Polynomial
     mkpoly (posP × posQ) (λ {(posP , posQ) → (dirP posP) ⊎ (dirQ posQ)})
 \end{minted}
 
-A simple example of the product is provided in figure \ref{fig:productExample}.
-\begin{figure}
-    \centering
-    \includegraphics{figure/productExample.png}
-    \caption{The polynomial $p$ has $2$ positions, and $q$ has $3$ positions. Their product $p*q$ has both $p$ and $q$'s positions, totaling $2*3=6$ positions. The directions at each position is the disjoint union of $p$' and $q$'s directions at that position.}
+A visualization of the product is provided in Figure \ref{fig:productExample}.
+\begin{figure}[H]
+  \[
+    \begin{tikzpicture}[rounded corners]
+      \node (prod) [draw, "$p * q$" above] {
+      \begin{tikzpicture}[trees, sibling distance=2.5mm, rounded corners]
+        \node["\tiny {\color{green!50!black} {1},\color{red!75!black} {A}}" below] (1a) {$\bullet$}
+          % First row
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [red!75!black] {}
+          child [red!75!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {1},\color{red!75!black} {B}}" below, right=1.5 of 1a] (1b) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [red!75!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {1},\color{red!75!black} {C}}" below, right=1.5 of 1b] (1c) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {1},\color{red!75!black} {D}}" below, right=1.5 of 1c] (1d) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {1},\color{red!75!black} {D}}" below, right=1.5 of 1d] (1e) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [green!50!black] {};
+        % Second row
+        \node["\tiny {\color{green!50!black} {2},\color{red!75!black} {A}}" below, below=1.0 of 1a] (2a) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [red!75!black] {}
+          child [red!75!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {2},\color{red!75!black} {B}}" below, below=1.0 of 1b] (2b) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [red!75!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {2},\color{red!75!black} {C}}" below, below=1.0 of 1c] (2c) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {2},\color{red!75!black} {D}}" below, below=1.0 of 1d] (2d) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {2},\color{red!75!black} {E}}" below, below=1.0 of 1e] (2e) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {};
+        % Third row
+        \node["\tiny {\color{green!50!black} {3},\color{red!75!black} {A}}" below, below=1.0 of 2a] (3a) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [red!75!black] {}
+          child [red!75!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {3},\color{red!75!black} {B}}" below, below=1.0 of 2b] (3b) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [red!75!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {3},\color{red!75!black} {C}}" below, below=1.0 of 2c] (3c) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {3},\color{red!75!black} {D}}" below, below=1.0 of 2d] (3d) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {3},\color{red!75!black} {E}}" below, below=1.0 of 2e] (3e) {$\bullet$} 
+          child [green!50!black] {}
+          child [green!50!black] {};
+        % Fourth row
+        \node["\tiny {\color{green!50!black} {4},\color{red!75!black} {A}}" below, below=1.0 of 3a] (4a) {$\bullet$} 
+          child [green!50!black] {}
+          child [red!75!black] {}
+          child [red!75!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {4},\color{red!75!black} {B}}" below, below=1.0 of 3b] (4b) {$\bullet$} 
+          child [green!50!black] {}
+          child [red!75!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {4},\color{red!75!black} {C}}" below, below=1.0 of 3c] (4c) {$\bullet$} 
+          child [green!50!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {4},\color{red!75!black} {D}}" below, below=1.0 of 3d] (4d) {$\bullet$} 
+          child [green!50!black] {}
+          child [red!75!black] {};
+        \node["\tiny {\color{green!50!black} {4},\color{red!75!black} {E}}" below, below=1.0 of 3e] (4e) {$\bullet$} 
+          child [green!50!black] {};
+        
+      \end{tikzpicture}
+      };
+      \node (p1) [draw, green!50!black, left=1.0 of prod, "$p$" above] {
+      \begin{tikzpicture}[trees, sibling distance=2.5mm]
+        \node["\tiny 1" below] (1) {$\bullet$} 
+          child {}
+          child {}
+          child {}
+          child {}
+          child {};
+        \node[below=1.0 of 1,"\tiny 2" below] (2) {$\bullet$} 
+          child {}
+          child {};
+        \node[below=1.0 of 2,"\tiny 3" below] (3) {$\bullet$}
+          child {}
+          child {};
+        \node[below=1.0 of 3,"\tiny 4" below] (4) {$\bullet$}
+          child {};
+      \end{tikzpicture}
+      };
+    %
+      \node (p2) [draw, red!75!black, below=1 of prod, "$q$" above] {
+      \begin{tikzpicture}[trees, sibling distance=2.5mm]
+        \node["\tiny A" below] (1) {$\bullet$} 
+          child {}
+          child {}
+          child {};
+        \node[right=1.5 of 1,"\tiny B" below] (2) {$\bullet$} 
+          child {}
+          child {};
+        \node[right=1.5 of 2,"\tiny C" below] (3) {$\bullet$}
+          child {};
+        \node[right=1.5 of 3,"\tiny D" below] (4) {$\bullet$}
+          child {};
+        \node[right=1.5 of 4,"\tiny E" below] (5) {$\bullet$}
+        ;
+      \end{tikzpicture}
+      };
+    \end{tikzpicture}
+    \]
+    
+    \caption{$p(y) = y^5 + 2y^2 + y$, $q(y) = y^3 + y^2 + 2y + 1$. Their product $p * q$ has both $p$ and $q$'s positions; each position of $p * q$ is a pair with one position of $p$ and one of $q$. The direction at that position of $p * q$ is the disjoint union of the directions at the originals, with the arrow's color indicating where they came from.}
     \label{fig:productExample}
 \end{figure}
 
-Continuing with figure \ref{fig:productDiagram}, it is natural to ask how $\pi_1$ and $\pi_2$ are defined. They are defined to take the projections on the positions, and injections on the map on the directions back. Figure \ref{fig:productExample} makes this clear with the black dotted line projecting one of the positions $p*q$ to $p$ and then injecting the direction back to $p*q$. 
+Continuing with figure \ref{fig:productDiagram}, it is natural to ask how $\pi_1$ and $\pi_2$ are defined. They are defined to take the projections on the positions, and injections on the map on the directions back. In Figure \ref{fig:productExample}, this can be imagined by selecting only the corresponding color of a direction in one of the product back. 
 
 \begin{minted}{agda}
 π₁ : {p q : Polynomial} → Lens (p * q) p
@@ -706,7 +854,7 @@ universalPropertyProduct = ...
 
 \subsection{Monoid}
 
-The product forms a monoid with $1$, which we show by constructing a monoidal category (\textbf{Poly}, $\times$, $1$). Any In fact, the product is a \textit{symmetric} monoidal structure, since $A \times B$ is isomorphic to $B \times A$. This is one place where the existing structure of \texttt{agda-categories} is extremely useful, as we only need to call some of its helpers to prove this and rely on the fact that all cartesian categories form monoidal categories with respect to the product. The code for it is:
+The product forms a monoid with $1$, which we show by constructing a monoidal category (\textbf{Poly}, $\times$, $1$). In fact, the product is a \textit{symmetric} monoidal structure, since $A \times B$ is isomorphic to $B \times A$. This is one place where the existing structure of \texttt{agda-categories} is extremely useful, as we only need to call some of its helpers to prove this and rely on the fact that all cartesian categories form monoidal categories with respect to the product. The code for it is:
 
 \begin{minted}{agda}
 -- Categorical/Poly/Monoidal/Product.agda
@@ -731,21 +879,27 @@ productSymmetricMonoidal
     = Cartesian.CartesianSymmetricMonoidal.symmetric Poly cartesian
 \end{minted}
 
-\section{Coproduct}
-The coproduct is the dual construction to the product, obtained from reversing all arrows. If we do this to the product diagram shown before, this is obtained:
+\newpage
 
-% https://q.uiver.app/?q=WzAsNCxbMCwzLCJBIl0sWzQsMywiQiJdLFsyLDIsIkEgKyBCIl0sWzIsMCwiVCJdLFswLDIsIlxcdGV4dHtpbmp9XzEiLDFdLFsxLDIsIlxcdGV4dHtpbmp9XzIiLDFdLFsyLDMsIiEiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMCwzLCJoIiwxXSxbMSwzLCJrIiwxXV0=
-\[\begin{tikzcd}
-	&& T \\
-	\\
-	&& {A + B} \\
-	A &&&& B
-	\arrow["{\text{inj}_1}"{description}, from=4-1, to=3-3]
-	\arrow["{\text{inj}_2}"{description}, from=4-5, to=3-3]
-	\arrow["{!}"{description}, dashed, from=3-3, to=1-3]
-	\arrow["h"{description}, from=4-1, to=1-3]
-	\arrow["k"{description}, from=4-5, to=1-3]
-\end{tikzcd}\]
+\section{Coproduct}
+
+\begin{figure}
+  % https://q.uiver.app/?q=WzAsNCxbMCwzLCJBIl0sWzQsMywiQiJdLFsyLDIsIkEgKyBCIl0sWzIsMCwiVCJdLFswLDIsIlxcdGV4dHtpbmp9XzEiLDFdLFsxLDIsIlxcdGV4dHtpbmp9XzIiLDFdLFsyLDMsIiEiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMCwzLCJoIiwxXSxbMSwzLCJrIiwxXV0=
+  \[\begin{tikzcd}
+    && T \\
+    \\
+    && {A + B} \\
+    A &&&& B
+    \arrow["{\text{inj}_1}"{description}, from=4-1, to=3-3]
+    \arrow["{\text{inj}_2}"{description}, from=4-5, to=3-3]
+    \arrow["{!}"{description}, dashed, from=3-3, to=1-3]
+    \arrow["h"{description}, from=4-1, to=1-3]
+    \arrow["k"{description}, from=4-5, to=1-3]
+  \end{tikzcd}\]
+  \caption{Coproduct diagram of $A$ and $B$.}
+  \label{fig:coproductDiagram}
+  \end{figure}
+The coproduct is the dual construction to the product, obtained from reversing all arrows. If we do this to the product diagram shown before, the diagram in Figure \ref{fig:coproductDiagram} is obtained.
 
 \textbf{Poly} also has all coproducts. The coproduct $p+q$ of any $p$ and $q$ is defined by taking the coproduct on just the positions and the \textit{projection} on the directions. Again, consider the analogy with high-school algebra. Given two polynomials $p(y) = 4y^2$ and $q(y) = y^2 + 3y$, their sum is given by $(p + q)(y) = 5y^2 + 3y$. In this example, four of the positions with $2$ as a direction came from $p$ and one of them came from $q$, hence we pattern match on the resulting polynomials's position. As a shorthand, we use Agda's \mintinline{agda}{[_,_]} function.
 
@@ -754,15 +908,75 @@ _+_ : Polynomial → Polynomial → Polynomial
 (mkpoly posA dirA) + (mkpoly posB dirB) = mkpoly (posA ⊎ posB) [ dirA , dirB ]
 \end{minted}
 
-The example of coproduct is provided in figure \ref{fig:coproductExample}.\todo{reverse the black dotted arrow}
-
+A visualization of an example coproduct is provided in figure \ref{fig:coproductExample}.
 
 \begin{figure}
-    \centering
-    \includegraphics{figure/coproductExample.png}
-    \caption{The polynomial $p$ has $2$ positions, and $q$ has $3$ positions. Their coproduct $p+q$ has the union of $p$ and $q$'s positions, totaling $2+3=5$ positions. The directions at each position is the corresponding direction at that position.}
-    \label{fig:coproductExample}
+\[
+\begin{tikzpicture}[rounded corners]
+	\node (p1) [draw, green!50!black, "$p$" above] {
+	\begin{tikzpicture}[trees, sibling distance=2.5mm]
+    \node["\tiny 1" below] (1) {$\bullet$} 
+      child {}
+      child {}
+      child {}
+      child {}
+      child {};
+    \node[right=1.0 of 1,"\tiny 2" below] (2) {$\bullet$} 
+      child {}
+      child {};
+    \node[right=1.0 of 2,"\tiny 3" below] (3) {$\bullet$};
+  \end{tikzpicture}
+  };
+%
+	\node (p2) [draw, red!75!black, right=2 of p1, "$q$" above] {
+	\begin{tikzpicture}[trees, sibling distance=2.5mm]
+    \node["\tiny A" below] (1) {$\bullet$} 
+      child {}
+      child {}
+      child {};
+    \node[right=1.0 of 1,"\tiny B" below] (2) {$\bullet$}
+      child {};
+    \node[right=1.0 of 2,"\tiny C" below] (3) {$\bullet$}
+      child {};
+    \node[right=1.0 of 3,"\tiny D" below] (4) {$\bullet$}
+    ;
+  \end{tikzpicture}
+  };
+\end{tikzpicture}
+\]
+\[
+  \begin{tikzpicture}[rounded corners]
+    \node (sum) [draw, right=2 of p1, "$p + q$" above] {
+    \begin{tikzpicture}[trees, sibling distance=2.5mm]
+      \node[green!50!black, "\tiny {\color{green!50!black}1}" below] (1) {$\bullet$} 
+        child [green!50!black] {}
+        child [green!50!black] {}
+        child [green!50!black] {}
+        child [green!50!black] {}
+        child [green!50!black] {};
+      \node[red!75!black, right=1.0 of 1,"\tiny {\color{red!75!black}A}" below] (a) {$\bullet$} 
+        child [red!75!black] {}
+        child [red!75!black] {}
+        child [red!75!black] {};
+      \node[green!50!black, right=1.0 of a,"\tiny {\color{green!50!black}2}" below] (2) {$\bullet$}
+        child [green!50!black] {}
+        child [green!50!black] {};
+      \node[red!75!black, right=1.0 of 2,"\tiny {\color{red!75!black}B}" below] (b) {$\bullet$}
+        child [red!75!black] {};
+      \node[red!75!black, right=1.0 of b,"\tiny {\color{red!75!black}C}" below] (c) {$\bullet$}
+        child [red!75!black] {};
+      \node[green!50!black, right=1.0 of c,"\tiny {\color{green!50!black}3}" below] (3) {$\bullet$}
+      ;
+      \node[red!75!black, right=1.0 of 3,"\tiny {\color{red!75!black}D}" below] (d) {$\bullet$}
+      ;
+    \end{tikzpicture}
+    };
+  \end{tikzpicture}
+\]
+\caption{A sum of polynomials $p(y) = y^5 + y^2 + 1$ and $q(y) = y^3 + 2y + 1$. The resulting polynomial has the disjoint union of both as its positions, and each position has the directions at that position in the original polynomial it came from.}
+\label{fig:coproductExample}
 \end{figure}
+
 
 The injections $i_1$ and $i_2$ are defined by taking the injections on the positions and keeping the directions on that position using $id$. The example \ref{fig:coproductDiagram} shows how $i_1$ behave for one position. 
 
@@ -885,11 +1099,77 @@ _⊗_ : Polynomial → Polynomial → Polynomial
     = mkpoly (posA × posB) (λ (posA , posB) → (dirA posA) × (dirB posB))
 \end{minted}
 
-The parallel product will turn out to be extremely important in the context of dynamical systems. More on this in the applications chapter.
+The parallel product will turn out to be extremely important in the context of dynamical systems. More on this in the applications chapter. A visualization of it is provided in Figure \ref{fig:parallelProductExample}.
+
+\begin{figure}[H]
+  \[
+    \begin{tikzpicture}[rounded corners]
+      \node (prod) [draw, "$p \otimes q$" above] {
+      \begin{tikzpicture}[trees, sibling distance=2.5mm, rounded corners]
+        \node["\tiny {\color{green!50!black} {1},\color{red!75!black} {A}}" below] (1a) {$\bullet$} 
+          % First row
+          child {}
+          child {}
+          child {}
+          child {}
+          child {}
+          child {};
+        \node["\tiny {\color{green!50!black} {1},\color{red!75!black} {B}}" below, right=1.5 of 1a] (1b) {$\bullet$} 
+          child {}
+          child {}
+          child {};
+        \node["\tiny {\color{green!50!black} {1},\color{red!75!black} {C}}" below, right=1.5 of 1b] (1c) {$\bullet$};
+        \node[above=0.5 of 1a] {\tiny {{\color{green!50!black}x},{\color{red!75!black}a} {\color{green!50!black}x},{\color{red!75!black}b} {\color{green!50!black}y},{\color{red!75!black}a} ... {\color{green!50!black}z},{\color{red!75!black}b}}};
+        \node[above=0.5 of 1b] {\tiny {{\color{green!50!black}x},{\color{red!75!black}c} {\color{green!50!black}y},{\color{red!75!black}c} {\color{green!50!black}z},{\color{red!75!black}c}}};
+
+        % Second row
+        \node["\tiny {\color{green!50!black} {2},\color{red!75!black} {A}}" below, below=1.0 of 1a] (2a) {$\bullet$} 
+          child {}
+          child {};
+        \node["\tiny {\color{green!50!black} {2},\color{red!75!black} {B}}" below, below=1.0 of 1b] (2b) {$\bullet$} 
+          child {};
+        \node["\tiny {\color{green!50!black} {2},\color{red!75!black} {C}}" below, below=1.0 of 1c] (2c) {$\bullet$};
+        \node[above=0.5 of 2a] {\tiny {{\color{green!50!black}w},{\color{red!75!black}a} {\color{green!50!black}w},{\color{red!75!black}b}}};
+        \node[above=0.5 of 2b] {\tiny {{\color{green!50!black}w},{\color{red!75!black}c}}};
+      \end{tikzpicture}
+      };
+      \node (p1) [draw, green!50!black, left=1.0 of prod, "$p$" above] {
+      \begin{tikzpicture}[trees, sibling distance=2.5mm]
+        \node["\tiny 1" below] (1) {$\bullet$} 
+        child {}
+        child {}
+        child {};
+        \node[below=1.0 of 1,"\tiny 2" below] (2) {$\bullet$} 
+          child {};
+        \node[above=0.5 of 1] {\tiny {x y z}};
+        \node[above=0.5 of 2] {\tiny w};
+        \end{tikzpicture}
+      };
+    %
+      \node (p2) [draw, red!75!black, below=1 of prod, "$q$" above] {
+      \begin{tikzpicture}[trees, sibling distance=2.5mm]
+        \node["\tiny A" below] (1) {$\bullet$} 
+          child {}
+          child {};
+        \node[right=1.5 of 1,"\tiny B" below] (2) {$\bullet$} 
+          child {};
+        \node[right=1.5 of 2,"\tiny C" below] (3) {$\bullet$}
+        ;
+        \node[above=0.5 of 1] {\tiny {a b}};
+        \node[above=0.5 of 2] {\tiny c};
+      \end{tikzpicture}
+      };
+    \end{tikzpicture}
+    \]
+    
+    \caption{$p(y) = y^3 + y$, $q(y) = y^2 + y + 1$. Like the regular product, their parallel product $p \otimes q$ has both $p$ and $q$'s positions, with each  position of $p \otimes q$ being a pair with one position of $p$ and one of $q$. However, the directions at that position of $p \otimes q$ is the product of the directions at the originals, with each direction being a pair of the original directions.}
+    \label{fig:parallelProductExample}
+\end{figure}
+
 
 \subsection{Monoid}
 
-The parallel product forms a monoid with $y$. Since it is not the canonical product (or coproduct), as far as we know, we can't rely on the previous tricks to construct a monoidal category out of it. However, we can define the monoidal category construction manually, which is a lot of code in "volume". This is done, for consistency in \texttt{Categorical/Poly/Monoidal/ParallelProduct.agda}, but an alternative proof of the monoidality and symmetry of $\otimes$ is offered here, by using polynomial equality.
+The parallel product forms a monoid with $y$. Since it is not the canonical product (or coproduct), as far as we know, we can't rely on the previous tricks to construct a monoidal category out of it. However, we can define the monoidal category construction manually, which is a lot of code in "volume", so we omit it from the text. The code can be found in \texttt{Categorical/Poly/Monoidal/ParallelProduct.agda}.
 
 
 
@@ -913,9 +1193,93 @@ p ◂ q = mkpoly pos dir
 infixl 27 _◂_
 \end{minted}
 
-This definition is heavily inspired by David Orion Girardo's implementation here \cite{daig}. The key insight from his implementation is that the positions in the resulting polynomial are a pair, the first element of which is the same set as the postcomposed polynomial. This sticks closer to the idea that polynomials are in fact being composed. In terms of corolla forests, the composition product stacks trees on top of one another:
+\begin{figure}
+  \[
+  \begin{tikzpicture}[rounded corners]
+    \node (p1) [draw, green!50!black, "$p$" above] {
+    \begin{tikzpicture}[trees, sibling distance=2.5mm]
+      \node[] (1) {$\bullet$} 
+        child {}
+        child {};
+      \node[right=1.0 of 1] (2) {$\bullet$} 
+        child {};
+      \node[right=1.0 of 2] (3) {$\bullet$};
+    \end{tikzpicture}
+    };
+  %
+    \node (p2) [draw, red!75!black, right=2 of p1, "$q$" above] {
+    \begin{tikzpicture}[trees, sibling distance=2.5mm]
+      \node[] (1) {$\bullet$} 
+        child {}
+        child {}
+        child {};
+      \node[right=1.0 of 1] (2) {$\bullet$};
+    \end{tikzpicture}
+    };
+  \end{tikzpicture}
+  \]
+  \[
+  \begin{tikzpicture}[rounded corners]
+    \node (p1) [draw, "$p\text{ }\triangleleft \text{ }q$" above] {
+    \begin{tikzpicture}[trees,
+      level 1/.style={sibling distance=8mm},
+      level 2/.style={sibling distance=2.5mm},
+      green!50!black]
+      \node[green!50!black] (1) {$\bullet$} 
+        child {node[red!75!black] {$\bullet$} 
+          child[red!75!black]
+          child[red!75!black]
+          child[red!75!black]
+        }
+        child {node[red!75!black] {$\bullet$} 
+          child[red!75!black]
+          child[red!75!black]
+          child[red!75!black]
+        };
+  %
+      \node[green!50!black, right=1.7 of 1] (2) {$\bullet$} 
+        child {node[red!75!black] {$\bullet$} 
+          child[red!75!black]
+          child[red!75!black]
+          child[red!75!black]
+        }
+        child {node[red!75!black] {$\bullet$} 
+        };
+  %
+      \node[green!50!black, right=1.5 of 2] (3) {$\bullet$} 
+        child {node[red!75!black] {$\bullet$} 
+        }
+        child {node[red!75!black] {$\bullet$} 
+          child[red!75!black]
+          child[red!75!black]
+          child[red!75!black]
+        };
+  %
+      \node[green!50!black, right=1.5 of 3] (4) {$\bullet$} 
+        child {node[red!75!black] {$\bullet$}
+        }
+        child {node[red!75!black] {$\bullet$} 
+        };
+  %
+      \node[green!50!black, right=1.2 of 4] (5) {$\bullet$} 
+        child {node[red!75!black] {$\bullet$} 
+          child[red!75!black]
+          child[red!75!black]
+          child[red!75!black]
+        };
+  %
+      \node[green!50!black, right=1 of 5] (6) {$\bullet$} 
+        child {node[red!75!black] {$\bullet$} 
+        };
+    \end{tikzpicture}
+    };
+  \end{tikzpicture}
+  \]
+\caption{$p(y) = y ^2+ y$ and $q(y) = y^3 + 1$. The composition product produces a polynomial that has as many positions as there are ways to stack $q$'s trees on top of $p$'s, and whose directions at each position are the ones that reach the top of this stack.}
+\label{fig:compositionProductExample}
+\end{figure}
 
-\todo{Give an example as a drawing.}
+This definition is heavily inspired by David Orion Girardo's implementation here \cite{daig}. The key insight from his implementation is that the positions in the resulting polynomial are a pair, the first element of which is the same set as the postcomposed polynomial. This sticks closer to the idea that polynomials are in fact being composed. In terms of corolla forests, the composition product stacks trees on top of one another \textit{in every possible way}, with the left polynomial in the bottom. The resulting polynomial's directions at any given position is "all directions that reach a height of two". A visualization is given in Figure \ref{fig:compositionProductExample}
 
 \subsection{Monoid}
 % Show it forms a monoid with Y.

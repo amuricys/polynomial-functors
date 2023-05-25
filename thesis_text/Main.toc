@@ -29,57 +29,57 @@
 \contentsline {section}{\numberline {3.4}Initial object}{18}{section.3.4}%
 \contentsline {section}{\numberline {3.5}Terminal object}{19}{section.3.5}%
 \contentsline {section}{\numberline {3.6}Product}{19}{section.3.6}%
-\contentsline {subsection}{\numberline {3.6.1}Productized lens}{22}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.1}Productized lens}{21}{subsection.3.6.1}%
 \contentsline {subsection}{\numberline {3.6.2}Generalized product}{22}{subsection.3.6.2}%
 \contentsline {subsection}{\numberline {3.6.3}Monoid}{23}{subsection.3.6.3}%
-\contentsline {section}{\numberline {3.7}Coproduct}{23}{section.3.7}%
+\contentsline {section}{\numberline {3.7}Coproduct}{24}{section.3.7}%
 \contentsline {subsection}{\numberline {3.7.1}Generalized coproduct}{25}{subsection.3.7.1}%
 \contentsline {subsection}{\numberline {3.7.2}Monoid}{26}{subsection.3.7.2}%
 \contentsline {subsection}{\numberline {3.7.3}Coproductized lens}{26}{subsection.3.7.3}%
 \contentsline {section}{\numberline {3.8}Parallel product}{27}{section.3.8}%
 \contentsline {subsection}{\numberline {3.8.1}Monoid}{27}{subsection.3.8.1}%
-\contentsline {section}{\numberline {3.9}Composition product}{27}{section.3.9}%
-\contentsline {subsection}{\numberline {3.9.1}Monoid}{28}{subsection.3.9.1}%
-\contentsline {subsection}{\numberline {3.9.2}Composite power}{28}{subsection.3.9.2}%
-\contentsline {section}{\numberline {3.10}Cartesian closure}{28}{section.3.10}%
-\contentsline {section}{\numberline {3.11}Quadruple adjunction}{29}{section.3.11}%
-\contentsline {section}{\numberline {3.12}Equalizer}{29}{section.3.12}%
-\contentsline {section}{\numberline {3.13}Various properties of polynomials}{32}{section.3.13}%
-\contentsline {chapter}{\numberline {4}Theory: Charts}{33}{chapter.4}%
-\contentsline {section}{\numberline {4.1}The category \textbf {Chart}}{33}{section.4.1}%
-\contentsline {subsection}{\numberline {4.1.1}Chart}{33}{subsection.4.1.1}%
-\contentsline {subsection}{\numberline {4.1.2}Identity chart}{34}{subsection.4.1.2}%
-\contentsline {subsection}{\numberline {4.1.3}Composing charts}{34}{subsection.4.1.3}%
-\contentsline {subsection}{\numberline {4.1.4}Associativity and identity laws}{34}{subsection.4.1.4}%
-\contentsline {section}{\numberline {4.2}Chart equality}{34}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Initial object}{35}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Terminal object}{36}{section.4.4}%
-\contentsline {section}{\numberline {4.5}Product}{36}{section.4.5}%
-\contentsline {section}{\numberline {4.6}Coproduct}{37}{section.4.6}%
-\contentsline {section}{\numberline {4.7}Commuting square between lenses and charts}{37}{section.4.7}%
-\contentsline {section}{\numberline {4.8}Composing squares between lenses and charts}{38}{section.4.8}%
-\contentsline {chapter}{\numberline {5}Applications}{39}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Mode-dependent open dynamical systems}{40}{section.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Wiring diagrams}{40}{subsection.5.1.1}%
-\contentsline {section}{\numberline {5.2}Polynomial functors in dynamical systems}{41}{section.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Polynomials as interfaces}{41}{subsection.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}The parallel product $\otimes $}{42}{subsection.5.2.2}%
-\contentsline {subsection}{\numberline {5.2.3}Lenses as behaviors}{43}{subsection.5.2.3}%
-\contentsline {subsection}{\numberline {5.2.4}Lenses as wiring patterns}{44}{subsection.5.2.4}%
+\contentsline {section}{\numberline {3.9}Composition product}{28}{section.3.9}%
+\contentsline {subsection}{\numberline {3.9.1}Monoid}{29}{subsection.3.9.1}%
+\contentsline {subsection}{\numberline {3.9.2}Composite power}{29}{subsection.3.9.2}%
+\contentsline {section}{\numberline {3.10}Cartesian closure}{29}{section.3.10}%
+\contentsline {section}{\numberline {3.11}Quadruple adjunction}{30}{section.3.11}%
+\contentsline {section}{\numberline {3.12}Equalizer}{30}{section.3.12}%
+\contentsline {section}{\numberline {3.13}Various properties of polynomials}{33}{section.3.13}%
+\contentsline {chapter}{\numberline {4}Theory: Charts}{35}{chapter.4}%
+\contentsline {section}{\numberline {4.1}The category \textbf {Chart}}{35}{section.4.1}%
+\contentsline {subsection}{\numberline {4.1.1}Chart}{35}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}Identity chart}{36}{subsection.4.1.2}%
+\contentsline {subsection}{\numberline {4.1.3}Composing charts}{36}{subsection.4.1.3}%
+\contentsline {subsection}{\numberline {4.1.4}Associativity and identity laws}{36}{subsection.4.1.4}%
+\contentsline {section}{\numberline {4.2}Chart equality}{37}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Initial object}{38}{section.4.3}%
+\contentsline {section}{\numberline {4.4}Terminal object}{38}{section.4.4}%
+\contentsline {section}{\numberline {4.5}Product}{38}{section.4.5}%
+\contentsline {section}{\numberline {4.6}Coproduct}{39}{section.4.6}%
+\contentsline {section}{\numberline {4.7}Commuting square between lenses and charts}{39}{section.4.7}%
+\contentsline {section}{\numberline {4.8}Composing squares between lenses and charts}{40}{section.4.8}%
+\contentsline {chapter}{\numberline {5}Applications}{41}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Mode-dependent open dynamical systems}{42}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Wiring diagrams}{42}{subsection.5.1.1}%
+\contentsline {section}{\numberline {5.2}Polynomial functors in dynamical systems}{43}{section.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Polynomials as interfaces}{43}{subsection.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}The parallel product $\otimes $}{44}{subsection.5.2.2}%
+\contentsline {subsection}{\numberline {5.2.3}Lenses as behaviors}{45}{subsection.5.2.3}%
+\contentsline {subsection}{\numberline {5.2.4}Lenses as wiring patterns}{45}{subsection.5.2.4}%
 \contentsline {subsection}{\numberline {5.2.5}Charts as system transformations (??)}{46}{subsection.5.2.5}%
 \contentsline {section}{\numberline {5.3}Implementing dynamical systems}{46}{section.5.3}%
 \contentsline {subsection}{\numberline {5.3.1}Examples: Discrete systems}{49}{subsection.5.3.1}%
 \contentsline {subsubsection}{\numberline {5.3.1.1}Fibonacci}{49}{subsubsection.5.3.1.1}%
-\contentsline {subsubsection}{\numberline {5.3.1.2}Flip Flop}{51}{subsubsection.5.3.1.2}%
+\contentsline {subsubsection}{\numberline {5.3.1.2}Flip Flop}{50}{subsubsection.5.3.1.2}%
 \contentsline {subsubsection}{\numberline {5.3.1.3}Simulating state machines}{52}{subsubsection.5.3.1.3}%
 \contentsline {subsubsection}{\numberline {5.3.1.4}Moore machine}{52}{subsubsection.5.3.1.4}%
 \contentsline {subsubsection}{\numberline {5.3.1.5}Deterministic finite automaton}{52}{subsubsection.5.3.1.5}%
 \contentsline {subsubsection}{\numberline {5.3.1.6}Turing machines}{53}{subsubsection.5.3.1.6}%
 \contentsline {subsection}{\numberline {5.3.2}Examples: Continuous systems}{53}{subsection.5.3.2}%
-\contentsline {subsubsection}{\numberline {5.3.2.1}Lotka-Volterra}{54}{subsubsection.5.3.2.1}%
-\contentsline {subsubsection}{\numberline {5.3.2.2}Lorenz system}{57}{subsubsection.5.3.2.2}%
-\contentsline {subsubsection}{\numberline {5.3.2.3}Hodgkin-Huxley model}{60}{subsubsection.5.3.2.3}%
-\contentsline {subsubsection}{\numberline {5.3.2.4}Reservoir computer}{64}{subsubsection.5.3.2.4}%
+\contentsline {subsubsection}{\numberline {5.3.2.1}Lotka-Volterra}{53}{subsubsection.5.3.2.1}%
+\contentsline {subsubsection}{\numberline {5.3.2.2}Lorenz system}{56}{subsubsection.5.3.2.2}%
+\contentsline {subsubsection}{\numberline {5.3.2.3}Hodgkin-Huxley model}{59}{subsubsection.5.3.2.3}%
+\contentsline {subsubsection}{\numberline {5.3.2.4}Reservoir computer}{63}{subsubsection.5.3.2.4}%
 \contentsline {chapter}{\numberline {6}Discussion}{71}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Equality of lenses}{71}{section.6.1}%
 \contentsline {section}{\numberline {6.2}Ease of implementation}{71}{section.6.2}%
@@ -94,7 +94,7 @@
 \contentsline {subsection}{\numberline {6.5.6}Dynamical systems}{74}{subsection.6.5.6}%
 \contentsline {subsection}{\numberline {6.5.7}Interaction between different fields that Poly models}{74}{subsection.6.5.7}%
 \contentsline {chapter}{\numberline {7}Conclusion}{75}{chapter.7}%
-\contentsline {chapter}{Bibliography}{77}{section*.30}%
+\contentsline {chapter}{Bibliography}{77}{section*.32}%
 \contentsline {chapter}{\numberline {A}Appendix 1: Haskell supporting code}{I}{appendix.A}%
 \contentsline {section}{\numberline {A.1}Matrix inversion}{I}{section.A.1}%
 \contentsline {section}{\numberline {A.2}Graph plotting}{II}{section.A.2}%
