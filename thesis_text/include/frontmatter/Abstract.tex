@@ -8,9 +8,57 @@
 
 \thispagestyle{plain}			% Supress header 
 \section*{Abstract}
-The category of polynomial functors - \textbf{Poly} - has been studied for over two decades, and is known for its relevance to computer science and type theory \cite{containers https://www.cs.le.ac.uk/people/ma139/docs/thesis.pdf}, as well as its deep mathematical structure \cite{koch https://arxiv.org/abs/0906.4931}. However, in recent years, researchers in the growing field of Applied Category Theory have found wider interpretations of the content of \textbf{Poly} and related topics, leading to applications in dynamical systems theory \cite{jaz http://davidjaz.com/Papers/DynamicalBook.pdf}, information theory \cite{https://arxiv.org/pdf/2201.12878.pdf}, database theory \cite{spivak db https://arxiv.org/pdf/2111.10968.pdf} and more. Many aspects of the well-behavedness and richness of interpretation of \textbf{Poly} are being collected in the textbook \textit{Polynomial Functors - A Mathematical Theory of Interaction \cite{poly-book}}.
 
-However, the surrounding code ecosystem of \textbf{Poly} is lacking. It is difficult to find straightforward formalizations and/or programs that use \textbf{Poly}'s structure to their advantage. The present work seeks to contribute to this ecosystem by providing formalizations in Cubical Agda of many existing theorems and categorical constructs in \textbf{Poly} and closely related categories, along with an array of concrete examples of its application to real world, widely studied dynamical systems. Most of the code follows the aforementioned textbook as a general blueprint, but since the very authors admit to the youth of applied category theory as a field and specifically its perspective on \textbf{Poly}, we sometimes deviate and show new applications.
+The category of polynomial functors - \textbf{Poly} - has been studied for over two decades and is well known for its relevance to computer science \cite{containersPaper} and deep mathematical structure \cite{polynomialFunctorsCategory}.
+In recent years, Poly has found use in dynamical systems theory \cite{poly-book} \cite{css}. 
+This thesis formalizes Poly and its use in dynamical systems in Cubical Agda, contributing to the Poly code ecosystem.
+In the first part, the theory of the category Poly is formalized, together with a closely related category called Chart. 
+In the second part, the use of Poly and Chart for building dynamical systems is given, together with many examples of dynamical systems.
+
+The theory part formalizes the category Poly itself and several categorical constructs, including the initial object, products, composition and parallel product as two monoids, and many various proofs around the category.
+Also, Chart is formalized, together with its own categorical constructs.
+The combination of Poly and Chart as commuting squares is given, which is meaningful for the dynamical interpretation.
+
+The practical part builds upon the theory by formalizing how these categories can be used to construct dynamical systems.
+It covers how morphisms in Poly represent dynamical systems, how polynomials act as interfaces, how
+systems are wired together, how systems are implemented, how behavior is installed into wiring diagrams, and how to run systems arriving at concrete programs.
+Many dynamical system examples are given, such as the Fibonacci sequence generator, the Lorenz system, the Hodkgin-Huxley model, and reservoir computers.
+Commuting squares are used as a way of showing that one dynamical system simulates another.
+
+
+
+%to implement systems, how to install behavior into
+%wiring diagrams, and how to run systems arriving at concrete programs.
+%Special 
+
+% Lenses
+% between special polynomials have been shown to correspond to different concepts,
+% such as DFA’s or Moore machines, which shows the power polynomials and lenses
+% possess as an abstraction generalization. Some programs implemented are Fibonacci
+% sequence generators, the Lorenz system, the Hodgkin-Huxley model, and reservoir
+% computers. Combining theory and applications, commuting squares between lenses
+% and charts have been used to show how one dynamical system can simulate another.
+
+
+% Combination
+
+%Talk about theory formalization.
+
+%Talk about dynamical systems.
+
+
+
+
+%heory of the c0ategory \textbf{Poly} 
+
+%A formalization of the theory of the category \textbf{Poly} and a closesly related category \textbf{ by providing a formalization of the theory of the category \textbf{Poly} as well as a closely related category \textbf{Charts}, and showing how these categories can be used for dynamical systems.
+%Many examples of d
+
+%However, in recent years, researchers in the growing field of Applied Category Theory have found wider interpretations of the content of \textbf{Poly} and related topics, leading to applications in dynamical systems theory \cite{jaz http://davidjaz.com/Papers/DynamicalBook.pdf}, information theory \cite{https://arxiv.org/pdf/2201.12878.pdf}, database theory \cite{spivak db https://arxiv.org/pdf/2111.10968.pdf} and more. 
+%Many aspects of the well-behavedness and richness of interpretation of \textbf{Poly} are being collected in the textbook \textit{Polynomial Functors - A Mathematical Theory of Interaction \cite{poly-book}}.
+
+
+%However, the surrounding code ecosystem of \textbf{Poly} is lacking. It is difficult to find straightforward formalizations and/or programs that use \textbf{Poly}'s structure to their advantage. The present work seeks to contribute to this ecosystem by providing formalizations in Cubical Agda of many existing theorems and categorical constructs in \textbf{Poly} and closely related categories, along with an array of concrete examples of its application to real world, widely studied dynamical systems. Most of the code follows the aforementioned textbook as a general blueprint, but since the very authors admit to the youth of applied category theory as a field and specifically its perspective on \textbf{Poly}, we sometimes deviate and show new applications.
 
 % KEYWORDS (MAXIMUM 10 WORDS)
 \vfill
