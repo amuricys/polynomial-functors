@@ -257,16 +257,69 @@ LensChartCommute {p₁} {p₂} {p₃} {p₄} (w ⇆ w♯) (v ⇆ v♯) (f ⇉ f�
 The use of commuting squares will be of importance in reducing dynamical systems to simpler ones, which is covered the applications section. 
 
 \section{Composing squares between lenses and charts}
-Commuting squares are also composable in two different ways. They are composable both vertically and horizontally. This can be seen in figure \ref{fig:commutingSquareCompose}.
+Commuting squares are also composable in two different ways, horizontally and vertically, as shown in figures \ref{fig:composeHorizontalCommutingSquare} and \ref{fig:composeVerticalCommutingSquare}.
 
-\todo{Do diagram of squares composition - extracted this todo because otherwise latex gives a Float lost error}
-% \begin{figure}[H]
-%     \centering
-%      
-%     \caption{}
-%     \label{fig:commutingSquareCompose}
-% \end{figure}
-In Agda, horizontal and vertical composition is given as follows. However, the part of proof that the commutation of map on directions compose is unfinished, due to the complexity of an explosion of subst's, and left for future work, discussed further in \ref{section:commutingSquaresCompose}.
+\begin{figure}[H]
+    \centering
+
+    % https://q.uiver.app/#q=WzAsNixbMCwwLCJwXzEiXSxbMiwwLCJwXzIiXSxbMCwyLCJwXzMiXSxbMiwyLCJwXzQiXSxbNCwwLCJwXzUiXSxbNCwyLCJwXzYiXSxbMCwxLCJmX2IiLDAseyJvZmZzZXQiOi0yfV0sWzEsNCwiaF9iIiwwLHsib2Zmc2V0IjotMn1dLFsxLDQsImgiLDIseyJvZmZzZXQiOjJ9XSxbMyw1LCJyX2IiLDAseyJvZmZzZXQiOi0yfV0sWzMsNSwiciIsMix7Im9mZnNldCI6Mn1dLFsyLDMsImdfYiIsMCx7Im9mZnNldCI6LTJ9XSxbMiwzLCJnIiwyLHsib2Zmc2V0IjoyfV0sWzAsMSwiZiIsMix7Im9mZnNldCI6Mn1dLFswLDIsInciLDIseyJvZmZzZXQiOjJ9XSxbMiwwLCJ3X1xcc2hhcnAiLDIseyJvZmZzZXQiOjJ9XSxbMSwzLCJ2IiwyLHsib2Zmc2V0IjoyfV0sWzMsMSwidl9cXHNoYXJwIiwyLHsib2Zmc2V0IjoyfV0sWzQsNSwibSIsMix7Im9mZnNldCI6Mn1dLFs1LDQsIm1fXFxzaGFycCIsMix7Im9mZnNldCI6Mn1dXQ==
+    \[\begin{tikzcd}
+        {p_1} && {p_2} && {p_5} \\
+        \\
+        {p_3} && {p_4} && {p_6}
+        \arrow["{f_b}", shift left=2, from=1-1, to=1-3]
+        \arrow["{h_b}", shift left=2, from=1-3, to=1-5]
+        \arrow["h"', shift right=2, from=1-3, to=1-5]
+        \arrow["{r_b}", shift left=2, from=3-3, to=3-5]
+        \arrow["r"', shift right=2, from=3-3, to=3-5]
+        \arrow["{g_b}", shift left=2, from=3-1, to=3-3]
+        \arrow["g"', shift right=2, from=3-1, to=3-3]
+        \arrow["f"', shift right=2, from=1-1, to=1-3]
+        \arrow["w"', shift right=2, from=1-1, to=3-1]
+        \arrow["{w_\sharp}"', shift right=2, from=3-1, to=1-1]
+        \arrow["v"', shift right=2, from=1-3, to=3-3]
+        \arrow["{v_\sharp}"', shift right=2, from=3-3, to=1-3]
+        \arrow["m"', shift right=2, from=1-5, to=3-5]
+        \arrow["{m_\sharp}"', shift right=2, from=3-5, to=1-5]
+    \end{tikzcd}\]
+
+    \caption{Horizontal composition, done through the $h$ and $r$ charts.}
+    \label{fig:composeHorizontalCommutingSquare}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+
+% https://q.uiver.app/#q=WzAsNixbMCwwLCJwXzEiXSxbMiwwLCJwXzIiXSxbMCwyLCJwXzMiXSxbMiwyLCJwXzQiXSxbMCw0LCJwXzUiXSxbMiw0LCJwXzYiXSxbMCwxLCJmX2IiLDAseyJvZmZzZXQiOi0yfV0sWzIsMywiZ19iIiwwLHsib2Zmc2V0IjotMn1dLFsyLDMsImciLDIseyJvZmZzZXQiOjJ9XSxbMCwxLCJmIiwyLHsib2Zmc2V0IjoyfV0sWzAsMiwidyIsMix7Im9mZnNldCI6Mn1dLFsyLDAsIndfXFxzaGFycCIsMix7Im9mZnNldCI6Mn1dLFsxLDMsInYiLDIseyJvZmZzZXQiOjJ9XSxbMywxLCJ2X1xcc2hhcnAiLDIseyJvZmZzZXQiOjJ9XSxbNCw1LCJyIiwyLHsib2Zmc2V0IjoyfV0sWzQsNSwicl9iIiwwLHsib2Zmc2V0IjotMn1dLFszLDUsIm0iLDIseyJvZmZzZXQiOjJ9XSxbNSwzLCJtX1xcc2hhcnAiLDIseyJvZmZzZXQiOjJ9XSxbMiw0LCJoIiwyLHsib2Zmc2V0IjoyfV0sWzQsMiwiaF9cXHNoYXJwIiwyLHsib2Zmc2V0IjoyfV1d
+\[\begin{tikzcd}
+	{p_1} && {p_2} \\
+	\\
+	{p_3} && {p_4} \\
+	\\
+	{p_5} && {p_6}
+	\arrow["{f_b}", shift left=2, from=1-1, to=1-3]
+	\arrow["{g_b}", shift left=2, from=3-1, to=3-3]
+	\arrow["g"', shift right=2, from=3-1, to=3-3]
+	\arrow["f"', shift right=2, from=1-1, to=1-3]
+	\arrow["w"', shift right=2, from=1-1, to=3-1]
+	\arrow["{w_\sharp}"', shift right=2, from=3-1, to=1-1]
+	\arrow["v"', shift right=2, from=1-3, to=3-3]
+	\arrow["{v_\sharp}"', shift right=2, from=3-3, to=1-3]
+	\arrow["r"', shift right=2, from=5-1, to=5-3]
+	\arrow["{r_b}", shift left=2, from=5-1, to=5-3]
+	\arrow["m"', shift right=2, from=3-3, to=5-3]
+	\arrow["{m_\sharp}"', shift right=2, from=5-3, to=3-3]
+	\arrow["h"', shift right=2, from=3-1, to=5-1]
+	\arrow["{h_\sharp}"', shift right=2, from=5-1, to=3-1]
+\end{tikzcd}\]
+
+    \caption{Vertical composition, done through the $h$ and $m$ lenses.}
+    \label{fig:composeVerticalCommutingSquare}
+\end{figure}
+
+Translating these diagrams into Agda leads to the following types:
+
+% In Agda, horizontal and vertical composition is given as follows. 
 
 \begin{minted}{agda}
 horizontialComposition : {p₁ p₂ p₃ p₄ p₅ p₆ : Polynomial}
@@ -283,7 +336,10 @@ verticalComposition : {p₁ p₂ p₃ p₄ p₅ p₆ : Polynomial}
     → LensChartCommute (h ∘ₚ w) (m ∘ₚ v) f r
 \end{minted}
 
-\todo{Add section about stationary systems thingy}
+The definition is finished for the map on positions part of the proofs.
+However, the parts dealing with map on directions is unfinished, due to the complexity of an explosion of subst's, and left for future work, discussed further in \ref{section:commutingSquaresCompose}.
+
+%\todo{Add section about stationary systems thingy}
 
 % Talk about identity squares? Two different kinds? Do squares form another category?
 % \section{Double category of lenses and charts}
