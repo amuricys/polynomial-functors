@@ -10,20 +10,21 @@
 \section*{Abstract}
 
 The category of polynomial functors - \textbf{Poly} - has been studied for over two decades and is well known for its relevance to computer science \cite{containersPaper} and deep mathematical structure \cite{polynomialFunctorsCategory}.
-In recent years, Poly has found use in dynamical systems theory \cite{poly-book} \cite{css}. 
-This thesis formalizes Poly and its use in dynamical systems in Cubical Agda, contributing to the Poly code ecosystem.
-In the first part, the theory of the category Poly is formalized, together with a closely related category called Chart. 
-In the second part, the use of Poly and Chart for building dynamical systems is given, together with many examples of dynamical systems.
+In recent years, new interpretations of Poly have been found in dynamical systems theory \cite{poly-book}. 
+This thesis formalizes Poly in Cubical Agda and showcases its use in dynamical systems, contributing to the Poly code ecosystem.
+% In the first part, the theory of the category Poly is formalized, together with a closely related category called Chart. 
+% In the second part, these categories are used to build many examples of dynamical systems. % , together with many examples of dynamical systems.
 
-The theory part formalizes the category Poly itself and several categorical constructs, including the initial object, products, composition and parallel product as two monoids, and many various proofs around the category.
-Also, Chart is formalized, together with its own categorical constructs.
-The combination of Poly and Chart as commuting squares is given, which is meaningful for the dynamical interpretation.
+The first part, theory, formalizes the category Poly itself and many of its categorical constructs, including the initial and terminal objects, product, coproduct, equalizer, composition and parallel product. % , among others. % as two monoids, and many various proofs around the category.
+Then Chart is formalized, together with its own categorical constructs.
+Finally, Poly and Chart morphisms are combined via commuting squares.   %, aoeuaoeu
+% The combination of Poly and Chart as commuting squares is given, which is meaningful for the dynamical interpretation.
 
-The practical part builds upon the theory by formalizing how these categories can be used to construct dynamical systems.
+The second part, practice, builds upon the theory by using these categories to implement dynamical systems.
 It covers how morphisms in Poly represent dynamical systems, how polynomials act as interfaces, how
-systems are wired together, how systems are implemented, how behavior is installed into wiring diagrams, and how to run systems arriving at concrete programs.
-Many dynamical system examples are given, such as the Fibonacci sequence generator, the Lorenz system, the Hodkgin-Huxley model, and reservoir computers.
-Commuting squares are used as a way of showing that one dynamical system simulates another.
+systems are wired together, how behavior is installed into wiring diagrams, and how to run systems arriving at concrete programs.
+Many dynamical system examples are given, such as a Fibonacci sequence generator, the Lorenz system, the Hodkgin-Huxley model, and an Echo-State Network that learns the Lorenz dynamics. %reservoir computers.
+Commuting squares are used as a way of showing that one dynamical system can be made to simulate another.
 
 
 
