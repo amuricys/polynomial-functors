@@ -3,14 +3,12 @@
 This chapter covers a discussion on certain topics about the formalization of \textbf{Poly}. The characterization of equality between lenses is discussed, as well as the ease of use of \textbf{Poly} in implementing dynamical systems. Further, the consequence of mixing Cubical Agda with agda-categories is discussed. Finally, some areas of future work are given.
 
 \section{Equality of lenses}
-The fact that lenses (as well as polynomials and charts) are defined as (dependent) sigma types makes equality of lenses (as well as polynomials and charts) a major pain point. The first component of the sigma type is directly comparable, but for the second component, \mintinline{agda}{subst} is needed to make the types comparable. This problem shows up every time an equality between lenses needs to be proved. If the proof of the first component being equal is \mintinline{agda}{refl}, the \mintinline{agda}{subst} is easily removed by using \mintinline{agda}{substRefl}. But, anytime the proof of the first component is non-trivial, the complexity of the equality proof quickly increases. Therefore, the more powerful variant of lens equality was developed, \mintinline{agda}{lensEquals3}, where the \mintinline{agda}{subst} is pushed inside the term as much as possible. This variant of lens equality has shown to be very useful and is used in most places in the code.
+The fact that lenses (as well as polynomials and charts) are defined as (dependent) sigma types makes equality of lenses (as well as polynomials and charts) a major pain point. The first component of the sigma type is directly comparable, but for the second component, \mintinline{agda}{subst} is needed to make the types comparable. This problem shows up every time an equality between lenses needs to be proved. If the proof of the first component being equal is \mintinline{agda}{refl}, the \mintinline{agda}{subst} is easily removed by using \mintinline{agda}{substRefl}. But, anytime the proof of the first component is non-trivial, the complexity of the equality proof quickly increases. Therefore, the more powerful variant of lens equality was developed, \mintinline{agda}{lens≡ₚ}, where the \mintinline{agda}{subst} is pushed inside the term as much as possible. This variant of lens equality has shown to be very useful and is used in most places in the code.
 Hopefully, the efforts to characterize lens equality are useful to any future formalizations of \textbf{Poly}.
 
 Although the same solution is used for charts, there is a possible alternative approach.
 A chart can be represented as a single function, satisfying a predicate instead of being defined as two different maps in a sigma type.
 This representation makes equality between charts to be simply equality between functions. Although, this approach was not explored further.
-
-\todo{Rename lensEquals3}
 
 \section{Proving with Cubical Agda}
 Cubical Agda provides some very useful features, such as:
