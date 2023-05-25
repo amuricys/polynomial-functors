@@ -40,7 +40,7 @@ The sets of directions would normally be a family of sets, where each position c
 This way of phrasing positions might be unsettling at first, but it makes more sense in everyday programming with polynomial functors, since what really matters when handling dependent sets is what distinction an indexing set performs. 
 If two positions index the same set, they can be thought as the same thing.
 
-\remarktitle{More perspectives on polynomials}
+\subsection*{More perspectives on polynomials}
 
 Understanding polynomial functors is crucial, and there are many ways to think about them.
 The book showcases other standard ways to visualize polynomials, which are helpful to interpret the category in different applications and to build intuition about the purely categorical perspective.
@@ -149,13 +149,12 @@ asEndo p = record
 \subsection{Arrows are natural transformations - \textit{dependent lenses}}
 
 Arrows on \textbf{Poly} are so-called \textit{dependent lenses}.
-The reason is that arrows between monomials are the usual definition of lenses in Haskell, as a pair of non-dependent "getter and setter" functions. \todo{Show types of the getter and setter}
+The reason is that arrows between monomials are the usual definition of lenses in Haskell, as a pair of non-dependent "getter and setter" functions. For example, a lens between $Sy^T$ and $Ay^B$ consists of the functions \mintinline{agda}{get : S → A} and \mintinline{agda}{set : S → B → T}. 
 A dependent lens has the additional property that "the types we are allowed to set depend on the value we get".
 This notion is explored further in the applications part of the thesis. 
 Since non-dependent lenses (lenses between monomials) are a very special case of dependent lenses, the arrows in \textbf{Poly} are referred to as simply \textit{lenses}, like the Agda definition.
 
-\remarktitle{Perspectives on lenses}
-
+\subsection*{Perspectives on lenses}
 Another use of the corolla forest perspective is that it makes visualizing maps between polynomials intuitive.
 Consider the polynomials $p(y) = y^5 + 2y^2 + y$ and $q(y) = y^3 + y^2 + 2y + 1$.
 First, their visualization as corollas is as:
@@ -314,8 +313,7 @@ Expressing more general kinds of lenses in Haskell using this scheme becomes har
 The dependency between the value of the map on positions and the type of the map of directions is hidden and baked into the syntax of the language. 
 There are attempts to do this in Haskell \cite{iceland_jack_thread} \cite{sjoerd_gist}, but the Haskell view is given only for the sake of perspective. Polynomials and lenses are much more natural in Agda.
 
-\remarktitle{Lenses in Agda}
-
+\subsection*{Lenses in Agda}
 Here is their definition:
 
 \begin{minted}{agda}
@@ -503,7 +501,7 @@ lens≡ {p} {q} {f} {g} mapPos≡ mapDir≡ i
 \end{minted}
 
 
-\remarktitle{If lenses and polynomials are both Σ-types in disguise, why not just use Σ-types?}
+\subsection*{If lenses and polynomials are both Σ-types in disguise, why not just use Σ-types?}
 
 The main reason is \textit{usability}. This is a convenience-driven decision: we want our implementation of \textbf{Poly} to not only be amenable to formalization and having theorems proven about it, but also to be \textit{nice to program in}. Working with Σ-types causes readability to suffer too much, because the names of the constructor and fields are lost. We then make the compromise of converting between the record Σ-type representations only in the equality modules, since the proofs that the representations are equal allows us to carry equality over between the types, a very useful feature of Cubical Agda.
 
