@@ -5,14 +5,44 @@ The previous chapter covered the category \textbf{Poly}, of polynomials and lens
 The objects of \textbf{Chart} are exactly the same as \textbf{Poly}: polynomial functors. What differs are the arrows. 
 
 \subsection{Chart}
-Arrows in \textbf{Chart} are called charts. The difference between charts and lenses is that while lenses has the map on directions going backwards, charts has the map on directions going forwards. This makes charts easier to reason about, since the map on directions and the map on positions goes the same way. An example chart can be seen in figure \ref{fig:exampleChart}. The definition of \mintinline{agda}{Chart} in Agda is as follows:
+Arrows in \textbf{Chart} are called charts. The difference between charts and lenses is that while lenses has the map on directions going backwards, charts has the map on directions going forwards. This makes charts easier to reason about, since the map on directions and the map on positions goes the same way, like this figure shows:
 
-\begin{figure}
-    \centering
-    \includegraphics{figure/chartExample.png}
-    \caption{The polynomial $p$ has $3$ positions, and $q$ has $2$ positions. The map on position is a map between $p$'s and $q$'s positions. The map on direction is for each position of $p$, a map forward on the directions..}
+\begin{figure}[H]
+  \[
+    \begin{tikzpicture}
+      \node (p1) {
+      \begin{tikzpicture}[trees, sibling distance=2.5mm]
+        \node[green!50!black, "{\color{green!50!black}\tiny 1}" below] (1) {$\bullet$}
+        child[green!50!black] {coordinate (11)}
+        child[green!50!black] {coordinate (12)};
+        \node[right=1.5 of 1, green!50!black, "{\color{green!50!black}\tiny 2}" below] (2) {$\bullet$}
+        child[green!50!black] {coordinate (21)};
+        \node[right=1.5 of 2, green!50!black, "{\color{green!50!black}\tiny 3}" below] (3) {$\bullet$}
+        ;
+        \node[right=2.5 of 3, red!75!black, "{\color{red!75!black}\tiny A}" below] (a) {$\bullet$} 
+          child[red!75!black] {coordinate (a1)}
+          child[red!75!black] {coordinate (a2)};
+        \node[right=1.5 of a, red!75!black, "{\color{red!75!black}\tiny B}" below] (b) {$\bullet$} 
+          child[red!75!black] {coordinate (b1)};
+        \begin{scope}[dotted, bend left, decoration={markings, mark=at position 0.75 with \arrow{stealth}}]
+          \draw[postaction={decorate}] (11) to (b1);
+          \draw[postaction={decorate}] (12) to (b1);
+          \draw[postaction={decorate}] (21) to (a1);
+        \end{scope}
+        \begin{scope}[bend right, decoration={markings, mark=at position 0.75 with \arrow{stealth}}]
+          \draw[|->, postaction={decorate}] (1) to (b);
+          \draw[|->, postaction={decorate}] (2) to (a);
+          \draw[|->, postaction={decorate}] (3) to (a);
+        \end{scope}
+      \end{tikzpicture}	
+      };
+    \end{tikzpicture}
+    \]
+    \caption{The polynomial $p = y^2 + y + 1$ on the left has $3$ positions, and $q(y) = y^2 + y$ on the right has $2$ positions. This figure shows a chart from $p$ to $q$. The map on position is a map between $p$'s and $q$'s positions, like in lenses. The map on direction is for each position of $p$, a map between that position's directions and the directions of the mapped position in $q$.}
     \label{fig:exampleChart}
 \end{figure}
+
+The definition of \mintinline{agda}{Chart} in Agda is as follows:
 
 \begin{minted}{agda}
 record Chart (p q : Polynomial) : Set where
@@ -22,7 +52,7 @@ record Chart (p q : Polynomial) : Set where
         mapDir : (i : position p) → direction p i → direction q (mapPos i)
 \end{minted}
 
-The constructor name is \mintinline{agda}{⇉} to indicate that both the map on positions and the map on directions goes forward. Notably, despite being maps between functors, charts are \textit{not} natural transformations, and just what categorical structure they correspond to is not known. If we try to formulate it as an agda-categories natural transformation, like below, we get an unfillable hole:
+The constructor \mintinline{agda}{⇉} is used to indicate that both the maps go forward. Notably, despite being maps between functors, charts are \textit{not} natural transformations. Trying to formulate it as an agda-categories natural transformation like below, with the \texttt{asEndo} function shown earlier, leads to an unfillable hole:
 
 \begin{minted}{agda}
 asNatTransChart : {p q : Polynomial} → 
@@ -33,7 +63,7 @@ asNatTransChart (f ⇉ f♯) = record {
     ... 
     }
 \end{minted}
-In the hole, \texttt{x} is of type \texttt{direction q (f posP)}, but there is no such data to provide. \todo{makes no sense}
+In the hole, the desired type is \texttt{direction p posP}, but there is no such data to provide; \texttt{x} is of type \texttt{direction q (f posP)}.
 
 \subsection{Identity chart}
 The identity chart, in similarity to the identity lens, maps positions to itself and directions to itself. In code:

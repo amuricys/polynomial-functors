@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/nixos.org) (preloaded format=pdflatex 1980.1.1)  24 MAY 2023 19:14
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2021/nixos.org) (preloaded format=pdflatex 1980.1.1)  25 MAY 2023 13:55
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1951,12 +1951,98 @@ Package biblatex Info: Automatic encoding selection.
 \openout6 = `Main.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'Main.bbl' not found.
+Package biblatex Info: ... file 'Main.bbl' found.
+ (./Main.bbl
 
-No file Main.bbl.
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                blas
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                chart-lib
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                code
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                containers https://www.cs.le.ac.uk/people/ma139/docs/
+thesis.pdf
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                daig
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                https://arxiv.org/pdf/2201.12878.pdf
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                https://mark-kramer.github.io/Case-Studies-Python/HH.
+html
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                jaz http://davidjaz.com/Papers/DynamicalBook.pdf
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                koch https://arxiv.org/abs/0906.4931
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                optparse
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                poly-book
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+
+Package biblatex Warning: The following entry could not be found
+(biblatex)                in the database:
+(biblatex)                spivak db https://arxiv.org/pdf/2111.10968.pdf
+(biblatex)                Please verify the spelling and rerun
+(biblatex)                LaTeX afterwards.
+
+)
 Package biblatex Info: Reference section=0 on input line 12.
 Package biblatex Info: Reference segment=0 on input line 12.
-(./include/frontmatter/Titlepage.tex
+ (./include/frontmatter/Titlepage.tex
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: pdftex
 * paper: a4paper
@@ -2179,35 +2265,10 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <7> on input line 3.
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <5> on input line 3.
-
-LaTeX Warning: Citation 'catastrophic' on page 1 undefined on input line 20.
-
-
-LaTeX Warning: Citation 'complexcatsadjunction' on page 1 undefined on input li
-ne 20.
-
-
-LaTeX Warning: Citation 'compositional-gt' on page 1 undefined on input line 20
-.
-
-
-LaTeX Warning: Citation 'markov-categories' on page 1 undefined on input line 2
-0.
-
-
-LaTeX Warning: Citation 'compositional-react-net' on page 1 undefined on input 
-line 20.
-
-
-LaTeX Warning: Citation 'operad-dynsys' on page 1 undefined on input line 20.
-
 [1
 
 ]) (./include/Background.tex [2]
 Chapter 2.
-
-LaTeX Warning: Citation 'agdaWebsite' on page 3 undefined on input line 18.
-
 \openout5 = `Main.pyg'.
 
 (./_minted-Main/default.pygstyle)
@@ -2225,14 +2286,6 @@ hare/texmf/tex/latex/bbold/Ubbold.fd))
 
 (./_minted-Main/4606A880FBF5466AB96A5950E132FEBEA9EECA4F952F3826E4032C49E398807
 F.pygtex)
-
-LaTeX Warning: Citation 'propositionastypes' on page 3 undefined on input line 
-26.
-
-
-LaTeX Warning: Citation 'DependentTypesAtWork' on page 3 undefined on input lin
-e 26.
-
 \openout4 = `Main.pyg'.
 
 
@@ -2245,9 +2298,6 @@ e 26.
 
 (./_minted-Main/1EF68CB90D4241DA14C923118BAE2913BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
-
-LaTeX Warning: Citation 'haskellGADT' on page 4 undefined on input line 53.
-
 \openout4 = `Main.pyg'.
 
 
@@ -2262,26 +2312,12 @@ LaTeX Warning: Citation 'haskellGADT' on page 4 undefined on input line 53.
 
 
 (./_minted-Main/3FEF84EB18F580107D702CE16BE1F6A9BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [4])
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/EB18659C01BBABF3BABC4F2AD7D07236BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
-
-LaTeX Warning: Citation 'agdaWebsite' on page 5 undefined on input line 89.
-
-
-LaTeX Warning: Citation 'DependentTypesAtWork' on page 5 undefined on input lin
-e 89.
-
-
-LaTeX Warning: Citation 'cubicalAgdaDocs' on page 5 undefined on input line 102
-.
-
-
-LaTeX Warning: Citation 'hottBook' on page 5 undefined on input line 102.
-
+1.pygtex [4])
 \openout5 = `Main.pyg'.
 
 
@@ -2312,10 +2348,6 @@ LaTeX Warning: Citation 'hottBook' on page 5 undefined on input line 102.
 
 (./_minted-Main/6F5BD342A8D1795EC98BA9E2E4B166D0BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex) [5]
-
-LaTeX Warning: Citation 'cubicalLibrary' on page 6 undefined on input line 113.
-
-
 \openout5 = `Main.pyg'.
 
 
@@ -2331,12 +2363,6 @@ LaTeX Warning: Citation 'cubicalLibrary' on page 6 undefined on input line 113.
 
 (./_minted-Main/FB75E1E72E7BA0C4141B79CE33CDAEAEBE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
-
-LaTeX Warning: Citation 'cubicalPaper' on page 6 undefined on input line 123.
-
-
-LaTeX Warning: Citation 'hottBook' on page 6 undefined on input line 123.
-
 \openout4 = `Main.pyg'.
 
 
@@ -2357,55 +2383,27 @@ LaTeX Warning: Citation 'hottBook' on page 6 undefined on input line 123.
 
 (./_minted-Main/A3990B63A7962278860A92F34B552D46BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex) [6] [7]
-
-LaTeX Warning: Citation 'seven-sketches' on page 8 undefined on input line 213.
-
-
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <14.4> not available
 (Font)              Font shape `T1/lmtt/b/n' tried instead on input line 224.
-
-LaTeX Warning: Citation '1lab' on page 8 undefined on input line 226.
-
-
-LaTeX Warning: Citation 'cubical-cat' on page 8 undefined on input line 226.
-
-
-LaTeX Warning: Citation 'agda-cats' on page 8 undefined on input line 226.
-
-
-LaTeX Warning: Citation 'kockpoly' on page 8 undefined on input line 231.
-
-
-LaTeX Warning: Citation 'kock2009polynomial' on page 8 undefined on input line 
-231.
-
-
-LaTeX Warning: Citation 'spivak2023functorial' on page 8 undefined on input lin
-e 231.
-
 ) (./include/Theory.tex [8]
 Chapter 3.
-
-LaTeX Warning: Citation 'githubRepo' on page 9 undefined on input line 4.
-
-[9
-
-]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/41EF3930C912AF360C5F6079C8D9F0EDBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex [9
+
+])
 \openout5 = `Main.pyg'.
 
 
 (./_minted-Main/8BB68CB09A4E8FC8F57736D7841B7828BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [10]
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/6F8E107E3B610EADE68C50C80E646464A9EECA4F952F3826E4032C49E398807
-F.pygtex)
+F.pygtex [10])
 \openout4 = `Main.pyg'.
 
 
@@ -2415,7 +2413,10 @@ F.pygtex)
 
 
 (./_minted-Main/0C72B971CE415F5867065551BC6F30F5BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [11]
+1.pygtex)
+Package hyperref Info: bookmark level for unknown todo defaults to 0 on input l
+ine 152.
+ [11]
 Missing character: There is no ; in font nullfont!
 \openout4 = `Main.pyg'.
 
@@ -2432,13 +2433,6 @@ F.pygtex)
 
 (./_minted-Main/C6020F452D7FEAD05E6B203FF1B7C419A9EECA4F952F3826E4032C49E398807
 F.pygtex)
-
-LaTeX Warning: Citation 'iceland_jack_thread' on page 13 undefined on input lin
-e 291.
-
-
-LaTeX Warning: Citation 'sjoerd_gist' on page 13 undefined on input line 291.
-
 \openout4 = `Main.pyg'.
 
 
@@ -2453,11 +2447,6 @@ LaTeX Warning: Citation 'sjoerd_gist' on page 13 undefined on input line 291.
 
 
 (./_minted-Main/4A631FC2F37E1CB30100411A2E54D5A1BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
-\openout5 = `Main.pyg'.
-
-
-(./_minted-Main/879AA441F7C8372194DBAE0304364A2ABE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
 \openout4 = `Main.pyg'.
 
@@ -2499,9 +2488,6 @@ LaTeX Warning: Citation 'sjoerd_gist' on page 13 undefined on input line 291.
 
 (./_minted-Main/BB0A6C4681998D131772A84603835B66BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
-
-LaTeX Warning: Citation 'agda-cats' on page 15 undefined on input line 373.
-
 \openout5 = `Main.pyg'.
 
 
@@ -2516,19 +2502,51 @@ LaTeX Warning: Citation 'agda-cats' on page 15 undefined on input line 373.
 
 
 (./_minted-Main/9B4069BCBEA34761ADBF9B378D909A12BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [15]
-\openout4 = `Main.pyg'.
-
-
-(./_minted-Main/00DF6BF0E38D8F7664A93AB292AE2FD6BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
 \openout4 = `Main.pyg'.
 
 
+(./_minted-Main/00DF6BF0E38D8F7664A93AB292AE2FD6BE03E3A259E9AF7A608D8D9A99EA7DC
+1.pygtex [15])
+\openout5 = `Main.pyg'.
+
+
+(./_minted-Main/84DDDB831066F98FD1840A6968FA3182BE03E3A259E9AF7A608D8D9A99EA7DC
+1.pygtex)
+\openout4 = `Main.pyg'.
+
+
+(./_minted-Main/44DB13614636401FEDEC39AD0938D833BE03E3A259E9AF7A608D8D9A99EA7DC
+1.pygtex)
+\openout4 = `Main.pyg'.
+
+
+(./_minted-Main/FF888B9FCA96386A5929A47B93F0AC8BBE03E3A259E9AF7A608D8D9A99EA7DC
+1.pygtex)
+\openout4 = `Main.pyg'.
+
+
+(./_minted-Main/B69C6DE8E731EF731E5C97A215CEEF00BE03E3A259E9AF7A608D8D9A99EA7DC
+1.pygtex)
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [16]
+\openout4 = `Main.pyg'.
+
+
 (./_minted-Main/FB168E3BCA553D6B61B10CB32C241CDDBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [16])
+1.pygtex)
+\openout4 = `Main.pyg'.
+
+
+(./_minted-Main/DD367D49B0E6AC3A8D9259CD61A11130BE03E3A259E9AF7A608D8D9A99EA7DC
+1.pygtex)
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 426.
+(Font)              <14.4> on input line 506.
+
+Underfull \vbox (badness 1478) has occurred while \output is active []
+
+ [17]
 \openout4 = `Main.pyg'.
 
 
@@ -2548,12 +2566,12 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 
 (./_minted-Main/993E929A5C0325C2F4A9FD4E2F8D9B8D848B5D23E8EE047B84A7FB450812447
-9.pygtex [17])
+9.pygtex)
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/336D09BE7F483CA2F958227C6AD15F1C848B5D23E8EE047B84A7FB450812447
-9.pygtex)
+9.pygtex) [18]
 \openout4 = `Main.pyg'.
 
 
@@ -2573,31 +2591,34 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 
 
 (./_minted-Main/D59C73D2AFE97B2B437CEA6924E0703F848B5D23E8EE047B84A7FB450812447
-9.pygtex [18])
+9.pygtex)
+Underfull \vbox (badness 1383) has occurred while \output is active []
+
+ [19]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/BCF39002D2379C7A45BBE98F531F6A2EBE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
-<figure/productExample.png, id=695, 462.528pt x 260.172pt>
+<figure/productExample.png, id=754, 462.528pt x 260.172pt>
 File: figure/productExample.png Graphic file (type png)
 <use figure/productExample.png>
-Package pdftex.def Info: figure/productExample.png  used on input line 536.
+Package pdftex.def Info: figure/productExample.png  used on input line 616.
 (pdftex.def)             Requested size: 462.52686pt x 260.17134pt.
 
-Overfull \hbox (35.7355pt too wide) in paragraph at lines 536--537
+Overfull \hbox (35.7355pt too wide) in paragraph at lines 616--617
  [][] 
  []
 
 
-LaTeX Warning: Reference `fig:productDiagram' on page 19 undefined on input lin
-e 541.
+LaTeX Warning: Reference `fig:productDiagram' on page 20 undefined on input lin
+e 621.
 
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/944F4E153701187CBD38C37B3FEF0CBABE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [19])
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
@@ -2605,21 +2626,22 @@ e 541.
 1.pygtex)
 
 LaTeX Warning: Reference `fig:productDiagram' on page 20 undefined on input lin
-e 558.
+e 638.
 
 
-LaTeX Warning: Citation 'code' on page 20 undefined on input line 558.
+LaTeX Warning: Citation 'code' on page 20 undefined on input line 638.
 
+[20]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/92F70BFF95F5DF8649C827582D4C0BB6BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [20 <./figure/productExample.png>])
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/E482FA0573BF1FD71D399C97C8CB25E4BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex [21 <./figure/productExample.png>])
 \openout4 = `Main.pyg'.
 
 
@@ -2644,45 +2666,40 @@ Package microtype Info: Character `texttrademark ' is missing
 
 
 (./_minted-Main/C463FFF7E205FC6AB6E3ADADD092CB0DBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [21])
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/9F61185295B643D6BA7DC3433EABC01BBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex [22])
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/553C5A32325A988999B177E62F2F086BBE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [22]
 \openout5 = `Main.pyg'.
 
 
 (./_minted-Main/123737710974A6ACA795AD51A87FF2C2BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex) [23]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/12D2E16D9065E665F01DDFB054518325BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
-Package hyperref Info: bookmark level for unknown todo defaults to 0 on input l
-ine 679.
-<figure/coproductExample.png, id=718, 462.528pt x 260.172pt>
+<figure/coproductExample.png, id=776, 462.528pt x 260.172pt>
 File: figure/coproductExample.png Graphic file (type png)
 <use figure/coproductExample.png>
-Package pdftex.def Info: figure/coproductExample.png  used on input line 684.
+Package pdftex.def Info: figure/coproductExample.png  used on input line 764.
 (pdftex.def)             Requested size: 462.52686pt x 260.17134pt.
 
-Overfull \hbox (35.7355pt too wide) in paragraph at lines 684--685
+Overfull \hbox (35.7355pt too wide) in paragraph at lines 764--765
  [][] 
  []
 
 
-LaTeX Warning: Reference `fig:coproductDiagram' on page 23 undefined on input l
-ine 689.
+LaTeX Warning: Reference `fig:coproductDiagram' on page 24 undefined on input l
+ine 769.
 
 \openout4 = `Main.pyg'.
 
@@ -2693,17 +2710,17 @@ ine 689.
 
 
 (./_minted-Main/6D62B05EA337001FFA9197ACF5CBEF68BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex [24 <./figure/coproductExample.png>])
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/475768DFE00FDB9F579878EDF62A6ECEBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [23])
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/E2B1FD0B6F3457DD8D76D81DDD99DD9CBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [24 <./figure/coproductExample.png>])
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
@@ -2718,28 +2735,29 @@ ine 689.
 
 
 (./_minted-Main/EB66EEC8B2E2EE7B467DAFC93AC65CC3BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex [25])
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/03413B8799658DB121C89A50057450A9BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex
-Underfull \vbox (badness 4792) has occurred while \output is active []
+1.pygtex)
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [25])
+ [26]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/A148A79CF69BA1B54E36A35963D71322BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [26]
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/38FFCD1E4F0E855EFAB3632FA30C9DA5BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
 
-LaTeX Warning: Citation 'daig' on page 27 undefined on input line 838.
+LaTeX Warning: Citation 'daig' on page 27 undefined on input line 918.
 
+[27]
 \openout4 = `Main.pyg'.
 
 
@@ -2749,15 +2767,12 @@ LaTeX Warning: Citation 'daig' on page 27 undefined on input line 838.
 
 
 (./_minted-Main/0F0F848CC5BF3E935B80E6DFD18517D1BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [27] [28]
-Underfull \vbox (badness 4316) has occurred while \output is active []
-
- [29]
+1.pygtex) [28] [29]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/2BD33CAFCF5000F02A7AD96A08D94D70BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex) [30]
 \openout4 = `Main.pyg'.
 
 
@@ -2767,7 +2782,7 @@ Underfull \vbox (badness 4316) has occurred while \output is active []
 
 
 (./_minted-Main/666DD98EC1C80609965137BFCB4EE4E0BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [30])
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
@@ -2777,33 +2792,25 @@ Underfull \vbox (badness 4316) has occurred while \output is active []
 
 
 (./_minted-Main/CCE201C709E717BA500CAC81EDDFFD23BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex [31])
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/1D030F1D15D90C3B61B3BB63A67AE1E7BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [31])) (./include/TheoryCharts.tex [32]
+1.pygtex)) (./include/TheoryCharts.tex [32]
 Chapter 4.
 \openout5 = `Main.pyg'.
 
 
 (./_minted-Main/425675BD47D67659500FC1C099FAD381BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
-<figure/chartExample.png, id=770, 462.528pt x 260.172pt>
-File: figure/chartExample.png Graphic file (type png)
-<use figure/chartExample.png>
-Package pdftex.def Info: figure/chartExample.png  used on input line 12.
-(pdftex.def)             Requested size: 462.52686pt x 260.17134pt.
-
-Overfull \hbox (35.7355pt too wide) in paragraph at lines 12--13
- [][] 
- []
-
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/094DD366E74C17B60BD9716EC11F4B1EBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex [33
+
+])
 \openout5 = `Main.pyg'.
 
 
@@ -2813,9 +2820,7 @@ Overfull \hbox (35.7355pt too wide) in paragraph at lines 12--13
 
 
 (./_minted-Main/F8E0584990FAC3A30946E8EE7E0E32B0BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [33
-
-])
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
@@ -2830,12 +2835,12 @@ Overfull \hbox (35.7355pt too wide) in paragraph at lines 12--13
 
 
 (./_minted-Main/A23372F7B982E4D91217ADE0DB0A6F8ABE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [34 <./figure/chartExample.png>]
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/98EB5C8DC9FE3DE7D27EE73A8F7B1214BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex [34])
 \openout5 = `Main.pyg'.
 
 
@@ -2851,7 +2856,7 @@ Overfull \hbox (35.7355pt too wide) in paragraph at lines 12--13
 
 (./_minted-Main/84DDDB831066F98FD1840A6968FA3182BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
-Overfull \hbox (17.47775pt too wide) in paragraph at lines 78--79
+Overfull \hbox (17.47775pt too wide) in paragraph at lines 108--109
 []\T1/lmr/m/n/12 (-20) The weak vari-ant of chart equal-ity, is di-rectly de-fi
 ned by us-ing, [].
  []
@@ -2870,12 +2875,12 @@ ned by us-ing, [].
 
 
 (./_minted-Main/2B657A9381AC025F272AC0A057081A5EBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [35]
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/2528891888644BBB9CE983954C23BDA5BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex [35])
 \openout4 = `Main.pyg'.
 
 
@@ -2915,7 +2920,7 @@ ned by us-ing, [].
 
 
 (./_minted-Main/74A256064B8206BC7BF328ED00D709E4BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [36])
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
@@ -2930,43 +2935,38 @@ ned by us-ing, [].
 
 
 (./_minted-Main/84575CAF974556E59755E20DF73C5D52BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
-Overfull \hbox (12.96927pt too wide) in paragraph at lines 176--177
+1.pygtex [36])
+Overfull \hbox (12.96927pt too wide) in paragraph at lines 206--207
 []\T1/lmr/m/n/12 (-20) The proofs are also sim-i-lar, and can be found in \T1/l
 mr/bx/n/12 (-20) Cat-e-gor-i-cal/Chart/Coproduct.agda\T1/lmr/m/n/12 (-20) . 
  []
 
-[37]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/3069FA9B783186BDF5064A4E964D9DC3BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
+1.pygtex [37])
 
 LaTeX Warning: Reference `fig:commutingSquareCompose' on page 38 undefined on i
-nput line 228.
+nput line 258.
 
 
 LaTeX Warning: Reference `section:commutingSquaresCompose' on page 38 undefined
- on input line 237.
+ on input line 267.
 
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/D6206AAF7612C9C3802AF07CF81BCDA2BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [38])) (./include/Applications.tex [39] [40
+1.pygtex)) (./include/Applications.tex [38]
+Chapter 5.
+[39
 
 ]
-Chapter 5.
-[41]
-
-LaTeX Warning: Citation 'operadwd' on page 42 undefined on input line 25.
-
-
 Underfull \vbox (badness 7540) has occurred while \output is active []
 
- [42]
-[43]
+ [40]
+[41]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 116.
@@ -2979,12 +2979,21 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 116.
 
-[44] [45]
+[42]
+Underfull \vbox (badness 2042) has occurred while \output is active []
+
+ [43]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [44]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [45]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/A7F898D43A0F5636F89BBE0105DB950EBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [46]
+1.pygtex [46])
 \openout4 = `Main.pyg'.
 
 
@@ -2995,10 +3004,6 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 (./_minted-Main/F9AEFEAB5E5FE3C4A6D7243D78BD0347BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
-
-LaTeX Warning: Citation 'conceptwithattitude' on page 47 undefined on input lin
-e 319.
-
 \openout4 = `Main.pyg'.
 
 
@@ -3008,41 +3013,42 @@ e 319.
 
 
 (./_minted-Main/05BBA3849A6F7C93D8F52A830B7A1442BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
-\openout4 = `Main.pyg'.
-
-
-(./_minted-Main/9ED3E5764FABA773B73D9D98A27FEF2ABE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex [47])
 \openout4 = `Main.pyg'.
 
 
+(./_minted-Main/9ED3E5764FABA773B73D9D98A27FEF2ABE03E3A259E9AF7A608D8D9A99EA7DC
+1.pygtex)
+\openout4 = `Main.pyg'.
+
+
 (./_minted-Main/410A46E3EA498A215A1CFD60710C81CCBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [48]
+1.pygtex [48])
 LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <10.95> on input line 391.
+ [49]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/89C849D6FB7FF40DE3374BC74D545174848B5D23E8EE047B84A7FB450812447
-9.pygtex [49])
+9.pygtex)
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/589CAE8CEB9A406E39D4053715090E26BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
+Underfull \vbox (badness 3138) has occurred while \output is active []
 
-LaTeX Warning: Reference `fig:flipFlopSquare' on page 50 undefined on input lin
+ [50]
+
+LaTeX Warning: Reference `fig:flipFlopSquare' on page 51 undefined on input lin
 e 470.
 
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/64BEA89C60F2607245F33D2E3AC0F785BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [50])
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [51]
+1.pygtex [51])
 \openout4 = `Main.pyg'.
 
 
@@ -3052,10 +3058,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 
 (./_minted-Main/38A624BB208FEAB8DFF0BA48BD0F852EBE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [52]
-
-LaTeX Warning: Citation 'css' on page 53 undefined on input line 570.
-
+1.pygtex [52])
 
 LaTeX Warning: Citation 'optparse' on page 53 undefined on input line 574.
 
@@ -3069,20 +3072,17 @@ ng the \T1/lmtt/m/n/12 optparse-applicative[]
 LaTeX Warning: Citation 'chart-lib' on page 53 undefined on input line 575.
 
 
-LaTeX Warning: Citation 'hmatrix' on page 53 undefined on input line 576.
-
-
 LaTeX Warning: Citation 'blas' on page 53 undefined on input line 576.
 
-
-LaTeX Warning: Citation 'Murray2002' on page 53 undefined on input line 583.
-
 [53]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [54]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/143745FD6511F2918DD7A8062355ADA9848B5D23E8EE047B84A7FB450812447
-9.pygtex) [54]
+9.pygtex [55])
 \openout4 = `Main.pyg'.
 
 
@@ -3092,23 +3092,19 @@ LaTeX Warning: Citation 'Murray2002' on page 53 undefined on input line 583.
 
 
 (./_minted-Main/B3EAA109BB1DBF6299DE245236FD5DE7BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [55]
+1.pygtex [56])
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/32307788A5BADFABB5B1962057072B3B72522DB1902E35D1C5B5FDAF98A2528
 F.pygtex)
-<figure/lotka_volterra.png, id=907, 803.0pt x 602.25pt>
+<figure/lotka_volterra.png, id=973, 803.0pt x 602.25pt>
 File: figure/lotka_volterra.png Graphic file (type png)
 <use figure/lotka_volterra.png>
 Package pdftex.def Info: figure/lotka_volterra.png  used on input line 712.
 (pdftex.def)             Requested size: 384.1096pt x 288.08423pt.
-
-
-LaTeX Warning: Citation 'lorenz1963' on page 56 undefined on input line 719.
-
-[56 <./figure/lotka_volterra.png>]
-<figure/lorenzbutterfly.png, id=918, 760.7622pt x 792.561pt>
+ [57 <./figure/lotka_volterra.png>]
+<figure/lorenzbutterfly.png, id=986, 760.7622pt x 792.561pt>
 File: figure/lorenzbutterfly.png Graphic file (type png)
 <use figure/lorenzbutterfly.png>
 Package pdftex.def Info: figure/lorenzbutterfly.png  used on input line 738.
@@ -3117,112 +3113,76 @@ Package pdftex.def Info: figure/lorenzbutterfly.png  used on input line 738.
 
 
 (./_minted-Main/CAFE3298D46FECD20B96E35C35031F88BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [57 <./figure/lorenzbutterfly.png (PNG copy)>])
+1.pygtex [58 <./figure/lorenzbutterfly.png (PNG copy)>])
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/F65B84AB520D8260CDF9B891D6384F52BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [58]
-<figure/lorenz_dynamics.png, id=929, 803.0pt x 602.25pt>
+1.pygtex [59])
+<figure/lorenz_dynamics.png, id=998, 803.0pt x 602.25pt>
 File: figure/lorenz_dynamics.png Graphic file (type png)
 <use figure/lorenz_dynamics.png>
 Package pdftex.def Info: figure/lorenz_dynamics.png  used on input line 798.
 (pdftex.def)             Requested size: 384.1096pt x 288.08423pt.
-
-
-LaTeX Warning: Citation 'hodgkin1952quantitative' on page 59 undefined on input
- line 805.
-
-
-LaTeX Warning: Citation 'gerstner2014neuronal' on page 59 undefined on input li
-ne 805.
-
-<figure/hodgkinhuxley.png, id=931, 388.45125pt x 130.4875pt>
+<figure/hodgkinhuxley.png, id=1002, 388.45125pt x 130.4875pt>
 File: figure/hodgkinhuxley.png Graphic file (type png)
 <use figure/hodgkinhuxley.png>
 Package pdftex.def Info: figure/hodgkinhuxley.png  used on input line 809.
 (pdftex.def)             Requested size: 388.45029pt x 130.48717pt.
 
+
 LaTeX Warning: Citation 'https://mark-kramer.github.io/Case-Studies-Python/HH.h
-tml' on page 59 undefined on input line 814.
+tml' on page 60 undefined on input line 814.
 
 
 Overfull \hbox (49.8318pt too wide) in paragraph at lines 814--815
 \T1/lmr/m/n/12 (-20) to this on-line tu-to-rial []
  []
 
-[59 <./figure/lorenz_dynamics.png>]
+[60 <./figure/lorenz_dynamics.png>]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/51A54A26CE4BFE75C68B398B009961B9BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [60 <./figure/hodgkinhuxley.png>])
-<figure/hodgkin-huxley_dynamics.png, id=950, 803.0pt x 602.25pt>
+1.pygtex [61 <./figure/hodgkinhuxley.png>])
+<figure/hodgkin-huxley_dynamics.png, id=1025, 803.0pt x 602.25pt>
 File: figure/hodgkin-huxley_dynamics.png Graphic file (type png)
 <use figure/hodgkin-huxley_dynamics.png>
 Package pdftex.def Info: figure/hodgkin-huxley_dynamics.png  used on input line
  873.
 (pdftex.def)             Requested size: 384.1096pt x 288.08423pt.
+ [62]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/E71A4B5F4229A69576A906563CBF8BF2BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [61])
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/0B47D7F3DCF10075CE597CDCD6D7BB51BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [62 <./figure/hodgkin-huxley_dynamics.png>])
-<figure/hodgkin-huxley_dynamics-input.png, id=962, 803.0pt x 602.25pt>
+1.pygtex [63 <./figure/hodgkin-huxley_dynamics.png>])
+<figure/hodgkin-huxley_dynamics-input.png, id=1037, 803.0pt x 602.25pt>
 File: figure/hodgkin-huxley_dynamics-input.png Graphic file (type png)
 <use figure/hodgkin-huxley_dynamics-input.png>
 Package pdftex.def Info: figure/hodgkin-huxley_dynamics-input.png  used on inpu
 t line 915.
 (pdftex.def)             Requested size: 384.1096pt x 288.08423pt.
-
-
-LaTeX Warning: Citation 'reservoiroverview' on page 63 undefined on input line 
-922.
-
-
-LaTeX Warning: Citation 'windspeedreservoir' on page 63 undefined on input line
- 922.
-
-
-LaTeX Warning: Citation 'jaeger2002adaptive' on page 63 undefined on input line
- 922.
-
-
-LaTeX Warning: Citation 'Cucchi_2022' on page 63 undefined on input line 922.
-
-[63 <./figure/hodgkin-huxley_dynamics-input.png>]
-<figure/reservoir_setup.png, id=970, 1072.005pt x 231.86626pt>
+ [64 <./figure/hodgkin-huxley_dynamics-input.png>]
+<figure/reservoir_setup.png, id=1052, 1072.005pt x 231.86626pt>
 File: figure/reservoir_setup.png Graphic file (type png)
 <use figure/reservoir_setup.png>
 Package pdftex.def Info: figure/reservoir_setup.png  used on input line 926.
 (pdftex.def)             Requested size: 426.79135pt x 92.30968pt.
+ [65 <./figure/reservoir_setup.png>]
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
-
-LaTeX Warning: Citation 'Cucchi_2022' on page 64 undefined on input line 927.
-
-
-LaTeX Warning: Citation 'Cucchi_2022' on page 64 undefined on input line 927.
-
-
-LaTeX Warning: Citation 'jaeger2001echo' on page 64 undefined on input line 931
-.
-
-[64 <./figure/reservoir_setup.png>]
-Overfull \hbox (17.5pt too wide) in paragraph at lines 1080--1082
-\T1/lmr/m/n/12 (-20) read-ers can con-sult the im-ple-men-ta-tion in \T1/lmtt/m
-/n/12 Dynamical/Reservoir/ModeDependent.agda\T1/lmr/m/n/12 (-20) .
- []
-
+ [66]
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/133045115052CE59C76BB5627D5559E4BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [65])
+1.pygtex [67])
 \openout4 = `Main.pyg'.
 
 
@@ -3238,27 +3198,19 @@ tem\T1/lmr/m/n/12 (-20) .
 
 
 (./_minted-Main/8737F492B4CBCC4363910AA4247350F0BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex [66])
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/7FC43CA0DC65CE4EEC9640CFA50623F9BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex)
-<figure/reservoir_computer.png, id=990, 803.0pt x 602.25pt>
+1.pygtex [68])
+<figure/reservoir_computer.png, id=1082, 803.0pt x 602.25pt>
 File: figure/reservoir_computer.png Graphic file (type png)
 <use figure/reservoir_computer.png>
 Package pdftex.def Info: figure/reservoir_computer.png  used on input line 1172
 .
 (pdftex.def)             Requested size: 426.79135pt x 320.10074pt.
-
-
-LaTeX Warning: Citation 'strogatz2001nonlinear' on page 67 undefined on input l
-ine 1177.
-
-) [67] [68 <./figure/reservoir_computer.png>] (./include/Discussion.tex
-[69] [70
-
-]
+) (./include/Discussion.tex [69] [70 <./figure/reservoir_computer.png>]
 Chapter 6.
 \openout5 = `Main.pyg'.
 
@@ -3289,7 +3241,9 @@ Chapter 6.
 
 
 (./_minted-Main/B21CED1397663053FB6091F83086BB61BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex) [71]
+1.pygtex) [71
+
+]
 \openout5 = `Main.pyg'.
 
 
@@ -3305,10 +3259,6 @@ Chapter 6.
 
 (./_minted-Main/7AE01F3D910D2D22A2403C166417F9C8BE03E3A259E9AF7A608D8D9A99EA7DC
 1.pygtex)
-
-LaTeX Warning: Citation 'bicomodulesBlog' on page 73 undefined on input line 66
-.
-
 \openout5 = `Main.pyg'.
 
 
@@ -3326,17 +3276,30 @@ Chapter 7.
 ] [76
 
 ]
+Overfull \hbox (23.48816pt too wide) in paragraph at lines 80--80
+\T1/lmr/m/it/12 (-20) tions of Math-e-mat-ics\T1/lmr/m/n/12 (-20) . In-sti-tute
+ for Ad-vanced Study: [][]$\T1/lmtt/m/n/12 https : / / homotopytypetheory .
+ []
 
-LaTeX Warning: Empty bibliography on input line 79.
+[77
 
-(./include/backmatter/HaskellSupportingCode.tex
+]
+! Missing $ inserted.
+<inserted text> 
+                $
+l.80 
+     
+? 
+! Missing $ inserted.
+<inserted text> 
+                $
+l.80 
+     
+? 
+[78] [79] [80
+
+] (./include/backmatter/HaskellSupportingCode.tex
 Appendix A.
-
-LaTeX Warning: Citation 'nix' on page 1 undefined on input line 5.
-
-
-LaTeX Warning: Citation 'hmatrix' on page 1 undefined on input line 8.
-
 \openout4 = `Main.pyg'.
 
 
@@ -3348,16 +3311,12 @@ LaTeX Warning: Citation 'hmatrix' on page 1 undefined on input line 8.
 (./_minted-Main/759B40F1B1DBFA139291805159296898A9EECA4F952F3826E4032C49E398807
 F.pygtex [1
 
-
 ])
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/33554780F8E51B00C726C77CB76BE400848B5D23E8EE047B84A7FB450812447
 9.pygtex)
-
-LaTeX Warning: Citation 'chart' on page 2 undefined on input line 62.
-
 \openout4 = `Main.pyg'.
 
 
@@ -3371,21 +3330,11 @@ F.pygtex
 Underfull \vbox (badness 1478) has occurred while \output is active []
 
  [3])
-
-LaTeX Warning: Citation 'optparse-applicative' on page 4 undefined on input lin
-e 125.
-
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/0E81B6B7FA172C08ADEDE38F07A70662BE03E3A259E9AF7A608D8D9A99EA7DC
-1.pygtex
-Overfull \hbox (7.60638pt too wide) in paragraph at lines 125--1
-\T1/lmr/m/n/12 (-20) tion of pa-ram-e-ters. This is solved by us-ing optparse-a
-pplicative [],
- []
-
-)
+1.pygtex)
 \openout4 = `Main.pyg'.
 
 
@@ -3400,13 +3349,6 @@ Package microtype Info: Character `texttrademark ' is missing
 
 (./_minted-Main/C4752B86CA18A5CBD55E67943B5D27B8A9EECA4F952F3826E4032C49E398807
 F.pygtex [5])
-
-LaTeX Warning: Citation 'ghc-gadts' on page 6 undefined on input line 222.
-
-
-LaTeX Warning: Citation 'ghc-data-kinds' on page 6 undefined on input line 222.
-
-
 \openout4 = `Main.pyg'.
 
 
@@ -3421,11 +3363,7 @@ F.pygtex)
 
 
 (./_minted-Main/C14A1ACE708FF8758A9F65073AC37829A9EECA4F952F3826E4032C49E398807
-F.pygtex [6])
-
-LaTeX Warning: Citation 'nix' on page 7 undefined on input line 274.
-
-[7]
+F.pygtex [6]) [7]
 \openout4 = `Main.pyg'.
 
 
@@ -3447,83 +3385,96 @@ LaTeX Warning: There were undefined references.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package rerunfilecheck Info: File `Main.out' has not changed.
-(rerunfilecheck)             Checksum: 37ECB33E92D7FDC702709D3419EB4B22;14882.
+
+Package rerunfilecheck Warning: File `Main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Main.out':
+(rerunfilecheck)             Before: 47B64AAE7220297F529883C8925AB658;14882
+(rerunfilecheck)             After:  37ECB33E92D7FDC702709D3419EB4B22;14882.
 runsystem(rm Main.pyg)...executed.
-
-
-Package biblatex Warning: Please (re)run Biber on the file:
-(biblatex)                Main
-(biblatex)                and rerun LaTeX afterwards.
 
 Package logreq Info: Writing requests to 'Main.run.xml'.
 \openout1 = `Main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 49978 strings out of 478278
- 1121991 string characters out of 5819600
- 1785363 words of memory out of 5000000
- 66196 multiletter control sequences out of 15000+600000
- 611994 words of font info for 311 fonts, out of 8000000 for 9000
+ 50338 strings out of 478278
+ 1133368 string characters out of 5819600
+ 1784035 words of memory out of 5000000
+ 66457 multiletter control sequences out of 15000+600000
+ 613941 words of font info for 328 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 105i,17n,107p,1284b,2242s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final
-/share/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/nix/store/d0rpr7gadiqc6vn2s13bqmqj
-gi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/enc/dvips/lm/lm-ec.
-enc}{/nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-fin
-al/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/nix/store/d0rpr7gadiqc6vn2s13
-bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/enc/dvips/lm/l
-m-rm.enc}{/nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-202
-1-final/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/nix/store/d0rpr7gadiqc6v
-n2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/enc/dvips
-/base/8r.enc}</nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full
--2021-final/share/texmf/fonts/type1/public/bbold-type1/bbold10.pfb></nix/store/
-d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/f
-onts/type1/public/bbold-type1/bbold7.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi
-0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/type1/public/lm/lmbx1
-0.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-f
-inal/share/texmf/fonts/type1/public/lm/lmbx12.pfb></nix/store/d0rpr7gadiqc6vn2s
-13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/type1/public
-/lm/lmbxi10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-f
-ull-2021-final/share/texmf/fonts/type1/public/lm/lmcsc10.pfb></nix/store/d0rpr7
-gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/t
-ype1/public/lm/lmmi10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-
-combined-full-2021-final/share/texmf/fonts/type1/public/lm/lmmi12.pfb></nix/sto
-re/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texm
-f/fonts/type1/public/lm/lmmi6.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-
-texlive-combined-full-2021-final/share/texmf/fonts/type1/public/lm/lmmi8.pfb></
-nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/sha
-re/texmf/fonts/type1/public/lm/lmr10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi
-0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/type1/public/lm/lmr12
-.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-fi
-nal/share/texmf/fonts/type1/public/lm/lmr17.pfb></nix/store/d0rpr7gadiqc6vn2s13
+ 105i,17n,107p,1863b,2242s stack positions out of 5000i,500n,10000p,200000b,80000s
+pdfTeX warning (dest): name{figure.caption.28} has been referenced but does n
+ot exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{figure.caption.23} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{figure.caption.15} has been referenced but does not
+ exist, replaced by a fixed one
+
+pdfTeX warning (dest): name{section*.31} has been referenced but does not exist
+, replaced by a fixed one
+
+{/nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/s
+hare/texmf/fonts/enc/dvips/lm/lm-ts1.enc}{/nix/store/d0rpr7gadiqc6vn2s13bqmqjgi
+0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/enc/dvips/lm/lm-ec.en
+c}{/nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final
+/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc}{/nix/store/d0rpr7gadiqc6vn2s13bq
+mqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/enc/dvips/lm/lm-
+rm.enc}{/nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-
+final/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc}{/nix/store/d0rpr7gadiqc6vn2
+s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/enc/dvips/b
+ase/8r.enc}</nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2
+021-final/share/texmf/fonts/type1/public/bbold-type1/bbold10.pfb></nix/store/d0
+rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fon
+ts/type1/public/bbold-type1/bbold7.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0g
+zr7z-texlive-combined-full-2021-final/share/texmf/fonts/type1/public/lm/lmbx10.
+pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-fin
+al/share/texmf/fonts/type1/public/lm/lmbx12.pfb></nix/store/d0rpr7gadiqc6vn2s13
 bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/type1/public/l
-m/lmr6.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2
-021-final/share/texmf/fonts/type1/public/lm/lmr7.pfb></nix/store/d0rpr7gadiqc6v
-n2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/type1/pub
-lic/lm/lmr8.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-f
-ull-2021-final/share/texmf/fonts/type1/public/lm/lmri12.pfb></nix/store/d0rpr7g
-adiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/ty
-pe1/public/lm/lmsy10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-c
-ombined-full-2021-final/share/texmf/fonts/type1/public/lm/lmsy8.pfb></nix/store
+m/lmbxi10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-ful
+l-2021-final/share/texmf/fonts/type1/public/lm/lmcsc10.pfb></nix/store/d0rpr7ga
+diqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/typ
+e1/public/lm/lmmi10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-co
+mbined-full-2021-final/share/texmf/fonts/type1/public/lm/lmmi12.pfb></nix/store
 /d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/
-fonts/type1/public/lm/lmtk10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-t
-exlive-combined-full-2021-final/share/texmf/fonts/type1/public/lm/lmtt10.pfb></
-nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/sha
-re/texmf/fonts/type1/public/lm/lmtt12.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjg
-i0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/type1/public/lm/lmtt
-8.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-f
-inal/share/texmf/fonts/type1/public/lm/lmtti10.pfb></nix/store/d0rpr7gadiqc6vn2
+fonts/type1/public/lm/lmmi6.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-te
+xlive-combined-full-2021-final/share/texmf/fonts/type1/public/lm/lmmi8.pfb></ni
+x/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share
+/texmf/fonts/type1/public/lm/lmr10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0g
+zr7z-texlive-combined-full-2021-final/share/texmf/fonts/type1/public/lm/lmr12.p
+fb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-fina
+l/share/texmf/fonts/type1/public/lm/lmr17.pfb></nix/store/d0rpr7gadiqc6vn2s13bq
+mqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/type1/public/lm/
+lmr6.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-202
+1-final/share/texmf/fonts/type1/public/lm/lmr7.pfb></nix/store/d0rpr7gadiqc6vn2
 s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/type1/publi
-c/amsfonts/symbols/msam10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texl
-ive-combined-full-2021-final/share/texmf/fonts/type1/urw/helvetic/uhvb8a.pfb></
-nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/sha
-re/texmf/fonts/type1/urw/helvetic/uhvr8a.pfb>
-Output written on Main.pdf (98 pages, 2689480 bytes).
+c/lm/lmr8.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-ful
+l-2021-final/share/texmf/fonts/type1/public/lm/lmri12.pfb></nix/store/d0rpr7gad
+iqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/type
+1/public/lm/lmsy10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-com
+bined-full-2021-final/share/texmf/fonts/type1/public/lm/lmsy8.pfb></nix/store/d
+0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fo
+nts/type1/public/lm/lmtk10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-tex
+live-combined-full-2021-final/share/texmf/fonts/type1/public/lm/lmtt10.pfb></ni
+x/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share
+/texmf/fonts/type1/public/lm/lmtt12.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0
+gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/type1/public/lm/lmtt8.
+pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-fin
+al/share/texmf/fonts/type1/public/lm/lmtti10.pfb></nix/store/d0rpr7gadiqc6vn2s1
+3bqmqjgi0gzr7z-texlive-combined-full-2021-final/share/texmf/fonts/type1/public/
+amsfonts/symbols/msam10.pfb></nix/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texliv
+e-combined-full-2021-final/share/texmf/fonts/type1/urw/helvetic/uhvb8a.pfb></ni
+x/store/d0rpr7gadiqc6vn2s13bqmqjgi0gzr7z-texlive-combined-full-2021-final/share
+/texmf/fonts/type1/urw/helvetic/uhvr8a.pfb>
+Output written on Main.pdf (102 pages, 2697097 bytes).
 PDF statistics:
- 1278 PDF objects out of 1440 (max. 8388607)
- 1060 compressed objects within 11 object streams
- 261 named destinations out of 1000 (max. 500000)
- 89478 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 1467 PDF objects out of 1728 (max. 8388607)
+ 1243 compressed objects within 13 object streams
+ 314 named destinations out of 1000 (max. 500000)
+ 89473 words of extra memory for PDF output out of 106986 (max. 10000000)
 
