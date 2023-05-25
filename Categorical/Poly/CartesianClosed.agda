@@ -104,7 +104,7 @@ applyingIsSameAsComposingWithConstant : {r : Polynomial} → {A : Set} → Lens 
 applyingIsSameAsComposingWithConstant {r} {A} = isoToPath (iso go
                                                                back
                                                                (λ b → refl)
-                                                               λ a → lensesEqual3 refl λ x () )
+                                                               λ a → lens≡ₚ refl λ x () )
       where go : Lens 𝟙 (r ◂ (Constant A)) → r ⦅ A ⦆
             go (f ⇆ f♯) = f tt
             back : r ⦅ A ⦆ → Lens 𝟙 (r ◂ (Constant A))
@@ -469,7 +469,7 @@ chain' = zero' ∙ one' ∙ two' ∙ three' ∙ four' ∙ five'
 -- onethree {p} {q} {r} = isoToPath (iso letsgo
 --                                       back 
 --                                       pr
---                                       (λ { (f ⇆ f♯) → lensesEqual3 (funExt λ x → {!  !}) {!   !} }))
+--                                       (λ { (f ⇆ f♯) → lens≡ₚ (funExt λ x → {!  !}) {!   !} }))
 --     where back : ((i : position p) → (j : position q) → Σ[ k ∈ position r ]( direction r k → (direction p i ⊎ direction q j))) → Lens p (r ^ q)
 --           back f = mp ⇆ md
 --                where mp : position p → position (r ^ q)
@@ -520,8 +520,8 @@ chain' = zero' ∙ one' ∙ two' ∙ three' ∙ four' ∙ five'
 -- chain2 : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
 -- chain2 {p} {q} {r} = isoToPath (iso go 
 --                                     back
---                                     (λ b → lensesEqual3 refl {!   !})
---                                     λ a → lensesEqual3 {!   !} {!   !})
+--                                     (λ b → lens≡ₚ refl {!   !})
+--                                     λ a → lens≡ₚ {!   !} {!   !})
 --     where go : Lens p (r ^ q) → Lens (p * q) r
 --           go (f ⇆ f♯) = mp ⇆ md
 --              where mp : position (p * q) → position r

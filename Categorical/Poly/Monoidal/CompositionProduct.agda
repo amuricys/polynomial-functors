@@ -229,7 +229,7 @@ F₁ bifunctor ((mpf ⇆ mdf) , (mpg ⇆ mdg)) = (λ { (a , b) → mpf a , λ { 
 identity bifunctor = refl
 homomorphism bifunctor = refl
 F-resp-≈ bifunctor {p , r} {q , s} {(fpq ⇆ fpq♯) , (frs ⇆ frs♯)} {(gpq ⇆ gpq♯) , (grs ⇆ grs♯)} (fst≡ , snd≡) 
-  = lensesEqual3 pos≡ {!   !}
+  = lens≡ₚ pos≡ {!   !}
      where pqPosEq : fpq ≡ gpq
            pqPosEq = lens≡→mapPos≡ fst≡
            pos≡ : (λ { (a , b) → fpq a , (λ { x → frs (b (fpq♯ a x)) }) }) ≡ (λ { (a , b) → gpq a , (λ { x → grs (b (gpq♯ a x)) }) })

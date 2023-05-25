@@ -43,7 +43,7 @@ uncurry₂ {p} {q} {r} (h ⇆ h♯) = mapPos ⇆ mapDir
         mapDir (posR , posP) dir = recoverLeft (snd (h posR posP) dir) λ x → h♯ posR (posP , dir , toImpossibleRight x)
 
 uncurrySame : {p q r : Polynomial} {h : Lens r (q ^ p)} → uncurry h ≡ uncurry₂ h
-uncurrySame {p} {q} {r} h@{h' ⇆ h♯} = lensesEqual3 refl λ x y → {!   !}
+uncurrySame {p} {q} {r} h@{h' ⇆ h♯} = lens≡ₚ refl λ x y → {!   !}
     where
         dir≡ : (x : position (r * p)) (y : direction q (mapPosition (uncurry h) x)) → mapDirection (uncurry h) x y ≡ recoverLeft (snd (mapPosition h (fst x) (snd x)) y) (λ x₁ → mapDirection h (fst x) (snd x , y , toImpossibleRight x₁))
         dir≡ (posR , posP) dir = {!    !}
@@ -52,7 +52,7 @@ uncurrySame {p} {q} {r} h@{h' ⇆ h♯} = lensesEqual3 refl λ x y → {!   !}
 -- theorem = {!   !}
 
 uncurryCurry : {p q r : Polynomial} {g : Lens (r * p) q} → uncurry₂ (curry g) ≡ g
-uncurryCurry {p} {q} {r} {g} = lensesEqual3 refl λ x y → {!   !}
+uncurryCurry {p} {q} {r} {g} = lens≡ₚ refl λ x y → {!   !}
     where
         yo : (x : position (r * p)) (y : direction q (mapPosition (uncurry₂ (curry g)) x)) → mapDirection (uncurry₂ (curry g)) x y
             ≡ mapDirection g x y
@@ -69,7 +69,7 @@ uncurryCurry {p} {q} {r} {g} = lensesEqual3 refl λ x y → {!   !}
 
 
 curryUncurry : {p q r : Polynomial} {g : Lens r (q ^ p)} → curry (uncurry₂ g) ≡ g -- uncurry₂ (curry g) ≡ g
-curryUncurry {p} {q} {r} {g ⇆ g♯} = lensesEqual3 {!    !} {!   !} -- lensesEqual3 refl λ x y → {!   !}
+curryUncurry {p} {q} {r} {g ⇆ g♯} = lens≡ₚ {!    !} {!   !} -- lens≡ₚ refl λ x y → {!   !}
     where
         yo : mapPosition (curry (uncurry₂ (g ⇆ g♯))) ≡ g
         yo = {!   !}
@@ -84,12 +84,12 @@ eval-comp-simple : {C D E : Polynomial} →
             (f : Lens (E * D) C) → 
             (eval ∘ₚ ⟨ curry f × idLens ⟩) -- same as uncurry₂ (curry f) = f
             ≡ f
-eval-comp-simple {C} {D} {E} f = lensesEqual3 refl λ x y → {!   !}
+eval-comp-simple {C} {D} {E} f = lens≡ₚ refl λ x y → {!   !}
     where
         easier : (x : position (E * D)) (y : direction C (mapPosition (eval ∘ₚ ⟨ curry f × idLens ⟩) x)) → mapDirection (eval ∘ₚ ⟨ curry f × idLens ⟩) x y ≡ mapDirection f x y
         easier x y = {!   !}
 
 
 curry-unique-simple : {p q r : Polynomial} → {f : Lens p (q ^ r)} → {g : Lens (p * r) q} → eval ∘ₚ (⟨ f × idLens ⟩) ≡ g → f ≡ curry g
-curry-unique-simple {p} {q} {r} {f} {g} pr = lensesEqual3 (funExt (λ x → funExt (λ y → {!  mapDirection g (x , y)  !}))) {!   !}
+curry-unique-simple {p} {q} {r} {f} {g} pr = lens≡ₚ (funExt (λ x → funExt (λ y → {!  mapDirection g (x , y)  !}))) {!   !}
 

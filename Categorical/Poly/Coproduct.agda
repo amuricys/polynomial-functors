@@ -33,7 +33,7 @@ coprod {A = A} {B = B} = record
         open Polynomial
 
         helper : {p : Polynomial} {h : Lens (A + B) p} -> [ h ∘ₚ i₁ , h ∘ₚ i₂ ]ₚ ≡ h
-        helper {p} {h} = lensesEqual3 (funExt λ {(inj₁ x) → refl
+        helper {p} {h} = lens≡ₚ (funExt λ {(inj₁ x) → refl
                                                ; (inj₂ y) → refl}) λ {(inj₁ x) y → cong (λ zz → mapDirection h (inj₁ x) zz) ((transportRefl y))
                                                                     ; (inj₂ y₁) y → cong (λ zz → mapDirection h (inj₂ y₁) zz) (transportRefl y)}
 

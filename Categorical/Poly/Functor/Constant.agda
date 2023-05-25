@@ -30,7 +30,7 @@ constantPolynomial = record
     ; F₁ = λ f → f ⇆ λ fromPos → id
     ; identity = refl
     ; homomorphism = refl
-    ; F-resp-≈ = λ p → lensesEqual3 (funExt λ x → eqToPath p) λ x ()
+    ; F-resp-≈ = λ p → lens≡ₚ (funExt λ x → eqToPath p) λ x ()
     }
 
 full : Full constantPolynomial
@@ -38,7 +38,7 @@ full = record
     { from = record 
         { _⟨$⟩_ = Lens.mapPosition
         ; cong = positionLensesEqualPwiseEq } 
-    ; right-inverse-of = \_ → lensesEqual3 refl λ x ()
+    ; right-inverse-of = \_ → lens≡ₚ refl λ x ()
     }
 
 faithful : Faithful constantPolynomial

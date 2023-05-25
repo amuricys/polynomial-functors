@@ -44,10 +44,10 @@ fromFalseFunctionsEqual f g = funExt λ {()}
 ------- Proofs related to uniqueness of lenses from and to certain polynomials
 ---------------------------------------
 lensFromZeroUnique : {p : Polynomial} (f : Lens 𝟘 p) → lensFromZero ≡ f
-lensFromZeroUnique f = lensesEqual3 (funExt λ ()) λ ()
+lensFromZeroUnique f = lens≡ₚ (funExt λ ()) λ ()
 
 lensToOneUnique : {p : Polynomial} (f : Lens p 𝟙) →  lensToOne ≡ f
-lensToOneUnique {p = p} f = lensesEqual3 refl λ _ ()
+lensToOneUnique {p = p} f = lens≡ₚ refl λ _ ()
 
 ---------------------------------------
 

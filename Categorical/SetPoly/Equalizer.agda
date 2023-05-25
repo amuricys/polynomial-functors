@@ -82,7 +82,7 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
                in
                thecoeq ∙ please
          equal : (mpf ⇆ mdf) ∘ₚ (mpe ⇆ mde) ≡ (mpg ⇆ mdg) ∘ₚ (mpe ⇆ mde)
-         equal = lensesEqual3 (funExt (λ { (_ , mapped≡) → mapped≡} )) mapDir≡
+         equal = lens≡ₚ (funExt (λ { (_ , mapped≡) → mapped≡} )) mapDir≡
 
          open IsEqualizer
          isEqualizer : IsEqualizer arr f g
@@ -90,14 +90,14 @@ eq pˢ@{mksetpoly  p pposSet pdirSet} qˢ@{mksetpoly  q qposSet qdirSet} f@(⇆�
          equalize isEqualizer {X} {h = ⇆ˢ (mph ⇆ mdh)} x = ⇆ˢ 
                            ((λ x₁ → mph x₁ , funExt⁻ (cong mapPosition $ rapaz x) x₁) 
                               ⇆ λ fromPos → inducedHom (λ x₁ y → isDirSet X x₁ y) (mdh fromPos) (lens≡→mapDir≡' (rapaz x) fromPos))
-         universal isEqualizer {X} {(⇆ˢ (mph ⇆ mdh))} {eq} = cong ⇆ˢ (lensesEqual3 refl mdhproof)
+         universal isEqualizer {X} {(⇆ˢ (mph ⇆ mdh))} {eq} = cong ⇆ˢ (lens≡ₚ refl mdhproof)
            where mdhproof : (x : position (poly X)) 
                             (y : direction p (mph x)) → 
                             mdh x (transport (λ i → direction p (mph x)) y) ≡ mdh x y
                  mdhproof x y  = cong (λ a → mdh x a) obvious
                     where obvious : transport (λ i → direction p (mph x)) y ≡ y
                           obvious = transportRefl y
-         unique isEqualizer {X} {(⇆ˢ (mph ⇆ mdh))} {(⇆ˢ (mpi ⇆ mdi))} {eq} eq2 = cong ⇆ˢ (lensesEqual3 mapPos≡ {!   !})
+         unique isEqualizer {X} {(⇆ˢ (mph ⇆ mdh))} {(⇆ˢ (mpi ⇆ mdi))} {eq} eq2 = cong ⇆ˢ (lens≡ₚ mapPos≡ {!   !})
            where mapPos≡ : mpi ≡ (λ x₁ → mph x₁ , (λ i → mapPosition (lens (eq i)) x₁))
                  mapPos≡ = funExt (λ x → ΣPathP (funExt⁻ (sym (lens≡→mapPos≡ (rapaz eq2))) x , toPathP wat))
                    where wat : {x : position (poly X)} →
