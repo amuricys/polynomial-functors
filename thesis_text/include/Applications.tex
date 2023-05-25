@@ -1,17 +1,24 @@
 % CREATED BY DAVID FRISK, 2016
 \chapter{Applications}
 \label{chapter:application}
-As we mentioned in the background section, polynomials have applications to many different areas of study, of which the main three highlighted in the poly-book are dynamical systems, decision systems and databases. Our implemented applications are all instances of the first: we pay no attention to the other two perspectives. Several of our examples are listed in the book and its associated YouTube lecture series, but a few are our own contribution.
+As mentioned in the background section, polynomials have applications to many different areas of study, of which the main three highlighted in the poly-book are dynamical systems, decision systems and databases.
+Our implemented applications are all instances of the first: we pay no attention to the other two perspectives.
+Several of our examples are listed in the book and its associated YouTube lecture series, but a few are our own contribution.
 
-It is worth mentioning that many of the ideas in this chapter come from the Categorical Systems Theory book, even though that book does not even mention polynomial functors. What it does do is explain how dynamical systems are modeled by lenses in extreme, welcome detail. It also pays a lot of attention to the distinction between different theories of dynamical systems: stochastic, discrete, continuous etc. This matters to us because several of our examples are continuous systems that are discretized, so strictly speaking we are working within a theory of discrete dynamical systems. David Jaz Myers, the author, is also responsible for the chart-related part of the applications, through his guest lectures on the YouTube series as well as his book.
+It is worth mentioning that many of the ideas in this chapter come from the Categorical Systems Theory book \cite{css}, even though that book does not even mention polynomial functors.
+However, it is explain how dynamical systems are modeled by lenses in extreme details.
+It also pays a lot of attention to the distinction between different theories of dynamical systems: stochastic, discrete, continuous etc.
+This matters to us because several of our examples are continuous systems that are discretized, so strictly speaking we are working within a theory of discrete dynamical systems.
+David Jaz Myers, the author, is also responsible for the chart-related part of the applications, through his guest lectures on the YouTube series as well as his book.
 
-We will start by talking about the class of systems that \textbf{Poly} mainly talks about - ones that can be expressed through lenses. We'll then explain what our categorical constructs mean in the context of application to dynamical systems, and we'll end by showcasing implemented examples of these dynamical systems, some of which clearly display the advantages of this categorical framework.
+We will start by talking about the class of systems that \textbf{Poly} mainly talks about - ones that can be expressed through lenses.
+We'll then explain what our categorical constructs mean in the context of application to dynamical systems, and we'll end by showcasing implemented examples of these dynamical systems, some of which clearly display the advantages of this categorical framework.
 
 \newpage
 
 \section{Mode-dependent open dynamical systems}
 
-First, let's define what a dynamical system is, starting with the simplest case: a closed dynamical system. It can be thought of as a machine with some functionality that "runs" through time. It has a notion of a state space $S$ (in our case a set of values) and a function $f : S \rightarrow S$, called the \textit{dynamics} of the system. The purpose of the dynamics is to reveal what the system's state is at each timestep. Given an initial state $S\_0$, one can then run several steps of a system by simply composing $f$ with itself that many times. This sort of system is called \textit{closed} because it does not take any inputs apart from the initial state, and does not provide any outputs. The only thing one might be interested in is the state of the system. An example of a closed dynamical system is the logistic map, defined by the following equation:
+First, let's define what a dynamical system is, starting with the simplest case: a closed dynamical system. It can be thought of as a machine with some functionality that "runs" through time. It has a notion of a state space $S$ (in our case a set of values) and a function $f : S \rightarrow S$, called the \textit{dynamics} of the system. The purpose of the dynamics is to reveal what the system's state is at each timestep. Given an initial state $S_0$, one can then run several steps of a system by simply composing $f$ with itself that many times. This sort of system is called \textit{closed} because it does not take any inputs apart from the initial state, and does not provide any outputs. The only thing one might be interested in is the state of the system. An example of a closed dynamical system is the logistic map, defined by the following equation:
 $$
 x_{t+1} = rx_t(1 - x_t)
 $$
@@ -22,7 +29,7 @@ Finally, \textit{mode-dependent} open dynamical systems are ones in which the se
 
 \subsection{Wiring diagrams}
 
-Wiring diagrams are a way of expressing morphisms of monoidal categories that is much more visually intuitive and applies to a wide array of contexts, including dynamical systems\cite{operadwd}. In our case, we will use them to express wiring patterns between open dynamical systems, and sometimes the systems themselves. A wiring pattern independent of the systems it's applied to might look the same as a concrete system in this scheme, but the distinction between them is important and will be explained. Here's an example of a wiring diagram, where each box represents an open system and the wires between them represents connections.
+Wiring diagrams are a way of expressing morphisms of monoidal categories that is much more visually intuitive and applies to a wide array of contexts, including dynamical systems \cite{operadwd}. In our case, we will use them to express wiring patterns between open dynamical systems, and sometimes the systems themselves. A wiring pattern independent of the systems it is applied to might look the same as a concrete system in this scheme, but the distinction between them is important and will be explained. Here is an example of a wiring diagram, where each box represents an open system and the wires between them represents connections.
 
 \begin{equation}\label{eqn.control_diag}
     \begin{tikzpicture}[oriented WD, baseline=(B)]
@@ -54,7 +61,7 @@ Wiring diagrams are a way of expressing morphisms of monoidal categories that is
     \end{tikzpicture}
     \end{equation}
 
-$A$, $B$, $C$ and $D$ here all abstractly represent sets/types. The wires don't have just any quantity flowing through them, but instead a specific kind of information. The outer system here arises out of a specific combination of the inner systems. An important fact about wiring patterns like the one above is that they give morphisms in \textbf{Poly}, while boxes give objects. This connection will be explored more deeply now.
+$A$, $B$, $C$ and $D$ here all abstractly represent sets/types. The wires do not have just any quantity flowing through them, but instead a specific kind of information. The outer system here arises out of a specific combination of the inner systems. An important fact about wiring patterns like the one above is that they give morphisms in \textbf{Poly}, while boxes give objects. This connection will be explored more deeply now.
 
 \section{Polynomial functors in dynamical systems}
 
@@ -114,7 +121,7 @@ And the second looks like this:
 A good way of integrating this mode dependence inherent to polynomials into regular wiring diagrams is an open problem. Because of this, the wiring diagrams we will show are of non-mode dependent systems, and as such they represent only a small portion of the dynamical systems that \textbf{Poly} has the power to model.
 
 \subsection{The parallel product $\otimes$}
-We come to a great motivating factor for the naming of this structure: it corresponds to putting systems in parallel. Given two polynomials $p$ and $q$ with their own interfaces, taking their parallel product $p \otimes q$ corresponds to creating a polynomial that has \textit{both interfaces simultaneously}. Intuitively, one can think that any system that has this interface can only run one timestep upon being given both inputs, and it will output both outputs. The structure, in some sense, doesn't "touch" the behavior of the systems at all. This is represented in the below picture, by considering $p(y) = Dy^(A \times B)$ and $q(y) = (E \times F)y^C$: 
+We come to a great motivating factor for the naming of this structure: it corresponds to putting systems in parallel. Given two polynomials $p$ and $q$ with their own interfaces, taking their parallel product $p \otimes q$ corresponds to creating a polynomial that has \textit{both interfaces simultaneously}. Intuitively, one can think that any system that has this interface can only run one timestep upon being given both inputs, and it will output both outputs. The structure, in some sense, does not "touch" the behavior of the systems at all. This is represented in the below picture, by considering $p(y) = Dy^(A \times B)$ and $q(y) = (E \times F)y^C$: 
 
 \begin{equation}\label{eqn.control_diag}
     \begin{tikzpicture}[oriented WD, baseline=(B)]
@@ -137,7 +144,7 @@ We come to a great motivating factor for the naming of this structure: it corres
     \end{tikzpicture}
     \end{equation}
 
-The resulting polynomial functor is the dashed line around the two inner boxes, and as we've seen, is given by $p \otimes q(y) = DEFy^{ABC}$. The parallel product also has an important implication for the behavior of systems, as we'll see next.
+The resulting polynomial functor is the dashed line around the two inner boxes, and is given by $p \otimes q(y) = DEFy^{ABC}$. The parallel product also has an important implication for the behavior of systems, as explained next.
 
 \subsection{Lenses as behaviors}
 
@@ -190,7 +197,7 @@ The other role that lenses play in systems of this kind is that they correspond 
     \end{tikzpicture}
 \end{equation}
 
-This corresponds to a lens from an abstract polynomial of the dashed box to the abstract polynomial of the outermost box. The inner dashed box is the polynomial obtained by taking the parallel product of $p$ and $q$. We say "abstract" because we need to know nothing about the dynamics or concrete behavior of the systems here, all we need is the types of the interfaces to match, which means this particular lens is capable of wiring together \textit{any} two systems that have the interfaces in question. There are of course other ways to wire these boxes together. Here's two examples:
+This corresponds to a lens from an abstract polynomial of the dashed box to the abstract polynomial of the outermost box. The inner dashed box is the polynomial obtained by taking the parallel product of $p$ and $q$. We say "abstract" because we need to know nothing about the dynamics or concrete behavior of the systems here, all we need is the types of the interfaces to match, which means this particular lens is capable of wiring together \textit{any} two systems that have the interfaces in question. There are of course other ways to wire these boxes together. Here is two examples:
 \[
     \begin{tikzpicture}
     \node (wiring1) {
@@ -286,9 +293,17 @@ This corresponds to a lens from an abstract polynomial of the dashed box to the 
 \]
 And they all correspond to different lenses. The intuition for the lens structure is that the map on positions selects which of the outer outputs will be served by the inner outputs, and the map on directions will fill in the needed inputs to the inner boxes. Although sometimes lenses will feed an output of a system to itself, as above, a lens is still a morphism from some inner box (here the polynomial $p \otimes q(y) = ABCy^{ABC}$) to an outer one (here the polynomial $Ay^{ABC}$).
 
-\subsection{Charts as system transformations (??)}
+\subsection{Commuting squares as system transformations}
+Commuting squares have a deep interpretation in this context: they correspond to how behaviour can transfer between different dynamical systems.
+Special kinds of commuting squares correspond to different kinds of behavior.
+One behavior is for one system to simulate another system, this can be encoded by a simple kind of commuting square consisting of a function between the states of the two different systems.
+Two examples of such commuting diagrams are given in sections \ref{section:flipflop} and \ref{section:simulatestatemachine}.
 
-Charts also have a deep interpretation in this context: it turns out that they correspond to \todo{write up charts a bit}. We give an implementation of the example given by David Jaz in his YouTube guest lecture for the polynomial functors course.
+The fact that commuting squares compose also means that behaviour compose.
+For example, if system A simulates system B, and system B simulates system C, then system A simulates system C. 
+
+%Charts also have a deep interpretation in this context: it turns out that they correspond to how behaviour can transfers between dynamical systems.
+%Different kind of charts   \todo{write up charts a bit}. % We give an implementation of the example given by David Jaz in his YouTube guest lecture for the polynomial functors course.
 
 \section{Implementing dynamical systems}
 
@@ -464,7 +479,7 @@ is, on the right hand side, saying that the two inputs to \texttt{plus} are give
 
 Two final remarks about the Fibonacci sequence generator: the first is that it is actually an efficient way to express Fibonacci dynamics, since there is no recursive calls involved - and the second is that we went into as much detail as possible explaining it so that we can rely on some of the intuition built here to explain the more complicated systems that follow.
 
-\subsubsection{Flip Flop}
+\subsubsection{Flip Flop}\label{section:flipflop}
 Flip Flop is a simple example with two dynamical systems showing how one system can simulate the behavior of another system. This simulation is exactly a special kind of commuting square between charts and lenses. 
 
 Both systems needs to have the same interface, which in this case is a linear polynomial \{on, off\}$y$, that can output either on or off, and always takes unit as input. However, both the state and the behavior of the systems can differ. One of the systems is a flip flop system, with states on or off, with behaviour that outputs this state, and flips the state in the update. The other system has natural numbers as states, outputs the two different states depending on the natural number modulus 2, and updates the state by always taking the successor of the state. Running these systems has the exact same output. This can be expressed concisely by a chart transforming the state space of the natural numbers to either on or off. Then by putting this chart in a commuting square such as shown in diagram \ref{fig:flipFlopSquare}.
@@ -511,6 +526,10 @@ square : LensChartCommute (dynamics counter) (dynamics flipFlop) (morphSystem �
 square = law₁ , law₂
 \end{minted}
 
+
+
+\begin{figure}[H]
+
 % https://q.uiver.app/?q=WzAsNSxbMCwwLCJOeV4xIl0sWzMsMCwiMnleMSJdLFswLDMsIjJ5XjEiXSxbMywzLCIyeV4xIl0sWzYsMF0sWzAsMiwiXFwlIDIiLDIseyJvZmZzZXQiOjJ9XSxbMiwwLCJzdWMiLDIseyJvZmZzZXQiOjJ9XSxbMSwzLCJpZCIsMix7Im9mZnNldCI6Mn1dLFszLDEsInRvZ2dsZSIsMix7Im9mZnNldCI6Mn1dLFsyLDMsImlkX3tjaGFydH0iLDFdLFswLDEsIlxcJSAyIiwxLHsib2Zmc2V0IjotMn1dLFswLDEsIlxcJTIiLDEseyJvZmZzZXQiOjJ9XV0=
 \[\begin{tikzcd}
 	{Ny^1} &&& {2y^1} &&& {} \\
@@ -526,10 +545,14 @@ square = law₁ , law₂
 	\arrow["{\%2}"{description}, shift right=2, from=1-1, to=1-4]
 \end{tikzcd}\]
 
+    \caption{A special kind of commuting square. The identity chart turns this into a commuting triangle. The chart at the top is defined as the function reducing the states between the systems. The laws fulfilled if this diagram commutes encodes what it means for a system to simulate another.}
+    \label{fig:flipFlopSquare}
+
+\end{figure}
 
 This showcased how a simple chart in a commuting square can compare behaviour of two different dynamical systems. By generalizing, and using more advanced charts and commuting squares, more advanced comparisons can be made.
 
-\subsubsection{Simulating state machines}
+\subsubsection{Simulating state machines}\label{section:simulatestatemachine}
 A more advanced example, in comparison to flip flop, is how one state machine can simulate another. This is often expressed as that one state machine is more minimal than another, that is, it has less states but achieves the same behaviour. This is exactly what the special commuting square can express. Because the same idea is followed as for the flip flop example, this example will not be discussed further, but can be found in \textbf{Dynamical/Chart/SimulateStateMachine.agda}.
 
 \subsubsection{Moore machine}
@@ -592,7 +615,7 @@ The Lotka-Volterra predator-prey model is an essential system \cite{Murray2002} 
 
 The logic of it is that, for rabbits, they will reproduce naturally at a rate $\alpha$, while being hunted at a rate $\beta f$. In other words, their encounters with and subsequent predation by foxes is modeled by multiplying the number of foxes by a "fox appetite" parameter $\beta$. For foxes, their population can be thought of as flourishing or growing at the rate that they can encounter and eat rabbits. This aspect is captured by the term $\delta f r$. They naturally die at a rate of $\gamma$. Note that $\delta$ doesn't have to match $\beta$ - the rate at which foxes eat rabbits is not necessarily the same as the rate at which fox populations grow as a result of being well-fed, though the intuitive relationship between these parameters could be captured by a more sophisticated model.
 
-This system can be represented in terms of our open dynamical systems by considering the rabbit and fox populations as each inhabited by an individual system. They output their population (so \texttt{readout} is the identity function) and that gets fed as an input to the other system, along with any other parameters - in this case $\alpha$, $\beta$, $\delta$ and $\gamma$. Here's the wiring diagram for it:
+This system can be represented in terms of our open dynamical systems by considering the rabbit and fox populations as each inhabited by an individual system. They output their population (so \texttt{readout} is the identity function) and that gets fed as an input to the other system, along with any other parameters - in this case $\alpha$, $\beta$, $\delta$ and $\gamma$. Here is the wiring diagram for it:
 
 \begin{equation}\label{wd:lotkavolterra}
     \begin{tikzpicture}[oriented WD, baseline=(B)]
@@ -716,7 +739,7 @@ Running this system through the command line interface produces the expected osc
 
 
 \subsubsection{Lorenz system}
-The Lorenz system\cite{lorenz1963} is what is known as a chaotic system, in an elementary form. It was introduced by Edward Lorenz as a simplified model of atmospheric convection. The three dimensionless (as in, pure proportions with no physical units) variables $x$, $y$ and $z$ correspond to rate of convection, temperature difference between ascending and descending air currents, and how temperature changes with height. It's given by the following differential equations:
+The Lorenz system \cite{lorenz1963} is what is known as a chaotic system, in an elementary form. It was introduced by Edward Lorenz as a simplified model of atmospheric convection. The three dimensionless (as in, pure proportions with no physical units) variables $x$, $y$ and $z$ correspond to rate of convection, temperature difference between ascending and descending air currents, and how temperature changes with height. It's given by the following differential equations:
 
 \begin{equation}
 \dot{x} = \sigma (y - x)
@@ -1110,7 +1133,7 @@ data ReservoirOutput (systemDim : ℕ) : Set where
     predicting : Vec ℝ systemDim → ReservoirOutput systemDim
 \end{minted}
 
-A regular sum type, since we don't care about what the output of the system is until it's actually ready to predict.
+A regular sum type, since we do not care about what the output of the system is until it's actually ready to predict.
 
 Thirdly, the parallelizing of the systems in question. The interesting thing about this is the \texttt{reservoir} function, which takes some parameters to construct a \texttt{DynamicalSystem}. Here it is made clear that the input and reservoir weights are fixed:
 
