@@ -17,7 +17,7 @@ The objects of \textbf{Poly} are polynomial functors, which can be written as ex
 p(y) = \mathbb{N}y^2 + 1
 \label{eqn.natpoly}
 \end{equation}
-and it can be thought of as taking a set as input, and sends it to the set of: either infinitely long tuples of functions from $\underline{2}$ to this set, or to the only element of the singleton set. Like the poly-book, each summand of a power of $y$ in the polynomials are referred to as a \textit{position}, and the exponent of that power as a \textit{direction at that position}. This suggests that a polynomial has a set of positions, and for each element in this set, a set of directions. Therefore a natural way to represent these polynomials in Agda is as a dependent set:
+and it can be thought of as taking a set as input, and sending it to the set of: either infinitely long tuples of functions from $\underline{2}$ to this set, or to the only element of the singleton set. Like the poly-book, each summand of a power of $y$ in the polynomials are referred to as a \textit{position}, and the exponent of that power as a \textit{direction at that position}. This suggests that a polynomial has a set of positions, and for each element in this set, a set of directions. Therefore a natural way to represent these polynomials in Agda is as a dependent set:
 
 \begin{minted}{agda}
 record Polynomial : Set₁ where
@@ -43,30 +43,30 @@ If two positions index the same set, they can be thought as the same thing.
 \subsection*{More perspectives on polynomials}
 
 Understanding polynomial functors is crucial, and there are many ways to think about them.
-The book showcases other standard ways to visualize polynomials, which are helpful to interpret the category in different applications and to build intuition about the purely categorical perspective.
-The first is of \textit{corolla forests}:
+The book showcases other standard ways to visualize polynomials, which are helpful to interpret the category in different applications and to build intuition about the purely categorical perspective. One of these is \textit{corolla forests}:
 
-\begin{align}
-\begin{tikzpicture}[trees]
-  \node (1) {$\bullet$} 
-    child {}
-    child {}
-    child {}
-    child {}
-    child {};
-  \node[right=1.5 of 1] (2) {$\bullet$} 
-    child {}
-    child {};
-  \node[right=1.5 of 2] (3) {$\bullet$} 
-    child {}
-    child {};
-  \node[right=1.5 of 3] (4) {$\bullet$};
-\end{tikzpicture}
-\end{align}
+\begin{equation}
+  \begin{tikzpicture}[trees]
+    \node (1) {$\bullet$} 
+      child {}
+      child {}
+      child {}
+      child {}
+      child {};
+    \node[right=1.5 of 1] (2) {$\bullet$} 
+      child {}
+      child {};
+    \node[right=1.5 of 2] (3) {$\bullet$} 
+      child {}
+      child {};
+    \node[right=1.5 of 3] (4) {$\bullet$};
+  \end{tikzpicture}
+\label{eqn:corollafirstexample}
+\end{equation}
 
 The term \textit{corolla} refers to a tree with a depth of one, and \textit{forest} refers to the fact that there are many such small trees.
 The set of positions is the set of roots of the forest (in this case $\underline{4}$), and the set of directions at each position is the set of arrows at each root (in this case $\underline{5}$, $\underline{2}$, $\underline{2}$ and $\underline{0}$).
-This then corresponds to $p(y) = y^5 + y^2 + y^2 + 1 \approx y^5 + 2y^3 + 1$. This perspective lends intuition to the decision-making interpretation of polynomials. Very loosely speaking, the set of directions is "directions in which one can go" given that one is at that set's associated position. Since polynomials can handle infinite sets, even uncountably infinite ones, one can imagine such infinite corolla trees. For example, the polynomial \ref{eqn.natpoly} could be visualized as:
+This then corresponds to $p(y) = y^5 + y^2 + y^2 + 1 \cong y^5 + 2y^3 + 1$. This perspective lends intuition to the decision-making interpretation of polynomials. Very loosely speaking, the set of directions is "directions in which one can go" given that one is at that set's associated position. Since polynomials can handle infinite sets, even uncountably infinite ones, one can imagine such infinite corolla trees. For example, the polynomial \ref{eqn.natpoly} could be visualized as:
 
 \begin{align}
 \begin{tikzpicture}[trees]
@@ -86,7 +86,7 @@ This then corresponds to $p(y) = y^5 + y^2 + y^2 + 1 \approx y^5 + 2y^3 + 1$. Th
 \end{align}
 
 Another perspective on polynomials, emphasizing the container datatype view, is as Haskell algebraic data types.
-The polynomial above, for instance, can be written in Haskell as:
+The polynomial \ref{eqn:corollafirstexample}, for instance, can be written in Haskell as:
 \begin{minted}{haskell}
 data P y = Fst y y y y y | Snd y y | Trd y y | Frth
   deriving Functor
@@ -764,7 +764,7 @@ A visualization of the product is provided in Figure \ref{fig:productExample}.
     \label{fig:productExample}
 \end{figure}
 
-Continuing with figure \ref{fig:productDiagram}, it is natural to ask how $\pi_1$ and $\pi_2$ are defined. They are defined to take the projections on the positions, and injections on the map on the directions back. In Figure \ref{fig:productExample}, this can be imagined by selecting only the corresponding color of a direction in one of the product back. 
+Continuing with Figure \ref{fig:productDiagram}, it is natural to ask how $\pi_1$ and $\pi_2$ are defined. They are defined to take the projections on the positions, and injections on the map on the directions back. In Figure \ref{fig:productExample}, this can be imagined by selecting only the corresponding color of a direction in one of the product back. 
 
 \begin{minted}{agda}
 π₁ : {p q : Polynomial} → Lens (p * q) p
@@ -830,7 +830,7 @@ Similarly to how the pi type is a generalization of the product type in \textbf{
     dir pos = Σ[ index ∈ indexType ] direction (generatePoly index) (pos index) 
 \end{minted}
 
-Using this generalized product type with $Bool$ as the index type is equivalent to having a normal product - which makes sense, since it means taking a product of two polynomials. This is proved in \texttt{Various.agda}.
+Using this generalized product type with \texttt{Bool} as the index type is equivalent to having a normal product - which makes sense, since it means taking a product of two polynomials. This is proved in \texttt{Various.agda}.
 
 \begin{minted}{agda}
 productIsΠPoly : {p q : Polynomial}
@@ -1171,7 +1171,23 @@ The parallel product will turn out to be extremely important in the context of d
 
 The parallel product forms a monoid with $y$. Since it is not the canonical product (or coproduct), as far as we know, we can't rely on the previous tricks to construct a monoidal category out of it. However, we can define the monoidal category construction manually, which is a lot of code in "volume", so we omit it from the text. The code can be found in \texttt{Categorical/Poly/Monoidal/ParallelProduct.agda}.
 
+\subsection{Parallel lens}
 
+The parallel product also enables turning to lenses, between individual polynomials, into one that goes between the parallel products. Here is the definition in Agda:
+
+\begin{minted}{agda}
+⟨_⊗_⟩ : {p q r w : Polynomial} → Lens p r → Lens q w → 
+      Lens (p ⊗ q) (r ⊗ w)
+⟨_⊗_⟩ {p} {q} {r} {w} (f ⇆ f♯) (g ⇆ g♯) = mp ⇆ md
+  where mp : position (p ⊗ q) → position (r ⊗ w)
+        mp (posp , posq) = f posp , g posq
+        md : (fromPos : position (p ⊗ q)) → 
+             direction (r ⊗ w) (mp fromPos) → 
+             direction (p ⊗ q) fromPos
+        md (posp , posq) (dirr , dirw) = f♯ posp dirr , g♯ posq dirw
+\end{minted}
+
+This particular action will have deep implications in the applications chapter.
 
 \section{Composition product}
 Since polynomials are functors, and they are in fact \textit{endo}functors, they can be composed to give rise to new polynomial functors. The composition operator is given by the symbol ◂. Here we can recover high-school algebra intuition. Composing functors corresponds to plugging in entire expressions, instead of numbers, into a polynomial. For instance, given $p(y) = y^2$ and $q(y) = y^2 + 3y$, the composition product is given as $(p \triangleleft q)(y) = (y^2 + 3y)^2$.
@@ -1279,11 +1295,30 @@ infixl 27 _◂_
 \label{fig:compositionProductExample}
 \end{figure}
 
-This definition is heavily inspired by David Orion Girardo's implementation here \cite{daig}. The key insight from his implementation is that the positions in the resulting polynomial are a pair, the first element of which is the same set as the postcomposed polynomial. This sticks closer to the idea that polynomials are in fact being composed. In terms of corolla forests, the composition product stacks trees on top of one another \textit{in every possible way}, with the left polynomial in the bottom. The resulting polynomial's directions at any given position is "all directions that reach a height of two". A visualization is given in Figure \ref{fig:compositionProductExample}
+This definition is heavily inspired by David Orion Girardo's implementation here \cite{daig}. The key insight from his implementation is that the positions in the resulting polynomial are a pair, the first element of which is the same set as the postcomposed polynomial. This sticks closer to the idea that polynomials are in fact being composed. In terms of corolla forests, the composition product stacks trees on top of one another \textit{in every possible way}, with the left polynomial in the bottom. The resulting polynomial's directions at any given position is "all directions that reach a height of two". A visualization is given in Figure \ref{fig:compositionProductExample}.
 
 \subsection{Monoid}
 % Show it forms a monoid with Y.
 The composition product is an important monoidal structure in \textbf{Poly}. It is not symmetric, like the previous three structures, but it has massive consequences from both a theoretical as well as application point of view.
+
+\subsection{Composition lens}
+
+Again, it is possible to define a lens that goes to either side of the monoidal structure. This is the definition in Agda:
+
+\begin{minted}{agda}
+  -- Apply lenses to both sides of the monoidal structure
+  ⟨_◂_⟩ : {p q r w : Polynomial} → Lens p r → Lens q w → 
+        Lens (p ◂ q) (r ◂ w)
+  ⟨_◂_⟩ {p} {q} {r} {w} (f ⇆ f♯) (g ⇆ g♯) = mapPos ⇆ mapDir
+    where mapPos : position (p ◂ q) → position (r ◂ w)
+          mapPos (posP , dirPToPosQ) = f posP , g ∘ dirPToPosQ ∘ f♯ posP
+          mapDir : (fromPos : position (p ◂ q)) → 
+                   direction (r ◂ w) (mapPos fromPos) → 
+                   direction (p ◂ q) fromPos
+          mapDir (posP , dirPToPosQ) (dirR , dirW) = 
+            (f♯ posP dirR) , g♯ (dirPToPosQ (f♯ posP dirR)) dirW
+  infixl 28 ⟨_◂_⟩
+\end{minted}
 
 \subsection{Composite power}
 % Show composition power.

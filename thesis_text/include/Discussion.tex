@@ -12,26 +12,58 @@ This representation makes equality between charts to be simply equality between 
 
 \todo{Rename lensEquals3}
 
-\section{Ease of implementation}
-The implementation of a couple of dynamical systems has led us, the authors of the thesis, to an impression of how it is to use \textbf{Poly} in practical implementation. Some pain points, include dealing with time, getting lost in data types, and debugging. The importance put on interfaces is very useful. % of interfaces is There are also some nice points, such as the use of interfaces. % and mode dependence.
+\section{Proving with Cubical Agda}
+Cubical Agda provides some very useful features, such as:
+\begin{itemize}
+    \item Identifying isomorphism and equality,
+    \item Transporting equalities between types and vice versa,
+    \item Function extensionality,
+    \item Wealth of lemmas and properties in its standard library,
+    \item Substitution of types via \texttt{subst},
+    \item Higher Inductive Types.
+\end{itemize}
 
-When designing and implementing a dynamical system, it is important to consider the time and flow of information. For example, given an input to a system, the output for that input is not received until the next time step. This creates a delay, which in fact, was used by the Fibonacci example, where the identity system simply delayed the input by one frame. However, taking into account these delays in more extensive systems creates a lot of complexity to keep track of.
-% IT is difficult to implement things in Poly, given the current ecosystem. E.g. time needs to be taken into consideration as every component in the wiring diagram adds one timestep of delay. 
+However, some aspects of it are not as smooth. No pattern matching on \texttt{refl} sometimes complicates proofs, constant transports are not always equal to \texttt{refl} for subtle technical reasons, nested \texttt{subst} and \texttt{transport} are very difficult to deal with, and the names of lemmas and their documentation in the standard library are not informative enough. The issue of nested transports is a particularly thorny one: very often, an equality type states something that a human can verify informally quite easily, but doing the needed plumbing to get a proof to compute is difficult and results in extremely long proofs that are actually simple in idea.
 
-When creating dynamical systems, many data types need to be created, making it easy to get lost in the details. There need to be data types for the state of each system, for the positions and output of each system, as well as for each input at each output. This is easier to handle on paper by abusing notation and leaving details out, but in Agda, everything is explicit, making it very verbose. Also, using polynomials created by the operators defined, such as addition or parallel product, is annoying. In these cases, the data types used behind the scenes are coproduct and product, with general constructor names that are terrible to work with when implementing dynamical systems, or wiring the wiring diagrams. 
+\section{Challenges in implementing dynamical systems}
+The implementation of a couple of dynamical systems has led us, the authors of the thesis, to an impression of how it is to use polynomial functors in a practical implementation. A few different aspects stand out when it comes to writing dynamical systems in Agda using polynomial functors.
 
-% Hard to debug, although a trace functionality was introduced.
-A problem, most likely due to the early state of the ecosystem of \textbf{Poly}, is how to debug systems. When the systems didn't work as expected, a lot of effort was put into figuring out what was going wrong. A tool similar to debuggers for imperative languages would have been useful for stepping through the dynamical systems and looking into their internal state. To make it possible to do some debugging, functionality similar to Haskell's trace was added as a somewhat better, but still far from perfect, way to debug systems.
-\todo{Explain how we debug systems, better than I do in the last sentence above.}
+\subsection{Datatypes in Agda}
 
-The importance put on interfaces provides a nice way of reasoning about and building systems. Each system is given a polynomial that represents the interface. Then, wiring systems together in a wiring diagram is done entirely in terms of the interfaces of the involved systems. Different implementations with the same interface can be installed as a last step to arrive at the full system. This mechanism provides a good level of abstraction when developing programs.
+When creating dynamical systems, many data types need to be created, making it easy to get lost in the details. There need to be data types for the state of each system, for the positions and output of each system, as well as for each input at each output. This is easier to handle on paper by abusing notation and leaving details out, but in Agda, everything is explicit, making it very verbose. Also, using polynomials created by the operators defined, such as addition or parallel product, is annoying. In these cases, the data types used behind the scenes are coproduct and product, with general constructor names that are terrible to work with when implementing dynamical systems, or wiring the wiring diagrams.
 
-% Another good thing is mode dependence, which provides a way to 
+There is also the issue of handling the empty type $\bot$ when programming, especially when it's a direction at some position. It is of course impossible to provide a value of this type, so while it in theory nicely represents a state where "no input can be provided", in practice this means that a lot of care and thought need to be given to how to either avoid getting in such a state, or never attempt updating the system when there.
 
+\subsection{Delayed timesteps}
+When designing and implementing a dynamical system, it is important to consider timing in the flow of information. For example, given an input to a system, the output for that input is not received until the next time step. This creates a delay, which is in fact used by the Fibonacci example, where the identity system simply delayed the input by one frame. However, taking into account these delays in more extensive systems creates a lot of complexity to keep track of. The reservoir system suffered from this as well, needing state transition counters to account for delays in the inputs. In a setting like Python + NumPy, all the states can always be accessed as indices in a matrix that keeps track of the history if needed.
 
-% Reasoning of interfaces is good, instantiate wiring diagram to implementation is useful. Mode dependence is useful thought, were input depends on the state you are in.
+\subsection{Printing}
+When the systems didn't work as expected, a lot of effort was put into figuring out what was going wrong. For example, a first attempt at debugging the reservoir system was by manually changing the output type of all systems to include their state, which led to a stream of a massive product type to be analyzed by the caller in \texttt{Plot.agda}. When this became unwieldy, the idea to use the Haskell FFI to call out to \texttt{Debug.Trace.trace} was introduced, but this comes at the expense of some flexibility since it can't be used in the \texttt{readout} functions, as the \texttt{update} function depends on that function's output. A tool similar to debuggers for imperative languages would have been useful for stepping through the dynamical systems and looking into their internal state, or perhaps some abstraction that plugs into dynamical systems in a nice way that we could not think of.
 
+\subsection{Freezing system states}
+Sometimes, we want a system to be unable to change some aspect of its state, but want them to "carry their state around" and transition its contents to some other state. An example of this is the reservoir's \texttt{outputWeights}. Recalling what that datatype looks like:
 
+\begin{minted}{agda}
+data ReservoirState (numNodes : ℕ) (systemDim : ℕ) : Set where
+  Coll : (nodeStates : Vec ℝ numNodes)
+         (counter : ℕ)
+         (statesHistory : Vec (Vec ℝ numNodes) counter) 
+         (systemHistory : Vec (Vec ℝ systemDim) counter) → 
+         ReservoirState numNodes systemDim
+  Touch : (nodeStates : Vec ℝ numNodes)
+          (counter : ℕ)
+          (outputWeights : OutputWeights numNodes systemDim) -- should be
+                                                             -- immutable!
+          →
+          ReservoirState numNodes systemDim
+  Go : (nodeStates : Vec ℝ numNodes)
+       (outputWeights : OutputWeights numNodes systemDim)    -- should be
+                                                             -- immutable!
+       →
+       ReservoirState numNodes systemDim
+\end{minted}
+
+There is no straightforward way, as far as we can tell, to prevent the \texttt{outputWeights} component of the reservoir from being updated. An attempt was made by wrapping the contents of the \texttt{Touch} and \texttt{Go} states in a \texttt{Reader} monad, and then having the readout function unroll the computation contained in it, but this was quite hard to work with due to how \texttt{Reader} works in Agda - it is designed to be capable of working in categories other than \textbf{Set}, so more general than Haskell's version, but this causes the need for more manual tinkering to get it right. And even if it worked, still nothing would prevent the state update function from simply replacing the computation with something else.
 
 \section{Mixing Cubical Agda with agda-categories}
 A big consequence of mixing Cubical Agda with agda-categories is that it hinders the formalization from being merged into either of the repositories.

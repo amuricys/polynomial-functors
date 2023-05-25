@@ -20,16 +20,10 @@
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \abx@aux@refcontext{none/global//global/global}
 \babel@aux{english}{}
-\abx@aux@cite{0}{containers https://www.cs.le.ac.uk/people/ma139/docs/thesis.pdf}
-\abx@aux@segm{0}{0}{containers https://www.cs.le.ac.uk/people/ma139/docs/thesis.pdf}
-\abx@aux@cite{0}{koch https://arxiv.org/abs/0906.4931}
-\abx@aux@segm{0}{0}{koch https://arxiv.org/abs/0906.4931}
-\abx@aux@cite{0}{jaz http://davidjaz.com/Papers/DynamicalBook.pdf}
-\abx@aux@segm{0}{0}{jaz http://davidjaz.com/Papers/DynamicalBook.pdf}
-\abx@aux@cite{0}{https://arxiv.org/pdf/2201.12878.pdf}
-\abx@aux@segm{0}{0}{https://arxiv.org/pdf/2201.12878.pdf}
-\abx@aux@cite{0}{spivak db https://arxiv.org/pdf/2111.10968.pdf}
-\abx@aux@segm{0}{0}{spivak db https://arxiv.org/pdf/2111.10968.pdf}
+\abx@aux@cite{0}{containersPaper}
+\abx@aux@segm{0}{0}{containersPaper}
+\abx@aux@cite{0}{polynomialFunctorsCategory}
+\abx@aux@segm{0}{0}{polynomialFunctorsCategory}
 \abx@aux@cite{0}{poly-book}
 \abx@aux@segm{0}{0}{poly-book}
 \abx@aux@cite{0}{catastrophic}
@@ -102,7 +96,7 @@
 \abx@aux@cite{0}{spivak2023functorial}
 \abx@aux@segm{0}{0}{spivak2023functorial}
 \@writefile{toc}{\contentsline {subsection}{\numberline {2.3.3}In code: Agda's \texttt  {agda-categories} library}{8}{subsection.2.3.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2.4}Polynomial Functors}{8}{section.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2.4}Previous work on Polynomial Functors}{8}{section.2.4}\protected@file@percent }
 \abx@aux@cite{0}{githubRepo}
 \abx@aux@segm{0}{0}{githubRepo}
 \@writefile{toc}{\contentsline {chapter}{\numberline {3}Theory: Lenses}{9}{chapter.3}\protected@file@percent }
@@ -112,11 +106,8 @@
 \@writefile{toc}{\contentsline {section}{\numberline {3.1}The category \textbf  {Poly}}{9}{section.3.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.1}Objects are polynomial functors}{9}{subsection.3.1.1}\protected@file@percent }
 \newlabel{eqn.natpoly}{{3.1}{9}{Objects are polynomial functors}{equation.3.1.1}{}}
+\newlabel{eqn:corollafirstexample}{{3.2}{10}{}{equation.3.1.2}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1.2}Arrows are natural transformations - \textit  {dependent lenses}}{11}{subsection.3.1.2}\protected@file@percent }
-\@writefile{tdo}{\contentsline {todo}{Show types of the getter and setter}{11}{section*.5}\protected@file@percent }
-\pgfsyspdfmark {pgfid6}{15353729}{5651383}
-\pgfsyspdfmark {pgfid9}{36534062}{5532872}
-\pgfsyspdfmark {pgfid10}{38848527}{5397431}
 \abx@aux@cite{0}{iceland_jack_thread}
 \abx@aux@segm{0}{0}{iceland_jack_thread}
 \abx@aux@cite{0}{sjoerd_gist}
@@ -127,64 +118,66 @@
 \abx@aux@cite{0}{agda-cats}
 \abx@aux@segm{0}{0}{agda-cats}
 \@writefile{toc}{\contentsline {section}{\numberline {3.2}Polynomial equality}{15}{section.3.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.3}Lens equality}{17}{section.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Lens equality}{16}{section.3.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.4}Initial object}{18}{section.3.4}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.5}Terminal object}{19}{section.3.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.6}Product}{19}{section.3.6}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Product diagram of two objects $A$ and $B$.\relax }}{20}{figure.caption.6}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Product diagram of two objects $A$ and $B$.\relax }}{20}{figure.caption.5}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:productDiagram}{{3.1}{20}{Product diagram of two objects $A$ and $B$.\relax }{figure.caption.6}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces $p(y) = y^5 + 2y^2 + y$, $q(y) = y^3 + y^2 + 2y + 1$. Their product $p * q$ has both $p$ and $q$'s positions; each position of $p * q$ is a pair with one position of $p$ and one of $q$. The direction at that position of $p * q$ is the disjoint union of the directions at the originals, with the arrow's color indicating where they came from.\relax }}{20}{figure.caption.7}\protected@file@percent }
-\newlabel{fig:productExample}{{3.2}{20}{$p(y) = y^5 + 2y^2 + y$, $q(y) = y^3 + y^2 + 2y + 1$. Their product $p * q$ has both $p$ and $q$'s positions; each position of $p * q$ is a pair with one position of $p$ and one of $q$. The direction at that position of $p * q$ is the disjoint union of the directions at the originals, with the arrow's color indicating where they came from.\relax }{figure.caption.7}{}}
+\newlabel{fig:productDiagram}{{3.1}{20}{Product diagram of two objects $A$ and $B$.\relax }{figure.caption.5}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces $p(y) = y^5 + 2y^2 + y$, $q(y) = y^3 + y^2 + 2y + 1$. Their product $p * q$ has both $p$ and $q$'s positions; each position of $p * q$ is a pair with one position of $p$ and one of $q$. The direction at that position of $p * q$ is the disjoint union of the directions at the originals, with the arrow's color indicating where they came from.\relax }}{20}{figure.caption.6}\protected@file@percent }
+\newlabel{fig:productExample}{{3.2}{20}{$p(y) = y^5 + 2y^2 + y$, $q(y) = y^3 + y^2 + 2y + 1$. Their product $p * q$ has both $p$ and $q$'s positions; each position of $p * q$ is a pair with one position of $p$ and one of $q$. The direction at that position of $p * q$ is the disjoint union of the directions at the originals, with the arrow's color indicating where they came from.\relax }{figure.caption.6}{}}
 \abx@aux@cite{0}{code}
 \abx@aux@segm{0}{0}{code}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.6.1}Productized lens}{21}{subsection.3.6.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.6.2}Generalized product}{22}{subsection.3.6.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.6.3}Monoid}{23}{subsection.3.6.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Coproduct diagram of $A$ and $B$.\relax }}{24}{figure.caption.8}\protected@file@percent }
-\newlabel{fig:coproductDiagram}{{3.3}{24}{Coproduct diagram of $A$ and $B$.\relax }{figure.caption.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces A sum of polynomials $p(y) = y^5 + y^2 + 1$ and $q(y) = y^3 + 2y + 1$. The resulting polynomial has the disjoint union of both as its positions, and each position has the directions at that position in the original polynomial it came from.\relax }}{24}{figure.caption.9}\protected@file@percent }
-\newlabel{fig:coproductExample}{{3.4}{24}{A sum of polynomials $p(y) = y^5 + y^2 + 1$ and $q(y) = y^3 + 2y + 1$. The resulting polynomial has the disjoint union of both as its positions, and each position has the directions at that position in the original polynomial it came from.\relax }{figure.caption.9}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Coproduct diagram of $A$ and $B$.\relax }}{24}{figure.caption.7}\protected@file@percent }
+\newlabel{fig:coproductDiagram}{{3.3}{24}{Coproduct diagram of $A$ and $B$.\relax }{figure.caption.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces A sum of polynomials $p(y) = y^5 + y^2 + 1$ and $q(y) = y^3 + 2y + 1$. The resulting polynomial has the disjoint union of both as its positions, and each position has the directions at that position in the original polynomial it came from.\relax }}{24}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:coproductExample}{{3.4}{24}{A sum of polynomials $p(y) = y^5 + y^2 + 1$ and $q(y) = y^3 + 2y + 1$. The resulting polynomial has the disjoint union of both as its positions, and each position has the directions at that position in the original polynomial it came from.\relax }{figure.caption.8}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {3.7}Coproduct}{24}{section.3.7}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.7.1}Generalized coproduct}{25}{subsection.3.7.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.7.2}Monoid}{26}{subsection.3.7.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.7.3}Coproductized lens}{26}{subsection.3.7.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.8}Parallel product}{27}{section.3.8}\protected@file@percent }
 \newlabel{section:parallelProduct}{{3.8}{27}{Parallel product}{section.3.8}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces $p(y) = y^3 + y$, $q(y) = y^2 + y + 1$. Like the regular product, their parallel product $p \otimes q$ has both $p$ and $q$'s positions, with each position of $p \otimes q$ being a pair with one position of $p$ and one of $q$. However, the directions at that position of $p \otimes q$ is the product of the directions at the originals, with each direction being a pair of the original directions.\relax }}{27}{figure.caption.10}\protected@file@percent }
-\newlabel{fig:parallelProductExample}{{3.5}{27}{$p(y) = y^3 + y$, $q(y) = y^2 + y + 1$. Like the regular product, their parallel product $p \otimes q$ has both $p$ and $q$'s positions, with each position of $p \otimes q$ being a pair with one position of $p$ and one of $q$. However, the directions at that position of $p \otimes q$ is the product of the directions at the originals, with each direction being a pair of the original directions.\relax }{figure.caption.10}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces $p(y) = y^3 + y$, $q(y) = y^2 + y + 1$. Like the regular product, their parallel product $p \otimes q$ has both $p$ and $q$'s positions, with each position of $p \otimes q$ being a pair with one position of $p$ and one of $q$. However, the directions at that position of $p \otimes q$ is the product of the directions at the originals, with each direction being a pair of the original directions.\relax }}{27}{figure.caption.9}\protected@file@percent }
+\newlabel{fig:parallelProductExample}{{3.5}{27}{$p(y) = y^3 + y$, $q(y) = y^2 + y + 1$. Like the regular product, their parallel product $p \otimes q$ has both $p$ and $q$'s positions, with each position of $p \otimes q$ being a pair with one position of $p$ and one of $q$. However, the directions at that position of $p \otimes q$ is the product of the directions at the originals, with each direction being a pair of the original directions.\relax }{figure.caption.9}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.8.1}Monoid}{27}{subsection.3.8.1}\protected@file@percent }
 \abx@aux@cite{0}{daig}
 \abx@aux@segm{0}{0}{daig}
-\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces $p(y) = y ^2+ y$ and $q(y) = y^3 + 1$. The composition product produces a polynomial that has as many positions as there are ways to stack $q$'s trees on top of $p$'s, and whose directions at each position are the ones that reach the top of this stack.\relax }}{28}{figure.caption.11}\protected@file@percent }
-\newlabel{fig:compositionProductExample}{{3.6}{28}{$p(y) = y ^2+ y$ and $q(y) = y^3 + 1$. The composition product produces a polynomial that has as many positions as there are ways to stack $q$'s trees on top of $p$'s, and whose directions at each position are the ones that reach the top of this stack.\relax }{figure.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.8.2}Parallel lens}{28}{subsection.3.8.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {3.9}Composition product}{28}{section.3.9}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces $p(y) = y ^2+ y$ and $q(y) = y^3 + 1$. The composition product produces a polynomial that has as many positions as there are ways to stack $q$'s trees on top of $p$'s, and whose directions at each position are the ones that reach the top of this stack.\relax }}{29}{figure.caption.10}\protected@file@percent }
+\newlabel{fig:compositionProductExample}{{3.6}{29}{$p(y) = y ^2+ y$ and $q(y) = y^3 + 1$. The composition product produces a polynomial that has as many positions as there are ways to stack $q$'s trees on top of $p$'s, and whose directions at each position are the ones that reach the top of this stack.\relax }{figure.caption.10}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.9.1}Monoid}{29}{subsection.3.9.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.9.2}Composite power}{29}{subsection.3.9.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.10}Cartesian closure}{29}{section.3.10}\protected@file@percent }
-\@writefile{tdo}{\contentsline {todo}{write isomorphism given by currying}{29}{section*.12}\protected@file@percent }
-\pgfsyspdfmark {pgfid39}{19493470}{16094171}
-\pgfsyspdfmark {pgfid42}{36534062}{15975660}
-\pgfsyspdfmark {pgfid43}{38848527}{15840219}
-\@writefile{tdo}{\contentsline {todo}{write finished exponential}{29}{section*.13}\protected@file@percent }
-\pgfsyspdfmark {pgfid44}{31783769}{10666947}
-\pgfsyspdfmark {pgfid47}{36534062}{10548436}
-\pgfsyspdfmark {pgfid48}{38848527}{10412995}
-\@writefile{tdo}{\contentsline {todo}{write eval arrow}{29}{section*.14}\protected@file@percent }
-\pgfsyspdfmark {pgfid49}{5594039}{8159165}
-\pgfsyspdfmark {pgfid52}{36534062}{8040654}
-\pgfsyspdfmark {pgfid53}{38848527}{7905213}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.9.2}Composition lens}{29}{subsection.3.9.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.9.3}Composite power}{30}{subsection.3.9.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.10}Cartesian closure}{30}{section.3.10}\protected@file@percent }
+\@writefile{tdo}{\contentsline {todo}{write isomorphism given by currying}{30}{section*.11}\protected@file@percent }
+\pgfsyspdfmark {pgfid33}{19493470}{26865597}
+\pgfsyspdfmark {pgfid34}{2591445}{26747086}
+\pgfsyspdfmark {pgfid35}{4905910}{26611645}
+\@writefile{tdo}{\contentsline {todo}{write finished exponential}{30}{section*.12}\protected@file@percent }
+\pgfsyspdfmark {pgfid38}{31783769}{22417194}
+\pgfsyspdfmark {pgfid39}{2591445}{22298683}
+\pgfsyspdfmark {pgfid40}{4905910}{22163242}
+\@writefile{tdo}{\contentsline {todo}{write eval arrow}{30}{section*.13}\protected@file@percent }
+\pgfsyspdfmark {pgfid43}{5594039}{20041514}
+\pgfsyspdfmark {pgfid44}{2591445}{19923003}
+\pgfsyspdfmark {pgfid45}{4905910}{19787562}
 \@writefile{toc}{\contentsline {section}{\numberline {3.11}Quadruple adjunction}{30}{section.3.11}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.12}Equalizer}{30}{section.3.12}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {3.13}Various properties of polynomials}{33}{section.3.13}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.12}Equalizer}{31}{section.3.12}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3.13}Various properties of polynomials}{34}{section.3.13}\protected@file@percent }
 \@writefile{toc}{\contentsline {chapter}{\numberline {4}Theory: Charts}{35}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \newlabel{chapter:charts}{{4}{35}{Theory: Charts}{chapter.4}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.1}The category \textbf  {Chart}}{35}{section.4.1}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1.1}Chart}{35}{subsection.4.1.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces The polynomial $p = y^2 + y + 1$ on the left has $3$ positions, and $q(y) = y^2 + y$ on the right has $2$ positions. This figure shows a chart from $p$ to $q$. The map on position is a map between $p$'s and $q$'s positions, like in lenses. The map on direction is for each position of $p$, a map between that position's directions and the directions of the mapped position in $q$.\relax }}{35}{figure.caption.15}\protected@file@percent }
-\newlabel{fig:exampleChart}{{4.1}{35}{The polynomial $p = y^2 + y + 1$ on the left has $3$ positions, and $q(y) = y^2 + y$ on the right has $2$ positions. This figure shows a chart from $p$ to $q$. The map on position is a map between $p$'s and $q$'s positions, like in lenses. The map on direction is for each position of $p$, a map between that position's directions and the directions of the mapped position in $q$.\relax }{figure.caption.15}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces The polynomial $p = y^2 + y + 1$ on the left has $3$ positions, and $q(y) = y^2 + y$ on the right has $2$ positions. This figure shows a chart from $p$ to $q$. The map on position is a map between $p$'s and $q$'s positions, like in lenses. The map on direction is for each position of $p$, a map between that position's directions and the directions of the mapped position in $q$.\relax }}{35}{figure.caption.14}\protected@file@percent }
+\newlabel{fig:exampleChart}{{4.1}{35}{The polynomial $p = y^2 + y + 1$ on the left has $3$ positions, and $q(y) = y^2 + y$ on the right has $2$ positions. This figure shows a chart from $p$ to $q$. The map on position is a map between $p$'s and $q$'s positions, like in lenses. The map on direction is for each position of $p$, a map between that position's directions and the directions of the mapped position in $q$.\relax }{figure.caption.14}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1.2}Identity chart}{36}{subsection.4.1.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1.3}Composing charts}{36}{subsection.4.1.3}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {4.1.4}Associativity and identity laws}{36}{subsection.4.1.4}\protected@file@percent }
@@ -194,17 +187,17 @@
 \@writefile{toc}{\contentsline {section}{\numberline {4.5}Product}{38}{section.4.5}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4.6}Coproduct}{39}{section.4.6}\protected@file@percent }
 \@writefile{toc}{\contentsline {section}{\numberline {4.7}Commuting square between lenses and charts}{39}{section.4.7}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces A square consists of four polynomials. Vertically there is a lens from $p_1$ to $p_3$ and from $p_2$ to $p_4$. Horizontally there is a chart from $p_1$ to $p_2$ and from $p_3$ to $p_4$. \relax }}{39}{figure.caption.16}\protected@file@percent }
-\newlabel{fig:commutingSquare}{{4.2}{39}{A square consists of four polynomials. Vertically there is a lens from $p_1$ to $p_3$ and from $p_2$ to $p_4$. Horizontally there is a chart from $p_1$ to $p_2$ and from $p_3$ to $p_4$. \relax }{figure.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces A square consists of four polynomials. Vertically there is a lens from $p_1$ to $p_3$ and from $p_2$ to $p_4$. Horizontally there is a chart from $p_1$ to $p_2$ and from $p_3$ to $p_4$. \relax }}{39}{figure.caption.15}\protected@file@percent }
+\newlabel{fig:commutingSquare}{{4.2}{39}{A square consists of four polynomials. Vertically there is a lens from $p_1$ to $p_3$ and from $p_2$ to $p_4$. Horizontally there is a chart from $p_1$ to $p_2$ and from $p_3$ to $p_4$. \relax }{figure.caption.15}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {4.8}Composing squares between lenses and charts}{40}{section.4.8}\protected@file@percent }
-\@writefile{tdo}{\contentsline {todo}{Do diagram of squares composition - extracted this todo because otherwise latex gives a Float lost error}{40}{section*.17}\protected@file@percent }
-\pgfsyspdfmark {pgfid59}{5594039}{25131768}
-\pgfsyspdfmark {pgfid60}{2591445}{25013257}
-\pgfsyspdfmark {pgfid61}{4905910}{24877816}
-\@writefile{tdo}{\contentsline {todo}{Add section about stationary systems thingy}{40}{section*.18}\protected@file@percent }
-\pgfsyspdfmark {pgfid64}{5594039}{8977144}
-\pgfsyspdfmark {pgfid65}{2591445}{8858633}
-\pgfsyspdfmark {pgfid66}{4905910}{8723192}
+\@writefile{tdo}{\contentsline {todo}{Do diagram of squares composition - extracted this todo because otherwise latex gives a Float lost error}{40}{section*.16}\protected@file@percent }
+\pgfsyspdfmark {pgfid53}{5594039}{25131768}
+\pgfsyspdfmark {pgfid54}{2591445}{25013257}
+\pgfsyspdfmark {pgfid55}{4905910}{24877816}
+\@writefile{tdo}{\contentsline {todo}{Add section about stationary systems thingy}{40}{section*.17}\protected@file@percent }
+\pgfsyspdfmark {pgfid58}{5594039}{8977144}
+\pgfsyspdfmark {pgfid59}{2591445}{8858633}
+\pgfsyspdfmark {pgfid60}{4905910}{8723192}
 \@writefile{toc}{\contentsline {chapter}{\numberline {5}Applications}{41}{chapter.5}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -226,10 +219,10 @@
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2.4}Lenses as wiring patterns}{45}{subsection.5.2.4}\protected@file@percent }
 \newlabel{eqn.control_diag}{{5.7}{45}{Lenses as wiring patterns}{equation.5.2.7}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2.5}Charts as system transformations (??)}{46}{subsection.5.2.5}\protected@file@percent }
-\@writefile{tdo}{\contentsline {todo}{write up charts a bit}{46}{section*.19}\protected@file@percent }
-\pgfsyspdfmark {pgfid79}{10339034}{25761595}
-\pgfsyspdfmark {pgfid80}{2591445}{25643084}
-\pgfsyspdfmark {pgfid81}{4905910}{25507643}
+\@writefile{tdo}{\contentsline {todo}{write up charts a bit}{46}{section*.18}\protected@file@percent }
+\pgfsyspdfmark {pgfid73}{10339034}{25761595}
+\pgfsyspdfmark {pgfid74}{2591445}{25643084}
+\pgfsyspdfmark {pgfid75}{4905910}{25507643}
 \@writefile{toc}{\contentsline {section}{\numberline {5.3}Implementing dynamical systems}{46}{section.5.3}\protected@file@percent }
 \abx@aux@cite{0}{conceptwithattitude}
 \abx@aux@segm{0}{0}{conceptwithattitude}
@@ -253,10 +246,10 @@
 \abx@aux@cite{0}{Murray2002}
 \abx@aux@segm{0}{0}{Murray2002}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.1.6}Turing machines}{53}{subsubsection.5.3.1.6}\protected@file@percent }
-\@writefile{tdo}{\contentsline {todo}{write up}{53}{section*.20}\protected@file@percent }
-\pgfsyspdfmark {pgfid86}{5594039}{44337027}
-\pgfsyspdfmark {pgfid89}{36534062}{44218516}
-\pgfsyspdfmark {pgfid90}{38848527}{44083075}
+\@writefile{tdo}{\contentsline {todo}{write up}{53}{section*.19}\protected@file@percent }
+\pgfsyspdfmark {pgfid80}{5594039}{44337027}
+\pgfsyspdfmark {pgfid83}{36534062}{44218516}
+\pgfsyspdfmark {pgfid84}{38848527}{44083075}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}Examples: Continuous systems}{53}{subsection.5.3.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.2.1}Lotka-Volterra}{53}{subsubsection.5.3.2.1}\protected@file@percent }
 \newlabel{eq:rabbits}{{5.9}{54}{Lotka-Volterra}{equation.5.3.9}{}}
@@ -264,35 +257,35 @@
 \newlabel{wd:lotkavolterra}{{5.11}{54}{Lotka-Volterra}{equation.5.3.11}{}}
 \abx@aux@cite{0}{lorenz1963}
 \abx@aux@segm{0}{0}{lorenz1963}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Lotka-Volterra oscillatory dynamics. As the population of rabbits grows, the population of foxes catches up, causing it to go down.\relax }}{56}{figure.caption.21}\protected@file@percent }
-\newlabel{fig:lvfig}{{5.1}{56}{Lotka-Volterra oscillatory dynamics. As the population of rabbits grows, the population of foxes catches up, causing it to go down.\relax }{figure.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Lotka-Volterra oscillatory dynamics. As the population of rabbits grows, the population of foxes catches up, causing it to go down.\relax }}{56}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:lvfig}{{5.1}{56}{Lotka-Volterra oscillatory dynamics. As the population of rabbits grows, the population of foxes catches up, causing it to go down.\relax }{figure.caption.20}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.2.2}Lorenz system}{56}{subsubsection.5.3.2.2}\protected@file@percent }
 \newlabel{eq:xlor}{{5.12}{56}{Lorenz system}{equation.5.3.12}{}}
 \newlabel{eq:ylor}{{5.13}{56}{Lorenz system}{equation.5.3.13}{}}
 \newlabel{eq:zlor}{{5.14}{56}{Lorenz system}{equation.5.3.14}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces "Lorenz butterfly", a visualization of a trajectory of the Lorenz system. $dt$ is set to 0.01.\relax }}{57}{figure.caption.22}\protected@file@percent }
-\newlabel{fig:lorenzbutterfly}{{5.2}{57}{"Lorenz butterfly", a visualization of a trajectory of the Lorenz system. $dt$ is set to 0.01.\relax }{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces "Lorenz butterfly", a visualization of a trajectory of the Lorenz system. $dt$ is set to 0.01.\relax }}{57}{figure.caption.21}\protected@file@percent }
+\newlabel{fig:lorenzbutterfly}{{5.2}{57}{"Lorenz butterfly", a visualization of a trajectory of the Lorenz system. $dt$ is set to 0.01.\relax }{figure.caption.21}{}}
 \abx@aux@cite{0}{hodgkin1952quantitative}
 \abx@aux@segm{0}{0}{hodgkin1952quantitative}
 \abx@aux@cite{0}{gerstner2014neuronal}
 \abx@aux@segm{0}{0}{gerstner2014neuronal}
 \abx@aux@cite{0}{https://mark-kramer.github.io/Case-Studies-Python/HH.html}
 \abx@aux@segm{0}{0}{https://mark-kramer.github.io/Case-Studies-Python/HH.html}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Lorenz system chaotic dynamics. The three variables keep oscillating in ever-changing patterns, never settling to a stable cycle.\relax }}{59}{figure.caption.23}\protected@file@percent }
-\newlabel{fig:lorenz_dynamics}{{5.3}{59}{Lorenz system chaotic dynamics. The three variables keep oscillating in ever-changing patterns, never settling to a stable cycle.\relax }{figure.caption.23}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Lorenz system chaotic dynamics. The three variables keep oscillating in ever-changing patterns, never settling to a stable cycle.\relax }}{59}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:lorenz_dynamics}{{5.3}{59}{Lorenz system chaotic dynamics. The three variables keep oscillating in ever-changing patterns, never settling to a stable cycle.\relax }{figure.caption.22}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.2.3}Hodgkin-Huxley model}{59}{subsubsection.5.3.2.3}\protected@file@percent }
 \newlabel{eq:voltage}{{5.15}{59}{Hodgkin-Huxley model}{equation.5.3.15}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Analogy schematic of a neuronal membrane modeled as a circuit, from the book Neuronal Dynamics.\relax }}{60}{figure.caption.24}\protected@file@percent }
-\newlabel{fig:hodgkinhuxleyschematic}{{5.4}{60}{Analogy schematic of a neuronal membrane modeled as a circuit, from the book Neuronal Dynamics.\relax }{figure.caption.24}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces Analogy schematic of a neuronal membrane modeled as a circuit, from the book Neuronal Dynamics.\relax }}{60}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:hodgkinhuxleyschematic}{{5.4}{60}{Analogy schematic of a neuronal membrane modeled as a circuit, from the book Neuronal Dynamics.\relax }{figure.caption.23}{}}
 \newlabel{eq:mhh}{{5.16}{60}{Hodgkin-Huxley model}{equation.5.3.16}{}}
 \newlabel{eq:hhh}{{5.17}{60}{Hodgkin-Huxley model}{equation.5.3.17}{}}
 \newlabel{eq:nhh}{{5.18}{60}{Hodgkin-Huxley model}{equation.5.3.18}{}}
-\@writefile{tdo}{\contentsline {todo}{fix this, make it look nicer}{60}{section*.25}\protected@file@percent }
-\pgfsyspdfmark {pgfid92}{23790079}{9036682}
-\pgfsyspdfmark {pgfid93}{2591445}{8918171}
-\pgfsyspdfmark {pgfid94}{4905910}{8782730}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Hodgkin-Huxley model dynamics with input current $I_e = 10$nA and $dt = 0.02$. The simulated neuron fires repeatedly.\relax }}{62}{figure.caption.26}\protected@file@percent }
-\newlabel{fig:hhdynamics}{{5.5}{62}{Hodgkin-Huxley model dynamics with input current $I_e = 10$nA and $dt = 0.02$. The simulated neuron fires repeatedly.\relax }{figure.caption.26}{}}
+\@writefile{tdo}{\contentsline {todo}{fix this, make it look nicer}{60}{section*.24}\protected@file@percent }
+\pgfsyspdfmark {pgfid86}{23790079}{9036682}
+\pgfsyspdfmark {pgfid87}{2591445}{8918171}
+\pgfsyspdfmark {pgfid88}{4905910}{8782730}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Hodgkin-Huxley model dynamics with input current $I_e = 10$nA and $dt = 0.02$. The simulated neuron fires repeatedly.\relax }}{62}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:hhdynamics}{{5.5}{62}{Hodgkin-Huxley model dynamics with input current $I_e = 10$nA and $dt = 0.02$. The simulated neuron fires repeatedly.\relax }{figure.caption.25}{}}
 \abx@aux@cite{0}{reservoiroverview}
 \abx@aux@segm{0}{0}{reservoiroverview}
 \abx@aux@cite{0}{windspeedreservoir}
@@ -305,50 +298,51 @@
 \abx@aux@segm{0}{0}{Cucchi_2022}
 \abx@aux@cite{0}{Cucchi_2022}
 \abx@aux@segm{0}{0}{Cucchi_2022}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Hodgkin-Huxley model dynamics with $dt = 0.05$ and input current growing linearly from $-5$nA at a rate of $0.02dt$ per timestep. The simulated neuron starts by not firing, with the resting state slowly growing as the input current grows, then fires repeatedly.\relax }}{63}{figure.caption.27}\protected@file@percent }
-\newlabel{fig:hhdynamicsinput}{{5.6}{63}{Hodgkin-Huxley model dynamics with $dt = 0.05$ and input current growing linearly from $-5$nA at a rate of $0.02dt$ per timestep. The simulated neuron starts by not firing, with the resting state slowly growing as the input current grows, then fires repeatedly.\relax }{figure.caption.27}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Hodgkin-Huxley model dynamics with $dt = 0.05$ and input current growing linearly from $-5$nA at a rate of $0.02dt$ per timestep. The simulated neuron starts by not firing, with the resting state slowly growing as the input current grows, then fires repeatedly.\relax }}{63}{figure.caption.26}\protected@file@percent }
+\newlabel{fig:hhdynamicsinput}{{5.6}{63}{Hodgkin-Huxley model dynamics with $dt = 0.05$ and input current growing linearly from $-5$nA at a rate of $0.02dt$ per timestep. The simulated neuron starts by not firing, with the resting state slowly growing as the input current grows, then fires repeatedly.\relax }{figure.caption.26}{}}
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.2.4}Reservoir computer}{63}{subsubsection.5.3.2.4}\protected@file@percent }
 \newlabel{sec:reservoir}{{5.3.2.4}{63}{Reservoir computer}{subsubsection.5.3.2.4}{}}
 \abx@aux@cite{0}{jaeger2001echo}
 \abx@aux@segm{0}{0}{jaeger2001echo}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Reservoir setup when compared to neural networks. The dashed box represents an input/output boundary around the reservoir. Figure with modification from Cucchi et al. (2022) \blx@tocontentsinit {0}\cite {Cucchi_2022}. Licensed under CC BY.\relax }}{64}{figure.caption.28}\protected@file@percent }
-\newlabel{fig:reservoirsetup}{{5.7}{64}{Reservoir setup when compared to neural networks. The dashed box represents an input/output boundary around the reservoir. Figure with modification from Cucchi et al. (2022) \cite {Cucchi_2022}. Licensed under CC BY.\relax }{figure.caption.28}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces Reservoir setup when compared to neural networks. The dashed box represents an input/output boundary around the reservoir. Figure with modification from Cucchi et al. (2022) \blx@tocontentsinit {0}\cite {Cucchi_2022}. Licensed under CC BY.\relax }}{64}{figure.caption.27}\protected@file@percent }
+\newlabel{fig:reservoirsetup}{{5.7}{64}{Reservoir setup when compared to neural networks. The dashed box represents an input/output boundary around the reservoir. Figure with modification from Cucchi et al. (2022) \cite {Cucchi_2022}. Licensed under CC BY.\relax }{figure.caption.27}{}}
 \newlabel{eq:resupdaterule}{{5.19}{64}{Reservoir computer}{equation.5.3.19}{}}
 \abx@aux@cite{0}{strogatz2001nonlinear}
 \abx@aux@segm{0}{0}{strogatz2001nonlinear}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Reservoir dynamics: the reservoir's output along with the test sequence it's trying to predict along all dimensions.\relax }}{68}{figure.caption.29}\protected@file@percent }
-\newlabel{fig:reservoir_dynamics}{{5.8}{68}{Reservoir dynamics: the reservoir's output along with the test sequence it's trying to predict along all dimensions.\relax }{figure.caption.29}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Reservoir dynamics: the reservoir's output along with the test sequence it's trying to predict along all dimensions.\relax }}{68}{figure.caption.28}\protected@file@percent }
+\newlabel{fig:reservoir_dynamics}{{5.8}{68}{Reservoir dynamics: the reservoir's output along with the test sequence it's trying to predict along all dimensions.\relax }{figure.caption.28}{}}
 \@writefile{toc}{\contentsline {chapter}{\numberline {6}Discussion}{71}{chapter.6}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \newlabel{chapter:discussion}{{6}{71}{Discussion}{chapter.6}{}}
 \@writefile{toc}{\contentsline {section}{\numberline {6.1}Equality of lenses}{71}{section.6.1}\protected@file@percent }
-\@writefile{tdo}{\contentsline {todo}{Rename lensEquals3}{71}{section*.30}\protected@file@percent }
-\pgfsyspdfmark {pgfid101}{5594039}{14524470}
-\pgfsyspdfmark {pgfid104}{36534062}{14405959}
-\pgfsyspdfmark {pgfid105}{38848527}{14270518}
-\@writefile{toc}{\contentsline {section}{\numberline {6.2}Ease of implementation}{71}{section.6.2}\protected@file@percent }
-\@writefile{tdo}{\contentsline {todo}{Explain how we debug systems, better than I do in the last sentence above.}{72}{section*.31}\protected@file@percent }
-\pgfsyspdfmark {pgfid106}{18120116}{29102151}
-\pgfsyspdfmark {pgfid107}{2591445}{28983640}
-\pgfsyspdfmark {pgfid108}{4905910}{28848199}
-\@writefile{toc}{\contentsline {section}{\numberline {6.3}Mixing Cubical Agda with agda-categories}{72}{section.6.3}\protected@file@percent }
+\@writefile{tdo}{\contentsline {todo}{Rename lensEquals3}{71}{section*.29}\protected@file@percent }
+\pgfsyspdfmark {pgfid95}{5594039}{14564179}
+\pgfsyspdfmark {pgfid98}{36534062}{14445668}
+\pgfsyspdfmark {pgfid99}{38848527}{14310227}
+\@writefile{toc}{\contentsline {section}{\numberline {6.2}Proving with Cubical Agda}{71}{section.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.3}Challenges in implementing dynamical systems}{72}{section.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.1}Datatypes in Agda}{72}{subsection.6.3.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.2}Delayed timesteps}{72}{subsection.6.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.3}Printing}{73}{subsection.6.3.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3.4}Freezing system states}{73}{subsection.6.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.4}Mixing Cubical Agda with agda-categories}{74}{section.6.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.5}Wild polynomials}{74}{section.6.5}\protected@file@percent }
 \abx@aux@cite{0}{bicomodulesBlog}
 \abx@aux@segm{0}{0}{bicomodulesBlog}
-\@writefile{toc}{\contentsline {section}{\numberline {6.4}Wild polynomials}{73}{section.6.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {6.5}Future work}{73}{section.6.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.1}Comonoids are small categories}{73}{subsection.6.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.2}Bicomodules are parametric right adjoints}{73}{subsection.6.5.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.3}Composition of squares between charts and lenses}{73}{subsection.6.5.3}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.4}Consistency of distributed data types}{74}{subsection.6.5.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.5}Other categorical properties}{74}{subsection.6.5.5}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.6}Dynamical systems}{74}{subsection.6.5.6}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {6.5.7}Interaction between different fields that Poly models}{74}{subsection.6.5.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusion}{75}{chapter.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6.6}Future work}{75}{section.6.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6.1}Comonoids are small categories}{75}{subsection.6.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6.2}Bicomodules are parametric right adjoints}{75}{subsection.6.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6.3}Composition of squares between charts and lenses}{75}{subsection.6.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6.4}Consistency of distributed data types}{75}{subsection.6.6.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6.5}Other categorical properties}{75}{subsection.6.6.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6.6}Dynamical systems}{76}{subsection.6.6.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.6.7}Interaction between different fields that Poly models}{76}{subsection.6.6.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {7}Conclusion}{77}{chapter.7}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\newlabel{chapter:conclusion}{{7}{75}{Conclusion}{chapter.7}{}}
-\@writefile{toc}{\contentsline {chapter}{Bibliography}{77}{section*.32}\protected@file@percent }
+\newlabel{chapter:conclusion}{{7}{77}{Conclusion}{chapter.7}{}}
+\@writefile{toc}{\contentsline {chapter}{Bibliography}{79}{section*.30}\protected@file@percent }
 \abx@aux@cite{0}{nix}
 \abx@aux@segm{0}{0}{nix}
 \abx@aux@cite{0}{hmatrix}
@@ -401,6 +395,8 @@
   6F8E107E3B610EADE68C50C80E646464A9EECA4F952F3826E4032C49E398807F.pygtex,
   738E184D332AF7F328360A882540E003BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   0C72B971CE415F5867065551BC6F30F5BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
+  17209FE381EF2D0EE55C40657C8F6C8ABE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
+  3E69FAA9DDA21CAB2B076BDC981452B5BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   2FC5862FF795F2743DE24873AB0AF4C0A9EECA4F952F3826E4032C49E398807F.pygtex,
   D9594174E3303B7B159FB82B70AEC467A9EECA4F952F3826E4032C49E398807F.pygtex,
   C6020F452D7FEAD05E6B203FF1B7C419A9EECA4F952F3826E4032C49E398807F.pygtex,
@@ -454,7 +450,9 @@
   EB66EEC8B2E2EE7B467DAFC93AC65CC3BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   03413B8799658DB121C89A50057450A9BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   A148A79CF69BA1B54E36A35963D71322BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
+  FCE0472A2AF93AD03F34F373A3C55B2CBE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   38FFCD1E4F0E855EFAB3632FA30C9DA5BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
+  D49A40C31390CFD20A03693159086485BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   36E6D56F8FAFCC72AD887E01F97A9E6DBE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   0F0F848CC5BF3E935B80E6DFD18517D1BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   2BD33CAFCF5000F02A7AD96A08D94D70BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
@@ -522,6 +520,7 @@
   637B24130B36B65BFFE29126729513F9BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   709D9FB7AE215E29503370BC8824840DBE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   B21CED1397663053FB6091F83086BB61BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
+  AA0D0AF80FEFD22F2AA21E265DB208AEBE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   7AE01F3D910D2D22A2403C166417F9C8BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   51225E7125A50BA954F8E18BEF13283EBE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
   7AE01F3D910D2D22A2403C166417F9C8BE03E3A259E9AF7A608D8D9A99EA7DC1.pygtex,
@@ -541,6 +540,7 @@
   83FF740F07360348C43F4443B6562ABC9B2C10EDEE8F0596AA39F586E1E59640.pygtex,
   2AE2C9E894771B2BF6F4A313EA73088B9B2C10EDEE8F0596AA39F586E1E59640.pygtex}
 \abx@aux@read@bbl@mdfivesum{150B965705D5312FF89AA31CB3A8DB83}
+\abx@aux@read@bblrerun
 \abx@aux@defaultrefcontext{0}{catastrophic}{none/global//global/global}
 \abx@aux@defaultrefcontext{0}{complexcatsadjunction}{none/global//global/global}
 \abx@aux@defaultrefcontext{0}{compositional-gt}{none/global//global/global}
@@ -585,4 +585,4 @@
 \abx@aux@defaultrefcontext{0}{optparse-applicative}{none/global//global/global}
 \abx@aux@defaultrefcontext{0}{ghc-gadts}{none/global//global/global}
 \abx@aux@defaultrefcontext{0}{ghc-data-kinds}{none/global//global/global}
-\gdef \@abspage@last{102}
+\gdef \@abspage@last{104}

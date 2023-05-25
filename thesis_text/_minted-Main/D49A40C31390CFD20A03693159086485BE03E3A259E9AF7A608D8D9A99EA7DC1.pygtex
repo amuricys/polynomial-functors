@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Apply lenses to both sides of the monoidal structure}
+\PYG{+w}{  }\PYG{n+nf}{⟨\PYGZus{}◂\PYGZus{}⟩}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }r\PYG{+w}{ }w\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }r\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }q\PYG{+w}{ }w\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{        }Lens\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }◂\PYG{+w}{ }q\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}r\PYG{+w}{ }◂\PYG{+w}{ }w\PYG{o}{)}
+\PYG{+w}{  }⟨\PYGZus{}◂\PYGZus{}⟩\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}q\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}r\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}w\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }⇆\PYG{+w}{ }f♯\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}g\PYG{+w}{ }⇆\PYG{+w}{ }g♯\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mapPos\PYG{+w}{ }⇆\PYG{+w}{ }mapDir
+\PYG{+w}{    }\PYG{k+kr}{where}\PYG{+w}{ }mapPos\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }◂\PYG{+w}{ }q\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{(}r\PYG{+w}{ }◂\PYG{+w}{ }w\PYG{o}{)}
+\PYG{+w}{          }mapPos\PYG{+w}{ }\PYG{o}{(}posP\PYG{+w}{ },\PYG{+w}{ }dirPToPosQ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }f\PYG{+w}{ }posP\PYG{+w}{ },\PYG{+w}{ }g\PYG{+w}{ }∘\PYG{+w}{ }dirPToPosQ\PYG{+w}{ }∘\PYG{+w}{ }f♯\PYG{+w}{ }posP
+\PYG{+w}{          }\PYG{n+nf}{mapDir}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}fromPos\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }◂\PYG{+w}{ }q\PYG{o}{))}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                   }direction\PYG{+w}{ }\PYG{o}{(}r\PYG{+w}{ }◂\PYG{+w}{ }w\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}mapPos\PYG{+w}{ }fromPos\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                   }direction\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }◂\PYG{+w}{ }q\PYG{o}{)}\PYG{+w}{ }fromPos
+\PYG{+w}{          }mapDir\PYG{+w}{ }\PYG{o}{(}posP\PYG{+w}{ },\PYG{+w}{ }dirPToPosQ\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}dirR\PYG{+w}{ },\PYG{+w}{ }dirW\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{            }\PYG{o}{(}f♯\PYG{+w}{ }posP\PYG{+w}{ }dirR\PYG{o}{)}\PYG{+w}{ },\PYG{+w}{ }g♯\PYG{+w}{ }\PYG{o}{(}dirPToPosQ\PYG{+w}{ }\PYG{o}{(}f♯\PYG{+w}{ }posP\PYG{+w}{ }dirR\PYG{o}{))}\PYG{+w}{ }dirW
+\PYG{+w}{  }\PYG{k+kr}{infixl}\PYG{+w}{ }\PYG{l+m+mi}{28}\PYG{+w}{ }⟨\PYGZus{}◂\PYGZus{}⟩
+\end{Verbatim}
