@@ -1390,10 +1390,14 @@ compositePower p (suc n) = p ◂ (compositePower p n)
 
 \section{Cartesian closure}
 
-\textbf{Poly} has exponential objects, that is, the family of lenses from any polynomial $p$ to any polynomial $q$ is found as an object $q^p$ in \textbf{Poly}, and it is given by the following polynomial:
+\textbf{Poly} is cartesian closed, which means it has exponential objects, that is, the family of lenses from any polynomial $q$ to any polynomial $r$ is found as an object $r^q$ in \textbf{Poly}. This object is given by the following polynomial:
 $$
-\Pi
+\begin{equation}\label{eqn.exponential}
+  r^q = \prod_{j\in q(1)}r\triangleleft(y+q[j])
+\end{equation}
 $$
+
+where the notation $q[j]$ represents the set of directions of $q$ at position $j$.
 
 We define this polynomial as follows in Agda:
 \begin{minted}{agda}
@@ -1408,19 +1412,76 @@ infixl 30 _^_
 where \mintinline{agda}{Constant} is a helper function that takes a set to the constant polynomial sending every set to that set.
 
 We do not prove that this object is the exponential object via the universal property of exponential objects, which would employ \texttt{agda-categories}' \texttt{Exponential} construction. Instead, we prove an equivalent statement, related to currying: that the following natural isomorphism exists 
-\todo{write isomorphism given by currying}
 $$
+\textbf{Poly}(p, r^q) \cong \textbf{Poly}(p \times q, r)
 $$
 
-This statement is the same as the poly-book proves. In fact, we follow the same chain of isomorphisms as the book to conclude this. In Agda, this looks like:
-\todo{write finished exponential}
+This isomorphism states that there is an equivalent number of ways to go from an arrow to an exponential object, as there are ways of going from an object and the exponential's argument to the exponential's output. This statement is the same as the poly-book proves. In fact, we follow the same chain of isomorphisms as the book to conclude this. In Agda, this looks like this:
+\begin{minted}{agda}
+-- Page 131
+cartesianClosed : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
+cartesianClosed = zero ∙ one ∙ two ∙ three ∙ four ∙ five
+\end{minted}
 
-The existence of the exponential object implies the existence of the canonical evaluation lens. Its implementation is as follows:
+These steps' types are given next, but their proofs are omitted due to their lengths. They correspond exactly to the steps in the book.
+\begin{minted}{agda}
+-- By definition of exponential object. 4.27
+zero : Lens p (r ^ q)
+       ≡ 
+       Lens p (ΠPoly (position q , λ j → r ◂ Y + Constant (direction q j)))
+-- By universal property of products and coproducts.  
+one : ...
+      ≡ 
+      ((i : position p) →
+       (j : position q) → 
+       Lens (purePower (direction p i)) (r ◂ Y + Constant (direction q j)))
+two : ...
+      ≡ 
+      ((i : position p) →
+       (j : position q) → 
+       (r ◂ Y + Constant (direction q j)) ⦅ direction p i ⦆)
+three : ...
+        ≡
+         ((i : position p) →
+          (j : position q) → 
+          Σ[ k ∈ position r ] 
+            ((direction r k) → (direction p i) ⊎ (direction q j)))
+-- By 2.84
+four : ... 
+       ≡
+       ((i×j : position (p * q)) → 
+       Σ[ k ∈ position r ] (direction r k → direction (p * q) i×j))
+-- By 2.54
+five : ...
+       ≡
+       Lens (p * q) r
+\end{minted}
 
-\todo{write eval arrow}
+There is, in fact, a single hole in a lemma in step three, which we intend to fill. It's a big proof, with a lot of constant transports needing to be juggled and nested, and is made even more complicated because of the way Agda handles pattern matching and function application on sum types.
+
+The exponential object implies the existence of the canonical evaluation lens - one that takes an exponential object paired with its argument to the output object. Its implementation is as follows:
+
+\begin{minted}{agda}
+eval : {p q : Polynomial} → Lens ((q ^ p) * p) q
+eval {p} {q} = mapPos ⇆ mapDir
+  where mapPos : position ((q ^ p) * p) → position q
+        mapPos (posQ^P , posP) = fst (posQ^P posP)
+        mapDir : (pos : position ((q ^ p) * p))
+            → direction q (mapPos pos) 
+            → direction ((q ^ p) * p) pos
+        mapDir (posQ^P , posP) dir with (snd (posQ^P posP)) dir in eq
+        ... | inj₂ y = inj₂ y
+        ... | inj₁ x = inj₁ (posP , dir , rewritten)
+            where
+                rewritten : [ (λ _ → ⊤) , (λ _ → ⊥) ]
+                            (snd (posQ^P posP) dir)
+                rewritten rewrite eq = tt
+\end{minted}
+
+The complication in handling sum types is showcased by the evaluation lens in its need to rewrite by the pattern match equality.
 
 The cartesian closure of \textbf{Poly} has interesting implications, which we will consider when we talk about future work possibilities from this thesis.
-\todo{write in future work}
+
 \section{Quadruple adjunction}
 
 \textbf{Poly} has a deep relationship with \textbf{Set}. One place where this is reflected is with the connection between the following functors:

@@ -1,0 +1,16 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{eval}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{((}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }*\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }q
+eval\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}q\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mapPos\PYG{+w}{ }⇆\PYG{+w}{ }mapDir
+\PYG{+w}{  }\PYG{k+kr}{where}\PYG{+w}{ }mapPos\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{((}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }*\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }position\PYG{+w}{ }q
+\PYG{+w}{        }mapPos\PYG{+w}{ }\PYG{o}{(}posQ\PYGZca{}P\PYG{+w}{ },\PYG{+w}{ }posP\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }fst\PYG{+w}{ }\PYG{o}{(}posQ\PYGZca{}P\PYG{+w}{ }posP\PYG{o}{)}
+\PYG{+w}{        }\PYG{n+nf}{mapDir}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}pos\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{((}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }*\PYG{+w}{ }p\PYG{o}{))}
+\PYG{+w}{            }\PYG{o+ow}{→}\PYG{+w}{ }direction\PYG{+w}{ }q\PYG{+w}{ }\PYG{o}{(}mapPos\PYG{+w}{ }pos\PYG{o}{)}
+\PYG{+w}{            }\PYG{o+ow}{→}\PYG{+w}{ }direction\PYG{+w}{ }\PYG{o}{((}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }*\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }pos
+\PYG{+w}{        }mapDir\PYG{+w}{ }\PYG{o}{(}posQ\PYGZca{}P\PYG{+w}{ },\PYG{+w}{ }posP\PYG{o}{)}\PYG{+w}{ }dir\PYG{+w}{ }\PYG{k+kr}{with}\PYG{+w}{ }\PYG{o}{(}snd\PYG{+w}{ }\PYG{o}{(}posQ\PYGZca{}P\PYG{+w}{ }posP\PYG{o}{))}\PYG{+w}{ }dir\PYG{+w}{ }\PYG{k+kr}{in}\PYG{+w}{ }eq
+\PYG{+w}{        }\PYG{o+ow}{...}\PYG{+w}{ }\PYG{o+ow}{|}\PYG{+w}{ }inj₂\PYG{+w}{ }y\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }inj₂\PYG{+w}{ }y
+\PYG{+w}{        }\PYG{o+ow}{...}\PYG{+w}{ }\PYG{o+ow}{|}\PYG{+w}{ }inj₁\PYG{+w}{ }x\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }inj₁\PYG{+w}{ }\PYG{o}{(}posP\PYG{+w}{ },\PYG{+w}{ }dir\PYG{+w}{ },\PYG{+w}{ }rewritten\PYG{o}{)}
+\PYG{+w}{            }\PYG{k+kr}{where}
+\PYG{+w}{                }\PYG{n+nf}{rewritten}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }[\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }⊤\PYG{o}{)}\PYG{+w}{ },\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }⊥\PYG{o}{)}\PYG{+w}{ }]
+\PYG{+w}{                            }\PYG{o}{(}snd\PYG{+w}{ }\PYG{o}{(}posQ\PYGZca{}P\PYG{+w}{ }posP\PYG{o}{)}\PYG{+w}{ }dir\PYG{o}{)}
+\PYG{+w}{                }rewritten\PYG{+w}{ }\PYG{k+kr}{rewrite}\PYG{+w}{ }eq\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }tt
+\end{Verbatim}
