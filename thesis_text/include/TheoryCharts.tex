@@ -117,7 +117,7 @@ chart≡ : {p q : Polynomial} {f g : Chart p q}
     → f ≡ g
 \end{minted}
 
-The \texttt{subst} for the map on direction equality proof can easily be simplified. This results in the more powerful variant of chart equality, which is defined by using \mintinline{agda}{ΣPathP} and function extensionality twice. This result in the following type.
+The \texttt{subst} for the map on direction equality proof can easily be simplified. This results in the more powerful variant of chart equality, corresponding to \mintinline{agda}{lens≡ₚ}, which is defined by using \mintinline{agda}{ΣPathP} and function extensionality twice. This result in the following type.
 \begin{minted}{agda}
 chart≡∀ : {p q : Polynomial} {f g : Chart p q}
     → (mapPos≡ : mapPos f ≡ mapPos g)
@@ -128,7 +128,7 @@ chart≡∀ : {p q : Polynomial} {f g : Chart p q}
 \end{minted}
 
 
-With chart equality available, some universal constructions in \textbf{Chart} will be proved next. 
+With chart equality available, some universal constructions in \textbf{Chart} are proved. 
 
 
 \section{Initial object}
