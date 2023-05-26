@@ -1483,6 +1483,19 @@ eval {p} {q} = mapPos ⇆ mapDir
 
 The complication in handling sum types is showcased by the evaluation lens in its need to rewrite by the pattern match equality.
 
+There is another way to define the evaluation lens which is to transport the identity lens on $q^p$ through the \texttt{cartesianClosed} equality. 
+This is the definition used in the book.
+\begin{minted}{agda}
+eval' : {p q : Polynomial} → Lens ((q ^ p) * p) q
+eval' {p} {q} = subst (λ x → x) path idLens'
+    where
+        path : Lens (q ^ p) (q ^ p) ≡ Lens (q ^ p * p) q
+        path = (chain' {q ^ p} {p} {q})
+
+        idLens' : Lens (q ^ p) (q ^ p)
+        idLens' = idLens {q ^ p}
+\end{minted}
+
 The cartesian closure of \textbf{Poly} has interesting implications, which we will consider when we talk about future work possibilities from this thesis.
 
 \section{Quadruple adjunction}

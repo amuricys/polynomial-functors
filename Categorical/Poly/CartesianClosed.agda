@@ -43,6 +43,7 @@ eval {p} {q} = mapPos ⇆ mapDir
             where
                 help : [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (posQ^P posP) dir)
                 help rewrite eq = tt
+
 eraseLeft : {A B : Set} → A ⊎ B → ⊤ ⊎ B
 eraseLeft f = [ (λ _ → inj₁ tt) , inj₂ ] f
 curry : {p q r : Polynomial} → Lens (p * q) r → Lens p (r ^ q)
@@ -395,6 +396,18 @@ five' = sym prop254
 -- Page 131
 chain' : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
 chain' = zero' ∙ one' ∙ two' ∙ three' ∙ four' ∙ five'
+
+-- Exercise 4.31, page 131.
+-- The canonical evaluation map is the identity lens transported through the cartesian closure.
+eval' : {p q : Polynomial} → Lens ((q ^ p) * p) q
+eval' {p} {q} = subst (λ x → x) path idLens'
+    where
+        path : Lens (q ^ p) (q ^ p) ≡ Lens (q ^ p * p) q
+        path = (chain' {q ^ p} {p} {q})
+
+        idLens' : Lens (q ^ p) (q ^ p)
+        idLens' = idLens {q ^ p}
+
 
 
 ---------------- End clean attempt
