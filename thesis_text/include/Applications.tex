@@ -332,6 +332,15 @@ emitter : Set → Polynomial
 emitter = linear
 \end{minted}
     It should not be surprising that this is just the linear polynomial; we give it a special name to bind it to the current interpretation, in the spirit of \textit{concepts with an attitude}\cite{conceptwithattitude}.
+    \item Create a \texttt{haltingEmitter} polynomial that represents an interface of a system that must halt upon outputting its left side type.
+        \begin{minted}{agda}
+haltingEmitter : (A B : Set) → Polynomial
+haltingEmitter A B = mkpoly (A ⊎ B) halting
+    where halting : {A B : Set} → (A ⊎ B) → Set
+          halting (inj₁ _) = ⊥
+          halting (inj₂ _) = ⊤
+\end{minted}
+    A system inside this interface takes no inputs in a different, more strict sense: it's not that it does not receive any outside information, like the \texttt{emitter}, but rather that any use of it must account for the case when an input cannot be produce.
     \item Taking the parallel product of two systems. Recall that the parallel product is an operation on objects (polynomials) but it also it is also possible to construct a canonical lens from two lenses $f : A \rightarrow C$ and $g : B \rightarrow D$ of type $\langle f \otimes g \rangle : A \otimes B \rightarrow C \otimes D$. In the context of systems \textit{being} morphisms, this corresponds to putting them "in parallel" and giving rise to a new system, with both state spaces, interfaces and behaviors simultaneously.
     \begin{minted}{agda}
 _&&&_ : DynamicalSystem → DynamicalSystem → DynamicalSystem
@@ -591,7 +600,189 @@ The same trick as for the Moore machine can be used to provide an initial state 
 
 \subsubsection{Turing machines}
 
-\todo{write up}
+One of the examples in the book is the tape of a Turing machine. A Turing machine consists of two components:
+\begin{itemize}
+    \item The infinitely long tape, indexed by integers, which: \begin{itemize}
+        \item Has a notion of what its current index is.
+        \item At each index, contains symbols of an alphabet set $A := \{\mathbb{0}, \mathbb{1}, \mathbb{b}\}$ 
+        \item Can receive commands in an alphabet set $C := \{\leftarrow, \rightarrow\} + A$ to change its current index by $+1$ or $-1$ and or to change which symbol is at the current index.
+    \end{itemize}
+    \item A processor, which can:
+    \begin{itemize}
+        \item Output the aforementioned commands to the tape according to some internal logic that operates on a state S.
+        \item Read the symbol at the tape's current index.
+    \end{itemize}
+\end{itemize}
+
+These two components can be represented as dynamical systems, and then wired together to give a Turing machine, like in the wiring diagram in Figure \ref{wd:turing}.
+
+\begin{figure}
+    \[
+    \begin{tikzpicture}[oriented WD, baseline=(B)]
+        \node[bb={1}{1}, inner ysep=20pt, inner xsep=30, fill=orange!15] (tape) {tape};
+        \node[bb={1}{1}, below=3 of tape, inner sep=20pt, fill=orange!15] (proc) {processor};
+        \node[bb={0}{0}, inner ysep=20pt, inner xsep=1cm, fit=(tape) (proc)] (outer) {};
+        \node[above left=0 and -0.08 of tape.south east] {$\mathbb{Z} \times \text{A}^{\mathbb{Z}}$};
+        \node[above left=0 and -0.06 of proc.south east] {S};
+        \node[font=\small, right=0.05 of tape_in1] {C};
+        \node[font=\small, right=0.05 of proc_in1] {A};
+        \begin{scope}[above, font=\footnotesize]   
+            \draw
+            let 
+                \p1 = (tape.south west-| tape_out1),
+                \p2 = (tape.south west),
+                \n1 = \bby,
+                \n2 = \bbportlen
+            in
+                (tape_out1) to[out=0, in=0]
+                (\x1+\n2, \y1-\n1-\bbportlen) --
+                (\x2-\n2, \y2-\n1-\bbportlen) to[out=180, in=180]
+                (proc_in1);
+            \draw
+            let 
+                \p1 = (proc.north west-| proc_out1),
+                \p2 = (proc.north west),
+                \n1 = \bby,
+                \n2 = \bbportlen
+            in
+                (proc_out1) to[out=0, in=0]
+                (\x1+\n2, \y1+\n1) --
+                (\x2-\n2, \y2+\n1) to[out=180, in=180]
+                (tape_in1);
+        \end{scope}
+    \end{tikzpicture}
+    \]
+    \caption{Turing machine as a wiring diagram. The processor issues commands and reads the tape's current index.}
+    \label{wd:turing}
+\end{figure}
+
+A real Turing machine must be able to output something to the outer box, which happens once it's halted, while Figure \ref{wd:turing} only shows them while running/communicating. This is an example of mode-dependence being hard to express.
+
+\remarktitle{Implementation outline}
+We can implement the Turing machine setup above by first defining the sets used:
+
+\begin{minted}[escapeinside=||]{agda}
+data Alphabet : Set where
+    |$\mathbb{0}$| |$\mathbb{1}$| 𝕓 : Alphabet
+
+data Movement : Set where 
+    𝕝 𝕣 : Movement
+\end{minted}
+
+And then defining each part of the system. Since Turing machines typically have a halting state, we represent this for the processor:
+\begin{minted}{agda}
+ProcessorState : Set
+ProcessorState = ℕ 
+
+data ProcessorOutput : Set where
+    move : Movement → ProcessorOutput
+    write : Alphabet → ProcessorOutput
+    halt : ProcessorOutput
+
+data ProcessorInput : Set where
+    instruction : Alphabet → ProcessorInput
+
+procInputFromOutput : ProcessorOutput → Set
+procInputFromOutput (move x) = ProcessorInput
+procInputFromOutput (write x) = ProcessorInput
+procInputFromOutput halt = ⊤
+
+processorInterface : Polynomial
+processorInterface = (mkpoly ProcessorOutput procInputFromOutput)
+\end{minted}
+
+The \texttt{ProcessorState} type is a dummy type, since there will be no Turing program written, so it's fine to represent the state as a simple natural number. The \texttt{procInputFromOutput} function is capturing the idea that once the processor outputs \texttt{halt}, it accepts only a mindless input with no meaning. This could also be represented as the empty type, as in NO input, but it becomes somewhat harder to synchronize with the tape's own possible inputs, as will be demonstrated next.
+
+Now the same is done for the tape
+
+\begin{minted}{agda}
+data TapeInput : Set where
+    write : Alphabet → TapeInput
+    move : Movement → TapeInput
+    halt : TapeInput
+    
+TapeAt : Set
+    TapeAt = ℤ → Alphabet
+  
+data TapeOutput : Set where
+    goOut : Alphabet → TapeOutput
+    haltOut : TapeAt → TapeOutput
+  
+tapeInputFromOutput : TapeOutput → Set
+tapeInputFromOutput (goOut x) = TapeInput
+tapeInputFromOutput (haltOut x) = ⊥
+  
+tapeInterface : Polynomial
+tapeInterface = mkpoly TapeOutput tapeInputFromOutput
+
+data TapeState : Set where
+  go : TapeAt → TapeState
+  halt : TapeAt → TapeState
+\end{minted}
+
+The tape's associated types and polynomial are more complex. There are a few things to notice.
+
+Firstly, the tape does in fact not accept any more inputs when it's outputting a halting state. The reason it can get away with this, but not the processor, is that the processor \textit{decides} when to halt the program, and so its output of \texttt{halt} needs to reach the tape - for that, at least one more input is needed.
+
+Second, the tape state contains \textit{only} the $\text{A}^{\mathbb{Z}}$ part of the diagram, and not the notion of which index it's at. The trick is to always consider the index to be zero, and treat the move directions as post composing the tape with an increment or decrement function. Since the tape behavior is always the same for any Turing machine, we provide it:
+
+\begin{minted}{agda}
+tapeBehavior : Lens (selfMonomial TapeState) tapeInterface
+tapeBehavior = 
+    readout ⇆ update
+    where readout : TapeState → TapeOutput
+          readout (go tapeAt) = goOut (tapeAt 0ℤ)
+          readout (halt tapeAt) = haltOut tapeAt 
+          update : (x : TapeState) → 
+                   (tapeInputFromOutput (readout x)) → 
+                   TapeState
+          update (go tapeAt) (write x) = go $ λ tapeIndex → 
+            if ⌊ tapeIndex ≟ 0ℤ ⌋ 
+                then x 
+                else tapeAt tapeIndex
+          update (go tapeAt) (move x) = go (moveTape x tapeAt)
+              where moveTape : Movement → TapeAt → TapeAt
+                      moveTape 𝕝 f = f ∘ (1ℤ +ℤ_ )
+                      moveTape 𝕣 f = f ∘ (1ℤ -ℤ_ )
+          update (go tapeAt) halt = halt tapeAt
+\end{minted}
+
+The idea of postcomposing with an increment/decrement operation comes from the book's associated YouTube lectures. Finally, there is the need to parallel-productize the two systems together and then wire them, finding a suitable run-time representation for the tape state. We chose a vector that represents the indices 0-255 of it.
+
+\begin{minted}[escapeinside=||]{agda}
+tape : DynamicalSystem
+tape = mkdyn TapeState tapeInterface tapeBehavior
+
+preTuring : DynamicalSystem
+preTuring = tape &&& processor
+
+open DynamicalSystem
+Word : Set
+Word = Vec ℤ 256
+toInt : Alphabet → ℤ
+toInt |$\mathbb{0}$| = 0ℤ
+toInt |$\mathbb{1}$| = 1ℤ
+toInt 𝕓 = 1ℤ +ℤ 1ℤ
+turingWiringDiagram : Lens (interface preTuring) (haltingEmitter Word ⊤)
+turingWiringDiagram = outerOutput ⇆ fillInputs
+  where outerOutput : TapeOutput × ProcessorOutput → (Word ⊎ ⊤)
+        outerOutput (goOut x , procOut) = inj₂ tt
+        outerOutput (haltOut x , _) = inj₁ $ 
+            Data.Vec.map (toInt ∘ x) (tabulate (+_ ∘ toℕ))
+        fillInputs : (fromPos : position (interface preTuring)) →
+                     direction (haltingEmitter Word ⊤) 
+                               (outerOutput fromPos) → 
+                     direction (interface preTuring)
+                               fromPos
+        fillInputs (goOut tapeInstruction , move procInstruction) tt = 
+            move procInstruction , instruction tapeInstruction
+        fillInputs (goOut tapeInstruction , write procInstruction) tt = 
+            (write procInstruction) , instruction tapeInstruction
+        fillInputs (goOut _ , halt) tt = halt , tt
+
+\end{minted}
+
+A remarkable thing to notice about this system wiring is that \texttt{fillInputs} does not even allow us to pattern match on an invalid combination of inputs to the system, like \texttt{haltOut \_ , tt}, since it's a dependent function on the result of \texttt{outerOutput}, which guarantees a \texttt{haltOut} always maps to \texttt{inj₁} and this corresponds to no input. Dependent types allows us to make illegal states truly unrepresentable.
 
 \subsection{Examples: Continuous systems}
 Now we move on to discretized continuous-time systems. They may be treated in much more rigorous mathematical detail than we do here, by representing the state space as topological spaces or manifolds \cite{css}, but as we've mentioned, to showcase their implementation in \textbf{Poly} we discretize them simply according to a differential time $dt$ supplied by the user.

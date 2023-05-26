@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{tapeBehavior}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}selfMonomial\PYG{+w}{ }TapeState\PYG{o}{)}\PYG{+w}{ }tapeInterface
+tapeBehavior\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }readout\PYG{+w}{ }⇆\PYG{+w}{ }update
+\PYG{+w}{    }\PYG{k+kr}{where}\PYG{+w}{ }readout\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }TapeState\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }TapeOutput
+\PYG{+w}{          }readout\PYG{+w}{ }\PYG{o}{(}go\PYG{+w}{ }tapeAt\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }goOut\PYG{+w}{ }\PYG{o}{(}tapeAt\PYG{+w}{ }\PYG{l+m+mi}{0}ℤ\PYG{o}{)}
+\PYG{+w}{          }readout\PYG{+w}{ }\PYG{o}{(}halt\PYG{+w}{ }tapeAt\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }haltOut\PYG{+w}{ }tapeAt
+\PYG{+w}{          }\PYG{n+nf}{update}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}x\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }TapeState\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                   }\PYG{o}{(}tapeInputFromOutput\PYG{+w}{ }\PYG{o}{(}readout\PYG{+w}{ }x\PYG{o}{))}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                   }TapeState
+\PYG{+w}{          }update\PYG{+w}{ }\PYG{o}{(}go\PYG{+w}{ }tapeAt\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}write\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }go\PYG{+w}{ }\PYGZdl{}\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }tapeIndex\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{            }if\PYG{+w}{ }⌊\PYG{+w}{ }tapeIndex\PYG{+w}{ }≟\PYG{+w}{ }\PYG{l+m+mi}{0}ℤ\PYG{+w}{ }⌋
+\PYG{+w}{                }then\PYG{+w}{ }x
+\PYG{+w}{                }else\PYG{+w}{ }tapeAt\PYG{+w}{ }tapeIndex
+\PYG{+w}{          }update\PYG{+w}{ }\PYG{o}{(}go\PYG{+w}{ }tapeAt\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}move\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }go\PYG{+w}{ }\PYG{o}{(}moveTape\PYG{+w}{ }x\PYG{+w}{ }tapeAt\PYG{o}{)}
+\PYG{+w}{              }\PYG{k+kr}{where}\PYG{+w}{ }moveTape\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Movement\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }TapeAt\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }TapeAt
+\PYG{+w}{                      }moveTape\PYG{+w}{ }𝕝\PYG{+w}{ }f\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }f\PYG{+w}{ }∘\PYG{+w}{ }\PYG{o}{(}\PYG{l+m+mi}{1}ℤ\PYG{+w}{ }+ℤ\PYGZus{}\PYG{+w}{ }\PYG{o}{)}
+\PYG{+w}{                      }moveTape\PYG{+w}{ }𝕣\PYG{+w}{ }f\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }f\PYG{+w}{ }∘\PYG{+w}{ }\PYG{o}{(}\PYG{l+m+mi}{1}ℤ\PYG{+w}{ }\PYGZhy{}ℤ\PYGZus{}\PYG{+w}{ }\PYG{o}{)}
+\PYG{+w}{          }update\PYG{+w}{ }\PYG{o}{(}go\PYG{+w}{ }tapeAt\PYG{o}{)}\PYG{+w}{ }halt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }halt\PYG{+w}{ }tapeAt
+\end{Verbatim}

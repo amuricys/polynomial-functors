@@ -1,0 +1,24 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{data}\PYG{+w}{ }TapeInput\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{n+nf}{write}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Alphabet\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }TapeInput
+\PYG{+w}{    }\PYG{n+nf}{move}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Movement\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }TapeInput
+\PYG{+w}{    }\PYG{n+nf}{halt}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }TapeInput
+
+\PYG{n+nf}{TapeAt}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}
+\PYG{+w}{    }TapeAt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }ℤ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Alphabet
+
+\PYG{k+kr}{data}\PYG{+w}{ }TapeOutput\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{n+nf}{goOut}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Alphabet\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }TapeOutput
+\PYG{+w}{    }\PYG{n+nf}{haltOut}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }TapeAt\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }TapeOutput
+
+\PYG{n+nf}{tapeInputFromOutput}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }TapeOutput\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{k+kt}{Set}
+tapeInputFromOutput\PYG{+w}{ }\PYG{o}{(}goOut\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }TapeInput
+tapeInputFromOutput\PYG{+w}{ }\PYG{o}{(}haltOut\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }⊥
+
+\PYG{n+nf}{tapeInterface}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial
+tapeInterface\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkpoly\PYG{+w}{ }TapeOutput\PYG{+w}{ }tapeInputFromOutput
+
+\PYG{k+kr}{data}\PYG{+w}{ }TapeState\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{  }\PYG{n+nf}{go}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }TapeAt\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }TapeState
+\PYG{+w}{  }\PYG{n+nf}{halt}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }TapeAt\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }TapeState
+\end{Verbatim}

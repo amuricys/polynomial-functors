@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{k+kr}{data}\PYG{+w}{ }Alphabet\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{esc}{$\mathbb{0}$}\PYG{+w}{ }\PYG{esc}{$\mathbb{1}$}\PYG{+w}{ }\PYG{n+nf}{𝕓}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Alphabet
+
+\PYG{k+kr}{data}\PYG{+w}{ }Movement\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }𝕝\PYG{+w}{ }𝕣\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Movement
+\end{Verbatim}

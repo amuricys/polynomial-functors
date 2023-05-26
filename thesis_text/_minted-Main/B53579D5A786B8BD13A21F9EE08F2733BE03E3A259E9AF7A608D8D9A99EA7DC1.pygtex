@@ -3,7 +3,7 @@
 binaryProducts\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }product\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }prod\PYG{+w}{ }\PYG{o}{\PYGZcb{}}
 
 \PYG{n+nf}{cartesian}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Cartesian.Cartesian\PYG{+w}{ }ChartCat
-cartesian\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }terminal\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }terminalOne\PYG{+w}{ };
+cartesian\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }terminal\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }terminalY\PYG{+w}{ };
 \PYG{+w}{                     }products\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }binaryProducts\PYG{+w}{ }\PYG{o}{\PYGZcb{}}
 
 \PYG{n+nf}{productMonoidal}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Monoidal\PYG{+w}{ }ChartCat

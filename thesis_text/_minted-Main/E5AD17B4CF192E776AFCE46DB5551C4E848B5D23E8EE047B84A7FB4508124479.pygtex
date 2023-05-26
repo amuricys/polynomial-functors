@@ -1,0 +1,31 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{tape}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }DynamicalSystem
+tape\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkdyn\PYG{+w}{ }TapeState\PYG{+w}{ }tapeInterface\PYG{+w}{ }tapeBehavior
+
+\PYG{n+nf}{preTuring}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }DynamicalSystem
+preTuring\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }tape\PYG{+w}{ }\PYGZam{}\PYGZam{}\PYGZam{}\PYG{+w}{ }processor
+
+\PYG{k+kr}{open}\PYG{+w}{ }DynamicalSystem
+\PYG{n+nf}{Word}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}
+Word\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Vec\PYG{+w}{ }ℤ\PYG{+w}{ }\PYG{l+m+mi}{256}
+\PYG{n+nf}{toInt}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Alphabet\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ℤ
+toInt\PYG{+w}{ }\PYG{esc}{$\mathbb{0}$}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}ℤ
+toInt\PYG{+w}{ }\PYG{esc}{$\mathbb{1}$}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}ℤ
+toInt\PYG{+w}{ }𝕓\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}ℤ\PYG{+w}{ }+ℤ\PYG{+w}{ }\PYG{l+m+mi}{1}ℤ
+\PYG{n+nf}{turingWiringDiagram}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}interface\PYG{+w}{ }preTuring\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}haltingEmitter\PYG{+w}{ }Word\PYG{+w}{ }⊤\PYG{o}{)}
+turingWiringDiagram\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }outerOutput\PYG{+w}{ }⇆\PYG{+w}{ }fillInputs
+\PYG{+w}{ }\PYG{+w}{ }\PYG{k+kr}{where}\PYG{+w}{ }outerOutput\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }TapeOutput\PYG{+w}{ }×\PYG{+w}{ }ProcessorOutput\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}Word\PYG{+w}{ }⊎\PYG{+w}{ }⊤\PYG{o}{)}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }outerOutput\PYG{+w}{ }\PYG{o}{(}goOut\PYG{+w}{ }x\PYG{+w}{ },\PYG{+w}{ }procOut\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }inj₂\PYG{+w}{ }tt
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }outerOutput\PYG{+w}{ }\PYG{o}{(}haltOut\PYG{+w}{ }x\PYG{+w}{ },\PYG{+w}{ }\PYGZus{}\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }inj₁\PYG{+w}{ }\PYGZdl{}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }Data.Vec.map\PYG{+w}{ }\PYG{o}{(}toInt\PYG{+w}{ }∘\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}tabulate\PYG{+w}{ }\PYG{o}{(}+\PYGZus{}\PYG{+w}{ }∘\PYG{+w}{ }toℕ\PYG{o}{)}\PYG{o}{)}
+\PYG{+w}{        }\PYG{n+nf}{fillInputs}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}fromPos\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{(}interface\PYG{+w}{ }preTuring\PYG{o}{)}\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }direction\PYG{+w}{ }\PYG{o}{(}haltingEmitter\PYG{+w}{ }Word\PYG{+w}{ }⊤\PYG{o}{)}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{o}{(}outerOutput\PYG{+w}{ }fromPos\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }direction\PYG{+w}{ }\PYG{o}{(}interface\PYG{+w}{ }preTuring\PYG{o}{)}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }fromPos
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }fillInputs\PYG{+w}{ }\PYG{o}{(}goOut\PYG{+w}{ }tapeInstruction\PYG{+w}{ },\PYG{+w}{ }move\PYG{+w}{ }procInstruction\PYG{o}{)}\PYG{+w}{ }tt\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }move\PYG{+w}{ }procInstruction\PYG{+w}{ },\PYG{+w}{ }instruction\PYG{+w}{ }tapeInstruction
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }fillInputs\PYG{+w}{ }\PYG{o}{(}goOut\PYG{+w}{ }tapeInstruction\PYG{+w}{ },\PYG{+w}{ }write\PYG{+w}{ }procInstruction\PYG{o}{)}\PYG{+w}{ }tt\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{o}{(}write\PYG{+w}{ }procInstruction\PYG{o}{)}\PYG{+w}{ },\PYG{+w}{ }instruction\PYG{+w}{ }tapeInstruction
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }fillInputs\PYG{+w}{ }\PYG{o}{(}goOut\PYG{+w}{ }\PYGZus{}\PYG{+w}{ },\PYG{+w}{ }halt\PYG{o}{)}\PYG{+w}{ }tt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }halt\PYG{+w}{ },\PYG{+w}{ }tt
+\end{Verbatim}

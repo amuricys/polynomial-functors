@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{ProcessorState}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}
+ProcessorState\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }ℕ
+
+\PYG{k+kr}{data}\PYG{+w}{ }ProcessorOutput\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{n+nf}{move}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Movement\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ProcessorOutput
+\PYG{+w}{    }\PYG{n+nf}{write}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Alphabet\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ProcessorOutput
+\PYG{+w}{    }\PYG{n+nf}{halt}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ProcessorOutput
+
+\PYG{k+kr}{data}\PYG{+w}{ }ProcessorInput\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{n+nf}{instruction}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Alphabet\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ProcessorInput
+
+\PYG{n+nf}{procInputFromOutput}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ProcessorOutput\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{k+kt}{Set}
+procInputFromOutput\PYG{+w}{ }\PYG{o}{(}move\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }ProcessorInput
+procInputFromOutput\PYG{+w}{ }\PYG{o}{(}write\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }ProcessorInput
+procInputFromOutput\PYG{+w}{ }halt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }⊤
+
+\PYG{n+nf}{processorInterface}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial
+processorInterface\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }ProcessorOutput\PYG{+w}{ }procInputFromOutput\PYG{o}{)}
+\end{Verbatim}

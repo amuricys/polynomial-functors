@@ -14,6 +14,7 @@ open import Data.Vec using (Vec)
 import Agda.Builtin.Nat
 open import Function using (id)
 open import Data.Product
+open import Data.Sum
 open import Data.Unit
 open import Data.Empty
 open import CategoryData.Everything
@@ -44,6 +45,12 @@ infixr 10 _&&&_
 
 emitter : Set → Polynomial
 emitter = linear
+
+haltingEmitter : (A B : Set) → Polynomial
+haltingEmitter A B = mkpoly (A ⊎ B) halting
+    where halting : {A B : Set} → (A ⊎ B) → Set
+          halting (inj₁ _) = ⊥
+          halting (inj₂ _) = ⊤
 
 install : (d : DynamicalSystem) → (a : Polynomial) → Lens (DynamicalSystem.interface d) a → DynamicalSystem
 install d a l = mkdyn (DynamicalSystem.state d) a (l ∘ₚ (DynamicalSystem.dynamics d))
