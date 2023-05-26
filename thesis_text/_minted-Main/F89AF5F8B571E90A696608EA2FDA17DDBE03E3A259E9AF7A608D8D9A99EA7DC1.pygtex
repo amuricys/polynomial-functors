@@ -1,5 +1,4 @@
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} A function A→(B*C) is the same as two functions A→B and A→C}
 \PYG{n+nf}{universalPropertyProduct}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}Index\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Type\PYG{o}{\PYGZcb{}}
 \PYG{+w}{    }\PYG{o}{\PYGZob{}}generate\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Index\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}
 \PYG{+w}{    }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }\PYG{o}{(}ΠPoly\PYG{+w}{ }\PYG{o}{(}Index\PYG{+w}{ },\PYG{+w}{ }generate\PYG{o}{))}\PYG{+w}{ }≡\PYG{+w}{ }\PYG{o}{((}i\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Index\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }\PYG{o}{(}generate\PYG{+w}{ }i\PYG{o}{))}

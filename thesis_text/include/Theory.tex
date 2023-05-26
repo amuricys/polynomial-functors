@@ -1,7 +1,7 @@
 
 % CREATED BY DAVID FRISK, 2016
 \chapter{Theory: Lenses}\label{chapter:lenses}
-This chapter covers the theory part of the formalization, consisting mainly of proofs of different categorical properties of the category \textbf{Poly}. All code is available open source at GitHub \cite{githubRepo}, which is recommended to follow while reading the thesis.
+This chapter covers the first theoretical part of the work, consisting mainly of formal proofs of different categorical properties of the category \textbf{Poly}. All code is available open source at GitHub \cite{githubRepo}, which is recommended to follow while reading the thesis.
 
 \section{The category \textbf{Poly}}
 
@@ -145,6 +145,7 @@ asEndo p = record
 \end{minted}
 
 \textit{Note}: The book acknowledges the unfortunate naming clash with the equivalent category of containers, where in that context, positions are called directions and directions are called shapes.
+\todo{turn to footer}
 
 \subsection{Arrows are natural transformations - \textit{dependent lenses}}
 
@@ -152,7 +153,7 @@ Arrows on \textbf{Poly} are so-called \textit{dependent lenses}.
 The reason is that arrows between monomials are the usual definition of lenses in Haskell, as a pair of non-dependent "getter and setter" functions. For example, a lens between $Sy^T$ and $Ay^B$ consists of the functions \mintinline{agda}{get : S → A} and \mintinline{agda}{set : S → B → T}. 
 A dependent lens has the additional property that "the types we are allowed to set depend on the value we get".
 This notion is explored further in the applications part of the thesis. 
-Since non-dependent lenses (lenses between monomials) are a very special case of dependent lenses, the arrows in \textbf{Poly} are referred to as simply \textit{lenses}, like the Agda definition.
+Since non-dependent lenses (lenses between monomials) are a very special case of dependent lenses, the arrows in \textbf{Poly} are referred to as simply \textit{lenses}.
 
 \subsection*{Perspectives on lenses}
 Another use of the corolla forest perspective is that it makes visualizing maps between polynomials intuitive.
@@ -270,7 +271,7 @@ Each position in $p$ is sent to a position in $q$, and for each of these sending
 \end{tikzpicture}
 \]
 
-If instead the map on the directions also goes forward, it would be another kind of arrow called charts. Charts are the arrows in the category \textbf{Chart}, which is the second category this thesis explores, in section \ref{chapter:charts}.
+If instead the map on the directions also goes forward, it would be another kind of arrow called charts. Charts are the arrows in the category \textbf{Chart}, which is the second category this thesis explores, in chapter \ref{chapter:charts}.
 
 In the Haskell view of polynomials, lenses can be given as the following type synonym (requires \texttt{RankNTypes} language extension):
 \begin{minted}{haskell}
@@ -366,7 +367,7 @@ That the associativity and identity laws hold for \textbf{Poly} follows directly
 With all the pieces in place, the full formulation of \textbf{Poly} as a category in \texttt{agda-categories}' is provided:
 
 \begin{minted}{agda}
--- Categorical/Instance/Poly.agda
+-- Categorical/Poly/Instance.agda
 ∘-resp-≈ : {A B C : Polynomial} 
            {f h : Lens B C} 
            {g i : Lens A B} → 
@@ -395,7 +396,7 @@ The rest of the data provided to the record correspond to the categorical laws p
 No more time will be spent going over design decisions of \texttt{agda-categories}, a more detailed account of the reasoning behind the library can be found in \cite{agda-cats}.
 
 \section{Polynomial equality}
-There are some occasions where polynomials need to be compared for equality. For example, a convenient way of characterizing monoidal structures in \textbf{Poly} is by simply expressing the laws on types, which requires polynomials to be compared; the right unit law for instance can be written as: \mint{agda}{rightUnit : (p q : Polynomial) → p ⊗ Y ≡ p}
+There are some occasions where polynomials need to be compared for equality. For example, a convenient way of characterizing monoidal structures in \textbf{Poly} is by simply expressing the laws on types, which requires polynomials to be compared; the right unit law for the parallel product (will be explained later on) $\otimes$ for instance can be written as: \mint{agda}{rightUnit : (p q : Polynomial) → p ⊗ Y ≡ p}.
 %(in the case of monoidal structures, we stick to the \texttt{agda-categories} framework and don't rely on equality of objects at all, but polynomial equality is both useful elsewhere and an illuminating exercise).
 
 Since a polynomial is a record consisting of the \mintinline{agda}{position : Set} and \newline \mintinline{agda}{direction : position → Set} a characterization of equality for this record is needed to make it easy to use and prove equalities between polynomials.
@@ -440,14 +441,19 @@ poly≡ : {a b : Polynomial}
     → (subst (λ x → x → Type) fstA≡fstB (direction a)) ≡ direction b
     → a ≡ b
 poly≡ {a} {b} fstA≡fstB sndA≡sndB i
-  = polyFromSigma (polySigmas≡ (polyToSigma a) (polyToSigma b) fstA≡fstB sndA≡sndB i)
+  = polyFromSigma (polySigmas≡ (polyToSigma a)
+                               (polyToSigma b) 
+                               fstA≡fstB 
+                               sndA≡sndB 
+                               i)
 \end{minted}
 
 In addition, an all quantified version of equality is used which simplifies some proofs:
 \begin{minted}{agda}
 poly≡∀ : {a b : Polynomial}
     → (fstA≡fstB : position a ≡ position b)
-    → ((posB : position b) → subst (λ x → x → Type) fstA≡fstB (direction a) posB ≡ direction b posB)
+    → ((posB : position b) → 
+       subst (λ x → x → Type) fstA≡fstB (direction a) posB ≡ direction b posB)
     → a ≡ b
 poly≡∀ {a} {b} fstA≡fstB sndA≡sndB = poly≡ fstA≡fstB λ i x → sndA≡sndB x i
 
@@ -485,7 +491,10 @@ Equality for this $\Sigma$-type is defined and then transferred to the lens type
 \begin{minted}{agda}
 lensSigmas≡ : {p q : Polynomial} (f g : LensAsSigma p q)
     → (fstF≡fstG : fst f ≡ fst g)
-    → subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) fstF≡fstG
+    → subst (λ mapPos → (fromPos : position p) → 
+            direction q (mapPos fromPos) → 
+            direction p fromPos) 
+            fstF≡fstG
       (snd f) ≡ snd g
     → f ≡ g
 lensSigmas≡ f g fstF≡fstG sndF≡sndG 
@@ -493,11 +502,17 @@ lensSigmas≡ f g fstF≡fstG sndF≡sndG
 
 lens≡ : {p q : Polynomial} {f g : Lens p q}
     → (mapPos≡ : mapPosition f ≡ mapPosition g) 
-    → subst (λ mapPos → (fromPos : position p) → direction q (mapPos fromPos) → direction p fromPos) mapPos≡ 
+    → subst (λ mapPos → (fromPos : position p) → 
+                        direction q (mapPos fromPos) → 
+                        direction p fromPos) mapPos≡ 
       (mapDirection f) ≡ mapDirection g
     → f ≡ g
 lens≡ {p} {q} {f} {g} mapPos≡ mapDir≡ i
-  = sigmaToLens ((lensSigmas≡ {q = q} (lensToSigma f) (lensToSigma g) mapPos≡ mapDir≡ i))
+  = sigmaToLens ((lensSigmas≡ {q = q} (lensToSigma f) 
+                                      (lensToSigma g) 
+                                      mapPos≡ 
+                                      mapDir≡ 
+                                      i))
 \end{minted}
 
 
@@ -515,15 +530,15 @@ An object is called initial if there exists an unique arrow from it to every oth
 |$\mathbb{0}$| = mkpoly ⊥ λ ()
 \end{minted}
 
-The steps to prove that $0$ is an initial object is to firstly construct a lens to every other object, and to secondly show that this lens is unique. 
+The steps to prove that $\mathbb{0}$ is the initial object is to firstly construct a lens to every other object, and to secondly show that this lens is unique. 
 
-Since $0$ has no positions (nor directions) both the map on positions and the map on directions to any other polynomial $p$ is given by the function \mintinline{agda}{λ ()} (often named absurd) from the empty type.
+Since $\mathbb{0}$ has no positions (nor directions) both the map on positions and the map on directions to any other polynomial $p$ is given by the function \mintinline{agda}{λ ()} (often named absurd) from the empty type.
 \begin{minted}[escapeinside=||]{agda}
 lensFromZero : {p : Polynomial} → Lens |$\mathbb{0}$| p
 lensFromZero = (λ ()) ⇆ (λ ())
 \end{minted}
 
-The final step is to show that this lensFromZero from $0$ to $p$ is unique. This is done by assuming that there exists another lens $f$ from $0$ to $p$ and then prove that $f$ actually is the same lens as lensFromZero. 
+The final step is to show that this lensFromZero from $\mathbb{0}$ to $p$ is unique. This is done by assuming that there exists another lens $f$ from $\mathbb{0}$ to $p$ and then prove that $f$ actually is the same lens as lensFromZero. 
 
 \begin{minted}[escapeinside=||]{agda}
 lensFromZeroUnique : {p : Polynomial} (f : Lens |$\mathbb{0}$| p) → lensFromZero ≡ f
@@ -545,23 +560,23 @@ initialZero = record { ⊥ = |$\mathbb{0}$| ; ⊥-is-initial = zeroIsInitial }
 
 
 \section{Terminal object}
-Dually to the initial object, the terminal object is an object such that there is an arrow to every other object in the category. In \textbf{Poly}, the terminal object is defined as the polynomial with a single position, but no directions for that position. It is the functor that sends all sets to the singleton set.
+Dually to the initial object, the terminal object is an object such that there is a unique arrow from every other object in the category to it. In \textbf{Poly}, the terminal object is defined as the polynomial with a single position, but no directions for that position. It is the functor that sends all sets to the singleton set.
 
 \begin{minted}[escapeinside=||]{agda}
 |$\mathbb{1}$| : Polynomial
 |$\mathbb{1}$| = mkpoly ⊤ (λ _ → ⊥)
 \end{minted}
 
-Similarly to the initial object, to show that 1 is a terminal object is to first construct a lens \textbf{from} every other object, and to show that each of these lenses is unique.
+Similarly to the initial object, to show that $\mathbb{1}$ is a terminal object is to first construct a lens \textbf{from} every other object, and to show that each of these lenses is unique.
 
-The map on positions from any other polynomial to 1 is the function always returning unit (often also named unit). For this position, the map on directions goes from $\bot$ since 1 has no directions, thus the map on directions is again the absurd function.
+The map on positions from any other polynomial to $\mathbb{1}$ is the function always returning unit (often also named unit). For this position, the map on directions goes from $\bot$ since $\mathbb{1}$ has no directions, thus the map on directions is again the absurd function.
 
 \begin{minted}[escapeinside=||]{agda}
 lensToOne : {p : Polynomial} → Lens p |$\mathbb{1}$|
 lensToOne = (λ _ → tt) ⇆ λ _ ()
 \end{minted}
 
-Finally, for uniqueness, any other lens $f$ from $p$ to $1$ is the same as lensToOne. For map on positions equality, refl is used to show that any two functions (with same domain) to $\top$ is the same. For map on directions equality, uniqueness of the absurd function is used, as in the initial object. The more advanced version of lens equality is used to do the function extensionality in the background, allowing for more concise syntax.
+Finally, for uniqueness, any other lens $f$ from $p$ to $\mathbb{1}$ is the same as lensToOne. For map on positions equality, refl is used to show that any two functions (with same domain) to $\top$ is the same. For map on directions equality, uniqueness of the absurd function is used, as in the initial object. The more advanced version of lens equality is used to do the function extensionality in the background, allowing for more concise syntax.
 
 \begin{minted}[escapeinside=||]{agda}
 lensToOneUnique : {p : Polynomial} (f : Lens p |$\mathbb{1}$|) →  lensToOne ≡ f
@@ -764,7 +779,7 @@ A visualization of the product is provided in Figure \ref{fig:productExample}.
     \label{fig:productExample}
 \end{figure}
 
-Continuing with Figure \ref{fig:productDiagram}, it is natural to ask how $\pi_1$ and $\pi_2$ are defined. They are defined to take the projections on the positions, and injections on the map on the directions back. In Figure \ref{fig:productExample}, this can be imagined by selecting only the corresponding color of a direction in one of the product back. 
+Continuing with Figure \ref{fig:productDiagram}, it is natural to ask how $\pi_1$ and $\pi_2$ are defined. They are defined to take the projections on the positions, and injections on the map on the directions back. In Figure \ref{fig:productExample}, this can be imagined by selecting only the correspondingly colored part of a corolla in the product corolla forest. 
 
 \begin{minted}{agda}
 π₁ : {p q : Polynomial} → Lens (p * q) p
@@ -781,7 +796,7 @@ Given an object $c$ as the domain of two lenses $f$ and $g$, $\langle f,g \rangl
 ⟨ f ⇆ f♯ , g ⇆ g♯ ⟩ = < f , g > ⇆ λ posP → [ f♯ posP , g♯ posP ]
 \end{minted}
 
-Finally, we need to supply the proofs associated with the product. There are two proofs needed to show that the diagram \ref{fig:productDiagram} commutes, and one for showing the uniqueness of $\langle f,g \rangle$. The proofs for commuting is shown with refl, but the uniqueness is left out for space reasons - we will do this relatively frequently in the rest of the thesis, since many of these proofs get quite long. Interested readers can of course see the code for the formalization\cite{code}. But the idea is that if we have another factorization function $h$ it must be the same as $\langle f,g \rangle$. 
+Finally, we need to supply the proofs associated with the product. There are two proofs needed to show that the diagram \ref{fig:productDiagram} commutes, and one for showing the uniqueness of $\langle f,g \rangle$. The proofs for commuting is shown with \texttt{refl}, but the uniqueness is left out for space reasons - this will be done relatively frequently in the rest of the thesis, since many of these proofs get quite long. Interested readers can of course see the code for the formalization\cite{code}. But the idea is that if we have another factorization lens $h$ it must be the same as $\langle f,g \rangle$. 
 
 \begin{minted}{agda}
 project₁ : {p q r : Polynomial} {f : Lens r p} {g : Lens r q} →
@@ -815,7 +830,7 @@ Two lenses between different pairs of polynomials can be represented as a single
 \end{minted}
 
 \subsection{Generalized product}
-Similarly to how the pi type is a generalization of the product type in \textbf{Type}, we can create the product of all polynomials indexed by any type. Think of it as a "fold", in the sense that each element of a set produces a new polynomial that is productized with the "accumulator" of this fold (all the products taken so far). This construction will be particularly important for the exponential object.
+Similarly to how the $\Pi$ type is a generalization of the product type in \textbf{Type}, we can create the product of all polynomials indexed by any type. Think of it as a "fold", in the sense that each element of a set produces a new polynomial that is productized with the "accumulator" of this fold (all the products taken so far). This construction will be particularly important for the exponential object.
 
 \begin{minted}{agda}
 ΠPoly : Σ[ indexType ∈ Set ] (indexType → Polynomial) → Polynomial
@@ -830,7 +845,7 @@ Similarly to how the pi type is a generalization of the product type in \textbf{
     dir pos = Σ[ index ∈ indexType ] direction (generatePoly index) (pos index) 
 \end{minted}
 
-Using this generalized product type with \texttt{Bool} as the index type is equivalent to having a normal product - which makes sense, since it means taking a product of two polynomials. This is proved in \texttt{Various.agda}.
+Using this generalized product type with \texttt{Bool} as the index type is equivalent to having a normal binary product - which makes sense, since it means taking a product of two polynomials. This is proved in \texttt{Various.agda}.
 
 \begin{minted}{agda}
 productIsΠPoly : {p q : Polynomial}
@@ -844,8 +859,8 @@ tupleToFunFromBool (a , b) false = b
 
 With the generalized product it is also useful to have the factorizer $\langle f,g \rangle$ generalized, now factorizing a generalized amount of lenses instead of just $f$ and $g$.
 
+% -- An arrow A→(B*C) is the same as two functions A→B and A→C
 \begin{minted}{agda}
--- A function A→(B*C) is the same as two functions A→B and A→C
 universalPropertyProduct : {p : Polynomial} {Index : Type} 
     {generate : Index → Polynomial}
     → Lens p (ΠPoly (Index , generate)) ≡ ((i : Index) → Lens p (generate i))
@@ -854,7 +869,7 @@ universalPropertyProduct = ...
 
 \subsection{Monoid}
 
-The product forms a monoid with $1$, which we show by constructing a monoidal category (\textbf{Poly}, $\times$, $1$). In fact, the product is a \textit{symmetric} monoidal structure, since $A \times B$ is isomorphic to $B \times A$. This is one place where the existing structure of \texttt{agda-categories} is extremely useful, as we only need to call some of its helpers to prove this and rely on the fact that all cartesian categories form monoidal categories with respect to the product. The code for it is:
+The product forms a monoid with $\mathbb{1}$, which we show by constructing a monoidal category (\textbf{Poly}, $\times$, $\mathbb{1}$). In fact, the product is a \textit{symmetric} monoidal structure, since $A \times B$ is isomorphic to $B \times A$. This is one place where the existing structure of \texttt{agda-categories} is extremely useful, as we only need to call some of its helpers to prove this and rely on the fact that all cartesian categories form monoidal categories with respect to the product. The code for it is:
 
 \begin{minted}{agda}
 -- Categorical/Poly/Monoidal/Product.agda
@@ -890,8 +905,8 @@ productSymmetricMonoidal
     \\
     && {A + B} \\
     A &&&& B
-    \arrow["{\text{inj}_1}"{description}, from=4-1, to=3-3]
-    \arrow["{\text{inj}_2}"{description}, from=4-5, to=3-3]
+    \arrow["{\text{i}_1}"{description}, from=4-1, to=3-3]
+    \arrow["{\text{i}_2}"{description}, from=4-5, to=3-3]
     \arrow["{!}"{description}, dashed, from=3-3, to=1-3]
     \arrow["h"{description}, from=4-1, to=1-3]
     \arrow["k"{description}, from=4-5, to=1-3]
@@ -901,7 +916,7 @@ productSymmetricMonoidal
   \end{figure}
 The coproduct is the dual construction to the product, obtained from reversing all arrows. If we do this to the product diagram shown before, the diagram in Figure \ref{fig:coproductDiagram} is obtained.
 
-\textbf{Poly} also has all coproducts. The coproduct $p+q$ of any $p$ and $q$ is defined by taking the coproduct on just the positions and the \textit{projection} on the directions. Again, consider the analogy with high-school algebra. Given two polynomials $p(y) = 4y^2$ and $q(y) = y^2 + 3y$, their sum is given by $(p + q)(y) = 5y^2 + 3y$. In this example, four of the positions with $2$ as a direction came from $p$ and one of them came from $q$, hence we pattern match on the resulting polynomials's position. As a shorthand, we use Agda's \mintinline{agda}{[_,_]} function.
+\textbf{Poly} also has all coproducts. The coproduct $p+q$ of any $p$ and $q$ is defined by taking the coproduct on just the positions and the \textit{projection} on the directions. Again, consider the analogy with high-school algebra. Given two polynomials $p(y) = 4y^2$ and $q(y) = y^2 + 3y$, their sum is given by $(p + q)(y) \cong 4y^2 + y^2 + 3y \cong 5y^2 + 3y$. In this example, four of the positions with $2$ as a direction came from $p$ and one of them came from $q$, hence in the Agda code for it below, we pattern match on the resulting polynomials's position. As a shorthand, we use Agda's \mintinline{agda}{[_,_]} function.
 
 \begin{minted}{agda}
 _+_ : Polynomial → Polynomial → Polynomial
@@ -1033,7 +1048,7 @@ The coproduct can also be generalized to work with any amount of polynomials ind
                                               positionAtIndex
 \end{minted}
 
-Using the generalized coproduct with bool as index type is the same as the normal coproduct. This is proved in Various.agda.
+Using the generalized coproduct with bool as index type, we recover the normal binary coproduct. This is proved in \texttt{Various.agda}.
 
 \begin{minted}{agda}
 coproductIsΣPoly : {p q : Polynomial} → ΣPoly (Bool , tupleToFunFromBool (p , q)) ≡ p + q
@@ -1050,7 +1065,7 @@ universalPropertyCoproduct = ...
 \end{minted}
 
 \subsection{Monoid}
-To show the coproduct is a monoid, we do almost the same as for the product. Again we rely on \texttt{agda-categories}' helpers to define the monoidal category (\textbf{Poly}, $+$, $0$) - which is also \textit{symmetric} monoidal. This time we rely on the fact that the category is \textit{co-}cartesian, but the code is almost identical:
+To show the coproduct is a monoid, we do almost the same as for the product. Again we rely on \texttt{agda-categories}' helpers to define the monoidal category (\textbf{Poly}, $+$, $\mathbb{0}$) - which is also \textit{symmetric} monoidal. This time we rely on the fact that the category is \textit{co-}cartesian, but the code is almost identical:
 \begin{minted}{agda}
 -- Categorical/Poly/Monoidal/Coproduct.agda
 
@@ -1091,7 +1106,7 @@ infixl 30 ⟨_⊎_⟩
 \end{minted}
 
 \section{Parallel product} \label{section:parallelProduct}
-The parallel product (also called Dirichlet product) is another useful binary operator on polynomials. It is defined as the pair of positions and pair of directions. This is the first operator that does not have a direct high school algebra correspondence, as it multiplies on both coefficients and exponents: given $p(y) = 2y^4 + 3y2$ and $q(y) = 2y^3$, $(p \otimes q)(y) = 4y^12 + 6y^6$.
+The parallel product (also called Dirichlet product) is another useful binary operator on polynomials. It is defined as the pair of positions and pair of directions. This is the first operator that does not have a direct high school algebra correspondence, as it multiplies on both coefficients and exponents: given $p(y) = 2y^4 + 3y^2$ and $q(y) = 2y^3$, $(p \otimes q)(y) = 4y^{12} + 6y^6$.
 
 \begin{minted}{agda}
 _⊗_ : Polynomial → Polynomial → Polynomial
@@ -1193,8 +1208,9 @@ This particular action will have deep implications in the applications chapter.
 Since polynomials are functors, and they are in fact \textit{endo}functors, they can be composed to give rise to new polynomial functors. The composition operator is given by the symbol ◂. Here we can recover high-school algebra intuition. Composing functors corresponds to plugging in entire expressions, instead of numbers, into a polynomial. For instance, given $p(y) = y^2$ and $q(y) = y^2 + 3y$, the composition product is given as $(p \triangleleft q)(y) = (y^2 + 3y)^2$.
 
 \begin{minted}{agda}
--- Proposition 5.2, page 158. Note: not same definition used. We here treat positions
--- as inhabitants of the same set, which makes a lot of proofs easier down the line.
+-- Proposition 5.2, page 158. Note: not same definition used. 
+-- We here treat positions  as inhabitants of the same set, 
+-- which makes a lot of proofs easier down the line.
 _◂_ : Polynomial → Polynomial → Polynomial
 p ◂ q = mkpoly pos dir
   where
@@ -1295,11 +1311,11 @@ infixl 27 _◂_
 \label{fig:compositionProductExample}
 \end{figure}
 
-This definition is heavily inspired by David Orion Girardo's implementation here \cite{daig}. The key insight from his implementation is that the positions in the resulting polynomial are a pair, the first element of which is the same set as the postcomposed polynomial. This sticks closer to the idea that polynomials are in fact being composed. In terms of corolla forests, the composition product stacks trees on top of one another \textit{in every possible way}, with the left polynomial in the bottom. The resulting polynomial's directions at any given position is "all directions that reach a height of two". A visualization is given in Figure \ref{fig:compositionProductExample}.
+This definition is heavily inspired by David Orion Girardo's implementation here \cite{daig} \todo{check}. The key insight from his implementation is that the positions in the resulting polynomial are a pair, the first element of which is the same set as the postcomposed polynomial. This sticks closer to the idea that polynomials are in fact being composed. In terms of corolla forests, the composition product stacks trees on top of one another \textit{in every possible way}, with the left polynomial in the bottom. The resulting polynomial's directions at any given position is "all directions that reach a height of two". A visualization is given in Figure \ref{fig:compositionProductExample}.
 
 \subsection{Monoid}
 % Show it forms a monoid with Y.
-The composition product is an important monoidal structure in \textbf{Poly}. It is not symmetric, like the previous three structures, but it has massive consequences from both a theoretical as well as application point of view.
+The composition product is an important monoidal structure in \textbf{Poly}. It is not symmetric, like the previous three structures, but it has massive consequences from both a theoretical as well as application point of view. \todo{rewrite + explain why not here}
 
 \subsection{Composition lens}
 
@@ -1321,7 +1337,7 @@ Again, it is possible to define a lens that goes to either side of the monoidal 
 \end{minted}
 
 \subsection{Composite power}
-% Show composition power.
+\todo{show}
 
 \section{Cartesian closure}
 
@@ -1355,7 +1371,7 @@ The existence of the exponential object implies the existence of the canonical e
 \todo{write eval arrow}
 
 The cartesian closure of \textbf{Poly} has interesting implications, which we will consider when we talk about future work possibilities from this thesis.
-
+\todo{write in future work}
 \section{Quadruple adjunction}
 
 \textbf{Poly} has a deep relationship with \textbf{Set}. One place where this is reflected is with the connection between the following functors:

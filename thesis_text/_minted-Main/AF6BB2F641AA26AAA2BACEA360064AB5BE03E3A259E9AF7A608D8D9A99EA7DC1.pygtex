@@ -1,4 +1,0 @@
-\begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n+nf}{unique}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Chart\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }chartFromZero\PYG{+w}{ }≡\PYG{+w}{ }f
-unique\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }chart≡\PYG{+w}{ }\PYG{o}{(}funExt\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{())}\PYG{+w}{ }\PYG{o}{(}funExt\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{())}
-\end{Verbatim}

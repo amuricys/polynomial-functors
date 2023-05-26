@@ -6,7 +6,7 @@ Our implemented applications are all instances of the first: we pay no attention
 Several of our examples are listed in the book and its associated YouTube lecture series, but a few are our own contribution.
 
 It is worth mentioning that many of the ideas in this chapter come from the Categorical Systems Theory book \cite{css}, even though that book does not even mention polynomial functors.
-However, it is explain how dynamical systems are modeled by lenses in extreme details.
+However, it explains how dynamical systems are modeled by lenses in extreme detail.
 It also pays a lot of attention to the distinction between different theories of dynamical systems: stochastic, discrete, continuous etc.
 This matters to us because several of our examples are continuous systems that are discretized, so strictly speaking we are working within a theory of discrete dynamical systems.
 David Jaz Myers, the author, is also responsible for the chart-related part of the applications, through his guest lectures on the YouTube series as well as his book.
@@ -118,10 +118,10 @@ And the second looks like this:
     \end{tikzpicture}
 \end{equation}
 
-A good way of integrating this mode dependence inherent to polynomials into regular wiring diagrams is an open problem. Because of this, the wiring diagrams we will show are of non-mode dependent systems, and as such they represent only a small portion of the dynamical systems that \textbf{Poly} has the power to model.
+A good way of integrating this mode dependence inherent to polynomials into regular wiring diagrams is an open problem. Because of this, most wiring diagrams we will show are of non-mode dependent systems, and as such they represent only a small portion of the dynamical systems that \textbf{Poly} has the power to model.
 
 \subsection{The parallel product $\otimes$}
-We come to a great motivating factor for the naming of this structure: it corresponds to putting systems in parallel. Given two polynomials $p$ and $q$ with their own interfaces, taking their parallel product $p \otimes q$ corresponds to creating a polynomial that has \textit{both interfaces simultaneously}. Intuitively, one can think that any system that has this interface can only run one timestep upon being given both inputs, and it will output both outputs. The structure, in some sense, does not "touch" the behavior of the systems at all. This is represented in the below picture, by considering $p(y) = Dy^(A \times B)$ and $q(y) = (E \times F)y^C$: 
+We come to a great motivating factor for the naming of this structure: it corresponds to putting systems in parallel. Given two polynomials $p$ and $q$ with their own interfaces, taking their parallel product $p \otimes q$ corresponds to creating a polynomial that has \textit{both interfaces simultaneously}. Intuitively, one can think that any system that has this interface can only run one timestep upon being given both inputs, and it will output both outputs. The structure, in some sense, does not "touch" the behavior of the systems at all. This is represented in the below picture, by considering $p(y) = Dy^{(A \times B)}$ and $q(y) = (E \times F)y^C$: 
 
 \begin{equation}\label{eqn.control_diag}
     \begin{tikzpicture}[oriented WD, baseline=(B)]
@@ -154,7 +154,7 @@ A value of the type of lenses $f : Sy^S \rightarrow p$ can therefore be seen as 
 
 \begin{equation}\label{eqn.control_diag}
     \begin{tikzpicture}[oriented WD, baseline=(B)]
-        \node[bb={1}{1}, inner sep=25pt, fill=orange!15] (sys1) {\text{$p$}};
+        \node[bb={1}{1}, inner sep=25pt, fill=orange!15] (sys1) {\text{$r$}};
         \node[circle, fill=white, left=1] at (sys1_in1) (invis1) {};
         \node[circle, fill=white, right=1] at (sys1_out1) (invis2) {};
         \begin{scope}[above, font=\footnotesize]
@@ -197,7 +197,7 @@ The other role that lenses play in systems of this kind is that they correspond 
     \end{tikzpicture}
 \end{equation}
 
-This corresponds to a lens from an abstract polynomial of the dashed box to the abstract polynomial of the outermost box. The inner dashed box is the polynomial obtained by taking the parallel product of $p$ and $q$. We say "abstract" because we need to know nothing about the dynamics or concrete behavior of the systems here, all we need is the types of the interfaces to match, which means this particular lens is capable of wiring together \textit{any} two systems that have the interfaces in question. There are of course other ways to wire these boxes together. Here is two examples:
+This corresponds to a lens from an abstract polynomial of the dashed box to the abstract polynomial of the outermost box. The inner dashed box is the polynomial obtained by taking the parallel product of $p$ and $q$. We say "abstract" because we need to know nothing about the dynamics or concrete behavior of the systems here, all we need is the types of the interfaces to match, which means this particular lens is capable of wiring together \textit{any} two systems that have the interfaces in question. There are of course other ways to wire these boxes together. Here are two examples:
 \[
     \begin{tikzpicture}
     \node (wiring1) {
@@ -364,7 +364,7 @@ auto = encloseFunction λ _ → tt
 constI : {m : Set} → (i : m) → enclose (selfMonomial m)
 constI i = encloseFunction λ _ → i
 \end{minted}
-    One can easily imagining extending \texttt{constI} to taking a function that operates on the number of timesteps so as to vary the input over time as well. This is something that is done in dynamical systems theory in a very informal capacity, under the intuition that the parameters of the system vary "slowly" with respect to the timescale of the state updates. With this framework, we gain the ability of making it precise for free. Of course, if we wanted to make the parameter variation respond to the system's dynamics, we'd need to make it a system in itself; this is a design consideration that we hope future developers take into account.
+    One can easily imagine extending \texttt{constI} to taking a function that operates on the number of timesteps so as to vary the input over time as well. This is something that is done in dynamical systems theory in a very informal capacity, under the intuition that the parameters of the system vary "slowly" with respect to the timescale of the state updates. With this framework, we gain the ability of making it precise for free. Of course, if we wanted to make the parameter variation respond to the system's dynamics, we'd need to make it a system in itself; this is a design consideration that we hope future developers take into account. We take a mix of these two approaches for example \ref{section:hh}.
     \item Finally, there's a function that does what one accustomed to dynamical systems simulations would expect: given an abstract representation of a dynamical system (a value of type \texttt{DynamicalSystem} in our case), and an initial condition, it produces an infinite stream of outputs.
 \begin{minted}{agda}
 {-# TERMINATING #-}
@@ -382,7 +382,7 @@ run d e initialState =  [ output ] ++ (run d e next)
                                  initialState
                                  (Lens.mapDirection e output tt)
 \end{minted}
-    We need the Agda pragma \texttt{TERMINATING} here because the termination checker can't be sure that this code terminates, since \texttt{run} calls itself on input that is not guaranteed to be smaller.. We can then \texttt{take} on the resulting stream to produce regular Agda lists or vectors, and use them to render plots or print to the screen, and as long as we always run this in the context of a finite \texttt{take} call, the program should always terminate.
+    We need the Agda pragma \texttt{TERMINATING} here because the termination checker can't be sure that this code terminates, since \texttt{run} calls itself on input that is not guaranteed to be smaller. We can then \texttt{take} on the resulting stream to produce regular Agda lists or vectors, and use them to render plots or print to the screen, and as long as we always run this in the context of a finite \texttt{take} call, the program should always terminate.
 \end{itemize}
 There are more helpers and utilities peppered throughout the code, but this is the basic glue needed to work with \textbf{Poly} in the context of dynamical systems, as the examples will demonstrate.
 
@@ -482,7 +482,7 @@ Two final remarks about the Fibonacci sequence generator: the first is that it i
 \subsubsection{Flip Flop}\label{section:flipflop}
 Flip Flop is a simple example with two dynamical systems showing how one system can simulate the behavior of another system. This simulation is exactly a special kind of commuting square between charts and lenses. 
 
-Both systems needs to have the same interface, which in this case is a linear polynomial \{on, off\}$y$, that can output either on or off, and always takes unit as input. However, both the state and the behavior of the systems can differ. One of the systems is a flip flop system, with states on or off, with behaviour that outputs this state, and flips the state in the update. The other system has natural numbers as states, outputs the two different states depending on the natural number modulus 2, and updates the state by always taking the successor of the state. Running these systems has the exact same output. This can be expressed concisely by a chart transforming the state space of the natural numbers to either on or off. Then by putting this chart in a commuting square such as shown in diagram \ref{fig:flipFlopSquare}.
+Both systems needs to have the same interface, which in this case is a linear polynomial \texttt{\{on, off\}}$y$, that can output either on or off, and always takes unit as input. However, both the state and the behavior of the systems can differ. One of the systems is a flip flop system, with states on or off, with behaviour that outputs this state, and flips the state in the update. The other system has natural numbers as states, outputs the two different states depending on the natural number modulus 2, and updates the state by always taking the successor of the state. Running these systems has the exact same output. This can be expressed concisely by a chart transforming the state space of the natural numbers to either on or off. Then by putting this chart in a commuting square such as shown in diagram \ref{fig:flipFlopSquare}.
 
 \begin{minted}{agda}
 data Switch : Set where
@@ -493,7 +493,8 @@ toggle : Switch → Switch
 toggle on = off
 toggle off = on
 
--- | Commonly used where input to enclosed dynamical system where updateState only depends on current state.
+-- | Commonly used where input to enclosed dynamical system where
+--   updateState only depends on current state.
 ignoreUnitInput : {A B : Set} → (A → B) → A → ⊤ → B
 ignoreUnitInput f a tt = f a
 
@@ -522,7 +523,10 @@ morphSystem : Nat → Switch
 morphSystem = modNat
 
 -- | The square expressing the simulation.
-square : LensChartCommute (dynamics counter) (dynamics flipFlop) (morphSystem ⇉ λ _ → morphSystem) idChart
+square : LensChartCommute (dynamics counter)
+                          (dynamics flipFlop) 
+                          (morphSystem ⇉ λ _ → morphSystem)
+                          idChart
 square = law₁ , law₂
 \end{minted}
 
@@ -545,7 +549,7 @@ square = law₁ , law₂
 	\arrow["{\%2}"{description}, shift right=2, from=1-1, to=1-4]
 \end{tikzcd}\]
 
-    \caption{A special kind of commuting square. The identity chart turns this into a commuting triangle. The chart at the top is defined as the function reducing the states between the systems. The laws fulfilled if this diagram commutes encodes what it means for a system to simulate another.}
+    \caption{A special kind of commuting square. The identity chart turns this into a commuting triangle. The chart at the top is defined as the function reducing the states between the systems. The laws are fulfilled if this diagram commuting encodes what it means for a system to simulate another.}
     \label{fig:flipFlopSquare}
 
 \end{figure}
@@ -553,7 +557,7 @@ square = law₁ , law₂
 This showcased how a simple chart in a commuting square can compare behaviour of two different dynamical systems. By generalizing, and using more advanced charts and commuting squares, more advanced comparisons can be made.
 
 \subsubsection{Simulating state machines}\label{section:simulatestatemachine}
-A more advanced example, in comparison to flip flop, is how one state machine can simulate another. This is often expressed as that one state machine is more minimal than another, that is, it has less states but achieves the same behaviour. This is exactly what the special commuting square can express. Because the same idea is followed as for the flip flop example, this example will not be discussed further, but can be found in \textbf{Dynamical/Chart/SimulateStateMachine.agda}.
+A more advanced example, in comparison to flip flop, is how one state machine can simulate another. This is often expressed as that one state machine is more minimal than another, that is, it has less states but achieves the same behaviour. This is exactly what the special commuting square can express. Because the same idea is followed as for the flip flop example, this example will not be discussed further, but can be found in \texttt{Dynamical/Chart/SimulateStateMachine.agda}.
 
 \subsubsection{Moore machine}
 A Moore machine is the same as a lens to a monomial. A Moore machine can be defined as:
@@ -693,7 +697,7 @@ foxes = mkdyn ℝ (mkpoly ℝ λ _ → ℝ × ℝ) (readout ⇆ update)
             state + dt * (state * (birthFoxes - deathFoxes))
 \end{minted}
 
-Note that each of these systems have only two parameters, whereas by the equations \ref{eq:rabbits} and \ref{eq:foxes}, they ought to have three: \ref{eq:rabbits} should get $\alpha$ and $\beta$ from "outside" the system, whereas \ref{eq:foxes} should get $\delta$ and $\gamma$. It is a somewhat arbitrary choice that we make to make the $\beta$ and $\gamma$ parameters part of the larger system, that is the one given rise to by the composition of these systems tensored with the wiring diagram, and not constants within the system themselves, for instance.
+Note that each of these systems have only two parameters, whereas by the equations \ref{eq:rabbits} and \ref{eq:foxes}, they ought to have three: \ref{eq:rabbits} should get $\alpha$ and $\beta$ from "outside" the system, whereas \ref{eq:foxes} should get $\delta$ and $\gamma$. It is a somewhat arbitrary choice that we make to make the $\beta$ and $\gamma$ parameters part of the larger system, that is the one given rise to by the composition of these systems parallel-productized with the wiring diagram, and not constants within the system themselves, for instance.
 
 The final system is then a composition with a certain wiring diagram lens:
 
@@ -763,7 +767,7 @@ The system has three numeric parameters, $\sigma$, $\rho$ and $\beta$ and for sp
     \label{fig:lorenzbutterfly}
 \end{figure}
 
-This is known as a "strange attractor": the system's trajectories eternally oscillate between two attracting states, but it never converges to a single orbit, jumping back and forth. The system is a greatly simplified model of the atmosphere, but provides a good "essence" of chaotic dynamics that are hard to predict, even in just three variables. 
+This is known as a "strange attractor": the system's trajectories eternally oscillate between two attracting states, but they never converge to a single orbit, jumping back and forth. The system is a greatly simplified model of the atmosphere, but provides a good "essence" of chaotic dynamics that are hard to predict, even in just three variables. 
 
 Implementing the Lorenz system in terms of \textbf{Poly} follows the same pattern as the Lotka-Volterra model, by capturing each equation in its own box with its own internal state, with the difference that the external parameters are now fixed, so the inputs are now only the external variables upon which each box should depend. In Agda, the systems are given as:
 \begin{minted}{agda}
@@ -792,7 +796,7 @@ z dt = mkdyn Z (mkpoly Z λ _ → X × Y) (readout ⇆ update)
         update (znt state) (xnt x , ynt y) = 
             znt (state + dt * (x * y - β * state))
 \end{minted}
-And they're again tensored, producing a system with 3 inputs and 3 outputs, then wired in the right way (x is given as an input to y and z, y to x and z, and z to y, as per the system equations)
+And they're again parallel-productized, producing a system with 3 inputs and 3 outputs, then wired in the right way (x is given as an input to y and z, y to x and z, and z to y, as per the system equations)
 
 \begin{minted}{agda}
 preLorenz : ℝ → DynamicalSystem
@@ -825,6 +829,7 @@ An example run of this system, obtained by \texttt{take} of 1000 timesteps at $d
 
 
 \subsubsection{Hodgkin-Huxley model}
+\label{section:hh}
 The two examples given in this section are closed systems, meaning they take no input - what this really means is that they take the singleton set as input, so each timestep the element \texttt{tt} is given as a value and the system produces the next output. Now we come to a slightly bigger and more realistic system with 4 equations: the Hodgkin-Huxley \cite{hodgkin1952quantitative} model. It is a system that models action potentials in the giant squid neuron, by thinking of the neuron membranes as circuits, so that the relevant quantities are all electrical (charge, current, capacitance etc). This model captures the flow of sodium and potassium ions through ion channels in the membrane, like in Figure \ref{fig:hodgkinhuxleyschematic}, obtained from \cite{gerstner2014neuronal}.
 
 \begin{figure}
@@ -834,7 +839,7 @@ The two examples given in this section are closed systems, meaning they take no 
     \label{fig:hodgkinhuxleyschematic}
 \end{figure}
 
-The interesting thing about the Hodgkin-Huxley model is that it actually lends itself to being implemented as an open system. There are several equivalent ways of formulating HH as a 4-dimensional dynamical system, but the equations we use are according to this online tutorial \cite{https://mark-kramer.github.io/Case-Studies-Python/HH.html} and given by:
+The interesting thing about the Hodgkin-Huxley model is that it actually lends itself to being implemented as an open system. There are several equivalent ways of formulating HH as a 4-dimensional dynamical system, but the equations we use are according to \href{https://mark-kramer.github.io/Case-Studies-Python/HH.html}{this online tutorial} by Mark Kramer and given by:
 
 \begin{equation}
 \dot{V} =  G_{na}m^3h(E_{na} - V_s) + G_kn^4(E_k - V_s) + G_L * (E_L - V_s) + I_e
@@ -900,7 +905,7 @@ Notice the constant driven input current of 10nA. An example run of the system u
 
 Since this is a system with input, however, we can exploit this in order to do parameter variation: if we want to see how the system's dynamics vary with a change in parameters that is comparatively slow, we can create a new system whose responsibility is to output the changing current.
 
-Adding this is simple: we take our finished Hodgkin-Huxley system and tensor it with a new system whose only responsibility is to grow its own output at a rate slower than HH's. This "current grower" system is so simple we inline it, using the helper \texttt{functionToDynamicalSystem}. It could have been implemented in other ways - and in fact, this could be its own investigation, like how changing parameters quickly/slowly/exponentially or whatever, could landing systems in different dynamics landscapes. We choose a simple ticking, linear increase at each timestep here.
+Adding this is simple: we take our finished Hodgkin-Huxley system and parallel-product it with a new system whose only responsibility is to grow its own output at a rate slower than HH's. This "current grower" system is so simple we inline it, using the helper \texttt{functionToDynamicalSystem}. It could have been implemented in other ways - and in fact, this could be its own investigation, like how changing parameters quickly/slowly/exponentially or whatever, could landing systems in different dynamics landscapes. We choose a simple ticking, linear increase at each timestep here.
 
 \begin{minted}{agda}
 preHHWithInput : ℝ → DynamicalSystem

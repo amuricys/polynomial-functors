@@ -36,6 +36,9 @@ counterRan\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }take\PYG{+w}{ }\PYG{l+m+mi}{10}\PYG
 morphSystem\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }modNat
 
 \PYG{c+c1}{\PYGZhy{}\PYGZhy{} | The square expressing the simulation.}
-\PYG{n+nf}{square}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }LensChartCommute\PYG{+w}{ }\PYG{o}{(}dynamics\PYG{+w}{ }counter\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}dynamics\PYG{+w}{ }flipFlop\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}morphSystem\PYG{+w}{ }⇉\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }morphSystem\PYG{o}{)}\PYG{+w}{ }idChart
+\PYG{n+nf}{square}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }LensChartCommute\PYG{+w}{ }\PYG{o}{(}dynamics\PYG{+w}{ }counter\PYG{o}{)}
+\PYG{+w}{                          }\PYG{o}{(}dynamics\PYG{+w}{ }flipFlop\PYG{o}{)}
+\PYG{+w}{                          }\PYG{o}{(}morphSystem\PYG{+w}{ }⇉\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }morphSystem\PYG{o}{)}
+\PYG{+w}{                          }idChart
 square\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }law₁\PYG{+w}{ },\PYG{+w}{ }law₂
 \end{Verbatim}

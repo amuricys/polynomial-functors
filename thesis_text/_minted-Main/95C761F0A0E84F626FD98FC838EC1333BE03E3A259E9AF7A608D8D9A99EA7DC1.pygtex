@@ -1,5 +1,5 @@
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Categorical/Instance/Poly.agda}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Categorical/Poly/Instance.agda}
 \PYG{n+nf}{∘\PYGZhy{}resp\PYGZhy{}≈}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }B\PYG{+w}{ }C\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}
 \PYG{+w}{           }\PYG{o}{\PYGZob{}}f\PYG{+w}{ }h\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }B\PYG{+w}{ }C\PYG{o}{\PYGZcb{}}
 \PYG{+w}{           }\PYG{o}{\PYGZob{}}g\PYG{+w}{ }i\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }A\PYG{+w}{ }B\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}

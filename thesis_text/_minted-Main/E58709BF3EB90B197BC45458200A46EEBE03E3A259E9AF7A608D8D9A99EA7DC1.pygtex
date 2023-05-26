@@ -1,6 +1,7 @@
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Proposition 5.2, page 158. Note: not same definition used. We here treat positions}
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} as inhabitants of the same set, which makes a lot of proofs easier down the line.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Proposition 5.2, page 158. Note: not same definition used.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} We here treat positions  as inhabitants of the same set,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} which makes a lot of proofs easier down the line.}
 \PYG{n+nf}{\PYGZus{}◂\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial
 p\PYG{+w}{ }◂\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkpoly\PYG{+w}{ }pos\PYG{+w}{ }dir
 \PYG{+w}{  }\PYG{k+kr}{where}

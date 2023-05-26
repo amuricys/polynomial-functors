@@ -1,5 +1,5 @@
 \begin{Verbatim}[commandchars=\\\{\}]
-\PYG{n+nf}{horizontialComposition}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p₁\PYG{+w}{ }p₂\PYG{+w}{ }p₃\PYG{+w}{ }p₄\PYG{+w}{ }p₅\PYG{+w}{ }p₆\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}
+\PYG{n+nf}{horizontalComposition}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p₁\PYG{+w}{ }p₂\PYG{+w}{ }p₃\PYG{+w}{ }p₄\PYG{+w}{ }p₅\PYG{+w}{ }p₆\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}
 \PYG{+w}{    }\PYG{o}{(}f\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Chart\PYG{+w}{ }p₁\PYG{+w}{ }p₂\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}g\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Chart\PYG{+w}{ }p₃\PYG{+w}{ }p₄\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}h\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Chart\PYG{+w}{ }p₂\PYG{+w}{ }p₅\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}r\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Chart\PYG{+w}{ }p₄\PYG{+w}{ }p₆\PYG{o}{)}
 \PYG{+w}{    }\PYG{o}{(}w\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }p₁\PYG{+w}{ }p₃\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}v\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }p₂\PYG{+w}{ }p₄\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}m\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }p₅\PYG{+w}{ }p₆\PYG{o}{)}
 \PYG{+w}{    }\PYG{o+ow}{→}\PYG{+w}{ }LensChartCommute\PYG{+w}{ }w\PYG{+w}{ }v\PYG{+w}{ }f\PYG{+w}{ }g\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }LensChartCommute\PYG{+w}{ }v\PYG{+w}{ }m\PYG{+w}{ }h\PYG{+w}{ }r

@@ -1,6 +1,6 @@
 \chapter{Theory: Charts}\label{chapter:charts}
 The previous chapter covered the category \textbf{Poly}, of polynomials and lenses. This chapter covers a closely related category, the category of polynomials and charts, \textbf{Chart} 
-\footnote{The category \textbf{Chart} with charts as morphisms could also be called the "arrow-category" because it is the arrow-category of set.}.
+\footnote{The category \textbf{Chart} with charts as morphisms could also be called the "arrow-category" because it is the arrow-category of set. \todo{understand better}}.
 First, the category \textbf{Chart} is defined, then some universal constructions are proved, and finally the relation between \textbf{Poly} and \textbf{Chart} as commuting squares is shown.
 
 \section{The category \textbf{Chart}}
@@ -54,7 +54,7 @@ record Chart (p q : Polynomial) : Set where
         mapDir : (i : position p) → direction p i → direction q (mapPos i)
 \end{minted}
 
-The constructor \mintinline{agda}{⇉} is used to indicate that both the maps go forward. Notably, despite being maps between functors, charts are \textit{not} natural transformations. Trying to formulate it as an agda-categories natural transformation like below, with the \texttt{asEndo} function shown earlier, leads to an unfillable hole:
+The constructor \mintinline{agda}{⇉} is used to indicate that both the maps go forward. Notably, despite being maps between functors, charts are \textit{not} natural transformations. Trying to formulate it as an \texttt{agda-categories} natural transformation like below, with the \texttt{asEndo} function shown earlier, leads to an unfillable hole:
 
 \begin{minted}{agda}
 asNatTransChart : {p q : Polynomial} → 
@@ -107,7 +107,7 @@ chartAsΣ≡Chart {p} {q} = isoToPath
 
 Equality of charts is now defined for the Σ-type and then transferred to the chart defined as a record. There are two variants of chart equality, the direct, and slightly weaker variant, \mintinline{agda}{chart≡}. As well as the more powerful variant, \mintinline{agda}{chart≡∀}.
 
-The weak variant of chart equality, is directly defined by using, \mintinline{agda}{ΣPathTransport→PathΣ}. This results in the following type.
+The weak variant of chart equality is directly defined by using \mintinline{agda}{ΣPathTransport→PathΣ}. This results in the following type.
 
 \begin{minted}{agda}
 chart≡ : {p q : Polynomial} {f g : Chart p q}
@@ -117,7 +117,7 @@ chart≡ : {p q : Polynomial} {f g : Chart p q}
     → f ≡ g
 \end{minted}
 
-The subst for the map on direction equality proof can easily be simplified. This results in the more powerful variant of chart equality, which is defined by using \mintinline{agda}{ΣPathP} and function extensionality twice. This result in the following type.
+The \texttt{subst} for the map on direction equality proof can easily be simplified. This results in the more powerful variant of chart equality, which is defined by using \mintinline{agda}{ΣPathP} and function extensionality twice. This result in the following type.
 \begin{minted}{agda}
 chart≡∀ : {p q : Polynomial} {f g : Chart p q}
     → (mapPos≡ : mapPos f ≡ mapPos g)
@@ -132,17 +132,17 @@ With chart equality available, some universal constructions in \textbf{Chart} wi
 
 
 \section{Initial object}
-The initial object of \textbf{Chart} is the same object 0 as for \textbf{Poly}. Of course, the chart from $0$ to any other polynomial is not the same as the lens from $0$, since the types are different. But the implementation is the same, since the position is $\bot$, the absurd function is used.
+The initial object of \textbf{Chart} is the same object $\mathbb{0}$ as for \textbf{Poly}. Of course, the chart from $\mathbb{0}$ to any other polynomial is not the same as the lens from $\mathbb{0}$, since the types are different. But the implementation is the same, since the position is $\bot$, the absurd function is used.
 
-\begin{minted}{agda}
-chartFromZero : {p : Polynomial} → Chart 0 p
+\begin{minted}[escapeinside=||]{agda}
+chartFromZero : {p : Polynomial} → Chart |$\mathbb{0}$| p
 chartFromZero = (λ ()) ⇉ (λ ())
 \end{minted}
 
 The uniqueness proof is identical to the uniqueness proof for the initial object in \textbf{Poly}.
 
-\begin{minted}{agda}
-unique : {p : Polynomial} (f : Chart 0 p) → chartFromZero ≡ f
+\begin{minted}[escapeinside=||]{agda}
+unique : {p : Polynomial} (f : Chart |$\mathbb{0}$| p) → chartFromZero ≡ f
 unique _ = chart≡ (funExt λ ()) (funExt λ ())
 \end{minted}
 
@@ -181,7 +181,7 @@ The projections from \mintinline{agda}{p ⊗ q} is defined by projecting both th
 π₂ : {p q : Polynomial} → Chart (p ⊗ q) q
 π₂ = snd ⇉ λ i → snd
 \end{minted}
-
+\todo{monoid?}
 The factorization chart is given by running the two functions in parallel on both the map on position and map on directions.
 
 \begin{minted}{agda}
@@ -204,7 +204,7 @@ i₂ = inj₂ ⇉ λ _ → id
 [_,_]c : {p q r : Polynomial} → Chart p r → Chart q r → Chart (p + q) r
 [ f ⇉ f♭ , g ⇉ g♭ ]c = [ f , g ] ⇉ [ f♭ , g♭ ]
 \end{minted}
-
+\todo{monoid?}
 The proofs are also similar, and can be found in \textbf{Categorical/Chart/Coproduct.agda}.
 
 \section{Commuting square between lenses and charts}
@@ -221,11 +221,11 @@ One interesting thing about charts is how they behave together with lenses. This
 	{p_3} && {p_4}
 	\arrow["g"', shift right=2, from=3-1, to=3-3]
 	\arrow["f"', shift right=2, from=1-1, to=1-3]
-	\arrow["{w_\sharp}"', shift right=2, from=3-1, to=1-1]
+	\arrow["{w\sharp}"', shift right=2, from=3-1, to=1-1]
 	\arrow["v"', shift right=2, from=1-3, to=3-3]
-	\arrow["{v_\sharp}"', shift right=2, from=3-3, to=1-3]
-	\arrow["{f_b}", shift left=2, from=1-1, to=1-3]
-	\arrow["{g_b}", shift left=2, from=3-1, to=3-3]
+	\arrow["{v\sharp}"', shift right=2, from=3-3, to=1-3]
+	\arrow["{f\flat}", shift left=2, from=1-1, to=1-3]
+	\arrow["{g\flat}", shift left=2, from=3-1, to=3-3]
 	\arrow["w"', shift right=2, from=1-1, to=3-1]
 \end{tikzcd}\]
     
@@ -236,9 +236,7 @@ One interesting thing about charts is how they behave together with lenses. This
 
 For a square to commute there are two requirements. The first requirement is that the map on positions commute. Starting at a position in $p_1$, following $w$ and then $g$, ending up at a position in $p_4$, should be the same as following $f$ and then $v$. 
 
-The second requirement is that the map on directions commute. That is, $w_\sharp$ followed by $f_b$ should be the same as $g_b$ followed by $v_\sharp$. Since these functions depend on the different map on positions there are some plumbing to make this type correct, which can be seen in the Agda definition down below. Furthermore, the type that the map on directions commute depends on that the map on positions the commute. This explains the use of a Σ-type as well as the use of subst to make the types match.
-
-In Agda, the conditions of a square commuting is defined as:
+The second requirement is that the map on directions commute. That is, $w_\sharp$ followed by $f_b$ should be the same as $g_b$ followed by $v_\sharp$. Since these functions depend on the different map on positions there are some plumbing to make this type correct, which can be seen in the Agda definition down below. Furthermore, the type expressing the map on directions commuting depends on the map on positions commuting. This explains the use of a Σ-type as well as the use of \texttt{subst} to make the types match. Here's the code for this:
 \begin{minted}{agda}
 LensChartCommute : {p₁ p₂ p₃ p₄ : Polynomial} (w : Lens p₁ p₃) (v : Lens p₂ p₄)
     (f : Chart p₁ p₂) (g : Chart p₃ p₄) → Type
@@ -254,7 +252,7 @@ LensChartCommute {p₁} {p₂} {p₃} {p₄} (w ⇆ w♯) (v ⇆ v♯) (f ⇉ f�
                 v♯ (f i) (subst (direction p₄) (sym (p≡ i)) (g♭ (w i) x))
 \end{minted}
 
-The use of commuting squares will be of importance in reducing dynamical systems to simpler ones, which is covered the applications section. 
+The use of commuting squares will be of importance in reducing dynamical systems to simpler ones, which is covered the applications chapter. 
 
 \section{Composing squares between lenses and charts}
 Commuting squares are also composable in two different ways, horizontally and vertically, as shown in figures \ref{fig:composeHorizontalCommutingSquare} and \ref{fig:composeVerticalCommutingSquare}.
@@ -322,7 +320,7 @@ Translating these diagrams into Agda leads to the following types:
 % In Agda, horizontal and vertical composition is given as follows. 
 
 \begin{minted}{agda}
-horizontialComposition : {p₁ p₂ p₃ p₄ p₅ p₆ : Polynomial}
+horizontalComposition : {p₁ p₂ p₃ p₄ p₅ p₆ : Polynomial}
     (f : Chart p₁ p₂) (g : Chart p₃ p₄) (h : Chart p₂ p₅) (r : Chart p₄ p₆)
     (w : Lens p₁ p₃) (v : Lens p₂ p₄) (m : Lens p₅ p₆)
     → LensChartCommute w v f g → LensChartCommute v m h r
@@ -336,8 +334,7 @@ verticalComposition : {p₁ p₂ p₃ p₄ p₅ p₆ : Polynomial}
     → LensChartCommute (h ∘ₚ w) (m ∘ₚ v) f r
 \end{minted}
 
-The definition is finished for the map on positions part of the proofs.
-However, the parts dealing with map on directions is unfinished, due to the complexity of an explosion of subst's, and left for future work, discussed further in \ref{section:commutingSquaresCompose}.
+Their definition is completed in the accompanying formalization for the map on positions part of the proofs. However, the parts dealing with map on directions is unfinished, due to the complexity of an explosion of \texttt{subst}'s, and left for future work, discussed further in \ref{section:commutingSquaresCompose}.
 
 %\todo{Add section about stationary systems thingy}
 
