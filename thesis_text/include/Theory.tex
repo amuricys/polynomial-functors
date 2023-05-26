@@ -1205,7 +1205,7 @@ The parallel product also enables turning to lenses, between individual polynomi
 This particular action will have deep implications in the applications chapter.
 
 \section{Composition product}
-Since polynomials are functors, and they are in fact \textit{endo}functors, they can be composed to give rise to new polynomial functors. The composition operator is given by the symbol ◂. Here we can recover high-school algebra intuition. Composing functors corresponds to plugging in entire expressions, instead of numbers, into a polynomial. For instance, given $p(y) = y^2$ and $q(y) = y^2 + 3y$, the composition product is given as $(p \triangleleft q)(y) = (y^2 + 3y)^2$.
+Since polynomials are functors, and in fact \textit{endo}functors, they can be composed to give rise to new polynomial functors. The composition operator is given by the symbol ◂. Here we can recover high-school algebra intuition. Composing functors corresponds to plugging in entire expressions, instead of numbers, into a polynomial. For instance, given $p(y) = y^2$ and $q(y) = y^2 + 3y$, the composition product is given as $(p \triangleleft q)(y) = (y^2 + 3y)^2$.
 
 \begin{minted}{agda}
 -- Proposition 5.2, page 158. Note: not same definition used. 
@@ -1337,7 +1337,14 @@ Again, it is possible to define a lens that goes to either side of the monoidal 
 \end{minted}
 
 \subsection{Composite power}
-\todo{show}
+Composing a polynomial with itself, \mintinline{agda}{p ◂ p}, a repeated amount of times can be done with \mintinline{agda}{compositePower}.
+Given the interpretation from figure \ref{fig:compositionProductExample} it builds a big tree of depth $n$ with the shape of a smaller polynomial $p$ rooting from each node.
+
+\begin{minted}{agda}
+compositePower : Polynomial → ℕ → Polynomial
+compositePower p zero = compositionUnit
+compositePower p (suc n) = p ◂ (compositePower p n) 
+\end{minted}
 
 \section{Cartesian closure}
 
