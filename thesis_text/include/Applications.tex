@@ -568,18 +568,36 @@ This showcased how a simple chart in a commuting square can compare behaviour of
 \subsubsection{Simulating state machines}\label{section:simulatestatemachine}
 A more advanced example, in comparison to flip flop, is how one state machine can simulate another. This is often expressed as that one state machine is more minimal than another, that is, it has less states but achieves the same behaviour. This is exactly what the special commuting square can express. Because the same idea is followed as for the flip flop example, this example will not be discussed further, but can be found in \texttt{Dynamical/Chart/SimulateStateMachine.agda}.
 
-\subsubsection{Moore machine}
-A Moore machine is the same as a lens to a monomial. A Moore machine can be defined as:
+\subsubsection{Moore \& Mealy machines}
+In automata theory, a Moore machine is defined to be an abstract machine comprised of the following:
+\begin{itemize}
+    \item A state-space set S
+    \item An input set A
+    \item An output set B
+    \item A readout function $\texttt{readout} : S \rightarrow B$
+    \item An update function $\texttt{update} : S \rightarrow A \rightarrow S$
+\end{itemize}
+
+and a Mealy machine is a similar machine with the difference that reading the state and updating it happen in a single function $\texttt{updateRead} : S \rightarrow A \rightarrow S \times B$.
+
+These machines correspond directly to lenses in \textbf{Poly}: Moore machines are straightforward dynamical systems, i.e.  lenses of form $Sy^S \rightarrow By^A$. Mealy machines are lenses to the exponential object between linear polynomials, so lenses of form $Sy^S \rightarrow (Ay \rightarrow By)$. Because of the isomorphism shown in \ref{sec:cartesian}, this can be reduced to $Sy^S * Ay \rightarrow By$, which is easier to work with and think about.
+
+Both machines can be defined as their own types as follows:
 
 \begin{minted}{agda}
 record MooreMachine {State Input Output : Set} : Set where
-    constructor mkMooreMachine
+    constructor mkmoore
     field
         readout : State → Output
         update : State → Input → State
+
+record MealyMachine {State Input Output : Set} : Set where
+    constructor mkmealy
+    field
+        updateRead : State → Input → (State × Output)
 \end{minted}
 
-Since a moore machine is a polynomial, it is possible to define the dynamical system as a moore machine and then transport it into a lens, or the other way around.
+And both can be shown to be equal to the aforementioned lenses. The proof for the Moore machine is trivial, while the Mealy one is more complex - there is an attempt at proving this isomorphism that has a hole, again due to difficulty in handling pattern matching on sum types during normalization. This code can be found in \texttt{LensIsMooreMachine.agda} and \texttt{LensIsMealyMachine.agda}
 
 \subsubsection{Deterministic finite automaton}
 A deterministic finite state automaton (DFA) is also a special kind of lens, the lens to the monomial $2y^{alphabet}$. A DFA can be defined as:

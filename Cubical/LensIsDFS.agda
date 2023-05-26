@@ -42,10 +42,10 @@ dfsIsMooreMachine : {State Alphabet : Set} → DFS {State} {Alphabet} ≡ MooreM
 dfsIsMooreMachine {State} {Alphabet} = isoToPath (iso go back (λ _ → refl) (λ _ → refl))
     where
         go : DFS {State} {Alphabet} → MooreMachine {State} {Alphabet} {Bool}
-        go (mkDFS recognized update) = mkMooreMachine recognized update
+        go (mkDFS recognized update) = mkmoore recognized update
 
         back : MooreMachine {State} {Alphabet} {Bool} → DFS {State} {Alphabet}
-        back (mkMooreMachine readout update) = mkDFS readout update
+        back (mkmoore readout update) = mkDFS readout update
 
 altLensIsDfs : {State Alphabet : Set} → DFS {State} {Alphabet} ≡ Lens (selfMonomial State) (monomial Bool Alphabet)
 altLensIsDfs = sym (simpleLensIsMooreMachine ∙ (sym dfsIsMooreMachine))

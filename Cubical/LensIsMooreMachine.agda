@@ -9,7 +9,7 @@ open import Data.Product
 open import Data.Unit
 
 record MooreMachine {State Input Output : Set} : Set where
-    constructor mkMooreMachine
+    constructor mkmoore
     field
         readout : State → Output
         update : State → Input → State
@@ -22,10 +22,10 @@ simpleLensIsMooreMachine : {State Input Output : Set} → Lens (selfMonomial Sta
 simpleLensIsMooreMachine {State} {Input} {Output} = isoToPath (iso go back (λ _ → refl) λ _ → refl)
     where
         go : Lens (selfMonomial State) (monomial Output Input) → MooreMachine {State} {Input} {Output}
-        go (f ⇆ f♯) = mkMooreMachine f f♯
+        go (f ⇆ f♯) = mkmoore f f♯
 
         back : MooreMachine {State} {Input} {Output} → Lens (selfMonomial State) (monomial Output Input)
-        back (mkMooreMachine readout update) = readout ⇆ update
+        back (mkmoore readout update) = readout ⇆ update
 
 -- Having a lens from Y to selfMonomial S is the same thing as picking a state.
 pickInitialState : {S : Set} → Lens Y (selfMonomial S) ≡ S
