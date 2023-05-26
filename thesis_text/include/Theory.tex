@@ -114,7 +114,7 @@ This type can trivially implement the \texttt{Functor} typeclass, so much so tha
 % \end{tikzpicture}
 % \]
 
-Polynomials act on both objects and functions, and this is defined as:
+As functors, polynomials act on both objects and functions, and this is defined as:
 \begin{minted}{agda}
 _⦅_⦆ : Polynomial → Set → Set
 _⦅_⦆ (mkpoly position direction) Y = Σ position λ x → (direction x → Y)
@@ -393,15 +393,15 @@ Poly = record
 
 This record definition should not be surprising: \textbf{Poly}'s objects are \mintinline{agda}{Polynomial}s, its arrows are dependent \mintinline{agda}{Lens}es, the notion of equality between arrows is defined to be cubical equality \mintinline{agda}{_≡_}, the identity lens and composition are the previously defined values in Agda.
 The rest of the data provided to the record correspond to the categorical laws plus some convenience that \texttt{agda-categories} provides: for instance, the proof \mintinline{agda}{sym-assoc} is not normally needed, but it makes it so that the opposite of opposite categories are equal "on the nose" to the original categories, and not just provably equal. 
-No more time will be spent going over design decisions of \texttt{agda-categories}, a more detailed account of the reasoning behind the library can be found in \cite{agda-cats}.
+A more detailed overview of the design decisions of \texttt{agda-categories} can be found in \cite{agda-cats}.
 
 \section{Polynomial equality}
-There are some occasions where polynomials need to be compared for equality. For example, a convenient way of characterizing monoidal structures in \textbf{Poly} is by simply expressing the laws on types, which requires polynomials to be compared; the right unit law for the parallel product (will be explained later on) $\otimes$ for instance can be written as: \mint{agda}{rightUnit : (p q : Polynomial) → p ⊗ Y ≡ p}.
+There are some occasions where polynomials need to be compared for equality. For example, a convenient way of characterizing monoidal structures in \textbf{Poly} is by simply expressing the laws on types, which requires polynomials to be compared; for instance, the right unit law for the parallel product (will be explained later on) $\otimes$ with Y as unit, can be written as: \mintinline{agda}{rightUnit : (p q : Polynomial) → p ⊗ Y ≡ p}.
 %(in the case of monoidal structures, we stick to the \texttt{agda-categories} framework and don't rely on equality of objects at all, but polynomial equality is both useful elsewhere and an illuminating exercise).
 
 Since a polynomial is a record consisting of the \mintinline{agda}{position : Set} and \newline \mintinline{agda}{direction : position → Set} a characterization of equality for this record is needed to make it easy to use and prove equalities between polynomials.
-An alternative definition of a polynomial as a Σ-type is used in aid to characterize the equality, to use the many properties and lemmas about Σ-type in the Cubical library .
-That Σ-type, along with proofs that the definitiions are the same are:
+An alternative definition of a polynomial as a Σ-type is used in aid to characterize the equality, to use the many properties and lemmas about Σ-type in the Cubical library.
+That Σ-type, along with proofs that the definitions are the same are:
 
 \begin{minted}{agda}
 PolyAsSigma : Set₁
@@ -834,7 +834,7 @@ Given an object $c$ as the domain of two lenses $f$ and $g$, $\langle f,g \rangl
 ⟨ f ⇆ f♯ , g ⇆ g♯ ⟩ = < f , g > ⇆ λ posP → [ f♯ posP , g♯ posP ]
 \end{minted}
 
-Finally, we need to supply the proofs associated with the product. There are two proofs needed to show that the diagram \ref{fig:productDiagram} commutes, and one for showing the uniqueness of $\langle f,g \rangle$. The proofs for commuting is shown with \texttt{refl}, but the uniqueness is left out for space reasons - this will be done relatively frequently in the rest of the thesis, since many of these proofs get quite long. Interested readers can of course see the code for the formalization\cite{code}. But the idea is that if we have another factorization lens $h$ it must be the same as $\langle f,g \rangle$. 
+Finally, we need to supply the proofs associated with the product. There are two proofs needed to show that the diagram \ref{fig:productDiagram} commutes, and one for showing the uniqueness of $\langle f,g \rangle$. The proofs for commuting is shown with \texttt{refl}, but the uniqueness is left out for space reasons - this will be done relatively frequently in the rest of the thesis, since many of these proofs get quite long. Interested readers can of course see the code for the formalization \cite{code}. But the idea is that if we have another factorization lens $h$ it must be the same as $\langle f,g \rangle$. 
 
 \begin{minted}{agda}
 project₁ : {p q r : Polynomial} {f : Lens r p} {g : Lens r q} →
@@ -935,8 +935,9 @@ productSymmetricMonoidal
 \newpage
 
 \section{Coproduct}
+The coproduct is the dual construction to the product, obtained from reversing all arrows. If we do this to the product diagram shown before, the diagram in Figure \ref{fig:coproductDiagram} is obtained.
 
-\begin{figure}
+\begin{figure}[H]
   % https://q.uiver.app/?q=WzAsNCxbMCwzLCJBIl0sWzQsMywiQiJdLFsyLDIsIkEgKyBCIl0sWzIsMCwiVCJdLFswLDIsIlxcdGV4dHtpbmp9XzEiLDFdLFsxLDIsIlxcdGV4dHtpbmp9XzIiLDFdLFsyLDMsIiEiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMCwzLCJoIiwxXSxbMSwzLCJrIiwxXV0=
   \[\begin{tikzcd}
     && T \\
@@ -952,7 +953,6 @@ productSymmetricMonoidal
   \caption{Coproduct diagram of $A$ and $B$.}
   \label{fig:coproductDiagram}
   \end{figure}
-The coproduct is the dual construction to the product, obtained from reversing all arrows. If we do this to the product diagram shown before, the diagram in Figure \ref{fig:coproductDiagram} is obtained.
 
 \textbf{Poly} also has all coproducts. The coproduct $p+q$ of any $p$ and $q$ is defined by taking the coproduct on just the positions and the \textit{projection} on the directions. Again, consider the analogy with high-school algebra. Given two polynomials $p(y) = 4y^2$ and $q(y) = y^2 + 3y$, their sum is given by $(p + q)(y) \cong 4y^2 + y^2 + 3y \cong 5y^2 + 3y$. In this example, four of the positions with $2$ as a direction came from $p$ and one of them came from $q$, hence in the Agda code for it below, we pattern match on the resulting polynomials's position. As a shorthand, we use Agda's \mintinline{agda}{[_,_]} function.
 
@@ -963,7 +963,7 @@ _+_ : Polynomial → Polynomial → Polynomial
 
 A visualization of an example coproduct is provided in figure \ref{fig:coproductExample}.
 
-\begin{figure}
+\begin{figure}[H]
 \[
 \begin{tikzpicture}[rounded corners]
 	\node (p1) [draw, green!50!black, "$p$" above] {
@@ -1089,7 +1089,8 @@ The coproduct can also be generalized to work with any amount of polynomials ind
 Using the generalized coproduct with bool as index type, we recover the normal binary coproduct. This is proved in \texttt{Various.agda}.
 
 \begin{minted}{agda}
-coproductIsΣPoly : {p q : Polynomial} → ΣPoly (Bool , tupleToFunFromBool (p , q)) ≡ p + q
+coproductIsΣPoly : {p q : Polynomial}
+  → ΣPoly (Bool , tupleToFunFromBool (p , q)) ≡ p + q
 coproductIsΣPoly = ...
 \end{minted}
 
@@ -1263,7 +1264,9 @@ p ◂ q = mkpoly pos dir
 infixl 27 _◂_
 \end{minted}
 
-\begin{figure}
+This definition is heavily inspired by David Orion Girardo's implementation here \cite{daig} The key insight from his implementation is that the positions in the resulting polynomial are a pair, the first element of which is the same set as the postcomposed polynomial. This sticks closer to the idea that polynomials are in fact being composed. In terms of corolla forests, the composition product stacks trees on top of one another \textit{in every possible way}, with the left polynomial in the bottom. The resulting polynomial's directions at any given position is "all directions that reach a height of two". A visualization is given in Figure \ref{fig:compositionProductExample}.
+
+\begin{figure}[H]
   \[
   \begin{tikzpicture}[rounded corners]
     \node (p1) [draw, green!50!black, "$p$" above] {
@@ -1349,11 +1352,12 @@ infixl 27 _◂_
 \label{fig:compositionProductExample}
 \end{figure}
 
-This definition is heavily inspired by David Orion Girardo's implementation here \cite{daig} \todo{check}. The key insight from his implementation is that the positions in the resulting polynomial are a pair, the first element of which is the same set as the postcomposed polynomial. This sticks closer to the idea that polynomials are in fact being composed. In terms of corolla forests, the composition product stacks trees on top of one another \textit{in every possible way}, with the left polynomial in the bottom. The resulting polynomial's directions at any given position is "all directions that reach a height of two". A visualization is given in Figure \ref{fig:compositionProductExample}.
 
 \subsection{Monoid}
 % Show it forms a monoid with Y.
-The composition product is an important monoidal structure in \textbf{Poly}. It is not symmetric, like the previous three structures, but it has massive consequences from both a theoretical as well as application point of view. \todo{rewrite + explain why not here}
+The composition product is an important monoidal structure in \textbf{Poly}. It is not symmetric, like the previous three structures, but it also has an important interpretation in applications. It is also used in the definition of the exponential object.
+The proofs of left and right unit are complete, but the proof for association contains a hole, that is obviously fillable, but contains some constant transports that needs to be taken care of. % but it has massive consequences from both a theoretical as well as application point of view. \todo{rewrite + explain why not here}
+The code exists in \texttt{Categorical/Poly/Monoidal/CompositionProduct}.
 
 \subsection{Composition lens}
 
@@ -1376,7 +1380,7 @@ Again, it is possible to define a lens that goes to either side of the monoidal 
 
 \subsection{Composite power}
 Composing a polynomial with itself, \mintinline{agda}{p ◂ p}, a repeated amount of times can be done with \mintinline{agda}{compositePower}.
-Given the interpretation from figure \ref{fig:compositionProductExample} it builds a big tree of depth $n$ with the shape of a smaller polynomial $p$ rooting from each node.
+Given the interpretation from figure \ref{fig:compositionProductExample} it builds a big tree of depth $n$ with all combinations of the polynomial rooting from each node. 
 
 \begin{minted}{agda}
 compositePower : Polynomial → ℕ → Polynomial

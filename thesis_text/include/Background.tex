@@ -17,7 +17,7 @@ Some topics are not introduced in the background but at the point where they are
 \section{Agda}
 Agda is a dependently typed programming language \cite{agdaWebsite} created at Chalmers.
 It is a functional language with very similar syntax to Haskell, but with a more powerful type system that allows it to be used as a proof assistant. 
-Dependent types mean that types can depend on values. For example, a function have have the type signature \mintinline{agda}{natOrBool : (b : Bool) → if b then ℕ else Bool}, which means it returns a natural number if the value of the argument is true and a boolean if the value of the argument is false. In a non-dependent language, this would need to be expressed at the value level, so the function would have to return a value of type \mintinline{haskell}{Either ℕ Bool}.
+Dependent types mean that types can depend on values. For example, a function can have the type signature \mintinline{agda}{natOrBool : (b : Bool) → if b then ℕ else Bool}, which means it returns a natural number if the value of the argument is true and a boolean if the value of the argument is false. In a non-dependent language, this would need to be expressed at the value level, so the function would have to return a value of type \mintinline{haskell}{Either ℕ Bool}.
 
 \subsection{Unicode characters}
 Agda, compared to most other languages, allows and makes heavy use of Unicode characters in symbol names. This can look daunting but provides for a concise syntax akin to mathematical notation. 
@@ -50,7 +50,7 @@ The Curry-Howard isomorphism and Agda's powerful type system make Agda a powerfu
 
 
 \subsection{Agda examples}
-The \mintinline{agda}{Either} example above shows how (polymorphic) datatypes are defined, similar to the GADTs \cite{haskellGADT} extension of Haskell.
+The \mintinline{agda}{Either} example above shows how (polymorphic) data types are defined, similar to the GADTs \cite{haskellGADT} extension of Haskell.
 
 It is also possible to create record types for data types with only one constructor.
 
@@ -103,8 +103,8 @@ Cubical \cite{cubicalAgdaDocs} is an extension of Agda, bringing ideas from Homo
 
 Normal Agda defines equality as a data type. However, this (propositional) equality has certain problems. For example, it is not possible to prove function extensionality, that two functions are equal if they are equal for all arguments. Functional extensionality, which is very useful, is directly provable in Cubical.
 
-Cubical discards this datatype and uses its own notion of equality, the path. An equality between elements $a : A$ and $b : A$ is a path from $a$ to $b$.
-Cubical achieves this with a function $p : I \rightarrow A$ satisfying some conditions. Firstly, $I$ is a special kind of variable representing an interval or a path ranging from $0$ to $1$. It can be thougth of as a type representing an interval, although it isn't a type. Secondly, the beginning of the path must be $a$, that is $p(0)=a$. Finally, the end of the path must be $b$, $p(1)=b$. The important thing to note is that given \mintinline{agda}{a b : A} a type \mintinline{agda}{a ≡ b} is a function \mintinline{agda}{I → A} behind the scenes, satisfying the above conditions. 
+Cubical discards this data type and uses its own notion of equality, the path. An equality between elements $a : A$ and $b : A$ is a path from $a$ to $b$.
+Cubical achieves this with a function $p : I \rightarrow A$ satisfying some conditions. Firstly, $I$ is a special kind of variable representing an interval or a path ranging from $0$ to $1$. It can be thought of as a type representing an interval, although it isn't a type. Secondly, the beginning of the path must be $a$, that is $p(0)=a$. Finally, the end of the path must be $b$, $p(1)=b$. The important thing to note is that given \mintinline{agda}{a b : A}, a type \mintinline{agda}{a ≡ b} is a function \mintinline{agda}{I → A} behind the scenes, satisfying the above conditions. 
 
 The equality \mintinline{agda}{a ≡ b} is known as homogeneous equality because $a$ and $b$ have the same type. It is also possible to have an equality when $a$ and $b$ are of different types, named heterogeneous equality. Homogeneous equality is a special case of heterogeneous equality, where $a$ and $b$ have the same type. For this thesis, mostly equality between elements of a fixed type is used, so no further explanation of heterogeneous equality is needed.
 
