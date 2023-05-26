@@ -17,7 +17,9 @@ The objects of \textbf{Poly} are polynomial functors, which can be written as ex
 p(y) = \mathbb{N}y^2 + 1
 \label{eqn.natpoly}
 \end{equation}
-and it can be thought of as taking a set as input, and sending it to the set of: either infinitely long tuples of functions from $\underline{2}$ to this set, or to the only element of the singleton set. Like the poly-book, each summand of a power of $y$ in the polynomials are referred to as a \textit{position}, and the exponent of that power as a \textit{direction at that position}. This suggests that a polynomial has a set of positions, and for each element in this set, a set of directions. Therefore a natural way to represent these polynomials in Agda is as a dependent set:
+and it can be thought of as taking a set as input, and sending it to the set of: either infinitely long tuples of functions from $\underline{2}$ to this set, or to the only element of the singleton set. Like the poly-book, each summand of a power of $y$ in the polynomials are referred to as a \textit{position}, and the exponent of that power as a \textit{direction at that position}
+\footnote{Note: The book acknowledges the unfortunate naming clash with the equivalent category of containers, where in that context, positions are called directions and directions are called shapes.}.
+This suggests that a polynomial has a set of positions, and for each element in this set, a set of directions. Therefore a natural way to represent these polynomials in Agda is as a dependent set:
 
 \begin{minted}{agda}
 record Polynomial : Set₁ where
@@ -144,8 +146,6 @@ asEndo p = record
     }
 \end{minted}
 
-\textit{Note}: The book acknowledges the unfortunate naming clash with the equivalent category of containers, where in that context, positions are called directions and directions are called shapes.
-\todo{turn to footer}
 
 \subsection{Arrows are natural transformations - \textit{dependent lenses}}
 
@@ -455,8 +455,8 @@ poly≡∀ : {a b : Polynomial}
     → ((posB : position b) → 
        subst (λ x → x → Type) fstA≡fstB (direction a) posB ≡ direction b posB)
     → a ≡ b
-poly≡∀ {a} {b} fstA≡fstB sndA≡sndB = poly≡ fstA≡fstB λ i x → sndA≡sndB x i
-
+poly≡∀ {a} {b} fstA≡fstB sndA≡sndB
+  = poly≡ fstA≡fstB λ i x → sndA≡sndB x i
 \end{minted}
 
 \section{Lens equality}
@@ -515,6 +515,44 @@ lens≡ {p} {q} {f} {g} mapPos≡ mapDir≡ i
                                       i))
 \end{minted}
 
+An all quantified version of lens equality is provided as well, named \mintinline{agda}{lens≡∀∀}:
+
+Both \mintinline{agda}{lens≡} and \mintinline{agda}{lens≡∀∀} provide a way to prove equalities between lenses.
+However, in some cases they are limited and almost impossible to use.
+The reason is that subst is not very deep in the term, and the subst is of a complicated dependent function type, where the dependent function returns a new function with the domain varying.
+Often, it is possible to use subst laws to push subst further into the term, which would make the type easier to use.
+This idea is captured by the more powerful variant of lens equality, \mintinline{agda}{lens≡ₚ}.
+For \mintinline{agda}{lens≡ₚ}, subst is pushed further into the term making it much more practical to use in proofs.
+
+\begin{minted}{agda}
+lens≡ₚ : {p q : Polynomial} {f g : Lens p q}
+  → (mapPosEq : mapPosition f ≡ mapPosition g)
+  → (
+          (x : position p) → 
+          (y : direction q (mapPosition g x)) → 
+          mapDirection f x  
+          (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) 
+          ≡ 
+          mapDirection g x y
+      )
+  → f ≡ g
+lens≡ₚ {f = f} {g = g} a b i
+  = sigmaToLens (lensSigmas≡ₚ {f = f} {g = g} a b i)
+\end{minted}
+
+To implement \mintinline{agda}{lens≡ₚ}, or more specifically, \mintinline{agda}{lensSigmas≡ₚ}, \mintinline{agda}{ΣPathP} is used instead of \mintinline{agda}{ΣPathTransport→PathΣ}.
+
+\begin{minted}{agda}
+lensSigmas≡ₚ : {p q : Polynomial} {f g : Lens p q}
+  → (mapPosEq : Lens.mapPosition f ≡ Lens.mapPosition g)
+  → ((x : position p) → (y : direction q (mapPosition g x)) → mapDirection f x  (subst (λ mapPos → direction q (mapPos x)) (sym mapPosEq) y) ≡ mapDirection g x y)
+  → lensToSigma f ≡ lensToSigma g
+lensSigmas≡ₚ {p = p} {q = q} {f = f} {g = g} mapPosEq mapDirEq
+    = ΣPathP (mapPosEq , 
+        funExt λ x →
+        funExtDep λ {y1} {y2} p →
+          cong (mapDirection f x) (fromPathP⁻ p) ∙ mapDirEq x y2)
+\end{minted}
 
 \subsection*{If lenses and polynomials are both Σ-types in disguise, why not just use Σ-types?}
 
