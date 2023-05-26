@@ -12,20 +12,20 @@ This matters to us because several of our examples are continuous systems that a
 David Jaz Myers, the author, is also responsible for the chart-related part of the applications, through his guest lectures on the YouTube series as well as his book.
 
 We will start by talking about the class of systems that \textbf{Poly} mainly talks about - ones that can be expressed through lenses.
-We'll then explain what our categorical constructs mean in the context of application to dynamical systems, and we'll end by showcasing implemented examples of these dynamical systems, some of which clearly display the advantages of this categorical framework.
+We will then explain what our categorical constructs mean in the context of application to dynamical systems, and we will end by showcasing implemented examples of these dynamical systems, some of which clearly display the advantages of this categorical framework.
 
 \newpage
 
 \section{Mode-dependent open dynamical systems}
 
-First, let's define what a dynamical system is, starting with the simplest case: a closed dynamical system. It can be thought of as a machine with some functionality that "runs" through time. It has a notion of a state space $S$ (in our case a set of values) and a function $f : S \rightarrow S$, called the \textit{dynamics} of the system. The purpose of the dynamics is to reveal what the system's state is at each timestep. Given an initial state $S_0$, one can then run several steps of a system by simply composing $f$ with itself that many times. This sort of system is called \textit{closed} because it does not take any inputs apart from the initial state, and does not provide any outputs. The only thing one might be interested in is the state of the system. An example of a closed dynamical system is the logistic map, defined by the following equation:
+First, let us define what a dynamical system is, starting with the simplest case: a closed dynamical system. It can be thought of as a machine with some functionality that "runs" through time. It has a notion of a state space $S$ (in our case a set of values) and a function $f : S \rightarrow S$, called the \textit{dynamics} of the system. The purpose of the dynamics is to reveal what the system's state is at each timestep. Given an initial state $S_0$, one can then run several steps of a system by simply composing $f$ with itself that many times. This sort of system is called \textit{closed} because it does not take any inputs apart from the initial state, and does not provide any outputs. The only thing one might be interested in is the state of the system. An example of a closed dynamical system is the logistic map, defined by the following equation:
 $$
 x_{t+1} = rx_t(1 - x_t)
 $$
 The state space $S$ here is $\mathbb{R}$, and the body of the function $f$ is the expression on the right. The next state is defined in terms of the last state and a parameter $r$, so given an initial state $x_0$, one can generate an infinite sequence of states by running this function repeatedly.
 \textit{Open} dynamical systems on the other hand are systems that, in addition to possessing a state space, also provide output to and receive input from their environment. "Environment" here is meant to be interpreted loosely: it is the collection of surrounding systems or user inputs, or some other source of data. Open dynamical systems are then composed of five pieces of data: an input set $A$, an output set $B$, a state space set $S$, and two functions: $\texttt{update} : S \times A \rightarrow S$ and $\texttt{readout} : S \rightarrow B$.  This naturally suggests composition: one systems's output can be another system's input, if the types match.
 
-Finally, \textit{mode-dependent} open dynamical systems are ones in which the sets $A$ and $B$ can vary, and as such, which system is providing output to which other system's input can also change depending on the states of the system. This will become clearer in the next section, where we'll provide visualizations of what is being described here.
+Finally, \textit{mode-dependent} open dynamical systems are ones in which the sets $A$ and $B$ can vary, and as such, which system is providing output to which other system's input can also change depending on the states of the system. This will become clearer in the next section, where we will provide visualizations of what is being described here.
 
 \subsection{Wiring diagrams}
 
@@ -88,7 +88,7 @@ This is a straightforward view of an interface, because monomials cannot represe
 $$
 p(y) = \mathbb{R}y^{\texttt{string}} + \top y^{\mathbb{N} \times \mathbb{N}}
 $$
-As an interface to an abstract system, it applies to any system that, when its state is such that it outputs real numbers, the possible inputs are strings. When its state is such that it's outputting $\top$ (the singleton set), then the possible inputs to give it are pairs of natural numbers. Notice that this says nothing about what the state space of a system should concretely be, only that its state can specify its interface. Mode-dependence makes it so that writing a polynomial as an abstract box in a wiring diagram is hard, because the input and output wires change. Consider the polynomial above. There are two possible boxes that it corresponds to, depending on its state. One of them looks like this:
+As an interface to an abstract system, it applies to any system that, when its state is such that it outputs real numbers, the possible inputs are strings. When its state is such that it is outputting $\top$ (the singleton set), then the possible inputs to give it are pairs of natural numbers. Notice that this says nothing about what the state space of a system should concretely be, only that its state can specify its interface. Mode-dependence makes it so that writing a polynomial as an abstract box in a wiring diagram is hard, because the input and output wires change. Consider the polynomial above. There are two possible boxes that it corresponds to, depending on its state. One of them looks like this:
 
 \begin{equation}\label{eqn.control_diag}
     \begin{tikzpicture}[oriented WD, baseline=(B)]
@@ -148,7 +148,7 @@ The resulting polynomial functor is the dashed line around the two inner boxes, 
 
 \subsection{Lenses as behaviors}
 
-A particular kind of lens specifies behaviors/dynamics of systems, namely any lens of shape $f : Sy^S \rightarrow p$, where $p$ is any polynomial $S$ is the state space set. Since lenses are maps on positions and on directions, in this case we get $f : S \rightarrow p(1)$; and $f\# : (\texttt{curState}: S) \rightarrow A (\texttt{f curState}) \rightarrow S$. This corresponds to our definition of open systems, with the added mode dependence: the map on positions is exactly the \texttt{readout} function, and the map on directions is the \texttt{update} function with the added constraint that not any $A$ is valid - $A$ is now a type family, so only the fibrations of $A$ at the position (output) at the current state are valid.
+A particular kind of lens specifies behaviors/dynamics of systems, namely any lens of shape $f : Sy^S \rightarrow p$, where $p$ is any polynomial and $S$ is the state space set. Since lenses are maps on positions and on directions, in this case we get $f : S \rightarrow p(1)$; and $f\# : (\texttt{curState}: S) \rightarrow A (\texttt{f curState}) \rightarrow S$. This corresponds to our definition of open systems, with the added mode dependence: the map on positions is exactly the \texttt{readout} function, and the map on directions is the \texttt{update} function with the added constraint that not any $A$ is valid - $A$ is now a type family, so only the fibrations of $A$ at the position (output) at the current state are valid.
 
 A value of the type of lenses $f : Sy^S \rightarrow p$ can therefore be seen as a concrete dynamical system. At the end of the day, it is "only" a pair of functions: one to read out the exposed state of the system, and one to update the state of the system with some input. The way we will show behavior-specifying lenses in wiring diagrams is like the polynomials that represent their interfaces, but with the state space type denoted on the bottom like so:
 
@@ -296,7 +296,7 @@ And they all correspond to different lenses. The intuition for the lens structur
 \subsection{Commuting squares as system transformations}
 Commuting squares have a deep interpretation in this context: they correspond to how behaviour can transfer between different dynamical systems.
 Special kinds of commuting squares correspond to different kinds of behavior.
-One behavior is for one system to simulate another system, this can be encoded by a simple kind of commuting square consisting of a function between the states of the two different systems.
+For example, one behavior is for one system to simulate another system, this can be encoded by a simple kind of commuting square consisting of a function between the states of the two different systems.
 Two examples of such commuting diagrams are given in sections \ref{section:flipflop} and \ref{section:simulatestatemachine}.
 
 The fact that commuting squares compose also means that behaviour compose.
@@ -307,7 +307,7 @@ For example, if system A simulates system B, and system B simulates system C, th
 
 \section{Implementing dynamical systems}
 
-Although dynamical systems are "just" lenses of a certain form, we choose a convenient representation for them so as to align with our thinking, analogously to how we choose to represent lenses, charts and polynomials as records and not $\Sigma$-types. A lot of this code is directly translated from the Idris-based implementation in the poly-book's github repository. Our characterization is the following record:
+Although dynamical systems are "just" lenses of a certain form, we choose a convenient representation for them so as to align with our thinking, analogously to how we choose to represent lenses, charts and polynomials as records and not $\Sigma$-types. Some of this code is directly translated from the Idris-based implementation in the poly-book's github repository. Our characterization is the following record:
 \begin{minted}{agda}
 record DynamicalSystem : Set₁ where
     constructor mkdyn
@@ -331,7 +331,7 @@ functionToDynamicalSystem A B f =
 emitter : Set → Polynomial
 emitter = linear
 \end{minted}
-    It should not be surprising that this is just the linear polynomial; we give it a special name to bind it to the current interpretation, in the spirit of \textit{concepts with an attitude}\cite{conceptwithattitude}.
+    It should not be surprising that this is just the linear polynomial; we give it a special name to bind it to the current interpretation, in the spirit of \textit{concepts with an attitude} \cite{conceptwithattitude}.
     \item Create a \texttt{haltingEmitter} polynomial that represents an interface of a system that must halt upon outputting its left side type.
         \begin{minted}{agda}
 haltingEmitter : (A B : Set) → Polynomial
@@ -340,7 +340,7 @@ haltingEmitter A B = mkpoly (A ⊎ B) halting
           halting (inj₁ _) = ⊥
           halting (inj₂ _) = ⊤
 \end{minted}
-    A system inside this interface takes no inputs in a different, more strict sense: it's not that it does not receive any outside information, like the \texttt{emitter}, but rather that any use of it must account for the case when an input cannot be produce.
+    A system inside this interface takes no inputs in a different, more strict sense: it is not that it does not receive any outside information, like the \texttt{emitter}, but rather that any use of it must account for the case when an input cannot be produce.
     \item Taking the parallel product of two systems. Recall that the parallel product is an operation on objects (polynomials) but it also it is also possible to construct a canonical lens from two lenses $f : A \rightarrow C$ and $g : B \rightarrow D$ of type $\langle f \otimes g \rangle : A \otimes B \rightarrow C \otimes D$. In the context of systems \textit{being} morphisms, this corresponds to putting them "in parallel" and giving rise to a new system, with both state spaces, interfaces and behaviors simultaneously.
     \begin{minted}{agda}
 _&&&_ : DynamicalSystem → DynamicalSystem → DynamicalSystem
@@ -362,7 +362,7 @@ install d p l = mkdyn (DynamicalSystem.state d)
                       p 
                       (l ∘ₚ (DynamicalSystem.dynamics d))
 \end{minted}
-    \item Outer box lens representations. An outer box that represents an enclosure, as well as enclosures of a couple different possible inputs are given: we use \texttt{auto} for most systems, since we're interested in just running them as closed systems and seeing what happens, but sometimes we're interested in giving constant inputs that come from outside the environment, and for that we use \texttt{constI}:
+    \item Outer box lens representations. An outer box that represents an enclosure, as well as enclosures of a couple different possible inputs are given: we use \texttt{auto} for most systems, since we are interested in just running them as closed systems and seeing what happens, but sometimes we are interested in giving constant inputs that come from outside the environment, and for that we use \texttt{constI}:
 \begin{minted}{agda}
 encloseFunction : {t u : Set} → (t → u) → Lens (monomial t u) Y
 encloseFunction f = (λ _ → tt) ⇆ (λ fromPos _ → f fromPos)
@@ -373,8 +373,8 @@ auto = encloseFunction λ _ → tt
 constI : {m : Set} → (i : m) → enclose (selfMonomial m)
 constI i = encloseFunction λ _ → i
 \end{minted}
-    One can easily imagine extending \texttt{constI} to taking a function that operates on the number of timesteps so as to vary the input over time as well. This is something that is done in dynamical systems theory in a very informal capacity, under the intuition that the parameters of the system vary "slowly" with respect to the timescale of the state updates. With this framework, we gain the ability of making it precise for free. Of course, if we wanted to make the parameter variation respond to the system's dynamics, we'd need to make it a system in itself; this is a design consideration that we hope future developers take into account. We take a mix of these two approaches for example \ref{section:hh}.
-    \item Finally, there's a function that does what one accustomed to dynamical systems simulations would expect: given an abstract representation of a dynamical system (a value of type \texttt{DynamicalSystem} in our case), and an initial condition, it produces an infinite stream of outputs.
+    One can easily imagine extending \texttt{constI} to taking a function that operates on the number of timesteps so as to vary the input over time as well. This is something that is done in dynamical systems theory in a very informal capacity, under the intuition that the parameters of the system vary "slowly" with respect to the timescale of the state updates. With this framework, we gain the ability of making it precise for free. Of course, if we wanted to make the parameter variation respond to the system's dynamics, we would need to make it a system in itself; this is a design consideration that we hope future developers take into account. We take a mix of these two approaches for example \ref{section:hh}.
+    \item Finally, there is a function that does what one accustomed to dynamical systems simulations would expect: given an abstract representation of a dynamical system (a value of type \texttt{DynamicalSystem} in our case), and an initial condition, it produces an infinite stream of outputs.
 \begin{minted}{agda}
 {-# TERMINATING #-}
 run : (d : DynamicalSystem) → 
@@ -391,7 +391,7 @@ run d e initialState =  [ output ] ++ (run d e next)
                                  initialState
                                  (Lens.mapDirection e output tt)
 \end{minted}
-    We need the Agda pragma \texttt{TERMINATING} here because the termination checker can't be sure that this code terminates, since \texttt{run} calls itself on input that is not guaranteed to be smaller. We can then \texttt{take} on the resulting stream to produce regular Agda lists or vectors, and use them to render plots or print to the screen, and as long as we always run this in the context of a finite \texttt{take} call, the program should always terminate.
+    We need the Agda pragma \texttt{TERMINATING} here because the termination checker cannot be sure that this code terminates, since \texttt{run} calls itself on input that is not guaranteed to be smaller. We can then \texttt{take} on the resulting stream to produce regular Agda lists or vectors, and use them to render plots or print to the screen, and as long as we always run this in the context of a finite \texttt{take} call, the program should always terminate.
 \end{itemize}
 There are more helpers and utilities peppered throughout the code, but this is the basic glue needed to work with \textbf{Poly} in the context of dynamical systems, as the examples will demonstrate.
 
@@ -479,7 +479,7 @@ fibonacci : DynamicalSystem
 fibonacci = install prefib (emitter Nat) fibWiringDiagram
 \end{minted}
 
-This example provides a good opportunity to understand dynamical systems in the context of polynomials, so let's take the chance to dig in further. In keeping with the previously mentioned intuition, the \texttt{fibWiringDiagram} lens is just one of many possible wiring patterns for an emitter-enclosed system that contains two "floating" dynamical systems that have the interfaces of \texttt{plus} and \texttt{delay Nat}. The outer outputs are the target of the lens, so the polynomial \texttt{emitter Nat}, which is a polynomial that takes the singleton set as input and outputs natural numbers. The inner inputs are given by the wiring pattern in the lens, specifically in the second function (the map on directions). This part of the code:
+This example provides a good opportunity to understand dynamical systems in the context of polynomials, so let us take the chance to dig in further. In keeping with the previously mentioned intuition, the \texttt{fibWiringDiagram} lens is just one of many possible wiring patterns for an emitter-enclosed system that contains two "floating" dynamical systems that have the interfaces of \texttt{plus} and \texttt{delay Nat}. The outer outputs are the target of the lens, so the polynomial \texttt{emitter Nat}, which is a polynomial that takes the singleton set as input and outputs natural numbers. The inner inputs are given by the wiring pattern in the lens, specifically in the second function (the map on directions). This part of the code:
 \begin{minted}{agda}
 (λ {(sumOutput , idOutput) _ → 
     (idOutput , sumOutput) , sumOutput })
@@ -491,7 +491,7 @@ Two final remarks about the Fibonacci sequence generator: the first is that it i
 \subsubsection{Flip Flop}\label{section:flipflop}
 Flip Flop is a simple example with two dynamical systems showing how one system can simulate the behavior of another system. This simulation is exactly a special kind of commuting square between charts and lenses. 
 
-Both systems needs to have the same interface, which in this case is a linear polynomial \texttt{\{on, off\}}$y$, that can output either on or off, and always takes unit as input. However, both the state and the behavior of the systems can differ. One of the systems is a flip flop system, with states on or off, with behaviour that outputs this state, and flips the state in the update. The other system has natural numbers as states, outputs the two different states depending on the natural number modulus 2, and updates the state by always taking the successor of the state. Running these systems has the exact same output. This can be expressed concisely by a chart transforming the state space of the natural numbers to either on or off. Then by putting this chart in a commuting square such as shown in diagram \ref{fig:flipFlopSquare}.
+Both systems needs to have the same interface, which in this case is a linear polynomial \texttt{\{on, off\}}$y$, that can output either on or off, and always takes unit as input. However, the state and the behavior of the systems can differ. One of the systems is a flip flop system, with states on or off, with behaviour that outputs this state, and flips the state in the update. The other system has natural numbers as states, outputs the two different states depending on the natural number modulus 2, and updates the state by always taking the successor of the state. Running these systems has the exact same output. This can be expressed concisely by a chart transforming the state space of the natural numbers to either on or off. Then by putting this chart in a commuting square such as shown in diagram \ref{fig:flipFlopSquare}.
 
 \begin{minted}{agda}
 data Switch : Set where
@@ -656,7 +656,7 @@ These two components can be represented as dynamical systems, and then wired tog
     \label{wd:turing}
 \end{figure}
 
-A real Turing machine must be able to output something to the outer box, which happens once it's halted, while Figure \ref{wd:turing} only shows them while running/communicating. This is an example of mode-dependence being hard to express.
+A real Turing machine must be able to output something to the outer box, which happens once it is halted, while Figure \ref{wd:turing} only shows them while running/communicating. This is an example of mode-dependence being hard to express.
 
 \remarktitle{Implementation outline}
 We can implement the Turing machine setup above by first defining the sets used:
@@ -691,7 +691,7 @@ processorInterface : Polynomial
 processorInterface = (mkpoly ProcessorOutput procInputFromOutput)
 \end{minted}
 
-The \texttt{ProcessorState} type is a dummy type, since there will be no Turing program written, so it's fine to represent the state as a simple natural number. The \texttt{procInputFromOutput} function is capturing the idea that once the processor outputs \texttt{halt}, it accepts only a mindless input with no meaning. This could also be represented as the empty type, as in NO input, but it becomes somewhat harder to synchronize with the tape's own possible inputs, as will be demonstrated next.
+The \texttt{ProcessorState} type is a dummy type, since there will be no Turing program written, so it is fine to represent the state as a simple natural number. The \texttt{procInputFromOutput} function is capturing the idea that once the processor outputs \texttt{halt}, it accepts only a mindless input with no meaning. This could also be represented as the empty type, as in NO input, but it becomes somewhat harder to synchronize with the tape's own possible inputs, as will be demonstrated next.
 
 Now the same is done for the tape
 
@@ -722,9 +722,9 @@ data TapeState : Set where
 
 The tape's associated types and polynomial are more complex. There are a few things to notice.
 
-Firstly, the tape does in fact not accept any more inputs when it's outputting a halting state. The reason it can get away with this, but not the processor, is that the processor \textit{decides} when to halt the program, and so its output of \texttt{halt} needs to reach the tape - for that, at least one more input is needed.
+Firstly, the tape does in fact not accept any more inputs when it is outputting a halting state. The reason it can get away with this, but not the processor, is that the processor \textit{decides} when to halt the program, and so its output of \texttt{halt} needs to reach the tape - for that, at least one more input is needed.
 
-Second, the tape state contains \textit{only} the $\text{A}^{\mathbb{Z}}$ part of the diagram, and not the notion of which index it's at. The trick is to always consider the index to be zero, and treat the move directions as post composing the tape with an increment or decrement function. Since the tape behavior is always the same for any Turing machine, we provide it:
+Second, the tape state contains \textit{only} the $\text{A}^{\mathbb{Z}}$ part of the diagram, and not the notion of which index it is at. The trick is to always consider the index to be zero, and treat the move directions as post composing the tape with an increment or decrement function. Since the tape behavior is always the same for any Turing machine, we provide it:
 
 \begin{minted}{agda}
 tapeBehavior : Lens (selfMonomial TapeState) tapeInterface
@@ -782,16 +782,16 @@ turingWiringDiagram = outerOutput ⇆ fillInputs
 
 \end{minted}
 
-A remarkable thing to notice about this system wiring is that \texttt{fillInputs} does not even allow us to pattern match on an invalid combination of inputs to the system, like \texttt{haltOut \_ , tt}, since it's a dependent function on the result of \texttt{outerOutput}, which guarantees a \texttt{haltOut} always maps to \texttt{inj₁} and this corresponds to no input. Dependent types allows us to make illegal states truly unrepresentable.
+A remarkable thing to notice about this system wiring is that \texttt{fillInputs} does not even allow us to pattern match on an invalid combination of inputs to the system, like \texttt{haltOut \_ , tt}, since it is a dependent function on the result of \texttt{outerOutput}, which guarantees a \texttt{haltOut} always maps to \texttt{inj₁} and this corresponds to no input. Dependent types allows us to make illegal states truly unrepresentable.
 
 \subsection{Examples: Continuous systems}
-Now we move on to discretized continuous-time systems. They may be treated in much more rigorous mathematical detail than we do here, by representing the state space as topological spaces or manifolds \cite{css}, but as we've mentioned, to showcase their implementation in \textbf{Poly} we discretize them simply according to a differential time $dt$ supplied by the user.
+Now we move on to discretized continuous-time systems. They may be treated in much more rigorous mathematical detail than we do here, by representing the state space as topological spaces or manifolds \cite{css}, but as we have mentioned, to showcase their implementation in \textbf{Poly} we discretize them simply according to a differential time $dt$ supplied by the user.
 \remarktitle{Supporting Haskell code}
 Unfortunately, not all the code in this thesis could be kept in Agda, since it would require too much reimplementation of basic user functionality, or would not be efficient. Therefore, there are the following accompanying tiny Haskell libraries:
 \begin{itemize}
-    \item A command-line interface library for running the continuous-time systems, since each of them requires different parameters, and using the \texttt{optparse-applicative}\cite{optparse} library.
-    \item A plotting library, which renders each system as a collection of values of the system at a sequence of timsteps, written using the \texttt{Chart}\cite{chart-lib} library (not to be confused, of course, with the Chart arrow between polynomials).
-    \item A matrix-multiplication library with a single function which takes a list-of-lists representation of a matrix and returns its pseudoinverse. This is needed for the last example. Taking the pseudoinverse of a matrix is a costly operation, and there was an attempt to do it in Agda, but the associated proofs were not trivial and the performance was prohibitively slow. Therefore, we outsource matrix inversion to the \texttt{hmatrix}\cite{hmatrix} Haskell library, which relies on underlying BLAS \cite{blas} algorithms for speed, while passing \texttt{trustMe} proofs to guarantee matrix sizes at the Agda level.
+    \item A command-line interface library for running the continuous-time systems, since each of them requires different parameters, and using the \texttt{optparse-applicative} \cite{optparse} library.
+    \item A plotting library, which renders each system as a collection of values of the system at a sequence of timsteps, written using the \texttt{Chart} \cite{chart-lib} library (not to be confused, of course, with the Chart arrow between polynomials).
+    \item A matrix-multiplication library with a single function which takes a list-of-lists representation of a matrix and returns its pseudoinverse. This is needed for the last example. Taking the pseudoinverse of a matrix is a costly operation, and there was an attempt to do it in Agda, but the associated proofs were not trivial and the performance was prohibitively slow. Therefore, we outsource matrix inversion to the \texttt{hmatrix} \cite{hmatrix} Haskell library, which relies on underlying BLAS \cite{blas} algorithms for speed, while passing \texttt{trustMe} proofs to guarantee matrix sizes at the Agda level.
 \end{itemize}
 For more information on this supporting code, see the Appendix \ref{app:haskell}.
 With this context, we move on the the systems in question.
@@ -808,7 +808,7 @@ The Lotka-Volterra predator-prey model is an essential system \cite{Murray2002} 
 \label{eq:foxes}
 \end{equation}
 
-The logic of it is that, for rabbits, they will reproduce naturally at a rate $\alpha$, while being hunted at a rate $\beta f$. In other words, their encounters with and subsequent predation by foxes is modeled by multiplying the number of foxes by a "fox appetite" parameter $\beta$. For foxes, their population can be thought of as flourishing or growing at the rate that they can encounter and eat rabbits. This aspect is captured by the term $\delta f r$. They naturally die at a rate of $\gamma$. Note that $\delta$ doesn't have to match $\beta$ - the rate at which foxes eat rabbits is not necessarily the same as the rate at which fox populations grow as a result of being well-fed, though the intuitive relationship between these parameters could be captured by a more sophisticated model.
+The logic of it is that, for rabbits, they will reproduce naturally at a rate $\alpha$, while being hunted at a rate $\beta f$. In other words, their encounters with and subsequent predation by foxes is modeled by multiplying the number of foxes by a "fox appetite" parameter $\beta$. For foxes, their population can be thought of as flourishing or growing at the rate that they can encounter and eat rabbits. This aspect is captured by the term $\delta f r$. They naturally die at a rate of $\gamma$. Note that $\delta$ does not have to match $\beta$ - the rate at which foxes eat rabbits is not necessarily the same as the rate at which fox populations grow as a result of being well-fed, though the intuitive relationship between these parameters could be captured by a more sophisticated model.
 
 This system can be represented in terms of our open dynamical systems by considering the rabbit and fox populations as each inhabited by an individual system. They output their population (so \texttt{readout} is the identity function) and that gets fed as an input to the other system, along with any other parameters - in this case $\alpha$, $\beta$, $\delta$ and $\gamma$. Here is the wiring diagram for it:
 
@@ -865,7 +865,7 @@ This system can be represented in terms of our open dynamical systems by conside
 
 The circles with the constants signify multiplication of the values by the constants $\beta$ and $\delta$. This is something we express at the wiring pattern lens' level in this system. 
 
-Thinking of the systems individually allows us a "separation of concerns" in specifying these systems' behavior that isn't there in environments like Matlab or Python. The code for the rabbit system is:
+Thinking of the systems individually allows us a "separation of concerns" in specifying these systems' behavior that is not there in environments like Matlab or Python. The code for the rabbit system is:
 \begin{minted}[escapeinside=||]{agda}
 rabbits : DynamicalSystem
 rabbits = mkdyn |$\mathbb{ℝ}$| (mkpoly ℝ λ _ → ℝ × ℝ) (readout ⇆ update)
@@ -934,7 +934,7 @@ Running this system through the command line interface produces the expected osc
 
 
 \subsubsection{Lorenz system}
-The Lorenz system \cite{lorenz1963} is what is known as a chaotic system, in an elementary form. It was introduced by Edward Lorenz as a simplified model of atmospheric convection. The three dimensionless (as in, pure proportions with no physical units) variables $x$, $y$ and $z$ correspond to rate of convection, temperature difference between ascending and descending air currents, and how temperature changes with height. It's given by the following differential equations:
+The Lorenz system \cite{lorenz1963} is what is known as a chaotic system, in an elementary form. It was introduced by Edward Lorenz as a simplified model of atmospheric convection. The three dimensionless (as in, pure proportions with no physical units) variables $x$, $y$ and $z$ correspond to rate of convection, temperature difference between ascending and descending air currents, and how temperature changes with height. It is given by the following differential equations:
 
 \begin{equation}
 \dot{x} = \sigma (y - x)
@@ -987,7 +987,7 @@ z dt = mkdyn Z (mkpoly Z λ _ → X × Y) (readout ⇆ update)
         update (znt state) (xnt x , ynt y) = 
             znt (state + dt * (x * y - β * state))
 \end{minted}
-And they're again parallel-productized, producing a system with 3 inputs and 3 outputs, then wired in the right way (x is given as an input to y and z, y to x and z, and z to y, as per the system equations)
+And they are again parallel-productized, producing a system with 3 inputs and 3 outputs, then wired in the right way (x is given as an input to y and z, y to x and z, and z to y, as per the system equations)
 
 \begin{minted}{agda}
 preLorenz : ℝ → DynamicalSystem
@@ -1049,9 +1049,9 @@ The interesting thing about the Hodgkin-Huxley model is that it actually lends i
 \label{eq:nhh}
 \end{equation}
 
-The variables here mean the following: $V$ is the resulting voltage between the intra and extracellular mediums, $m$ encodes potassium channel activation probability, $h$ encodes sodium channel activation probability and $n$ encodes sodium channel \textit{inactivation} probability, and $I_e$ is the driven input voltage. All other symbols are constants and helper functions that have their own deep theoretical justification which we will not get into, we'll just explain the basic logic of the system. The idea is that potassium and sodium channels are positively charged, so their flow across their membrane corresponds to current. However, their flow is not only affected by voltage, but also by concentration: in a chemical setting, substances can saturate a solution regardless of their charge. The interacting probabilities of channels activating (opening, thus allowing particles to flow from more to less concentrated environments) or inactivating give rise to interesting voltage dynamics - the voltage is in fact the output we're interested in for this particular application. Given a strong enough input current, the system can be made to display oscillating behavior, which corresponds to the neuron firing.
+The variables here mean the following: $V$ is the resulting voltage between the intra and extracellular mediums, $m$ encodes potassium channel activation probability, $h$ encodes sodium channel activation probability and $n$ encodes sodium channel \textit{inactivation} probability, and $I_e$ is the driven input voltage. All other symbols are constants and helper functions that have their own deep theoretical justification which we will not get into, we will just explain the basic logic of the system. The idea is that potassium and sodium channels are positively charged, so their flow across their membrane corresponds to current. However, their flow is not only affected by voltage, but also by concentration: in a chemical setting, substances can saturate a solution regardless of their charge. The interacting probabilities of channels activating (opening, thus allowing particles to flow from more to less concentrated environments) or inactivating give rise to interesting voltage dynamics - the voltage is in fact the output we are interested in for this particular application. Given a strong enough input current, the system can be made to display oscillating behavior, which corresponds to the neuron firing.
 
-The input current can be a constant value, in which case it might as well be treated as a parameter, or an input to an open dynamical system as we've been describing in the framework we work in. This allows us to model "changing a parameter" of a dynamical system, but in a way that is totally internal to our modeling language and does not rely on ad-hoc formulations or programming \footnote{For a description of the informal process of analyzing changing a parameter as "turning a knob" at a timescale that is much bigger than the system's dynamics, see this lecture by Shane Ross on the book Nonlinear Dynamics and Chaos by Strogatz: https://www.youtube.com/watch?v=BBd68\_q3Dgg.}.
+The input current can be a constant value, in which case it might as well be treated as a parameter, or an input to an open dynamical system as we have been describing in the framework we work in. This allows us to model "changing a parameter" of a dynamical system, but in a way that is totally internal to our modeling language and does not rely on ad-hoc formulations or programming \footnote{For a description of the informal process of analyzing changing a parameter as "turning a knob" at a timescale that is much bigger than the system's dynamics, see this lecture by Shane Ross on the book Nonlinear Dynamics and Chaos by Strogatz: https://www.youtube.com/watch?v=BBd68\_q3Dgg.}.
 
 The code for the equations themselves, represented as systems, follows the same pattern as the two previous examples. It also involves many fixed constants, discovered experimentally, and so it is quite big, so for the sake of clarity we omit most of it for this system. Instead we focus on the wiring pattern, as well use of \texttt{constI} as a constant input to the system to showcase running a system:
 \begin{minted}{agda}
@@ -1297,7 +1297,7 @@ We will show an implementation of a reservoir computer that learns the dynamics 
         \node[below=0 of outer.north] {Going};
     \end{tikzpicture}
 \]
-The boxes \texttt{train} and \texttt{test} represent instances of the previously implemented Lorenz system, starting at different initial conditions. The outputs we'll care to plot are those at \textit{Going} stage, when the reservoir is outputting its attempt at predicting the input sequence from the point it was left off from the touching stage. Not all of the Agda code is included, since it is quite big and again, readers can consult the implementation in \texttt{Dynamical/Reservoir/ModeDependent.agda}. But some key areas to highlight are the following definitions.
+The boxes \texttt{train} and \texttt{test} represent instances of the previously implemented Lorenz system, starting at different initial conditions. The outputs we will care to plot are those at \textit{Going} stage, when the reservoir is outputting its attempt at predicting the input sequence from the point it was left off from the touching stage. Not all of the Agda code is included, since it is quite big and again, readers can consult the implementation in \texttt{Dynamical/Reservoir/ModeDependent.agda}. But some key areas to highlight are the following definitions.
 
 Firstly, the state of the reservoir system:
 
@@ -1319,7 +1319,7 @@ data ReservoirState (numNodes : ℕ) (systemDim : ℕ) : Set where
        ReservoirState numNodes systemDim
 
 \end{minted}
-The reservoir ought to start in the \textit{collection} state, where it will accumulate some amount of states AND system history, as well as keep a current set of states for the nodes. It then goes into the \textit{touching} state, where it has a separate counter keeping track of how many state updates to perform before starting prediction. Although the touching state doesn't use the trained output weights obtained from the collection state, it needs to carry it around in order to pass it to the \textit{going} state, where the reservoir is now only concerned with its dynamics.
+The reservoir ought to start in the \textit{collection} state, where it will accumulate some amount of states AND system history, as well as keep a current set of states for the nodes. It then goes into the \textit{touching} state, where it has a separate counter keeping track of how many state updates to perform before starting prediction. Although the touching state does not use the trained output weights obtained from the collection state, it needs to carry it around in order to pass it to the \textit{going} state, where the reservoir is now only concerned with its dynamics.
 
 Second, the output of the reservoir:
 \begin{minted}{agda}
@@ -1329,7 +1329,7 @@ data ReservoirOutput (systemDim : ℕ) : Set where
     predicting : Vec ℝ systemDim → ReservoirOutput systemDim
 \end{minted}
 
-A regular sum type, since we do not care about what the output of the system is until it's actually ready to predict.
+A regular sum type, since we do not care about what the output of the system is until it is actually ready to predict.
 
 Thirdly, the parallelizing of the systems in question. The interesting thing about this is the \texttt{reservoir} function, which takes some parameters to construct a \texttt{DynamicalSystem}. Here it is made clear that the input and reservoir weights are fixed:
 
@@ -1384,12 +1384,12 @@ lrWiringDiagram numNodes trainingSteps touchSteps dt iw rw =
             tt , tt , x
 \end{minted}
 
-The \texttt{outerOutputsFrom} function just always provides the reservoir output along with the test sequence, so as to facilitate exposing the data to a list we can plot. The \texttt{innerInputsFrom} function, which takes care of filling inputs, is key to representing the three stages: the input to the reservoir is \textit{its own output} when it's started predicting.
+The \texttt{outerOutputsFrom} function just always provides the reservoir output along with the test sequence, so as to facilitate exposing the data to a list we can plot. The \texttt{innerInputsFrom} function, which takes care of filling inputs, is key to representing the three stages: the input to the reservoir is \textit{its own output} when it is started predicting.
 
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{figure/reservoir_computer.png}
-    \caption{Reservoir dynamics: the reservoir's output along with the test sequence it's trying to predict along all dimensions.}
+    \caption{Reservoir dynamics: the reservoir's output along with the test sequence it is trying to predict along all dimensions.}
     \label{fig:reservoir_dynamics}
 \end{figure}
 
