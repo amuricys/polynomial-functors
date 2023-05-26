@@ -19,7 +19,7 @@ p(y) = \mathbb{N}y^2 + 1
 \end{equation}
 and it can be thought of as taking a set as input, and sending it to the set of: either infinitely long tuples of functions from $\underline{2}$ to this set, or to the only element of the singleton set. Like the poly-book, each summand of a power of $y$ in the polynomials are referred to as a \textit{position}, and the exponent of that power as a \textit{direction at that position}
 \footnote{Note: The book acknowledges the unfortunate naming clash with the equivalent category of containers, where in that context, positions are called directions and directions are called shapes.}.
-This suggests that a polynomial has a set of positions, and for each element in this set, a set of directions. Therefore a natural way to represent these polynomials in Agda is as a dependent set:
+This suggests that a polynomial has a set of positions, and for each element in this set, a set of directions. Therefore, a natural way to represent these polynomials in Agda is as a dependent set:
 
 \begin{minted}{agda}
 record Polynomial : Set₁ where
@@ -330,7 +330,7 @@ record Lens (from to : Polynomial) : Set where
 
 The constructor \mintinline{agda}{_⇆_} is an attempt at representing the two maps: on positions below and going forward (because they are the coefficients of the polynomials) and on directions on top going backwards (because they are exponents of $y$ at each position).
 
-As they are maps between functors, one can expect that lenses are natural transformations. Indeed, they are, and here's how to formulate them as such in the context of \texttt{agda-categories}:
+As they are maps between functors, one can expect that lenses are natural transformations. Indeed, they are, and here is how to formulate them as such in the context of \texttt{agda-categories}:
 
 \begin{minted}{agda}
 asNatTransLens : {p q : Polynomial} → 
@@ -396,7 +396,10 @@ The rest of the data provided to the record correspond to the categorical laws p
 A more detailed overview of the design decisions of \texttt{agda-categories} can be found in \cite{agda-cats}.
 
 \section{Polynomial equality}
-There are some occasions where polynomials need to be compared for equality. For example, a convenient way of characterizing monoidal structures in \textbf{Poly} is by simply expressing the laws on types, which requires polynomials to be compared; for instance, the right unit law for the parallel product (will be explained later on) $\otimes$ with Y as unit, can be written as: \mintinline{agda}{rightUnit : (p q : Polynomial) → p ⊗ Y ≡ p}.
+There are some occasions where polynomials need to be compared for equality.
+For example, to prove the right unit law for the parallel product (explained later) $\otimes$ with Y as unit: \mintinline{agda}{rightUnit : (p q : Polynomial) → p ⊗ Y ≡ p}.
+% aw a convenient way of characterizing monoidal structures in \textbf{Poly} is by simply expressing the laws on types,
+%  which requires polynomials to be compared; for instance, the right unit 
 %(in the case of monoidal structures, we stick to the \texttt{agda-categories} framework and don't rely on equality of objects at all, but polynomial equality is both useful elsewhere and an illuminating exercise).
 
 Since a polynomial is a record consisting of the \mintinline{agda}{position : Set} and \newline \mintinline{agda}{direction : position → Set} a characterization of equality for this record is needed to make it easy to use and prove equalities between polynomials.
@@ -461,7 +464,7 @@ poly≡∀ {a} {b} fstA≡fstB sndA≡sndB
 
 \section{Lens equality}
 In category theory, it is frequently of interest to know when two morphisms are equal. Therefore, also a characterization of equality for lenses are needed. 
-This characterization of equality needs to be convenient enough to be usable in practical proofs about \textbf{Poly}.
+This characterization of equality needs to be convenient enough to be usable in practical proofs.
 
 A lens consists of two components, with the second component depending on the first. 
 This suggests a Σ-type structure, which leads to a strategy similar to polynomial equality, but in lenses things are more complicated, since the underlying types are functions instead of simple sets.
@@ -817,7 +820,7 @@ A visualization of the product is provided in Figure \ref{fig:productExample}.
     \label{fig:productExample}
 \end{figure}
 
-Continuing with Figure \ref{fig:productDiagram}, it is natural to ask how $\pi_1$ and $\pi_2$ are defined. They are defined to take the projections on the positions, and injections on the map on the directions back. In Figure \ref{fig:productExample}, this can be imagined by selecting only the correspondingly colored part of a corolla in the product corolla forest. 
+Continuing with Figure \ref{fig:productDiagram}, $\pi_1$ and $\pi_2$ are defined to take the projections on the positions, and injections on the map on the directions back. In Figure \ref{fig:productExample}, this can be imagined by selecting only the correspondingly colored part of a corolla in the product corolla forest. 
 
 \begin{minted}{agda}
 π₁ : {p q : Polynomial} → Lens (p * q) p
@@ -935,7 +938,7 @@ productSymmetricMonoidal
 \newpage
 
 \section{Coproduct}
-The coproduct is the dual construction to the product, obtained from reversing all arrows. If we do this to the product diagram shown before, the diagram in Figure \ref{fig:coproductDiagram} is obtained.
+The coproduct is the dual construction to the product, obtained from reversing all arrows, shown in figure \ref{fig:coproductDiagram}.
 
 \begin{figure}[H]
   % https://q.uiver.app/?q=WzAsNCxbMCwzLCJBIl0sWzQsMywiQiJdLFsyLDIsIkEgKyBCIl0sWzIsMCwiVCJdLFswLDIsIlxcdGV4dHtpbmp9XzEiLDFdLFsxLDIsIlxcdGV4dHtpbmp9XzIiLDFdLFsyLDMsIiEiLDEseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XSxbMCwzLCJoIiwxXSxbMSwzLCJrIiwxXV0=
@@ -954,7 +957,7 @@ The coproduct is the dual construction to the product, obtained from reversing a
   \label{fig:coproductDiagram}
   \end{figure}
 
-\textbf{Poly} also has all coproducts. The coproduct $p+q$ of any $p$ and $q$ is defined by taking the coproduct on just the positions and the \textit{projection} on the directions. Again, consider the analogy with high-school algebra. Given two polynomials $p(y) = 4y^2$ and $q(y) = y^2 + 3y$, their sum is given by $(p + q)(y) \cong 4y^2 + y^2 + 3y \cong 5y^2 + 3y$. In this example, four of the positions with $2$ as a direction came from $p$ and one of them came from $q$, hence in the Agda code for it below, we pattern match on the resulting polynomials's position. As a shorthand, we use Agda's \mintinline{agda}{[_,_]} function.
+\textbf{Poly} has all coproducts, given any $p$ and $q$, the coproduct $p+q$ is defined by taking the (Set) coproduct on the positions and the \textit{projection} on the directions. Again, consider the analogy with high-school algebra. Given two polynomials $p(y) = 4y^2$ and $q(y) = y^2 + 3y$, their sum is given by $(p + q)(y) \cong 4y^2 + y^2 + 3y \cong 5y^2 + 3y$. In this example, four of the positions with $2$ as a direction came from $p$ and one of them came from $q$, hence in the Agda code for it below, we pattern match on the resulting polynomials's position. As a shorthand, we use Agda's \mintinline{agda}{[_,_]} function.
 
 \begin{minted}{agda}
 _+_ : Polynomial → Polynomial → Polynomial
@@ -1042,7 +1045,7 @@ i₂ = inj₂ ⇆ λ _ → id
 \end{minted}
 
 
-Given an object $c$ as the codomain of two functions $f$ and $g$, $[f,g]$ should be the (unique) factorization lens of f and g. This function is defined by using $f$ or $g$' behavior depending what the position corresponds to.
+Given an object $c$ as the codomain of two functions $f$ and $g$, $[f,g]$ should be the (unique) factorization lens of f and g. This function is defined by using $f$ or $g$'s behavior depending what the position corresponds to.
 
 
 \begin{minted}{agda}
@@ -1264,7 +1267,7 @@ p ◂ q = mkpoly pos dir
 infixl 27 _◂_
 \end{minted}
 
-This definition is heavily inspired by David Orion Girardo's implementation here \cite{daig} The key insight from his implementation is that the positions in the resulting polynomial are a pair, the first element of which is the same set as the postcomposed polynomial. This sticks closer to the idea that polynomials are in fact being composed. In terms of corolla forests, the composition product stacks trees on top of one another \textit{in every possible way}, with the left polynomial in the bottom. The resulting polynomial's directions at any given position is "all directions that reach a height of two". A visualization is given in Figure \ref{fig:compositionProductExample}.
+This definition is heavily inspired by David Orion Girardo's implementation here \cite{daig}. The key insight from his implementation is that the positions in the resulting polynomial are a pair, the first element of which is the same set as the postcomposed polynomial. This sticks closer to the idea that polynomials are in fact being composed. In terms of corolla forests, the composition product stacks trees on top of one another \textit{in every possible way}, with the left polynomial in the bottom. The resulting polynomial's directions at any given position is "all directions that reach a height of two". A visualization is given in Figure \ref{fig:compositionProductExample}.
 
 \begin{figure}[H]
   \[
@@ -1355,7 +1358,7 @@ This definition is heavily inspired by David Orion Girardo's implementation here
 
 \subsection{Monoid}
 % Show it forms a monoid with Y.
-The composition product is an important monoidal structure in \textbf{Poly}. It is not symmetric, like the previous three structures, but it also has an important interpretation in applications. It is also used in the definition of the exponential object.
+The composition product is an important monoidal structure in \textbf{Poly}. It is not symmetric, like the previous three structures, but it also has an important interpretation in dynamics. It is also used in the definition of the exponential object.
 The proofs of left and right unit are complete, but the proof for association contains a hole, that is obviously fillable, but contains some constant transports that needs to be taken care of. % but it has massive consequences from both a theoretical as well as application point of view. \todo{rewrite + explain why not here}
 The code exists in \texttt{Categorical/Poly/Monoidal/CompositionProduct}.
 
@@ -1380,7 +1383,7 @@ Again, it is possible to define a lens that goes to either side of the monoidal 
 
 \subsection{Composite power}
 Composing a polynomial with itself, \mintinline{agda}{p ◂ p}, a repeated amount of times can be done with \mintinline{agda}{compositePower}.
-Given the interpretation from figure \ref{fig:compositionProductExample} it builds a big tree of depth $n$ with all combinations of the polynomial rooting from each node. 
+Given the interpretation from figure \ref{fig:compositionProductExample} it builds a big tree of depth $n$ with all combinations of $p$ rooting from each node. 
 
 \begin{minted}{agda}
 compositePower : Polynomial → ℕ → Polynomial
@@ -1548,7 +1551,7 @@ EqualizedPosition = Σ (position p)
     \item Has the \textit{co}equalizer set of the map on directions of these lenses \textit{at their equalized positions}. Normally, the partially applied functions \texttt{mapDirection f posp} and \texttt{mapDirection g posp} would have different types, since the second argument (a direction in q) depends on on the values of \texttt{mapPosition f posp} and \texttt{mapPosition g posp}. But in this case, we know these values to be the same, since the map on positions is the equalizer map, so the partially applied maps on directions have the same type, which means they can be coequalized. Cubical has a construction for this, \texttt{SetCoequalizer}.
 \end{itemize}
 
-Before we can introduce the equalizer polynomial and lens, we must address an issue: in the Cubical setting, a value of type \texttt{SetCoequalizer} can only be constructed out of functions that target types that are sets in the HoTT sense, so types of truncation level 0. In our case, this means that the directions of our polynomials must be sets, which is not a guarantee we have in the \textbf{Poly} category we've been working with; we only guarantee that these polynomials' targeted sets have \textit{universe} level 0. To get around this, we work in a category that is identical to \textbf{Poly}, except the directions of the polynomials are guaranteed to be sets. This is the category \textbf{SetPoly}, where the objects are:
+Before we can introduce the equalizer polynomial and lens, we must address an issue: in the Cubical setting, a value of type \texttt{SetCoequalizer} can only be constructed out of functions that target types that are sets in the HoTT sense, so types of truncation level 0. In our case, this means that the directions of our polynomials must be sets, which is not a guarantee we have in the \textbf{Poly} category we have been working with; we only guarantee that these polynomials' targeted sets have \textit{universe} level 0. To get around this, we work in a category that is identical to \textbf{Poly}, except the directions of the polynomials are guaranteed to be sets. This is the category \textbf{SetPoly}, where the objects are:
 
 \begin{minted}{agda}
 record SetPolynomial : Set₁ where
@@ -1590,7 +1593,7 @@ Proving that this is in fact the equalizer of the \textbf{SetPoly} category is q
 
 \section{Various properties of polynomials}
 
-We went over the intuition for polynomial functors as algebraic polynomials the beginning of this chapter, and many of these properties have been formalized. For example, here's a proof that the sum of two constant polynomials is still constant, exercise 4.1 in the poly-book:
+We went over the intuition for polynomial functors as algebraic polynomials the beginning of this chapter, and many of these properties have been formalized. For example, here is a proof that the sum of two constant polynomials is still constant, exercise 4.1 in the poly-book:
 
 \begin{minted}{agda}
 isConstant : Polynomial → Type₁
@@ -1605,7 +1608,7 @@ constantClosedUnderPlus isConstantP isConstantQ (inj₂ y) = isConstantQ y
 \end{minted}
 
 Other proofs of this kind are provided in the files \texttt{Cubical/Proofs.agda} and 
-\texttt{Cubical/Various.agda}. Here's a list of them:
+\texttt{Cubical/Various.agda}. Here is a list of them:
 \begin{itemize}
     \item The coproduct is the generalized coproduct indexed by \underline{2}.
     \item The product is the generalized product indexed by \underline{2}.
