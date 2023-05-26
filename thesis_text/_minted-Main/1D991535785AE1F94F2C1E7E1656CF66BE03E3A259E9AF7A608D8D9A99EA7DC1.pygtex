@@ -7,7 +7,8 @@
 toggle\PYG{+w}{ }on\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }off
 toggle\PYG{+w}{ }off\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }on
 
-\PYG{c+c1}{\PYGZhy{}\PYGZhy{} | Commonly used where input to enclosed dynamical system where updateState only depends on current state.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} | Commonly used where input to enclosed dynamical system where}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}   updateState only depends on current state.}
 \PYG{n+nf}{ignoreUnitInput}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }B\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}A\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }B\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }A\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }⊤\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }B
 ignoreUnitInput\PYG{+w}{ }f\PYG{+w}{ }a\PYG{+w}{ }tt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }f\PYG{+w}{ }a
 

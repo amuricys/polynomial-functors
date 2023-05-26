@@ -16,12 +16,12 @@ LensChartCommute {p₁} {p₂} {p₃} {p₄} (w ⇆ w♯) (v ⇆ v♯) (f ⇉ f�
         mapDir≡ p≡ = (i : position p₁) → (x : direction p₃ (w i)) → f♭ i (w♯ i x) ≡ v♯ (f i) (subst (direction p₄) (sym (p≡ i)) (g♭ (w i) x))
 
 -- Horizontal composition
-horizontialComposition : {p₁ p₂ p₃ p₄ p₅ p₆ : Polynomial}
+horizontalComposition : {p₁ p₂ p₃ p₄ p₅ p₆ : Polynomial}
     (f : Chart p₁ p₂) (g : Chart p₃ p₄) (h : Chart p₂ p₅) (r : Chart p₄ p₆)
     (w : Lens p₁ p₃) (v : Lens p₂ p₄) (m : Lens p₅ p₆)
     → LensChartCommute w v f g → LensChartCommute v m h r
     → LensChartCommute w m (h ∘c  f) (r ∘c g)
-horizontialComposition {p₁} {p₂} {p₃} {p₄} {p₅} {p₆} f g h r w v m sq₁ sq₂ = mapPos≡ , mapDir≡
+horizontalComposition {p₁} {p₂} {p₃} {p₄} {p₅} {p₆} f g h r w v m sq₁ sq₂ = mapPos≡ , mapDir≡
     where
         mapPos≡ : (i : position p₁) → mapPosition m (Chart.mapPos h (Chart.mapPos f i)) ≡ Chart.mapPos r (Chart.mapPos g (mapPosition w i))
         mapPos≡ i = sq₂≡ ∙ cong (Chart.mapPos r) sq₁≡

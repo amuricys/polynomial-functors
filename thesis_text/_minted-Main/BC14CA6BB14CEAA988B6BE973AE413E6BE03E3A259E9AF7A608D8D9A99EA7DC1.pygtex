@@ -1,0 +1,17 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{binaryProducts}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Cartesian.BinaryProducts\PYG{+w}{ }ChartCat
+binaryProducts\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }product\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }prod\PYG{+w}{ }\PYG{o}{\PYGZcb{}}
+
+\PYG{n+nf}{cartesian}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Cartesian.Cartesian\PYG{+w}{ }ChartCat
+cartesian\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }terminal\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }terminalOne\PYG{+w}{ };
+\PYG{+w}{                     }products\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }binaryProducts\PYG{+w}{ }\PYG{o}{\PYGZcb{}}
+
+\PYG{n+nf}{productMonoidal}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Monoidal\PYG{+w}{ }ChartCat
+productMonoidal
+\PYG{+w}{    }\PYG{o+ow}{=}\PYG{+w}{ }Cartesian.CartesianMonoidal.monoidal\PYG{+w}{ }ChartCat\PYG{+w}{ }cartesian
+
+\PYG{k+kr}{open}\PYG{+w}{ }\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n}{Categories.Category.Monoidal.Symmetric}\PYG{+w}{ }productMonoidal
+\PYG{n+nf}{productSymmetricMonoidal}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Symmetric
+productSymmetricMonoidal
+\PYG{+w}{    }\PYG{o+ow}{=}\PYG{+w}{ }Cartesian.CartesianSymmetricMonoidal.symmetric\PYG{+w}{ }ChartCat\PYG{+w}{ }cartesian
+\end{Verbatim}

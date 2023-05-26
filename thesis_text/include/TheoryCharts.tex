@@ -170,8 +170,7 @@ unique _ = chart≡ refl refl
 
 
 \section{Product}
-The product of \textbf{Chart} is the parallel product \mintinline{agda}{⊗} defined in \ref{section:parallelProduct}. Since the parallel product forms a monoid with Y, it makes sense that that the terminal object is Y.
-
+The product of \textbf{Chart} is also not the same product as \textbf{Poly}; instead it is the parallel product \mintinline{agda}{⊗} defined in \ref{section:parallelProduct}.
 The projections from \mintinline{agda}{p ⊗ q} is defined by projecting both the position and directions.
 
 \begin{minted}{agda}
@@ -181,7 +180,6 @@ The projections from \mintinline{agda}{p ⊗ q} is defined by projecting both th
 π₂ : {p q : Polynomial} → Chart (p ⊗ q) q
 π₂ = snd ⇉ λ i → snd
 \end{minted}
-\todo{monoid?}
 The factorization chart is given by running the two functions in parallel on both the map on position and map on directions.
 
 \begin{minted}{agda}
@@ -189,7 +187,28 @@ The factorization chart is given by running the two functions in parallel on bot
 ⟨ f ⇉ f♭ , g ⇉ g♭ ⟩ = (λ i → (f i , g i)) ⇉ (λ i d → f♭ i d , g♭ i d)
 \end{minted}
 
-The proofs for commutation is given as \mintinline{agda}{refl}, and uniqueness is given by slightly longer proof using a lemma. Full code can be found in \textbf{Categorical/Chart/Product.agda}.
+The proofs for commutation is given as \mintinline{agda}{refl}, and uniqueness is given by slightly longer proof using a lemma. Full code can be found in \texttt{Categorical/Chart/Product.agda}.
+
+\subsection{Monoid}
+
+\textbf{Chart} of course also forms a symmetric monoidal category with respect to the product and Y, and we prove this by again using the \texttt{agda-categories} helpers, similarly to \textbf{Poly}.
+\begin{minted}{agda}
+binaryProducts : Cartesian.BinaryProducts ChartCat
+binaryProducts = record { product = prod }
+
+cartesian : Cartesian.Cartesian ChartCat
+cartesian = record { terminal = terminalY ; 
+                     products = binaryProducts }
+
+productMonoidal : Monoidal ChartCat
+productMonoidal 
+    = Cartesian.CartesianMonoidal.monoidal ChartCat cartesian
+
+open import Categories.Category.Monoidal.Symmetric productMonoidal
+productSymmetricMonoidal : Symmetric
+productSymmetricMonoidal 
+    = Cartesian.CartesianSymmetricMonoidal.symmetric ChartCat cartesian
+\end{minted}
 
 
 \section{Coproduct}
@@ -204,8 +223,11 @@ i₂ = inj₂ ⇉ λ _ → id
 [_,_]c : {p q r : Polynomial} → Chart p r → Chart q r → Chart (p + q) r
 [ f ⇉ f♭ , g ⇉ g♭ ]c = [ f , g ] ⇉ [ f♭ , g♭ ]
 \end{minted}
-\todo{monoid?}
-The proofs are also similar, and can be found in \textbf{Categorical/Chart/Coproduct.agda}.
+The proofs are also similar, and can be found in \texttt{Categorical/Chart/Coproduct.agda}.
+
+\subsection{Monoid}
+
+Again, the coproduct with the initial object form a symmetric monoidal category, and we use the same tactic as before to define it. The code can be found in \texttt{Categorical/Chart/Monoidal/Coproduct.agda}.
 
 \section{Commuting square between lenses and charts}
 One interesting thing about charts is how they behave together with lenses. This behavior can be condensed into a square of four polynomials, with lenses and charts going between them, such that the square commutes. Such a square is shown in figure \ref{fig:commutingSquare}.
@@ -236,7 +258,7 @@ One interesting thing about charts is how they behave together with lenses. This
 
 For a square to commute there are two requirements. The first requirement is that the map on positions commute. Starting at a position in $p_1$, following $w$ and then $g$, ending up at a position in $p_4$, should be the same as following $f$ and then $v$. 
 
-The second requirement is that the map on directions commute. That is, $w_\sharp$ followed by $f_b$ should be the same as $g_b$ followed by $v_\sharp$. Since these functions depend on the different map on positions there are some plumbing to make this type correct, which can be seen in the Agda definition down below. Furthermore, the type expressing the map on directions commuting depends on the map on positions commuting. This explains the use of a Σ-type as well as the use of \texttt{subst} to make the types match. Here's the code for this:
+The second requirement is that the map on directions commute. That is, $w\sharp$ followed by $f\flat$ should be the same as $g\flat$ followed by $v\sharp$. Since these functions depend on the different map on positions there are some plumbing to make this type correct, which can be seen in the Agda definition down below. Furthermore, the type expressing the map on directions commuting depends on the map on positions commuting. This explains the use of a Σ-type as well as the use of \texttt{subst} to make the types match. Here's the code for this:
 \begin{minted}{agda}
 LensChartCommute : {p₁ p₂ p₃ p₄ : Polynomial} (w : Lens p₁ p₃) (v : Lens p₂ p₄)
     (f : Chart p₁ p₂) (g : Chart p₃ p₄) → Type
@@ -265,20 +287,20 @@ Commuting squares are also composable in two different ways, horizontally and ve
         {p_1} && {p_2} && {p_5} \\
         \\
         {p_3} && {p_4} && {p_6}
-        \arrow["{f_b}", shift left=2, from=1-1, to=1-3]
-        \arrow["{h_b}", shift left=2, from=1-3, to=1-5]
+        \arrow["{f\flat}", shift left=2, from=1-1, to=1-3]
+        \arrow["{h\flat}", shift left=2, from=1-3, to=1-5]
         \arrow["h"', shift right=2, from=1-3, to=1-5]
-        \arrow["{r_b}", shift left=2, from=3-3, to=3-5]
+        \arrow["{r\flat}", shift left=2, from=3-3, to=3-5]
         \arrow["r"', shift right=2, from=3-3, to=3-5]
-        \arrow["{g_b}", shift left=2, from=3-1, to=3-3]
+        \arrow["{g\flat}", shift left=2, from=3-1, to=3-3]
         \arrow["g"', shift right=2, from=3-1, to=3-3]
         \arrow["f"', shift right=2, from=1-1, to=1-3]
         \arrow["w"', shift right=2, from=1-1, to=3-1]
-        \arrow["{w_\sharp}"', shift right=2, from=3-1, to=1-1]
+        \arrow["{w\sharp}"', shift right=2, from=3-1, to=1-1]
         \arrow["v"', shift right=2, from=1-3, to=3-3]
-        \arrow["{v_\sharp}"', shift right=2, from=3-3, to=1-3]
+        \arrow["{v\sharp}"', shift right=2, from=3-3, to=1-3]
         \arrow["m"', shift right=2, from=1-5, to=3-5]
-        \arrow["{m_\sharp}"', shift right=2, from=3-5, to=1-5]
+        \arrow["{m\sharp}"', shift right=2, from=3-5, to=1-5]
     \end{tikzcd}\]
 
     \caption{Horizontal composition, done through the $h$ and $r$ charts.}
@@ -295,20 +317,20 @@ Commuting squares are also composable in two different ways, horizontally and ve
 	{p_3} && {p_4} \\
 	\\
 	{p_5} && {p_6}
-	\arrow["{f_b}", shift left=2, from=1-1, to=1-3]
-	\arrow["{g_b}", shift left=2, from=3-1, to=3-3]
+	\arrow["{f\flat}", shift left=2, from=1-1, to=1-3]
+	\arrow["{g\flat}", shift left=2, from=3-1, to=3-3]
 	\arrow["g"', shift right=2, from=3-1, to=3-3]
 	\arrow["f"', shift right=2, from=1-1, to=1-3]
 	\arrow["w"', shift right=2, from=1-1, to=3-1]
-	\arrow["{w_\sharp}"', shift right=2, from=3-1, to=1-1]
+	\arrow["{w\sharp}"', shift right=2, from=3-1, to=1-1]
 	\arrow["v"', shift right=2, from=1-3, to=3-3]
-	\arrow["{v_\sharp}"', shift right=2, from=3-3, to=1-3]
+	\arrow["{v\sharp}"', shift right=2, from=3-3, to=1-3]
 	\arrow["r"', shift right=2, from=5-1, to=5-3]
-	\arrow["{r_b}", shift left=2, from=5-1, to=5-3]
+	\arrow["{r\flat}", shift left=2, from=5-1, to=5-3]
 	\arrow["m"', shift right=2, from=3-3, to=5-3]
-	\arrow["{m_\sharp}"', shift right=2, from=5-3, to=3-3]
+	\arrow["{m\sharp}"', shift right=2, from=5-3, to=3-3]
 	\arrow["h"', shift right=2, from=3-1, to=5-1]
-	\arrow["{h_\sharp}"', shift right=2, from=5-1, to=3-1]
+	\arrow["{h\sharp}"', shift right=2, from=5-1, to=3-1]
 \end{tikzcd}\]
 
     \caption{Vertical composition, done through the $h$ and $m$ lenses.}

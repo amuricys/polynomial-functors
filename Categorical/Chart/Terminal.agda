@@ -13,8 +13,8 @@ open import Data.Unit
 unique : {p : Polynomial} (f : Chart p Y) → chartToOne ≡ f
 unique f = chart≡ refl refl
 
-oneIsTerminal : IsTerminal Y 
-oneIsTerminal = record { ! = chartToOne ; !-unique = unique }
+YIsTerminal : IsTerminal Y 
+YIsTerminal = record { ! = chartToOne ; !-unique = unique }
 
-terminalOne : Terminal
-terminalOne = record { ⊤ = Y ; ⊤-is-terminal = oneIsTerminal }
+terminalY : Terminal
+terminalY = record { ⊤ = Y ; ⊤-is-terminal = YIsTerminal }
