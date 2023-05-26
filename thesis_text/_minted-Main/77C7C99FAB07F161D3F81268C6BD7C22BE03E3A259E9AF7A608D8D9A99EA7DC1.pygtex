@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{compositePower}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ℕ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial
+compositePower\PYG{+w}{ }p\PYG{+w}{ }zero\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }compositionUnit
+compositePower\PYG{+w}{ }p\PYG{+w}{ }\PYG{o}{(}suc\PYG{+w}{ }n\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }p\PYG{+w}{ }◂\PYG{+w}{ }\PYG{o}{(}compositePower\PYG{+w}{ }p\PYG{+w}{ }n\PYG{o}{)}
+\end{Verbatim}
