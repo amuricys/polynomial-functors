@@ -33,6 +33,10 @@ recoverLeft : (x : ⊤ ⊎ B) → (x ≡ inj₁ tt → A) → (A ⊎ B)
 recoverLeft (inj₁ tt) generateA = inj₁ (generateA refl)
 recoverLeft (inj₂ b) generateA = inj₂ b
 
+recoverLeft' : (x : ⊤ ⊎ B) → ([ (λ _ → ⊤) , (λ _ → ⊥) ] x → A) → (A ⊎ B)
+recoverLeft' (inj₁ tt) generateA = inj₁ (generateA tt) 
+recoverLeft' (inj₂ b) generateA = inj₂ b -- inj₂ b
+
 recoverRight : (x : A ⊎ ⊤) → (x ≡ inj₂ tt → B) → (A ⊎ B)
 recoverRight (inj₁ a) generateB = inj₁ a
 recoverRight (inj₂ tt) generateB = inj₂ (generateB refl)
@@ -40,6 +44,10 @@ recoverRight (inj₂ tt) generateB = inj₂ (generateB refl)
 keepLeft : (x : A ⊎ B) → (forgetLeft x ≡ inj₁ tt) → A
 keepLeft (inj₁ a) pr = a
 keepLeft (inj₂ b) pr = absurd (⊎-disjoint⁻ pr)
+
+keepLeft' : (x : A ⊎ B) → ([ (λ _ → ⊤) , (λ _ → ⊥) ] (forgetLeft x)) → A
+keepLeft' (inj₁ a) pr = a -- a
+keepLeft' (inj₂ b) () -- pr = {!   !} -- absurd (⊎-disjoint⁻ pr)
 
 keepRight : (x : A ⊎ B) → (forgetRight x ≡ inj₂ tt) → B
 keepRight (inj₁ a) pr = absurd (⊎-disjoint pr)
@@ -49,6 +57,10 @@ recoverForgetLeft : {x : A ⊎ B} → recoverLeft (forgetLeft x) (keepLeft x) �
 recoverForgetLeft {x = inj₁ x} = refl
 recoverForgetLeft {x = inj₂ y} = refl
 
+recoverForgetLeft' : {x : A ⊎ B} → recoverLeft' (forgetLeft x) (keepLeft' x) ≡ x
+recoverForgetLeft' {x = inj₁ x} = refl -- refl
+recoverForgetLeft' {x = inj₂ y} = refl -- refl
+
 recoverForgetRight : {x : A ⊎ B} → recoverRight (forgetRight x) (keepRight x) ≡ x
 recoverForgetRight {x = inj₁ x} = refl
 recoverForgetRight {x = inj₂ y} = refl
@@ -56,6 +68,14 @@ recoverForgetRight {x = inj₂ y} = refl
 forgetRecoverLeft : {x : ⊤ ⊎ B} {f : x ≡ inj₁ tt → A} → forgetLeft (recoverLeft x f) ≡ x
 forgetRecoverLeft {x = inj₁ tt} = refl
 forgetRecoverLeft {x = inj₂ y} = refl
+
+forgetRecoverLeft' : {x : ⊤ ⊎ B} {f : [ (λ _ → ⊤) , (λ _ → ⊥) ] x → A} → forgetLeft (recoverLeft' x f) ≡ x
+forgetRecoverLeft' {x = inj₁ tt} = refl -- refl
+forgetRecoverLeft' {x = inj₂ y} = refl 
+
+forgetRecoverLeft2' : (x : ⊤ ⊎ B) (f : [ (λ _ → ⊤) , (λ _ → ⊥) ] x → A) → forgetLeft (recoverLeft' x f) ≡ x
+forgetRecoverLeft2' (inj₁ tt) _ = refl -- refl
+forgetRecoverLeft2' (inj₂ y) _ = refl 
 
 forgetRecoverLeft2 : (x : ⊤ ⊎ B) (f : x ≡ inj₁ tt → A) → forgetLeft (recoverLeft x f) ≡ x
 forgetRecoverLeft2 (inj₁ tt) f = refl
@@ -71,6 +91,11 @@ lemma {B} {p = p} = {! isEmbedding-inl   !}
 keepRecoverLeft : {x : ⊤ ⊎ B} → {f : x ≡ inj₁ tt → B} → keepLeft (recoverLeft x f) ≡ subst (λ a → a ≡ inj₁ tt → B) (sym forgetRecoverLeft) f
 keepRecoverLeft {x = inj₁ tt} {f} = funExt (λ x1 → cong f lemma) ∙ sym (transportRefl f)
 keepRecoverLeft {x = inj₂ y} {f} = funExt (λ x → absurd (⊎-disjoint⁻ x)) ∙ sym (transportRefl f)
+
+keepRecoverLeft' : {x : ⊤ ⊎ B} → {f : [ (λ _ → ⊤) , (λ _ → ⊥) ] x → B} → keepLeft' (recoverLeft' x f) ≡ subst (λ a → ([ (λ _ → ⊤) , (λ _ → ⊥) ] a) → B) (sym (forgetRecoverLeft' {x = x})) f -- subst (λ a → a ≡ inj₁ tt → B) (sym forgetRecoverLeft) f
+keepRecoverLeft' {x = inj₁ tt} {f} = funExt (λ tt → sym (transportRefl (f tt))) -- funExt (λ x1 → cong f lemma) ∙ sym (transportRefl f)
+keepRecoverLeft' {x = inj₂ y} {f} = funExt (λ ()) -- funExt (λ x → absurd (⊎-disjoint⁻ x)) ∙ sym (transportRefl f)
+
 
 -- keepRecoverLeft2 : {x : ⊤ ⊎ B} {f : x ≡ inj₁ tt → B} {a : forgetLeft (recoverLeft x f) ≡ inj₁ tt}
 --     → keepLeft (recoverLeft x f) a ≡ f (subst (λ h → h ≡ inj₁ tt) forgetRecoverLeft a)

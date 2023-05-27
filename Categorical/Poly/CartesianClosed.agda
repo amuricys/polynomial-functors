@@ -202,118 +202,273 @@ two' = π≡ (funExt (λ posP → π≡ (funExt (λ posQ → yoneda))))
 -- Should be possible to fill holes.
 three' : ((i : position p) (j : position q) → (r ◂ Y + Constant (direction q j)) ⦅ direction p i ⦆)
        ≡ ((i : position p) (j : position q) → Σ[ k ∈ position r ] ((direction r k) → (direction p i) ⊎ (direction q j)))
-three' {p} {q} {r} = π≡ (funExt λ posP → π≡ (funExt λ posQ → isoToPath (iso (go posP posQ) (back posP posQ) (λ b → ΣPathP (refl , funExt (λ dir → pr))) λ a → backProof posP posQ a )))
+three' {p} {q} {r} = π≡ (funExt (λ x → π≡ (funExt (λ y → lemma x y)))) -- π≡ (funExt λ posP → π≡ (funExt λ posQ → isoToPath (iso (go posP posQ) (back posP posQ) (λ b → ΣPathP (refl , funExt (λ dir → pr))) λ a → backProof posP posQ a )))
     where
-        go : (posP : position p) (posQ : position q) → (r ◂ Y + Constant (direction q posQ)) ⦅ direction p posP ⦆ → Σ-syntax (position r) (λ k → direction r k → direction p posP ⊎ direction q posQ)
-        go posP posQ ((posR , snd₂) , snd₁) = posR  , λ dir → recoverLeft (snd₂ dir) λ pr → snd₁ (dir , toImpossibleRight pr)
-
-        back : (posP : position p) (posQ : position q) → Σ-syntax (position r) (λ k → direction r k → direction p posP ⊎ direction q posQ) → (r ◂ Y + Constant (direction q posQ)) ⦅ direction p posP ⦆
-        back posP posQ (posR , f) = (posR , λ x → forgetLeft (f x)) , λ {(dir , snd₁) → keepLeft (f dir) (fromImpossibleRight snd₁)  }
-
-        pr : {A B : Type} {x : A ⊎ B} → recoverLeft (forgetLeft x)
-            (λ pr →
-                keepLeft x (fromImpossibleRight (toImpossibleRight pr)))
-            ≡ x
-        pr {A} {B} {x} = cong (recoverLeft (forgetLeft x)) (funExt (λ y → cong (keepLeft x) toFromImpossibleRight)) ∙ recoverForgetLeft
-
-        backProof : (posP : position p) (posQ : position q) (a : (r ◂ Y + Constant (direction q posQ)) ⦅ direction p posP ⦆) → back posP posQ (go posP posQ a) ≡ a
-        backProof posP posQ ((posR , f) , g) =  ΣPathP (ΣPathP (refl , funExt (λ x → forgetRecoverLeft2 (f x) λ y → g (x , toImpossibleRight y)  )) ,  (toPathP (funExt (λ {(dir , pr) →  toProve dir pr  })))) 
+        lemma : (x : position p) (y : position q)
+            → (r ◂ Y + Constant (direction q y)) ⦅ direction p x ⦆
+            ≡ (Σ[ k ∈ position r ]  (direction r k → direction p x ⊎ direction q y))
+        lemma x y = yo ∙ cong (Σ (position r)) (funExt (λ z → lemma2 x y z)) -- yoyo ∙ π≡ (funExt (λ t → yoyoyo x y z t)))) --  toPathP {! !}
             where
-                theRightB : ∀ {dir : direction r posR} → forgetLeft (recoverLeft (f dir) (λ pr₁ → g (dir , toImpossibleRight pr₁))) ≡ inj₁ tt
-                theRightB {dir} = {! !}
-                lemma : ∀{a} → transp (λ i → direction p posP) i0 a ≡ a
-                lemma {a} = transportRefl a
-                lemma4 : ∀{dir : direction r posR} {a} {b} →
-                    keepLeft (recoverLeft (f (transp (λ i → direction r posR) i0 dir))
-                        (λ pr₁ →
-                           g
-                           ((transp (λ i → direction r posR) i0 dir) , toImpossibleRight pr₁)))
-                    a
-                    ≡
-                    keepLeft (recoverLeft (f dir)
-                        (λ pr₁ →
-                           g
-                           (dir , toImpossibleRight pr₁)))
-                    b
-                lemma4 = {!   !}
 
-                -- With all constant transp removed
-                toProve2 : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → 
-                    (keepLeft (recoverLeft (f dir) (λ pr₁ → g (dir , toImpossibleRight pr₁)))
-                    (fromImpossibleRight
-                        (subst [ (λ _ → ⊤) , (λ _ → ⊥) ] (sym $ forgetRecoverLeft2 (f dir) (λ y → g (dir , toImpossibleRight y))) pr)
-                    ))
-                    ≡ g (dir , pr)
-                toProve2 dir pr = {!   !}
+                yo : {A : Set} {B : A → Set} {C : (Σ A B) → Set} → (Σ (Σ A B) C) ≡ (Σ[ a ∈ A ] Σ[ b ∈ (B a) ] C (a , b)) --  Σ (Σ A B) C ≡ Σ[ a ∈ A ] (Σ[ b ∈ B ] (C a b))
+                yo {A} {B} {C} = isoToPath (iso go back (λ b → refl) λ a → refl)
+                    where
+                        go : Σ (Σ A B) C → Σ A (λ a → Σ (B a) (λ b → C (a , b)))
+                        go ((a , b) , c) = a , b , c
 
-                toProve3 : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) →
-                    keepLeft (recoverLeft (f (transport (λ i → direction r posR) dir))
-                        (λ pr₁ →
-                            g
-                            (transport (λ i → direction r posR) dir , toImpossibleRight pr₁)))
-                        (fromImpossibleRight
-                        (transport
-                            (λ i →
-                            [ (λ _ → ⊤) , (λ _ → ⊥) ]
-                            (forgetRecoverLeft2
-                                (f (transp (λ i₃ → direction r posR) (~ i) dir))
-                                (λ y →
-                                g
-                                (transp (λ i₃ → direction r posR) (~ i) dir , toImpossibleRight y))
-                                (~ i)))  pr))
-                        ≡
-                    keepLeft (recoverLeft (f dir) (λ pr₁ → g (dir , toImpossibleRight pr₁)))
-                        (fromImpossibleRight
-                        (transport
-                            (λ i →
-                            [ (λ _ → ⊤) , (λ _ → ⊥) ]
-                            (forgetRecoverLeft2 (f dir) (λ y → g (dir , toImpossibleRight y))
-                                (~ i)))
-                            pr))
-                toProve3 dir pr = {! refl  !}
-                toProve : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → transp (λ i → direction p posP) i0
-                    (keepLeft
-                    (recoverLeft (f (transp (λ i → direction r posR) i0 dir))
-                        (λ pr₁ →
-                        g
-                        (transp (λ i → direction r posR) i0 dir , toImpossibleRight pr₁)))
-                    (fromImpossibleRight
-                        (transp
-                        (λ i →
-                            [ (λ _ → ⊤) , (λ _ → ⊥) ]
-                            (forgetRecoverLeft2
-                            (f (transp (λ i₃ → direction r posR) (~ i) dir))
-                            (λ y →
-                                g
-                                (transp (λ i₃ → direction r posR) (~ i) dir , toImpossibleRight y))
-                            (~ i)))
-                        i0 pr)))
-                    ≡ g (dir , pr)
-                toProve dir pr = lemma ∙ toProve3 dir pr ∙ toProve2 dir pr
+                        back : Σ A (λ a → Σ (B a) (λ b → C (a , b))) → Σ (Σ A B) C
+                        back (a , b , c) = (a , b) , c
+
+                -- lemma2 = {!   !}
+
+
+                -- yoyo : {A B : Set} {C : (A → B) → Set} → Σ (A → B) C ≡ (A → Σ B ?) -- λ b → C λ x₁ → b) -- A → Σ B ? C
+                -- yoyo {A} {B} {C} = isoToPath (iso {!   !} {!   !} {!   !} {!   !})
+                --     where
+                --         go : Σ (A → B) C → A → Σ B (λ b → C (λ x₁ → b))
+                --         go (f , c) = λ a → (f a) , {! c  !}
+
+                -- yoyoyo : (x : position p) (y : position q) (z : position r) (t : direction r z) → Σ (⊤ ⊎ direction q y)
+                --     (λ b →
+                --         Σ (direction r z) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] b) →
+                --         direction p x)
+                --     ≡ (direction p x ⊎ direction q y)
+                -- yoyoyo xx y z t = isoToPath (iso go back {!   !} λ a → ΣPathP (forgetRecoverLeft , toPathP {!   !}))
+                --     where
+                --         go : Σ (⊤ ⊎ direction q y)
+                --             (λ b →
+                --                 Σ (direction r z) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] b) →
+                --                 direction p xx) →
+                --             direction p xx ⊎ direction q y
+                --         go (x , y) = recoverLeft x λ x₂ → y (t , toImpossibleRight  x₂)
+
+                --         back : direction p xx ⊎ direction q y →
+                --             Σ (⊤ ⊎ direction q y)
+                --             (λ b →
+                --                 Σ (direction r z) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] b) →
+                --                 direction p xx)
+                --         back dirs = (forgetLeft dirs) , λ x₁ → keepLeft dirs (fromImpossibleRight (snd x₁))
+
+                lemma2 : (x : position p) (y : position q) (z : position r) → Σ (direction r z → ⊤ ⊎ direction q y)
+                    (λ b →
+                        Σ (direction r z) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) →
+                        direction p x)
+                    ≡ (direction r z → direction p x ⊎ direction q y)
+                lemma2 x y z = isoToPath (iso go back firstthing λ a → ΣPathP ((funExt (λ x → forgetRecoverLeft2' (fst a x) λ x₃ → snd a (x , x₃))) , toPathP {!   !})) -- λ a → ΣPathP ({!   !} , toPathP (funExt (λ x → {!   !}))))
+                    where
+                        go : Σ (direction r z → ⊤ ⊎ direction q y)
+                            (λ b →
+                                Σ (direction r z) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) →
+                                direction p x) →
+                            direction r z → direction p x ⊎ direction q y
+                        go (fst₁ , c) a = recoverLeft' (fst₁ a) λ x → c (a , x) -- recoverLeft (fst₁ a) λ x → c (a , toImpossibleRight x)
+
+                        back : (direction r z → direction p x ⊎ direction q y) →
+                            Σ (direction r z → ⊤ ⊎ direction q y)
+                            (λ b →
+                                Σ (direction r z) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) →
+                                direction p x)
+                        back a = (λ x → forgetLeft (a x)) , λ {(x , b) → keepLeft' (a x) b} -- (λ x → forgetLeft (a x)) , λ {(x , b) → keepLeft (a x) (fromImpossibleRight b)}
+
+                        firstthing : (b : direction r z → direction p x ⊎ direction q y) →
+                            (λ a → recoverLeft' (forgetLeft (b a)) (λ x₃ → keepLeft' (b a) x₃))
+                            ≡ b
+                        firstthing ask = funExt (λ x → recoverForgetLeft') -- ∙ {!   !}
+
+                        yaya : (a : Σ (direction r z → ⊤ ⊎ direction q y)
+                            (λ b →
+                                Σ (direction r z) (λ a₁ → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a₁)) →
+                                direction p x)) → 
+                                                transport
+                                                    (λ i →
+                                                        Σ (direction r z)
+                                                        (λ a₁ →
+                                                            [ (λ _ → ⊤) , (λ _ → ⊥) ]
+                                                            (forgetRecoverLeft2' (proj₁ a a₁) (λ x₃ → snd a (a₁ , x₃)) i)) →
+                                                        direction p x)
+                                                    (λ { (x , b)
+                                                            → keepLeft' (recoverLeft' (proj₁ a x) (λ x₂ → snd a (x , x₂))) b
+                                                        })
+                                                    ≡ snd a
+
+
+                            --     transp
+                            -- (λ i →
+                            --     Σ (direction r z)
+                            --     (λ a₁ → [ (λ _ → ⊤) , (λ _ → ⊥) ] (forgetRecoverLeft' i)) →
+                            --     direction p x)
+                            -- i0
+                            -- (λ { (x , b)
+                            --         → keepLeft' (recoverLeft' (proj₁ a x) (λ x₂ → snd a (x , x₂))) b
+                            --     })
+                            -- ≡ snd a
+                        yaya a = {!   !} -- know it is possibleto get something like: transport difficultThing (snd a) ≡ snd a
+                                
+                                -- transport
+                        --         (λ i →
+                        --             Σ (direction r z)
+                        --             (λ a₁ →
+                        --                 [ (λ _ → ⊤) , (λ _ → ⊥) ]
+                        --                 (funExt (λ x₂ → forgetRecoverLeft') i a₁)) →
+                        --             direction p x)
+                        --         (λ { (x , b) → keepLeft' (go a x) b })
+                        --         ≡ snd a
+                        -- yaya = ?
+
+                        -- yaya : (a : Σ (direction r z → ⊤ ⊎ direction q y)
+                        --     (λ b →
+                        --         Σ (direction r z) (λ a₁ → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a₁)) →
+                        --         direction p x)) → (λ { (x , b) → keepLeft' (recoverLeft' (proj₁ a x) (λ x₂ → snd a (x , x₂))) b }) ≡ snd a
+                        -- yaya = ?
+
+                        -- somehole : (b : direction r z → direction p x ⊎ direction q y) → (λ a →
+                        --     recoverLeft (forgetLeft (b a))
+                        --     (λ x₂ →
+                        --         keepLeft (b a) (fromImpossibleRight (toImpossibleRight x₂))))
+                        --     ≡ b
+                        -- somehole b = {!   !}
+                        
+    --                     subst {! λ yo → (λ a →
+    --                             recoverLeft (forgetLeft (b a))
+    --                             (λ x₂ →
+    --                                 keepLeft (b a) (fromImpossibleRight (toImpossibleRight x₂))))
+    --                             ≡ b
+    -- !} toFromImpossibleRight {!   !}
+                        
+                        -- subst (λ t →  ((b : direction r z → direction p x ⊎ direction q y) →
+                        --     (λ a →
+                        --         recoverLeft (forgetLeft (b a))
+                        --         (λ x₂ →
+                        --             keepLeft (b a) t))
+                        --     ≡ b)) toFromImpossibleRight {!   !} --
+                        
+                        -- {! subst (t → ((b : direction r z → direction p x ⊎ direction q y) →
+                        --     (λ a →
+                        --         recoverLeft (forgetLeft (b a))
+                        --         (λ x₂ →
+                        --             keepLeft (b a) t))
+                        --     ≡ b)) toFromImpossibleRight ?  !}
+                -- lemma2 x y z = yoyo ∙ π≡ (funExt (λ t → yoyoyo x y z t))
+
+               -- yoyo : (x : position p) (y : position q) (z : position r)
+                --     →  (direction r z → direction p x ⊎ direction q y) ≡ Σ[ pr ∈ (direction r k → ⊤ ⊎ direction q y) ] 
+                -- yoyo = ?
+
+
+
+    -- where
+    --     go : (posP : position p) (posQ : position q) → (r ◂ Y + Constant (direction q posQ)) ⦅ direction p posP ⦆ → Σ-syntax (position r) (λ k → direction r k → direction p posP ⊎ direction q posQ)
+    --     go posP posQ ((posR , snd₂) , snd₁) = posR  , λ dir → recoverLeft (snd₂ dir) λ pr → snd₁ (dir , toImpossibleRight pr)
+
+    --     back : (posP : position p) (posQ : position q) → Σ-syntax (position r) (λ k → direction r k → direction p posP ⊎ direction q posQ) → (r ◂ Y + Constant (direction q posQ)) ⦅ direction p posP ⦆
+    --     back posP posQ (posR , f) = (posR , λ x → forgetLeft (f x)) , λ {(dir , snd₁) → keepLeft (f dir) (fromImpossibleRight snd₁)  }
+
+    --     pr : {A B : Type} {x : A ⊎ B} → recoverLeft (forgetLeft x)
+    --         (λ pr →
+    --             keepLeft x (fromImpossibleRight (toImpossibleRight pr)))
+    --         ≡ x
+    --     pr {A} {B} {x} = cong (recoverLeft (forgetLeft x)) (funExt (λ y → cong (keepLeft x) toFromImpossibleRight)) ∙ recoverForgetLeft
+
+    --     backProof : (posP : position p) (posQ : position q) (a : (r ◂ Y + Constant (direction q posQ)) ⦅ direction p posP ⦆) → back posP posQ (go posP posQ a) ≡ a
+    --     backProof posP posQ ((posR , f) , g) =  ΣPathP (ΣPathP (refl , funExt (λ x → forgetRecoverLeft2 (f x) λ y → g (x , toImpossibleRight y)  )) ,  (toPathP (funExt (λ {(dir , pr) →  toProve dir pr  })))) 
+    --         where
+    --             theRightB : ∀ {dir : direction r posR} → forgetLeft (recoverLeft (f dir) (λ pr₁ → g (dir , toImpossibleRight pr₁))) ≡ inj₁ tt
+    --             theRightB {dir} = {! !}
+
+    --             lemma : ∀{a} → transp (λ i → direction p posP) i0 a ≡ a
+    --             lemma {a} = transportRefl a
+    --             lemma4 : ∀{dir : direction r posR} {a} {b} →
+    --                 keepLeft (recoverLeft (f (transp (λ i → direction r posR) i0 dir))
+    --                     (λ pr₁ →
+    --                        g
+    --                        ((transp (λ i → direction r posR) i0 dir) , toImpossibleRight pr₁)))
+    --                 a
+    --                 ≡
+    --                 keepLeft (recoverLeft (f dir)
+    --                     (λ pr₁ →
+    --                        g
+    --                        (dir , toImpossibleRight pr₁)))
+    --                 b
+    --             lemma4 = {!   !}
+
+    --             -- With all constant transp removed
+    --             toProve2 : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → 
+    --                 (keepLeft (recoverLeft (f dir) (λ pr₁ → g (dir , toImpossibleRight pr₁)))
+    --                 (fromImpossibleRight
+    --                     (subst [ (λ _ → ⊤) , (λ _ → ⊥) ] (sym $ forgetRecoverLeft2 (f dir) (λ y → g (dir , toImpossibleRight y))) pr)
+    --                 ))
+    --                 ≡ g (dir , pr)
+    --             toProve2 dir pr = {!   !}
+
+    --             toProve3 : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) →
+    --                 keepLeft (recoverLeft (f (transport (λ i → direction r posR) dir))
+    --                     (λ pr₁ →
+    --                         g
+    --                         (transport (λ i → direction r posR) dir , toImpossibleRight pr₁)))
+    --                     (fromImpossibleRight
+    --                     (transport
+    --                         (λ i →
+    --                         [ (λ _ → ⊤) , (λ _ → ⊥) ]
+    --                         (forgetRecoverLeft2
+    --                             (f (transp (λ i₃ → direction r posR) (~ i) dir))
+    --                             (λ y →
+    --                             g
+    --                             (transp (λ i₃ → direction r posR) (~ i) dir , toImpossibleRight y))
+    --                             (~ i)))  pr))
+    --                     ≡
+    --                 keepLeft (recoverLeft (f dir) (λ pr₁ → g (dir , toImpossibleRight pr₁)))
+    --                     (fromImpossibleRight
+    --                     (transport
+    --                         (λ i →
+    --                         [ (λ _ → ⊤) , (λ _ → ⊥) ]
+    --                         (forgetRecoverLeft2 (f dir) (λ y → g (dir , toImpossibleRight y))
+    --                             (~ i)))
+    --                         pr))
+    --             toProve3 dir pr = {! refl  !}
+
+    --             toProve : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → transp (λ i → direction p posP) i0
+    --                 (keepLeft
+    --                 (recoverLeft (f (transp (λ i → direction r posR) i0 dir))
+    --                     (λ pr₁ →
+    --                     g
+    --                     (transp (λ i → direction r posR) i0 dir , toImpossibleRight pr₁)))
+    --                 (fromImpossibleRight
+    --                     (transp
+    --                     (λ i →
+    --                         [ (λ _ → ⊤) , (λ _ → ⊥) ]
+    --                         (forgetRecoverLeft2
+    --                         (f (transp (λ i₃ → direction r posR) (~ i) dir))
+    --                         (λ y →
+    --                             g
+    --                             (transp (λ i₃ → direction r posR) (~ i) dir , toImpossibleRight y))
+    --                         (~ i)))
+    --                     i0 pr)))
+    --                 ≡ g (dir , pr)
+    --             toProve dir pr = lemma ∙ toProve3 dir pr ∙ toProve2 dir pr
 
                 
 
-                -- toProve3 : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → 
+    --             -- toProve3 : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → 
 
-                --     (λ pr₁ → g (dir , toImpossibleRight pr₁))
-                --     (subst (λ x₂ → x₂ ≡ inj₁ tt) forgetRecoverLeft a)
-                --     (fromImpossibleRight
-                --         (transp (λ i → [ (λ _ → ⊤) , (λ _ → ⊥) ] (forgetRecoverLeft2 (f dir) (λ y → g (dir , toImpossibleRight y)) (~ i))) i0 pr)
-                --     )
-                --     ≡ g (dir , pr)
-                -- toProve3 dir pr = {!   !} ∙ {!   !}
+    --             --     (λ pr₁ → g (dir , toImpossibleRight pr₁))
+    --             --     (subst (λ x₂ → x₂ ≡ inj₁ tt) forgetRecoverLeft a)
+    --             --     (fromImpossibleRight
+    --             --         (transp (λ i → [ (λ _ → ⊤) , (λ _ → ⊥) ] (forgetRecoverLeft2 (f dir) (λ y → g (dir , toImpossibleRight y)) (~ i))) i0 pr)
+    --             --     )
+    --             --     ≡ g (dir , pr)
+    --             -- toProve3 dir pr = {!   !} ∙ {!   !}
 
-                -- toProve : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → transp (λ i → direction p posP) i0
-                --     (keepLeft
-                --     (recoverLeft (f (transp (λ i → direction r posR) i0 dir))
-                --         (λ pr₁ →
-                --         g
-                --         (transp (λ i → direction r posR) i0 dir , toImpossibleRight pr₁)))
-                --     (fromImpossibleRight
-                --         (transp (λ i → [ (λ _ → ⊤) , (λ _ → ⊥) ] (forgetRecoverLeft {x = {!   !}} (~ i)))
-                --         i0 pr)))
-                --     ≡ g (dir , pr)
-                -- toProve = {!   !}
+    --             -- toProve : (dir : direction r posR) (pr : [ (λ _ → ⊤) , (λ _ → ⊥) ] (f dir)) → transp (λ i → direction p posP) i0
+    --             --     (keepLeft
+    --             --     (recoverLeft (f (transp (λ i → direction r posR) i0 dir))
+    --             --         (λ pr₁ →
+    --             --         g
+    --             --         (transp (λ i → direction r posR) i0 dir , toImpossibleRight pr₁)))
+    --             --     (fromImpossibleRight
+    --             --         (transp (λ i → [ (λ _ → ⊤) , (λ _ → ⊥) ] (forgetRecoverLeft {x = {!   !}} (~ i)))
+    --             --         i0 pr)))
+    --             --     ≡ g (dir , pr)
+    --             -- toProve = {!   !}
                 
 
 
