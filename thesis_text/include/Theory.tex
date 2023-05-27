@@ -1490,7 +1490,7 @@ eval' : {p q : Polynomial} → Lens ((q ^ p) * p) q
 eval' {p} {q} = subst (λ x → x) path idLens'
     where
         path : Lens (q ^ p) (q ^ p) ≡ Lens (q ^ p * p) q
-        path = (chain' {q ^ p} {p} {q})
+        path = (cartesianClosed {q ^ p} {p} {q})
 
         idLens' : Lens (q ^ p) (q ^ p)
         idLens' = idLens {q ^ p}

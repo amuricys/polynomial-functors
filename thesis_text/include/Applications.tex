@@ -340,7 +340,7 @@ haltingEmitter A B = mkpoly (A ⊎ B) halting
           halting (inj₁ _) = ⊥
           halting (inj₂ _) = ⊤
 \end{minted}
-    A system inside this interface takes no inputs in a different, more strict sense: it is not that it does not receive any outside information, like the \texttt{emitter}, but rather that any use of it must account for the case when an input cannot be produce.
+    A system inside this interface takes no inputs in a different, more strict sense: it is not that it does not receive any outside information, like the \texttt{emitter}, but rather that any use of it must account for the case when an input cannot be produced.
     \item Taking the parallel product of two systems. Recall that the parallel product is an operation on objects (polynomials) but it also it is also possible to construct a canonical lens from two lenses $f : A \rightarrow C$ and $g : B \rightarrow D$ of type $\langle f \otimes g \rangle : A \otimes B \rightarrow C \otimes D$. In the context of systems \textit{being} morphisms, this corresponds to putting them "in parallel" and giving rise to a new system, with both state spaces, interfaces and behaviors simultaneously.
     \begin{minted}{agda}
 _&&&_ : DynamicalSystem → DynamicalSystem → DynamicalSystem
@@ -597,7 +597,7 @@ record MealyMachine {State Input Output : Set} : Set where
         updateRead : State → Input → (State × Output)
 \end{minted}
 
-And both can be shown to be equal to the aforementioned lenses. The proof for the Moore machine is trivial, while the Mealy one is more complex - there is an attempt at proving this isomorphism that has a hole, again due to difficulty in handling pattern matching on sum types during normalization. This code can be found in \texttt{LensIsMooreMachine.agda} and \texttt{LensIsMealyMachine.agda}
+And both can be shown to be equal to the aforementioned lenses. The proof for the Moore machine is trivial, while the Mealy one is more complex - there is an attempt at proving this isomorphism that has a hole, again due to difficulty in handling pattern matching on sum types during normalization. This code can be found in \texttt{LensIsMooreMachine.agda} and \texttt{LensIsMealyMachine.agda}.
 
 \subsubsection{Deterministic finite automaton}
 A deterministic finite state automaton (DFA) is also a special kind of lens, the lens to the monomial $2y^{alphabet}$. A DFA can be defined as:
@@ -711,7 +711,7 @@ processorInterface = (mkpoly ProcessorOutput procInputFromOutput)
 
 The \texttt{ProcessorState} type is a dummy type, since there will be no Turing program written, so it is fine to represent the state as a simple natural number. The \texttt{procInputFromOutput} function is capturing the idea that once the processor outputs \texttt{halt}, it accepts only a mindless input with no meaning. This could also be represented as the empty type, as in NO input, but it becomes somewhat harder to synchronize with the tape's own possible inputs, as will be demonstrated next.
 
-Now the same is done for the tape
+Now the analogous types are provided for the tape:
 
 \begin{minted}{agda}
 data TapeInput : Set where
@@ -742,7 +742,7 @@ The tape's associated types and polynomial are more complex. There are a few thi
 
 Firstly, the tape does in fact not accept any more inputs when it is outputting a halting state. The reason it can get away with this, but not the processor, is that the processor \textit{decides} when to halt the program, and so its output of \texttt{halt} needs to reach the tape - for that, at least one more input is needed.
 
-Second, the tape state contains \textit{only} the $\text{A}^{\mathbb{Z}}$ part of the diagram, and not the notion of which index it is at. The trick is to always consider the index to be zero, and treat the move directions as post composing the tape with an increment or decrement function. Since the tape behavior is always the same for any Turing machine, we provide it:
+Second, the tape state contains \textit{only} the $\text{A}^{\mathbb{Z}}$ part of the diagram, and not the notion of which index it is at. The trick is to always consider the index to be zero, and treat the move directions as post composing the tape with an increment or decrement function. This idea comes from the book's associated YouTube lectures. Since the tape behavior is always the same for any Turing machine, we provide it:
 
 \begin{minted}{agda}
 tapeBehavior : Lens (selfMonomial TapeState) tapeInterface
@@ -765,7 +765,7 @@ tapeBehavior =
           update (go tapeAt) halt = halt tapeAt
 \end{minted}
 
-The idea of postcomposing with an increment/decrement operation comes from the book's associated YouTube lectures. Finally, there is the need to parallel-productize the two systems together and then wire them, finding a suitable run-time representation for the tape state. We chose a vector that represents the indices 0-255 of it.
+Finally, there is the need to parallel-productize the two systems together and then wire them, finding a suitable run-time representation for the tape state. We chose a vector that represents the indices 0-255 of it.
 
 \begin{minted}[escapeinside=||]{agda}
 tape : DynamicalSystem
@@ -809,7 +809,7 @@ Unfortunately, not all the code in this thesis could be kept in Agda, since it w
 \begin{itemize}
     \item A command-line interface library for running the continuous-time systems, since each of them requires different parameters, and using the \texttt{optparse-applicative} \cite{optparse} library.
     \item A plotting library, which renders each system as a collection of values of the system at a sequence of timsteps, written using the \texttt{Chart} \cite{chart-lib} library (not to be confused, of course, with the Chart arrow between polynomials).
-    \item A matrix-multiplication library with a single function which takes a list-of-lists representation of a matrix and returns its pseudoinverse. This is needed for the last example. Taking the pseudoinverse of a matrix is a costly operation, and there was an attempt to do it in Agda, but the associated proofs were not trivial and the performance was prohibitively slow. Therefore, we outsource matrix inversion to the \texttt{hmatrix} \cite{hmatrix} Haskell library, which relies on underlying BLAS \cite{blas} algorithms for speed, while passing \texttt{trustMe} proofs to guarantee matrix sizes at the Agda level.
+    \item A matrix-inversion library with a single function which takes a list-of-lists representation of a matrix and returns its pseudoinverse. This is needed for the last example. Taking the pseudoinverse of a matrix is a costly operation, and there was an attempt to do it in Agda, but the associated proofs were not trivial and the performance was prohibitively slow. Therefore, we outsource matrix inversion to the \texttt{hmatrix} \cite{hmatrix} Haskell library, which relies on underlying BLAS \cite{blas} algorithms for speed, while passing \texttt{trustMe} proofs to guarantee matrix sizes at the Agda level.
 \end{itemize}
 For more information on this supporting code, see the Appendix \ref{app:haskell}.
 With this context, we move on the the systems in question.
@@ -1043,7 +1043,7 @@ The two examples given in this section are closed systems, meaning they take no 
 
 \begin{figure}
     \centering
-    \includegraphics{figure/hodgkinhuxley.png}
+    \includegraphics[width=\textwidth]{figure/x25.png}
     \caption{Analogy schematic of a neuronal membrane modeled as a circuit, from the book Neuronal Dynamics.}
     \label{fig:hodgkinhuxleyschematic}
 \end{figure}
@@ -1114,7 +1114,7 @@ Notice the constant driven input current of 10nA. An example run of the system u
 
 Since this is a system with input, however, we can exploit this in order to do parameter variation: if we want to see how the system's dynamics vary with a change in parameters that is comparatively slow, we can create a new system whose responsibility is to output the changing current.
 
-Adding this is simple: we take our finished Hodgkin-Huxley system and parallel-product it with a new system whose only responsibility is to grow its own output at a rate slower than HH's. This "current grower" system is so simple we inline it, using the helper \texttt{functionToDynamicalSystem}. It could have been implemented in other ways - and in fact, this could be its own investigation, like how changing parameters quickly/slowly/exponentially or whatever, could landing systems in different dynamics landscapes. We choose a simple ticking, linear increase at each timestep here.
+Adding this is simple: we take our finished Hodgkin-Huxley system and parallel-product it with a new system whose only responsibility is to grow its own output at a rate slower than HH's. This "current grower" system is so simple we inline it, using the helper \texttt{functionToDynamicalSystem}. It could have been implemented in other ways - and in fact, this could be its own investigation, like how changing parameters quickly/slowly/exponentially or whatever, could land systems in different dynamics landscapes. We choose a simple ticking, linear increase at each timestep here.
 
 \begin{minted}{agda}
 preHHWithInput : ℝ → DynamicalSystem
@@ -1145,7 +1145,7 @@ hhSeqWithInput dt = run (hhWithInput dt) auto ((V₀ , m∞ , n∞ , h∞) , -5.
         h∞ = 0.34
 \end{minted}
 
-The resulting dynamics is what one would expect from Hodgkin-Huxley at the input current levels explored by the current grower, and can be seen in \ref{fig:hhdynamicsinput}.
+The resulting dynamics is what one would expect from Hodgkin-Huxley at the input current levels explored by the current grower, and can be seen in Figure \ref{fig:hhdynamicsinput}.
 
 \begin{figure}
     \centering
@@ -1402,7 +1402,7 @@ lrWiringDiagram numNodes trainingSteps touchSteps dt iw rw =
             tt , tt , x
 \end{minted}
 
-The \texttt{outerOutputsFrom} function just always provides the reservoir output along with the test sequence, so as to facilitate exposing the data to a list we can plot. The \texttt{innerInputsFrom} function, which takes care of filling inputs, is key to representing the three stages: the input to the reservoir is \textit{its own output} when it is started predicting.
+The \texttt{outerOutputsFrom} function just always provides the reservoir output along with the test sequence, so as to facilitate exposing the data to a list we can plot. The \texttt{innerInputsFrom} function, which takes care of filling inputs, is key to representing the three stages: the input to the reservoir is \textit{its own output} when it has started predicting.
 
 \begin{figure}
     \centering

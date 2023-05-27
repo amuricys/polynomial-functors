@@ -19,6 +19,127 @@
 
 \refsection{0}
   \datalist[entry]{none/global//global/global}
+    \entry{containersPaper}{inproceedings}{}
+      \name{author}{3}{}{%
+        {{hash=3697d5c42a9857bbc2ee5fc2d9241e4f}{%
+           family={Abbott},
+           familyi={A\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=90877ea5f7e44778ae02b3d3954a7a1e}{%
+           family={Altenkirch},
+           familyi={A\bibinitperiod},
+           given={Thorsten},
+           giveni={T\bibinitperiod}}}%
+        {{hash=b5218dee7dae4467575a433614e4d6f4}{%
+           family={Ghani},
+           familyi={G\bibinitperiod},
+           given={Neil},
+           giveni={N\bibinitperiod}}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=5f26e38882111393118b8dc7936966f5}{%
+           family={Gordon},
+           familyi={G\bibinitperiod},
+           given={Andrew\bibnamedelima D.},
+           giveni={A\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {Berlin, Heidelberg}%
+      }
+      \list{publisher}{1}{%
+        {Springer Berlin Heidelberg}%
+      }
+      \strng{namehash}{cac3126a99f3b09916b0bc8e0b357f52}
+      \strng{fullhash}{cac3126a99f3b09916b0bc8e0b357f52}
+      \strng{bibnamehash}{cac3126a99f3b09916b0bc8e0b357f52}
+      \strng{authorbibnamehash}{cac3126a99f3b09916b0bc8e0b357f52}
+      \strng{authornamehash}{cac3126a99f3b09916b0bc8e0b357f52}
+      \strng{authorfullhash}{cac3126a99f3b09916b0bc8e0b357f52}
+      \strng{editorbibnamehash}{5f26e38882111393118b8dc7936966f5}
+      \strng{editornamehash}{5f26e38882111393118b8dc7936966f5}
+      \strng{editorfullhash}{5f26e38882111393118b8dc7936966f5}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We introduce the notion of containers as a mathematical formalisation of the idea that many important datatypes consist of templates where data is stored. We show that containers have good closure properties under a variety of constructions including the formation of initial algebras and final coalgebras. We also show that containers include strictly positive types and shapely types but that there are containers which do not correspond to either of these. Further, we derive a representation result classifying the nature of polymorphic functions between containers. We finish this paper with an application to the theory of shapely types and refer to a forthcoming paper which applies this theory to differentiable types.}
+      \field{booktitle}{Foundations of Software Science and Computation Structures}
+      \field{isbn}{978-3-540-36576-1}
+      \field{title}{Categories of Containers}
+      \field{year}{2003}
+      \field{pages}{23\bibrangedash 38}
+      \range{pages}{16}
+    \endentry
+    \entry{polynomialFunctorsCategory}{article}{}
+      \name{author}{2}{}{%
+        {{hash=98257be6afd94483a90f488fe2c905ca}{%
+           family={GAMBINO},
+           familyi={G\bibinitperiod},
+           given={NICOLA},
+           giveni={N\bibinitperiod}}}%
+        {{hash=8fa491ebb1bcbbcfec6dfe73ea93e974}{%
+           family={KOCK},
+           familyi={K\bibinitperiod},
+           given={JOACHIM},
+           giveni={J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press ({CUP})}%
+      }
+      \strng{namehash}{6a747538625902f0ed77fbd9d761336d}
+      \strng{fullhash}{6a747538625902f0ed77fbd9d761336d}
+      \strng{bibnamehash}{6a747538625902f0ed77fbd9d761336d}
+      \strng{authorbibnamehash}{6a747538625902f0ed77fbd9d761336d}
+      \strng{authornamehash}{6a747538625902f0ed77fbd9d761336d}
+      \strng{authorfullhash}{6a747538625902f0ed77fbd9d761336d}
+      \field{extraname}{1}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Mathematical Proceedings of the Cambridge Philosophical Society}
+      \field{month}{9}
+      \field{number}{1}
+      \field{title}{Polynomial functors and polynomial monads}
+      \field{volume}{154}
+      \field{year}{2012}
+      \field{pages}{153\bibrangedash 192}
+      \range{pages}{40}
+      \verb{doi}
+      \verb 10.1017/s0305004112000394
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1017%2Fs0305004112000394
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1017%2Fs0305004112000394
+      \endverb
+    \endentry
+    \entry{poly-book}{book}{}
+      \name{author}{1}{}{%
+        {{hash=a2d6708a70c3804412e4919bd4719167}{%
+           family={Nelson\bibnamedelima Niu},
+           familyi={N\bibinitperiod\bibinitdelim N\bibinitperiod},
+           given={David\bibnamedelimb I.\bibnamedelimi Spivak},
+           giveni={D\bibinitperiod\bibinitdelim I\bibinitperiod\bibinitdelim S\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {\url{https://topos.site/poly-book.pdf}}%
+      }
+      \strng{namehash}{a2d6708a70c3804412e4919bd4719167}
+      \strng{fullhash}{a2d6708a70c3804412e4919bd4719167}
+      \strng{bibnamehash}{a2d6708a70c3804412e4919bd4719167}
+      \strng{authorbibnamehash}{a2d6708a70c3804412e4919bd4719167}
+      \strng{authornamehash}{a2d6708a70c3804412e4919bd4719167}
+      \strng{authorfullhash}{a2d6708a70c3804412e4919bd4719167}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Polynomial Functors: A General Theory of Interaction}
+      \field{year}{2022}
+    \endentry
     \entry{catastrophic}{article}{}
       \true{moreauthor}
       \true{morelabelname}
@@ -45,8 +166,8 @@
       \strng{authorbibnamehash}{56fe0808c175567e23713dba53fc232d}
       \strng{authornamehash}{56fe0808c175567e23713dba53fc232d}
       \strng{authorfullhash}{56fe0808c175567e23713dba53fc232d}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Nature}
@@ -79,8 +200,8 @@
       \strng{authorbibnamehash}{ab56b675d7adb6e35ff3b8717a6f4ac2}
       \strng{authornamehash}{ab56b675d7adb6e35ff3b8717a6f4ac2}
       \strng{authorfullhash}{ab56b675d7adb6e35ff3b8717a6f4ac2}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Axiomathes}
@@ -128,8 +249,8 @@
       \strng{authorbibnamehash}{cde5b32fc7306c4d141d7e035de2a72a}
       \strng{authornamehash}{9f3bde09dc42bb375531d7e12137bbf7}
       \strng{authorfullhash}{cde5b32fc7306c4d141d7e035de2a72a}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{eprintclass}{cs.GT}
@@ -154,8 +275,8 @@
       \strng{authorbibnamehash}{dbed3b452348bc7b37955b69011d9efc}
       \strng{authornamehash}{dbed3b452348bc7b37955b69011d9efc}
       \strng{authorfullhash}{dbed3b452348bc7b37955b69011d9efc}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{eprintclass}{cs.IT}
@@ -188,8 +309,8 @@
       \strng{authorbibnamehash}{cf1e43133371aa9ac014eb2135857787}
       \strng{authornamehash}{cf1e43133371aa9ac014eb2135857787}
       \strng{authorfullhash}{cf1e43133371aa9ac014eb2135857787}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Reviews in Mathematical Physics}
@@ -232,8 +353,8 @@
       \strng{authorbibnamehash}{ab07c07deb359ab9b565d22da4d673bc}
       \strng{authornamehash}{8330e5370567fa779a5794a9c332235d}
       \strng{authorfullhash}{ab07c07deb359ab9b565d22da4d673bc}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Electronic Proceedings in Theoretical Computer Science}
@@ -405,8 +526,8 @@
       \strng{authorbibnamehash}{eb3cec164c1f4cb5cd7394d2677e2a1c}
       \strng{authornamehash}{eb3cec164c1f4cb5cd7394d2677e2a1c}
       \strng{authorfullhash}{eb3cec164c1f4cb5cd7394d2677e2a1c}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Homotopy Type Theory: Univalent Foundations of Mathematics}
@@ -425,8 +546,8 @@
       \strng{authornamehash}{c9b660e30df76bb723320c6baad72bce}
       \strng{authorfullhash}{c9b660e30df76bb723320c6baad72bce}
       \field{extraname}{1}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{GitHub}
@@ -468,8 +589,8 @@
       \strng{authorbibnamehash}{e6ae212e716173f7523e0f1dde3bc4a7}
       \strng{authornamehash}{e6ae212e716173f7523e0f1dde3bc4a7}
       \strng{authorfullhash}{e6ae212e716173f7523e0f1dde3bc4a7}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{Proof assistants based on dependent type theory provide expressive languages for both programming and proving within the same system. However, all of the major implementations lack powerful extensionality principles for reasoning about equality, such as function and propositional extensionality. These principles are typically added axiomatically which disrupts the constructive properties of these systems. Cubical type theory provides a solution by giving computational meaning to Homotopy Type Theory and Univalent Foundations, in particular to the univalence axiom and higher inductive types. This paper describes an extension of the dependently typed functional programming language Agda with cubical primitives, making it into a full-blown proof assistant with native support for univalence and a general schema of higher inductive types. These new primitives make function and propositional extensionality as well as quotient types directly definable with computational content. Additionally, thanks also to copatterns, bisimilarity is equivalent to equality for coinductive types. This extends Agda with support for a wide range of extensionality principles, without sacrificing type checking and constructivity.}
@@ -623,6 +744,7 @@
       \strng{authorbibnamehash}{6a747538625902f0ed77fbd9d761336d}
       \strng{authornamehash}{6a747538625902f0ed77fbd9d761336d}
       \strng{authorfullhash}{6a747538625902f0ed77fbd9d761336d}
+      \field{extraname}{2}
       \field{sortinit}{2}
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
@@ -685,8 +807,8 @@
       \strng{authorbibnamehash}{7166f43636239436a149410550ca5a32}
       \strng{authornamehash}{7166f43636239436a149410550ca5a32}
       \strng{authorfullhash}{7166f43636239436a149410550ca5a32}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{eprintclass}{math.CT}
@@ -698,8 +820,8 @@
       \endverb
     \endentry
     \entry{githubRepo}{misc}{}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \verb{urlraw}
       \verb https://github.com/amuricys/polynomial-functors
       \endverb
@@ -719,8 +841,8 @@
       \strng{authorbibnamehash}{b050ea2672ee434ecf0187a7f6ddb349}
       \strng{authornamehash}{b050ea2672ee434ecf0187a7f6ddb349}
       \strng{authorfullhash}{b050ea2672ee434ecf0187a7f6ddb349}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{howpublished}{\url{https://web.archive.org/web/20230523131853/https://twitter.com/Iceland_jack/status/1646315831402323970}}
@@ -750,6 +872,78 @@
       \field{note}{Accessed: 2023-05-17}
       \field{title}{Sjoerd Visscher's attempt at polynomial functors in Haskell}
       \field{year}{2023}
+    \endentry
+    \entry{code}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=8e9d5da4b23e7a0a419d5175c29e350a}{%
+           family={Amuricys},
+           familyi={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{8e9d5da4b23e7a0a419d5175c29e350a}
+      \strng{fullhash}{8e9d5da4b23e7a0a419d5175c29e350a}
+      \strng{bibnamehash}{8e9d5da4b23e7a0a419d5175c29e350a}
+      \strng{authorbibnamehash}{8e9d5da4b23e7a0a419d5175c29e350a}
+      \strng{authornamehash}{8e9d5da4b23e7a0a419d5175c29e350a}
+      \strng{authorfullhash}{8e9d5da4b23e7a0a419d5175c29e350a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{GitHub}
+      \field{title}{Amuricys/polynomial-functors}
+      \verb{urlraw}
+      \verb https://github.com/amuricys/polynomial-functors
+      \endverb
+      \verb{url}
+      \verb https://github.com/amuricys/polynomial-functors
+      \endverb
+    \endentry
+    \entry{daig}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=b96aa761807df2ee453d17afb7ba777a}{%
+           family={daig},
+           familyi={d\bibinitperiod}}}%
+      }
+      \strng{namehash}{b96aa761807df2ee453d17afb7ba777a}
+      \strng{fullhash}{b96aa761807df2ee453d17afb7ba777a}
+      \strng{bibnamehash}{b96aa761807df2ee453d17afb7ba777a}
+      \strng{authorbibnamehash}{b96aa761807df2ee453d17afb7ba777a}
+      \strng{authornamehash}{b96aa761807df2ee453d17afb7ba777a}
+      \strng{authorfullhash}{b96aa761807df2ee453d17afb7ba777a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{GitHub}
+      \field{title}{daig/polynomial-functors}
+      \verb{urlraw}
+      \verb https://github.com/daig/polynomial-functors
+      \endverb
+      \verb{url}
+      \verb https://github.com/daig/polynomial-functors
+      \endverb
+    \endentry
+    \entry{css}{unpublished}{}
+      \name{author}{1}{}{%
+        {{hash=5e4483260e70411ee8f2ec4093d57437}{%
+           family={Myers},
+           familyi={M\bibinitperiod},
+           given={David\bibnamedelima Jaz},
+           giveni={D\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \strng{namehash}{5e4483260e70411ee8f2ec4093d57437}
+      \strng{fullhash}{5e4483260e70411ee8f2ec4093d57437}
+      \strng{bibnamehash}{5e4483260e70411ee8f2ec4093d57437}
+      \strng{authorbibnamehash}{5e4483260e70411ee8f2ec4093d57437}
+      \strng{authornamehash}{5e4483260e70411ee8f2ec4093d57437}
+      \strng{authorfullhash}{5e4483260e70411ee8f2ec4093d57437}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{Manuscript in preparation}
+      \field{title}{Categorical Systems Theory}
+      \field{year}{2022}
     \endentry
     \entry{operadwd}{misc}{}
       \name{author}{3}{}{%
@@ -817,27 +1011,27 @@
       \verb https://ncatlab.org/nlab/show/concept+with+an+attitude
       \endverb
     \endentry
-    \entry{css}{unpublished}{}
-      \name{author}{1}{}{%
-        {{hash=5e4483260e70411ee8f2ec4093d57437}{%
-           family={Myers},
-           familyi={M\bibinitperiod},
-           given={David\bibnamedelima Jaz},
-           giveni={D\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
-      }
-      \strng{namehash}{5e4483260e70411ee8f2ec4093d57437}
-      \strng{fullhash}{5e4483260e70411ee8f2ec4093d57437}
-      \strng{bibnamehash}{5e4483260e70411ee8f2ec4093d57437}
-      \strng{authorbibnamehash}{5e4483260e70411ee8f2ec4093d57437}
-      \strng{authornamehash}{5e4483260e70411ee8f2ec4093d57437}
-      \strng{authorfullhash}{5e4483260e70411ee8f2ec4093d57437}
+    \entry{optparse}{misc}{}
       \field{sortinit}{3}
       \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{note}{Manuscript in preparation}
-      \field{title}{Categorical Systems Theory}
-      \field{year}{2022}
+      \field{journaltitle}{Hackage}
+      \verb{urlraw}
+      \verb https://hackage.haskell.org/package/optparse-applicative
+      \endverb
+      \verb{url}
+      \verb https://hackage.haskell.org/package/optparse-applicative
+      \endverb
+    \endentry
+    \entry{chart-lib}{misc}{}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{journaltitle}{Hackage}
+      \verb{urlraw}
+      \verb https://hackage.haskell.org/package/Chart
+      \endverb
+      \verb{url}
+      \verb https://hackage.haskell.org/package/Chart
+      \endverb
     \endentry
     \entry{hmatrix}{misc}{}
       \field{sortinit}{4}
@@ -850,6 +1044,17 @@
       \endverb
       \verb{url}
       \verb https://hackage.haskell.org/package/hmatrix
+      \endverb
+    \endentry
+    \entry{blas}{misc}{}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{journaltitle}{Hackage}
+      \verb{urlraw}
+      \verb https://hackage.haskell.org/package/blas
+      \endverb
+      \verb{url}
+      \verb https://hackage.haskell.org/package/blas
       \endverb
     \endentry
     \entry{Murray2002}{book}{}
@@ -1054,8 +1259,8 @@
       \strng{authorbibnamehash}{470aa04f872dd8bfe4dd48b1b291167b}
       \strng{authornamehash}{36ead7ba30ea429b58e47d717a951bfa}
       \strng{authorfullhash}{470aa04f872dd8bfe4dd48b1b291167b}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Proceedings of the International Joint Conference on Neural Networks}
@@ -1086,8 +1291,8 @@
       \strng{authornamehash}{3e23f63902cb824af4a955a17b0b0951}
       \strng{authorfullhash}{3e23f63902cb824af4a955a17b0b0951}
       \field{extraname}{1}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Proceedings of the 2002 45th IEEE Conference on Decision and Control}
@@ -1134,8 +1339,8 @@
       \strng{authorbibnamehash}{e0c1419c4fc235e6465e1885b9b6caeb}
       \strng{authornamehash}{75eefa91ace3cfa6979bc14a22f9c442}
       \strng{authorfullhash}{e0c1419c4fc235e6465e1885b9b6caeb}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{abstract}{This manuscript serves a specific purpose: to give readers from fields such as material science, chemistry, or electronics an overview of implementing a reservoir computing (RC) experiment with her/his material system. Introductory literature on the topic is rare and the vast majority of reviews puts forth the basics of RC taking for granted concepts that may be nontrivial to someone unfamiliar with the machine learning field (see for example reference Lukoševičius (2012 Neural Networks: Tricks of the Trade (Berlin: Springer) pp 659–686). This is unfortunate considering the large pool of material systems that show nonlinear behavior and short-term memory that may be harnessed to design novel computational paradigms. RC offers a framework for computing with material systems that circumvents typical problems that arise when implementing traditional, fully fledged feedforward neural networks on hardware, such as minimal device-to-device variability and control over each unit/neuron and connection. Instead, one can use a random, untrained reservoir where only the output layer is optimized, for example, with linear regression. In the following, we will highlight the potential of RC for hardware-based neural networks, the advantages over more traditional approaches, and the obstacles to overcome for their implementation. Preparing a high-dimensional nonlinear system as a well-performing reservoir for a specific task is not as easy as it seems at first sight. We hope this tutorial will lower the barrier for scientists attempting to exploit their nonlinear systems for computational tasks typically carried out in the fields of machine learning and artificial intelligence. A simulation tool to accompany this paper is available online 7 .}
@@ -1232,8 +1437,8 @@
       \endverb
     \endentry
     \entry{chart}{misc}{}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labeltitlesource}{title}
       \field{note}{Accessed: 2023-05-17}
       \field{title}{Chart: A Haskell library for producing 2D Charts and Plots}
@@ -1245,8 +1450,8 @@
       \endverb
     \endentry
     \entry{optparse-applicative}{misc}{}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labeltitlesource}{title}
       \field{note}{Accessed: 2023-05-17}
       \field{title}{optparse-applicative: Utilities and combinators for parsing command line options}
@@ -1258,8 +1463,8 @@
       \endverb
     \endentry
     \entry{ghc-gadts}{misc}{}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labeltitlesource}{title}
       \field{note}{Accessed: 2023-05-17}
       \field{title}{Glasgow Haskell Compiler: GADTs}
@@ -1284,18 +1489,6 @@
       \endverb
     \endentry
   \enddatalist
-  \missing{blas}
-  \missing{chart-lib}
-  \missing{code}
-  \missing{containers https://www.cs.le.ac.uk/people/ma139/docs/thesis.pdf}
-  \missing{daig}
-  \missing{https://arxiv.org/pdf/2201.12878.pdf}
-  \missing{https://mark-kramer.github.io/Case-Studies-Python/HH.html}
-  \missing{jaz http://davidjaz.com/Papers/DynamicalBook.pdf}
-  \missing{koch https://arxiv.org/abs/0906.4931}
-  \missing{optparse}
-  \missing{poly-book}
-  \missing{spivak db https://arxiv.org/pdf/2111.10968.pdf}
 \endrefsection
 \endinput
 

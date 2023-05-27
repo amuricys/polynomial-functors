@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{eval\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{((}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }*\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }q
+eval\PYGZsq{}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}q\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }subst\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }x\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }path\PYG{+w}{ }idLens\PYGZsq{}
+\PYG{+w}{    }\PYG{k+kr}{where}
+\PYG{+w}{        }\PYG{n+nf}{path}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }≡\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{+w}{ }*\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }q
+\PYG{+w}{        }path\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o}{(}cartesianClosed\PYG{+w}{ }\PYG{o}{\PYGZob{}}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}q\PYG{o}{\PYGZcb{})}
+
+\PYG{+w}{        }\PYG{n+nf}{idLens\PYGZsq{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}
+\PYG{+w}{        }idLens\PYGZsq{}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }idLens\PYG{+w}{ }\PYG{o}{\PYGZob{}}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

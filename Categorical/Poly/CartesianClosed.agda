@@ -394,8 +394,8 @@ five' : (((i , j) : position (p * q)) → Σ[ k ∈ position r ] (direction r k 
 five' = sym prop254
 
 -- Page 131
-chain' : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
-chain' = zero' ∙ one' ∙ two' ∙ three' ∙ four' ∙ five'
+cartesianClosed : {p q r : Polynomial} → Lens p (r ^ q) ≡ Lens (p * q) r
+cartesianClosed = zero' ∙ one' ∙ two' ∙ three' ∙ four' ∙ five'
 
 -- Exercise 4.31, page 131.
 -- The canonical evaluation map is the identity lens transported through the cartesian closure.
@@ -403,7 +403,7 @@ eval' : {p q : Polynomial} → Lens ((q ^ p) * p) q
 eval' {p} {q} = subst (λ x → x) path idLens'
     where
         path : Lens (q ^ p) (q ^ p) ≡ Lens (q ^ p * p) q
-        path = (chain' {q ^ p} {p} {q})
+        path = (cartesianClosed {q ^ p} {p} {q})
 
         idLens' : Lens (q ^ p) (q ^ p)
         idLens' = idLens {q ^ p}
