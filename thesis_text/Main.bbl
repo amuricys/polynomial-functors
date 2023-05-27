@@ -71,7 +71,7 @@
       \field{pages}{23\bibrangedash 38}
       \range{pages}{16}
     \endentry
-    \entry{polynomialFunctorsCategory}{article}{}
+    \entry{kockpoly}{article}{}
       \name{author}{2}{}{%
         {{hash=98257be6afd94483a90f488fe2c905ca}{%
            family={GAMBINO},
@@ -93,7 +93,6 @@
       \strng{authorbibnamehash}{6a747538625902f0ed77fbd9d761336d}
       \strng{authornamehash}{6a747538625902f0ed77fbd9d761336d}
       \strng{authorfullhash}{6a747538625902f0ed77fbd9d761336d}
-      \field{extraname}{1}
       \field{sortinit}{2}
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
@@ -110,10 +109,10 @@
       \verb 10.1017/s0305004112000394
       \endverb
       \verb{urlraw}
-      \verb https://doi.org/10.1017%2Fs0305004112000394
+      \verb https://doi.org/10.1017/s0305004112000394
       \endverb
       \verb{url}
-      \verb https://doi.org/10.1017%2Fs0305004112000394
+      \verb https://doi.org/10.1017/s0305004112000394
       \endverb
     \endentry
     \entry{poly-book}{book}{}
@@ -137,8 +136,8 @@
       \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Polynomial Functors: A General Theory of Interaction}
-      \field{year}{2022}
+      \field{title}{Polynomial Functors: A Mathematical Theory of Interaction}
+      \field{year}{2023}
     \endentry
     \entry{catastrophic}{article}{}
       \true{moreauthor}
@@ -484,15 +483,17 @@
       \verb https://doi.org/10.1007/978-3-642-03153-3_2
       \endverb
     \endentry
-    \entry{haskellGADT}{misc}{}
+    \entry{ghc-gadts}{misc}{}
       \field{sortinit}{1}
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
-      \field{journaltitle}{Wikibooks, open books for an open world}
+      \field{labeltitlesource}{title}
+      \field{note}{Accessed: 2023-05-17}
+      \field{title}{Glasgow Haskell Compiler: GADTs}
       \verb{urlraw}
-      \verb https://en.wikibooks.org/wiki/Haskell/GADT#GADTs
+      \verb https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/gadt.html
       \endverb
       \verb{url}
-      \verb https://en.wikibooks.org/wiki/Haskell/GADT#GADTs
+      \verb https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/gadt.html
       \endverb
     \endentry
     \entry{cubicalAgdaDocs}{misc}{}
@@ -722,51 +723,6 @@
       \verb https://doi.org/10.1145/3437992.3439922
       \endverb
     \endentry
-    \entry{kockpoly}{article}{}
-      \name{author}{2}{}{%
-        {{hash=98257be6afd94483a90f488fe2c905ca}{%
-           family={GAMBINO},
-           familyi={G\bibinitperiod},
-           given={NICOLA},
-           giveni={N\bibinitperiod}}}%
-        {{hash=8fa491ebb1bcbbcfec6dfe73ea93e974}{%
-           family={KOCK},
-           familyi={K\bibinitperiod},
-           given={JOACHIM},
-           giveni={J\bibinitperiod}}}%
-      }
-      \list{publisher}{1}{%
-        {Cambridge University Press ({CUP})}%
-      }
-      \strng{namehash}{6a747538625902f0ed77fbd9d761336d}
-      \strng{fullhash}{6a747538625902f0ed77fbd9d761336d}
-      \strng{bibnamehash}{6a747538625902f0ed77fbd9d761336d}
-      \strng{authorbibnamehash}{6a747538625902f0ed77fbd9d761336d}
-      \strng{authornamehash}{6a747538625902f0ed77fbd9d761336d}
-      \strng{authorfullhash}{6a747538625902f0ed77fbd9d761336d}
-      \field{extraname}{2}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{Mathematical Proceedings of the Cambridge Philosophical Society}
-      \field{month}{9}
-      \field{number}{1}
-      \field{title}{Polynomial functors and polynomial monads}
-      \field{volume}{154}
-      \field{year}{2012}
-      \field{pages}{153\bibrangedash 192}
-      \range{pages}{40}
-      \verb{doi}
-      \verb 10.1017/s0305004112000394
-      \endverb
-      \verb{urlraw}
-      \verb https://doi.org/10.1017/s0305004112000394
-      \endverb
-      \verb{url}
-      \verb https://doi.org/10.1017/s0305004112000394
-      \endverb
-    \endentry
     \entry{kock2009polynomial}{misc}{}
       \name{author}{1}{}{%
         {{hash=14478e69f3dd724f5a664d54b7ecbb5f}{%
@@ -819,9 +775,24 @@
       \verb 2111.10968
       \endverb
     \endentry
-    \entry{githubRepo}{misc}{}
+    \entry{code}{misc}{}
+      \name{author}{1}{}{%
+        {{hash=8e9d5da4b23e7a0a419d5175c29e350a}{%
+           family={Amuricys},
+           familyi={A\bibinitperiod}}}%
+      }
+      \strng{namehash}{8e9d5da4b23e7a0a419d5175c29e350a}
+      \strng{fullhash}{8e9d5da4b23e7a0a419d5175c29e350a}
+      \strng{bibnamehash}{8e9d5da4b23e7a0a419d5175c29e350a}
+      \strng{authorbibnamehash}{8e9d5da4b23e7a0a419d5175c29e350a}
+      \strng{authornamehash}{8e9d5da4b23e7a0a419d5175c29e350a}
+      \strng{authorfullhash}{8e9d5da4b23e7a0a419d5175c29e350a}
       \field{sortinit}{2}
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{GitHub}
+      \field{title}{Amuricys/polynomial-functors}
       \verb{urlraw}
       \verb https://github.com/amuricys/polynomial-functors
       \endverb
@@ -872,31 +843,6 @@
       \field{note}{Accessed: 2023-05-17}
       \field{title}{Sjoerd Visscher's attempt at polynomial functors in Haskell}
       \field{year}{2023}
-    \endentry
-    \entry{code}{misc}{}
-      \name{author}{1}{}{%
-        {{hash=8e9d5da4b23e7a0a419d5175c29e350a}{%
-           family={Amuricys},
-           familyi={A\bibinitperiod}}}%
-      }
-      \strng{namehash}{8e9d5da4b23e7a0a419d5175c29e350a}
-      \strng{fullhash}{8e9d5da4b23e7a0a419d5175c29e350a}
-      \strng{bibnamehash}{8e9d5da4b23e7a0a419d5175c29e350a}
-      \strng{authorbibnamehash}{8e9d5da4b23e7a0a419d5175c29e350a}
-      \strng{authornamehash}{8e9d5da4b23e7a0a419d5175c29e350a}
-      \strng{authorfullhash}{8e9d5da4b23e7a0a419d5175c29e350a}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{GitHub}
-      \field{title}{Amuricys/polynomial-functors}
-      \verb{urlraw}
-      \verb https://github.com/amuricys/polynomial-functors
-      \endverb
-      \verb{url}
-      \verb https://github.com/amuricys/polynomial-functors
-      \endverb
     \endentry
     \entry{daig}{misc}{}
       \name{author}{1}{}{%
@@ -1417,10 +1363,10 @@
       \field{sortinit}{5}
       \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \verb{urlraw}
-      \verb https://github.com/agda/cubical
+      \verb https://topos.site/blog/2022/08/imagining-bicomodules-with-type-theory/
       \endverb
       \verb{url}
-      \verb https://github.com/agda/cubical
+      \verb https://topos.site/blog/2022/08/imagining-bicomodules-with-type-theory/
       \endverb
     \endentry
     \entry{nix}{misc}{}
@@ -1460,19 +1406,6 @@
       \endverb
       \verb{url}
       \verb https://hackage.haskell.org/package/optparse-applicative
-      \endverb
-    \endentry
-    \entry{ghc-gadts}{misc}{}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
-      \field{labeltitlesource}{title}
-      \field{note}{Accessed: 2023-05-17}
-      \field{title}{Glasgow Haskell Compiler: GADTs}
-      \verb{urlraw}
-      \verb https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/gadt.html
-      \endverb
-      \verb{url}
-      \verb https://downloads.haskell.org/ghc/latest/docs/users_guide/exts/gadt.html
       \endverb
     \endentry
     \entry{ghc-data-kinds}{misc}{}

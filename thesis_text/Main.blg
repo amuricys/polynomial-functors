@@ -1,22 +1,21 @@
 [0] Config.pm:307> INFO - This is Biber 2.17
 [0] Config.pm:310> INFO - Logfile is 'Main.blg'
-[76] biber:341> INFO - === Sat May 27, 2023, 11:49:02
-[106] Biber.pm:418> INFO - Reading 'Main.bcf'
-[185] Biber.pm:972> INFO - Found 52 citekeys in bib section 0
-[198] Biber.pm:4383> INFO - Processing section 0
-[213] Biber.pm:4574> INFO - Looking for bibtex file 'references.bib' for section 0
-[217] bibtex.pm:1713> INFO - LaTeX decoding ...
-[259] bibtex.pm:1518> INFO - Found BibTeX data source 'references.bib'
-[483] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[483] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[483] Biber.pm:4203> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
-[483] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
-[519] bbl.pm:654> INFO - Writing 'Main.bbl' with encoding 'UTF-8'
-[537] bbl.pm:757> INFO - Output to Main.bbl
-[537] Biber.pm:130> WARN - legacy month field 'sep' in entry 'polynomialFunctorsCategory' is not an integer - this will probably not sort properly.
-[537] Biber.pm:130> WARN - legacy month field 'nov' in entry 'operad-dynsys' is not an integer - this will probably not sort properly.
-[537] Biber.pm:130> WARN - legacy month field 'jul' in entry 'cubicalPaper' is not an integer - this will probably not sort properly.
-[538] Biber.pm:130> WARN - legacy month field 'jan' in entry 'agda-cats' is not an integer - this will probably not sort properly.
-[538] Biber.pm:130> WARN - legacy month field 'sep' in entry 'kockpoly' is not an integer - this will probably not sort properly.
-[538] Biber.pm:130> WARN - legacy month field 'aug' in entry 'Cucchi_2022' is not an integer - this will probably not sort properly.
-[538] Biber.pm:132> INFO - WARNINGS: 6
+[60] biber:341> INFO - === Sat May 27, 2023, 12:30:46
+[79] Biber.pm:418> INFO - Reading 'Main.bcf'
+[155] Biber.pm:972> INFO - Found 49 citekeys in bib section 0
+[168] Biber.pm:4383> INFO - Processing section 0
+[183] Biber.pm:4574> INFO - Looking for bibtex file 'references.bib' for section 0
+[185] bibtex.pm:1713> INFO - LaTeX decoding ...
+[224] bibtex.pm:1518> INFO - Found BibTeX data source 'references.bib'
+[437] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[437] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[437] Biber.pm:4203> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[437] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-US'
+[467] bbl.pm:654> INFO - Writing 'Main.bbl' with encoding 'UTF-8'
+[487] bbl.pm:757> INFO - Output to Main.bbl
+[487] Biber.pm:130> WARN - legacy month field 'sep' in entry 'kockpoly' is not an integer - this will probably not sort properly.
+[487] Biber.pm:130> WARN - legacy month field 'nov' in entry 'operad-dynsys' is not an integer - this will probably not sort properly.
+[487] Biber.pm:130> WARN - legacy month field 'jul' in entry 'cubicalPaper' is not an integer - this will probably not sort properly.
+[487] Biber.pm:130> WARN - legacy month field 'jan' in entry 'agda-cats' is not an integer - this will probably not sort properly.
+[487] Biber.pm:130> WARN - legacy month field 'aug' in entry 'Cucchi_2022' is not an integer - this will probably not sort properly.
+[487] Biber.pm:132> INFO - WARNINGS: 5
