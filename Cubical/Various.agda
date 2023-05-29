@@ -76,3 +76,16 @@ applyingIsSameAsComposingWithConstant {r} {A} = isoToPath (iso go
             go (f ⇆ f♯) = f tt
             back : r ⦅ A ⦆ → Lens 𝟙 (r ◂ (Constant A))
             back (pos , md) = (λ _ → pos , md) ⇆ λ { fromPos () }
+
+-- 
+
+-- Dynamical systems of form Sy^S → p is the same as p-coalgebra S → p(S)
+-- See page 109 in poly book
+isCoalgebra : {p : Polynomial} {S : Set} → Lens (selfMonomial S) p ≡ (S → p ⦅ S ⦆)
+isCoalgebra {p} {S} = isoToPath (iso go back (λ _ → refl) (λ _ → refl))
+    where
+        go : Lens (selfMonomial S) p → S → p ⦅ S ⦆
+        go (f ⇆ f♯) s = (f s) , (λ dir → f♯ s dir)
+
+        back : (S → p ⦅ S ⦆) → Lens (selfMonomial S) p
+        back coalgebra = (λ s → fst (coalgebra s)) ⇆ (λ s dir → snd (coalgebra s) dir)
