@@ -1460,28 +1460,23 @@ five : ...
        Lens (p * q) r
 \end{minted}
 
-There is, in fact, a single hole in a lemma in step three, which we intend to fill. It's a big proof, with a lot of constant transports needing to be juggled and nested, and is made even more complicated because of the way Agda handles pattern matching and function application on sum types.
+Under the hood, many different lemmas and helper function are needed for the proof. This includes the yoneda lemma for \textbf{Poly}, generalized universal product (and coproduct) property, and a whole file (\texttt{Cubical/Utils/CoproductUtils}) with lemmas about the coproduct, which is needed due to how the exponential object is defined. 
 
 The exponential object implies the existence of the canonical evaluation lens - one that takes an exponential object paired with its argument to the output object. Its implementation is as follows:
 
 \begin{minted}{agda}
 eval : {p q : Polynomial} → Lens ((q ^ p) * p) q
 eval {p} {q} = mapPos ⇆ mapDir
-  where mapPos : position ((q ^ p) * p) → position q
+  where
+        mapPos : position ((q ^ p) * p) → position q
         mapPos (posQ^P , posP) = fst (posQ^P posP)
+
         mapDir : (pos : position ((q ^ p) * p))
             → direction q (mapPos pos) 
             → direction ((q ^ p) * p) pos
-        mapDir (posQ^P , posP) dir with (snd (posQ^P posP)) dir in eq
-        ... | inj₂ y = inj₂ y
-        ... | inj₁ x = inj₁ (posP , dir , rewritten)
-            where
-                rewritten : [ (λ _ → ⊤) , (λ _ → ⊥) ]
-                            (snd (posQ^P posP) dir)
-                rewritten rewrite eq = tt
+        mapDir (posQ^P , posP) dir
+          = recoverLeft (snd (posQ^P posP) dir) λ x → posP , dir , x
 \end{minted}
-
-The complication in handling sum types is showcased by the evaluation lens in its need to rewrite by the pattern match equality.
 
 There is another way to define the evaluation lens which is to transport the identity lens on $q^p$ through the \texttt{cartesianClosed} equality. 
 This is the definition used in the book.
