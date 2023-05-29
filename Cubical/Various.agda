@@ -89,3 +89,32 @@ isCoalgebra {p} {S} = isoToPath (iso go back (λ _ → refl) (λ _ → refl))
 
         back : (S → p ⦅ S ⦆) → Lens (selfMonomial S) p
         back coalgebra = (λ s → fst (coalgebra s)) ⇆ (λ s dir → snd (coalgebra s) dir)
+
+-- Theorem 22 in https://arxiv.org/pdf/2202.00534.pdf
+linearPolyCompPararell : {A : Set} {q : Polynomial} → linear A ◂ q ≡ linear A ⊗ q
+linearPolyCompPararell {A} {q} = poly≡∀ pos≡ dir≡
+    where
+        lemma : {A : Set} → (⊤ → A) ≡ A
+        lemma = isoToPath (iso (λ f → f tt) (λ a _ → a) (λ _ → refl) (λ _ → refl))
+
+        pos≡ : position (linear A ◂ q) ≡ position (linear A ⊗ q)
+        pos≡ = cong (Σ A) (funExt (λ x → lemma))
+
+        dir≡ : ((posB : position (linear A ⊗ q) ) → subst (λ x → x → Type) pos≡ (direction (linear A ◂ q)) posB ≡ direction (linear A ⊗ q) posB)
+        dir≡ (a , posQ) = cong (Σ ⊤) (funExt (λ _ → cong (direction q) (transportRefl posQ)))
+
+apply : {A : Set} (f : A → Set) → {a₁ a₂ : A} (p : a₁ ≡ a₂) → (f a₁ ≡ f a₂)
+apply f p i = f (p i) 
+
+-- Also theorem 22 in https://arxiv.org/pdf/2202.00534.pdf
+representablePolyCompPararell : {A : Set} {p : Polynomial} → p ◂ representable A ≡ p ⊗ representable A
+representablePolyCompPararell {A} {p} = poly≡∀ pos≡ dir≡
+    where
+        lemma : {A : Set} → (A → ⊤) ≡ ⊤
+        lemma = isoToPath (iso (λ _ → tt) (λ _ _ → tt) (λ _ → refl) (λ _ → refl))
+
+        pos≡ : position (p ◂ representable A) ≡ position (p ⊗ representable A)
+        pos≡ = cong (Σ (position p)) (funExt (λ _ → lemma))
+
+        dir≡ : ((posB : position (p ⊗ representable A) ) → subst (λ x → x → Type) pos≡ (direction (p ◂ representable A)) posB ≡ direction (p ⊗ representable A) posB)
+        dir≡ (posP , tt) = apply (λ a → Σ (direction p a) (λ x → A)) (transportRefl posP)
