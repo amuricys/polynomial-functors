@@ -24,7 +24,7 @@ open import Cubical.Foundations.Transport
 import Categories.Category.CartesianClosed.Canonical Poly as Canonical
 open import Function
 open import Cubical.Functions.FunExtEquiv
-open import Cubical.Utils.CoproductUtils hiding (lemma)
+open import Cubical.Utils.CoproductUtils
 
 open Polynomial
 
@@ -207,8 +207,9 @@ three' {p} {q} {r} = π≡ (funExt (λ x → π≡ (funExt (λ y → lemma x y))
         lemma : (x : position p) (y : position q)
             → (r ◂ Y + Constant (direction q y)) ⦅ direction p x ⦆
             ≡ (Σ[ k ∈ position r ]  (direction r k → direction p x ⊎ direction q y))
-        lemma x y = yo ∙ cong (Σ (position r)) (funExt (λ z → lemma2 x y z)) -- yoyo ∙ π≡ (funExt (λ t → yoyoyo x y z t)))) --  toPathP {! !}
+        lemma x y = yo ∙ cong (Σ (position r)) (funExt (λ z → katt x y z)) -- yo ∙ cong (Σ (position r)) (funExt (λ z → lemma2 x y z)) -- yoyo ∙ π≡ (funExt (λ t → yoyoyo x y z t)))) --  toPathP {! !}
             where
+
 
                 yo : {A : Set} {B : A → Set} {C : (Σ A B) → Set} → (Σ (Σ A B) C) ≡ (Σ[ a ∈ A ] Σ[ b ∈ (B a) ] C (a , b)) --  Σ (Σ A B) C ≡ Σ[ a ∈ A ] (Σ[ b ∈ B ] (C a b))
                 yo {A} {B} {C} = isoToPath (iso go back (λ b → refl) λ a → refl)
@@ -218,6 +219,51 @@ three' {p} {q} {r} = π≡ (funExt (λ x → π≡ (funExt (λ y → lemma x y))
 
                         back : Σ A (λ a → Σ (B a) (λ b → C (a , b))) → Σ (Σ A B) C
                         back (a , b , c) = (a , b) , c
+
+                -- simple : Σ (⊤ ⊎ direction q y) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] a → direction p x) ≡ (direction p x ⊎ direction q y)
+                -- simple = isoToPath (iso (λ x → recoverLeft'  (fst x) (snd x)) (λ x → (forgetLeft x) , (λ x2 → keepLeft' x x2)) (λ b → recoverForgetLeft') λ a → ΣPathP ((forgetRecoverLeft2' (fst a) (snd a)) , toPathP {! keepRecoverLeft'' {x = fst a} {f = snd a}  !}))
+                    -- where
+                        -- ≡-×2 : {A B C D : Set} → A ≡ B → C ≡ D → A × C ≡ B × D -- {A : Type ℓ} {B : Type ℓ'} {x y : A × B} → fst x ≡ fst y → snd x ≡ snd y → x ≡ y
+                        -- ≡-×2 = {!   !} -- p q i = (p i) , (q i)
+
+                        -- lamma : (a
+                        --     : Σ (⊤ ⊎ direction q y)
+                        --         (λ v → [ (λ _ → ⊤) , (λ _ → ⊥) ] v → direction p x)) →
+                        --     (forgetLeft (recoverLeft' (proj₁ a) (snd a)) ,
+                        --     (keepLeft' (recoverLeft' (proj₁ a) (snd a))))
+                        --     ≡ a
+                        -- lamma (x , y) = ΣPathTransport→PathΣ ((forgetLeft (recoverLeft' x y) , keepLeft' (recoverLeft' x y))) ((x , y)) (forgetRecoverLeft' , keepRecoverLeft'' {x = x} {f = y}) -- {! (forgetRecoverLeft' {x = x} {f = y} , ?)  !} --   ?
+
+                katt : {B : Set} (x : position p) (y : position q) (z : position r)
+                 → (Σ[ b ∈ (direction r z → ⊤ ⊎ B) ]
+                    ( Σ[ a ∈ (direction r z) ] ([ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) → direction p x))
+                    ≡ (direction r z → direction p x ⊎ B)
+                katt {B} x y z = {! katt2 {B = B} x y z  !}
+                    where
+
+                        katt2 : {B : Set} (x : position p) (y : position q) (z : position r)
+                            → (direction r z → Σ[ b ∈ (⊤ ⊎ B) ]
+                            ( ([ (λ _ → ⊤) , (λ _ → ⊥) ] b) → direction p x))
+                            ≡ (direction r z → direction p x ⊎ B)
+                        katt2 {B} x y z = π≡ (funExt λ x → isSame)
+                    -- where
+                    --     go : Σ (⊤ ⊎ B) (λ b → [ (λ _ → ⊤) , (λ _ → ⊥) ] b → direction p x) → direction p x ⊎ B
+                    --     go (a , b) = recoverLeft' a b
+
+                    --     back : direction p x ⊎ B → Σ (⊤ ⊎ B) (λ b → [ (λ _ → ⊤) , (λ _ → ⊥) ] b → direction p x)
+                    --     back dir = (forgetLeft dir) , λ x → keepLeft' dir x
+
+                    --     pr : (a : Σ (⊤ ⊎ B) (λ b → [ (λ _ → ⊤) , (λ _ → ⊥) ] b → direction p x)) →
+                    --         (forgetLeft (recoverLeft' (proj₁ a) (snd a)) ,
+                    --         keepLeft' (recoverLeft' (proj₁ a) (snd a)))
+                    --         ≡ a
+                    --     pr (a , b) = ΣPathP (forgetRecoverLeft' , toPathP ({! keepRecoverLeft'' {B = B} {x = a} {f = b}   !}) )
+
+                -- direction r z → Σ[⊤ ⊎ B] (impossible → direction p x)
+
+
+                -- simple ∶ (Σ (⊤ ⊎ direction q y) ?) ≡ (direction p x ⊎ direction q y)
+                -- simple = ?
 
                 -- lemma2 = {!   !}
 
@@ -249,47 +295,47 @@ three' {p} {q} {r} = π≡ (funExt (λ x → π≡ (funExt (λ y → lemma x y))
                 --                 direction p xx)
                 --         back dirs = (forgetLeft dirs) , λ x₁ → keepLeft dirs (fromImpossibleRight (snd x₁))
 
-                lemma2 : (x : position p) (y : position q) (z : position r) → Σ (direction r z → ⊤ ⊎ direction q y)
-                    (λ b →
-                        Σ (direction r z) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) →
-                        direction p x)
-                    ≡ (direction r z → direction p x ⊎ direction q y)
-                lemma2 x y z = isoToPath (iso go back firstthing λ a → ΣPathP ((funExt (λ x → forgetRecoverLeft2' (fst a x) λ x₃ → snd a (x , x₃))) , toPathP {!   !})) -- λ a → ΣPathP ({!   !} , toPathP (funExt (λ x → {!   !}))))
-                    where
-                        go : Σ (direction r z → ⊤ ⊎ direction q y)
-                            (λ b →
-                                Σ (direction r z) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) →
-                                direction p x) →
-                            direction r z → direction p x ⊎ direction q y
-                        go (fst₁ , c) a = recoverLeft' (fst₁ a) λ x → c (a , x) -- recoverLeft (fst₁ a) λ x → c (a , toImpossibleRight x)
+                -- lemma2 : (x : position p) (y : position q) (z : position r) → Σ (direction r z → ⊤ ⊎ direction q y)
+                --     (λ b →
+                --         Σ (direction r z) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) →
+                --         direction p x)
+                --     ≡ (direction r z → direction p x ⊎ direction q y)
+                -- lemma2 x y z = isoToPath (iso go back firstthing λ a → ΣPathP ((funExt (λ x → forgetRecoverLeft2' (fst a x) λ x₃ → snd a (x , x₃))) , toPathP {!   !})) -- λ a → ΣPathP ({!   !} , toPathP (funExt (λ x → {!   !}))))
+                --     where
+                --         go : Σ (direction r z → ⊤ ⊎ direction q y)
+                --             (λ b →
+                --                 Σ (direction r z) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) →
+                --                 direction p x) →
+                --             direction r z → direction p x ⊎ direction q y
+                --         go (fst₁ , c) a = recoverLeft' (fst₁ a) λ x → c (a , x) -- recoverLeft (fst₁ a) λ x → c (a , toImpossibleRight x)
 
-                        back : (direction r z → direction p x ⊎ direction q y) →
-                            Σ (direction r z → ⊤ ⊎ direction q y)
-                            (λ b →
-                                Σ (direction r z) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) →
-                                direction p x)
-                        back a = (λ x → forgetLeft (a x)) , λ {(x , b) → keepLeft' (a x) b} -- (λ x → forgetLeft (a x)) , λ {(x , b) → keepLeft (a x) (fromImpossibleRight b)}
+                --         back : (direction r z → direction p x ⊎ direction q y) →
+                --             Σ (direction r z → ⊤ ⊎ direction q y)
+                --             (λ b →
+                --                 Σ (direction r z) (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) →
+                --                 direction p x)
+                --         back a = (λ x → forgetLeft (a x)) , λ {(x , b) → keepLeft' (a x) b} -- (λ x → forgetLeft (a x)) , λ {(x , b) → keepLeft (a x) (fromImpossibleRight b)}
 
-                        firstthing : (b : direction r z → direction p x ⊎ direction q y) →
-                            (λ a → recoverLeft' (forgetLeft (b a)) (λ x₃ → keepLeft' (b a) x₃))
-                            ≡ b
-                        firstthing ask = funExt (λ x → recoverForgetLeft') -- ∙ {!   !}
+                --         firstthing : (b : direction r z → direction p x ⊎ direction q y) →
+                --             (λ a → recoverLeft' (forgetLeft (b a)) (λ x₃ → keepLeft' (b a) x₃))
+                --             ≡ b
+                --         firstthing ask = funExt (λ x → recoverForgetLeft') -- ∙ {!   !}
 
-                        yaya : (a : Σ (direction r z → ⊤ ⊎ direction q y)
-                            (λ b →
-                                Σ (direction r z) (λ a₁ → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a₁)) →
-                                direction p x)) → 
-                                                transport
-                                                    (λ i →
-                                                        Σ (direction r z)
-                                                        (λ a₁ →
-                                                            [ (λ _ → ⊤) , (λ _ → ⊥) ]
-                                                            (forgetRecoverLeft2' (proj₁ a a₁) (λ x₃ → snd a (a₁ , x₃)) i)) →
-                                                        direction p x)
-                                                    (λ { (x , b)
-                                                            → keepLeft' (recoverLeft' (proj₁ a x) (λ x₂ → snd a (x , x₂))) b
-                                                        })
-                                                    ≡ snd a
+                --         yaya : (a : Σ (direction r z → ⊤ ⊎ direction q y)
+                --             (λ b →
+                --                 Σ (direction r z) (λ a₁ → [ (λ _ → ⊤) , (λ _ → ⊥) ] (b a₁)) →
+                --                 direction p x)) → 
+                --                                 transport
+                --                                     (λ i →
+                --                                         Σ (direction r z)
+                --                                         (λ a₁ →
+                --                                             [ (λ _ → ⊤) , (λ _ → ⊥) ]
+                --                                             (forgetRecoverLeft2' (proj₁ a a₁) (λ x₃ → snd a (a₁ , x₃)) i)) →
+                --                                         direction p x)
+                --                                     (λ { (x , b)
+                --                                             → keepLeft' (recoverLeft' (proj₁ a x) (λ x₂ → snd a (x , x₂))) b
+                --                                         })
+                --                                     ≡ snd a
 
 
                             --     transp
@@ -302,7 +348,7 @@ three' {p} {q} {r} = π≡ (funExt (λ x → π≡ (funExt (λ y → lemma x y))
                             --         → keepLeft' (recoverLeft' (proj₁ a x) (λ x₂ → snd a (x , x₂))) b
                             --     })
                             -- ≡ snd a
-                        yaya a = {!   !} -- know it is possibleto get something like: transport difficultThing (snd a) ≡ snd a
+                        -- yaya a = {! keepRecoverLeft'''   !} -- know it is possibleto get something like: transport difficultThing (snd a) ≡ snd a
                                 
                                 -- transport
                         --         (λ i →
