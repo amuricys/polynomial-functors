@@ -2,6 +2,8 @@
 
 module Categorical.Poly.Monoidal.CompositionProduct where
 
+open import Cubical.Foundations.Path using ( toPathP⁻ )
+
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
 open import Cubical.Foundations.Isomorphism
@@ -162,113 +164,107 @@ halp {p} {posp} {dirp} = sym (aa {B = direction p} ∙ bbb ∙ ccc)
 --                      direction p (transp (λ _ → position p) (~ i ∨ ~ i₃) (fst gm)))
 --                   i0 dirp))))))
 --           i0 dirq))))
+apply : {A : Set} (f : A → Set) → {a₁ a₂ : A} (p : a₁ ≡ a₂) → (f a₁ ≡ f a₂)
+apply f p i = f (p i) 
 
 open import CategoryData.Composition
 assoc : {p q r : Polynomial} → (p ◂ q) ◂ r ≡ p ◂ (q ◂ r)
-assoc {p} {q} {r} = poly≡∀ pos≡ dir≡
-    where pos≡norm : Σ (Σ (position p) (λ i → direction p i → position q))
-                       (λ i →
-                           Σ (direction p (fst i)) (λ a → direction q (snd i a)) → position r)
-                    ≡
-                    Σ (position p)
-                      (λ i →
-                          direction p i →
-                          Σ (position q) (λ i₃ → direction q i₃ → position r))
-          pos≡norm = isoToPath (iso go back (λ _ → refl) λ _ → refl)
-            where go :  Σ (Σ (position p) (λ i → direction p i → position q))
-                          (λ i → Σ (direction p (fst i)) (λ a → direction q (snd i a))
-                                 → position r)
-                        →
-                        Σ (position p)
-                          (λ i →
-                              direction p i →
-                              Σ (position q) (λ i₃ → direction q i₃ → position r))
-                  go ((posp , dirptoposq) , fromdirandfunctoposr) = 
-                    posp , (λ dirp → (dirptoposq dirp) , (λ dirqatthatpos → fromdirandfunctoposr (dirp , dirqatthatpos)))
-                  back : Σ (position p)
-                          (λ i →
-                              direction p i →
-                              Σ (position q) (λ i₃ → direction q i₃ → position r)) 
-                        → 
-                        Σ (Σ (position p) (λ i → direction p i → position q))
-                          (λ i → Σ (direction p (fst i)) (λ a → direction q (snd i a))
-                                 → position r)
-                  back (posp , postodir) = 
-                    (posp , (λ dirp → fst (postodir dirp))) , λ { (dirp , dirq) → snd (postodir dirp) dirq }
-                        
-          pos≡ : position (p ◂ q ◂ r) ≡ position (p ◂ (q ◂ r))
-          pos≡ = pos≡norm
-          dir≡ : (posB : Σ (position p) (λ i → direction p i → position (q ◂ r))) →
-                    subst (λ x → x → Type) pos≡ (dir (p ◂ q) r) posB 
-                  ≡
-                 dir p (q ◂ r) posB
-          dir≡ gm = isoToPath (iso (λ { ((dirp , dirq) , dirr) →  subst (direction p) (transportRefl (fst gm)) dirp , subst (direction q) (transportRefl (fst (snd gm  (transp (λ j → direction p (transp (λ i → position p) j (fst gm))) i0 dirp)))) dirq , subst (direction r) (transportRefl ((snd
-                                      (snd gm
-                                        (transp (λ j → direction p (transp (λ i → position p) j (fst gm)))
-                                        i0 dirp))
-                                      (transp
-                                        (λ j →
-                                          direction q
-                                          (transp (λ i → position q) j
-                                            (fst
-                                            (snd gm
-                                              (transp
-                                              (λ j₁ → direction p (transp (λ i → position p) j₁ (fst gm))) i0
-                                              dirp)))))
-                                        i0 dirq)))) dirr })
-                                   (λ { (dirp , dirq , dirr)   → (subst (direction p) (sym (transportRefl (fst gm))) dirp , subst (direction q) (sym ((transportRefl (fst (snd gm  (transp (λ j → direction p (transp (λ i → position p) j (fst gm))) i0 (subst (direction p) (sym (transportRefl (fst gm))) dirp))))))) (subst (λ diff → direction q (fst (snd gm diff)) ) (halp {p}) dirq)) , 
-                                              subst (direction r) (sym {!   !}) dirr }) 
-                                   {!   !}
-                                   {!   !})
+assoc {p} {q} {r} = poly≡∀ mapPos≡₂ mapDir≡ 
+  where
 
-open Functor
-open import Function
-bifunctor : Bifunctor Poly Poly Poly
-F₀ bifunctor (p , q) = p ◂ q
-F₁ bifunctor ((mpf ⇆ mdf) , (mpg ⇆ mdg)) = (λ { (a , b) → mpf a , λ { x → mpg (b (mdf a x)) } }) ⇆ λ { (x , y) (w , z) → (mdf x w) , (mdg (y (mdf x w)) z) }
-identity bifunctor = refl
-homomorphism bifunctor = refl
-F-resp-≈ bifunctor {p , r} {q , s} {(fpq ⇆ fpq♯) , (frs ⇆ frs♯)} {(gpq ⇆ gpq♯) , (grs ⇆ grs♯)} (fst≡ , snd≡) 
-  = lens≡ₚ pos≡ {!   !}
-     where pqPosEq : fpq ≡ gpq
-           pqPosEq = lens≡→mapPos≡ fst≡
-           pos≡ : (λ { (a , b) → fpq a , (λ { x → frs (b (fpq♯ a x)) }) }) ≡ (λ { (a , b) → gpq a , (λ { x → grs (b (gpq♯ a x)) }) })
-           iwant : (x : pos p r) → (λ { (a , b) → fpq a , (λ { x → frs (b (fpq♯ a x)) }) }) x ≡ (λ { (a , b) → gpq a , (λ { x → grs (b (gpq♯ a x)) }) }) x
-           iwant (posp , fromdirqtoposr ) = 
-             ΣPathP $ funExt⁻ pqPosEq posp , toPathP t
-               where t : transport
-                         (λ i → direction q (funExt⁻ pqPosEq posp i) → position s)
-                         (λ { x → frs (fromdirqtoposr (fpq♯ posp x)) })
-                         ≡ (λ { x → grs (fromdirqtoposr (gpq♯ posp x)) })
-                     t i = transp (λ j → transport (λ i₃ → {!  !}) (λ { x → frs (fromdirqtoposr (fpq♯ posp x)) })) {!   !} {!   !}
-           pos≡ = funExt iwant
+    extractFunction : {A B X : Set} {C : B → Set}
+      → (Σ[ f ∈ (A → B) ] (Σ[ a ∈ A ] (C (f a)) → X)) ≡ (A → Σ[ b ∈ B ] ((C b) → X))
+    extractFunction {A} {B} {X} {C} = isoToPath (iso go back (λ a → refl) λ a → refl)
+      where
+        go : Σ[ f ∈ (A → B) ] (Σ[ a ∈ A ] (C (f a)) → X) → (A → Σ[ b ∈ B ] (C b → X))
+        go (f , g) = λ a → (f a) , λ x → g (a , x)
 
-monoidal : Monoidal Poly
-monoidal = record
-    { ⊗ = bifunctor
-    ; unit = Y
-    ; unitorˡ = record { 
-        from = (λ { (tt , y) → y tt }) ⇆ λ { (tt , y) z → tt , z } ; 
-        to = (λ { x → tt , λ _ → x }) ⇆ λ { fromPos → snd } ; 
-        iso = record { isoˡ = refl ; isoʳ = refl } 
-        }
-    ; unitorʳ = record { 
-        from = fst ⇆ λ { _ x → x , tt } ; 
-        to = (λ x → x , (λ _ → tt)) ⇆ λ _ → fst ; 
-        iso = record { isoˡ = refl ; isoʳ = refl } 
-        }
-    ; associator = record { 
-        from = (λ { ((x , z) , y) → x , (λ x → z x , (λ x₁ → y (x , x₁))) }) ⇆ λ { ((_ , hmm) , bbb) (fst₂ , (what , is)) → (fst₂ , what) , is } ; 
-        to = (λ { (a , b) → (a , (λ x → fst (b x))) , λ { (idk , wat) → snd (b idk) wat } }) ⇆ λ { (x , y) ((jee , idkk) , w) → jee , idkk , w } ; 
-        iso = record { isoˡ = refl ; isoʳ = refl } 
-        }
-    ; unitorˡ-commute-from = refl
-    ; unitorˡ-commute-to = refl
-    ; unitorʳ-commute-from = refl
-    ; unitorʳ-commute-to = refl
-    ; assoc-commute-from = refl
-    ; assoc-commute-to = refl
-    ; triangle = refl
-    ; pentagon = refl
-    }
+        back : (A → Σ[ b ∈ B ] (C b → X)) → Σ[ f ∈ (A → B) ] (Σ[ a ∈ A ] (C (f a)) → X)  
+        back a = (λ x → fst (a x)) , λ { (x , y) → snd (a x) y}
+
+    mapPos≡ : position (p ◂ q ◂ r) ≡ position (p ◂ (q ◂ r))
+    mapPos≡ = ΣAssoc ∙ cong (Σ (position p)) (funExt (λ x → extractFunction)) 
+
+    mapPos≡₂ : position (p ◂ q ◂ r) ≡ position (p ◂ (q ◂ r))
+    mapPos≡₂ = isoToPath (iso go back (λ b → refl) (λ a → refl))
+      where
+        go :  Σ (Σ (position p) (λ i → direction p i → position q))
+                (λ i → Σ (direction p (fst i)) (λ a → direction q (snd i a))
+                        → position r)
+              →
+              Σ (position p)
+                (λ i →
+                    direction p i →
+                    Σ (position q) (λ i₃ → direction q i₃ → position r))
+        go ((posp , dirptoposq) , fromdirandfunctoposr) = posp , (λ dirp → (dirptoposq dirp) , (λ dirqatthatpos → fromdirandfunctoposr (dirp , dirqatthatpos)))
+        back : Σ (position p)
+                (λ i →
+                    direction p i →
+                    Σ (position q) (λ i₃ → direction q i₃ → position r)) 
+              → 
+              Σ (Σ (position p) (λ i → direction p i → position q))
+                (λ i → Σ (direction p (fst i)) (λ a → direction q (snd i a))
+                        → position r)
+        back (posp , postodir) = 
+          (posp , (λ dirp → fst (postodir dirp))) , λ { (dirp , dirq) → snd (postodir dirp) dirq }
+
+    mapDir≡ : (posB : Σ (position p) (λ i → direction p i → position (q ◂ r)))
+      → subst (λ x → x → Type) mapPos≡₂ (dir (p ◂ q) r) posB
+      ≡ dir p (q ◂ r) posB
+    mapDir≡ (posP , dirF) = ΣAssoc ∙ ΣLemma (cong (direction p) (transportRefl posP)) (funExt (λ x → ΣLemma (cong (direction q) (transportRefl (fst (dirF (transp (λ j → direction p (transp (λ i → position p) j posP)) i0 x))))) (funExt (λ x₁ → cong (direction r) (transportRefl ((snd (dirF (transp (λ j → direction p (transp (λ i → position p) j posP)) i0 x)) (transp (λ j → direction q (transp (λ i → position q) j (fst (dirF (transp (λ j₁ → direction p (transp (λ i → position p) j₁ posP)) i0 x))))) i0 x₁))))))))
+      where
+
+        ΣLemma : {A B : Set} {C : A → Set} {D : B → Set} → (pr₁ : A ≡ B) → (C ≡ λ a → D (transport pr₁ a)) → Σ A C ≡ Σ B D
+        ΣLemma pr₁ pr₂ = cong (λ {(A , B) → Σ A B}) (ΣPathP (pr₁ , (toPathP⁻ pr₂)))
+
+-- open Functor
+-- open import Function
+-- bifunctor : Bifunctor Poly Poly Poly
+-- F₀ bifunctor (p , q) = p ◂ q
+-- F₁ bifunctor ((mpf ⇆ mdf) , (mpg ⇆ mdg)) = (λ { (a , b) → mpf a , λ { x → mpg (b (mdf a x)) } }) ⇆ λ { (x , y) (w , z) → (mdf x w) , (mdg (y (mdf x w)) z) }
+-- identity bifunctor = refl
+-- homomorphism bifunctor = refl
+-- F-resp-≈ bifunctor {p , r} {q , s} {(fpq ⇆ fpq♯) , (frs ⇆ frs♯)} {(gpq ⇆ gpq♯) , (grs ⇆ grs♯)} (fst≡ , snd≡) 
+--   = lens≡ₚ pos≡ {!   !}
+--      where pqPosEq : fpq ≡ gpq
+--            pqPosEq = lens≡→mapPos≡ fst≡
+--            pos≡ : (λ { (a , b) → fpq a , (λ { x → frs (b (fpq♯ a x)) }) }) ≡ (λ { (a , b) → gpq a , (λ { x → grs (b (gpq♯ a x)) }) })
+--            iwant : (x : pos p r) → (λ { (a , b) → fpq a , (λ { x → frs (b (fpq♯ a x)) }) }) x ≡ (λ { (a , b) → gpq a , (λ { x → grs (b (gpq♯ a x)) }) }) x
+--            iwant (posp , fromdirqtoposr ) = 
+--              ΣPathP $ funExt⁻ pqPosEq posp , toPathP t
+--                where t : transport
+--                          (λ i → direction q (funExt⁻ pqPosEq posp i) → position s)
+--                          (λ { x → frs (fromdirqtoposr (fpq♯ posp x)) })
+--                          ≡ (λ { x → grs (fromdirqtoposr (gpq♯ posp x)) })
+--                      t i = transp (λ j → transport (λ i₃ → {!  !}) (λ { x → frs (fromdirqtoposr (fpq♯ posp x)) })) {!   !} {!   !}
+--            pos≡ = funExt iwant
+
+-- monoidal : Monoidal Poly
+-- monoidal = record
+--     { ⊗ = bifunctor
+--     ; unit = Y
+--     ; unitorˡ = record { 
+--         from = (λ { (tt , y) → y tt }) ⇆ λ { (tt , y) z → tt , z } ; 
+--         to = (λ { x → tt , λ _ → x }) ⇆ λ { fromPos → snd } ; 
+--         iso = record { isoˡ = refl ; isoʳ = refl } 
+--         }
+--     ; unitorʳ = record { 
+--         from = fst ⇆ λ { _ x → x , tt } ; 
+--         to = (λ x → x , (λ _ → tt)) ⇆ λ _ → fst ; 
+--         iso = record { isoˡ = refl ; isoʳ = refl } 
+--         }
+--     ; associator = record { 
+--         from = (λ { ((x , z) , y) → x , (λ x → z x , (λ x₁ → y (x , x₁))) }) ⇆ λ { ((_ , hmm) , bbb) (fst₂ , (what , is)) → (fst₂ , what) , is } ; 
+--         to = (λ { (a , b) → (a , (λ x → fst (b x))) , λ { (idk , wat) → snd (b idk) wat } }) ⇆ λ { (x , y) ((jee , idkk) , w) → jee , idkk , w } ; 
+--         iso = record { isoˡ = refl ; isoʳ = refl } 
+--         }
+--     ; unitorˡ-commute-from = refl
+--     ; unitorˡ-commute-to = refl
+--     ; unitorʳ-commute-from = refl
+--     ; unitorʳ-commute-to = refl
+--     ; assoc-commute-from = refl
+--     ; assoc-commute-to = refl
+--     ; triangle = refl
+--     ; pentagon = refl
+--     }
  
