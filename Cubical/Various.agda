@@ -11,6 +11,7 @@ open import Cubical.Foundations.Prelude hiding (Σ-syntax)
 open import Cubical.Foundations.Isomorphism
 open import Level
 open import Cubical.PolynomialEquals
+open import Cubical.LensEquality
 open import Cubical.Data.Sigma.Properties
 open import Data.Unit
 open import Dynamical.System
@@ -64,3 +65,14 @@ productIsΠPoly {p} {q} = poly≡∀' posEq dirEq
 
 -- functionToDynamicalSystem₂ : {A B : Set} → (A → B) → DynamicalSystem
 -- functionToDynamicalSystem₂ {A} {B} f = mkdyn A (monomial B A) (f ⇆ λ _ → id)
+
+-- the arrow from 1 hack is to get around size issues, polys are bigger than sets
+applyingIsSameAsComposingWithConstant : {r : Polynomial} → {A : Set} → Lens 𝟙 (r ◂ (Constant A)) ≡ r ⦅ A ⦆
+applyingIsSameAsComposingWithConstant {r} {A} = isoToPath (iso go
+                                                               back
+                                                               (λ b → refl)
+                                                               λ a → lens≡ₚ refl λ x () )
+      where go : Lens 𝟙 (r ◂ (Constant A)) → r ⦅ A ⦆
+            go (f ⇆ f♯) = f tt
+            back : r ⦅ A ⦆ → Lens 𝟙 (r ◂ (Constant A))
+            back (pos , md) = (λ _ → pos , md) ⇆ λ { fromPos () }

@@ -18,27 +18,9 @@ import Categories.Category.CartesianClosed.Canonical as Canonical
 open import Function using (_∘_ ; _$_)
 
 open Polynomial
-depProd : Σ[ ind ∈ Set ](ind → Polynomial) → Polynomial
-depProd (ind , polyAt) = mkpoly ((i : ind) → position (polyAt i))
-                                      (λ a⁺ → Σ[ i ∈ ind ](direction (polyAt i) (a⁺ i)))
 open import Cubical.PolynomialEquals
 open import Cubical.Foundations.Prelude
 open Polynomial
--- Exercise 4.29
-p^0≡1 : {p : Polynomial} → p ^ 𝟘 ≡ 𝟙
-p^0≡1 {p} = poly≡∀' pos≡ dir≡
-  where
-    lemma : {A : ⊥ → Type} → ((i : ⊥) → A i) ≡ ⊤
-    lemma = isoToPath (iso (λ x → tt) (λ {x ()}) (λ {tt → refl}) λ {a i ()})
-
-    pos≡ : position (p ^ 𝟘) ≡ position 𝟙
-    pos≡ =  lemma
-
-    lemmaDir : {A : ⊥ → Type} → Σ ⊥ A ≡ ⊥
-    lemmaDir = isoToPath (iso fst (λ {()}) (λ {()}) λ {()})
-
-    dir≡ : (pos : position (p ^ 𝟘)) → direction (p ^ 𝟘) pos ≡ subst (λ x → x → Type) (sym pos≡) (direction 𝟙) pos
-    dir≡ pos = lemmaDir
 
 open import Cubical.Core.Primitives
 open import Cubical.Foundations.Prelude
@@ -82,40 +64,3 @@ p^1≡p {p@(mkpoly pos dir)} = poly≡' pos≡ dir≡
           hej hej with hej tt in eq
           ... | fst₁ , snd₁ = {!   !}
 
-rtoq : (r : Polynomial) → (q : Polynomial) → Polynomial
-rtoq r (mkpoly posQ dirQ) = depProd (posQ , λ j → r ◂ (Y + Constant (dirQ j)))
-
-ev : {A B : Polynomial} → Lens (rtoq B A * A) B
-ev {A} {B} = mp ⇆ md
-    where mp : position (rtoq B A * A) → position B
-          mp (posB^A , posA) = fst (posB^A posA)
-          md : (fromPos : position (rtoq B A * A)) → direction B (mp fromPos) → direction (rtoq B A * A) fromPos
-          md (posB^A , posA) x with (snd (posB^A posA)) x in eq
-          ... | inj₂ v = inj₂ v
-          ... | inj₁ s = inj₁ (posA , x , help eq)
-                where help : (snd (posB^A posA) x) Eq.≡ inj₁ s → [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (posB^A posA) x)
-                      help p rewrite p = tt
-
-λg : {X A B : Polynomial} → (X×A : Product X A) → Lens (Product.A×B X×A) B → Lens X (rtoq B A)  
-λg {X} {A} {B} record { A×B = A×B ; π₁ = π₁ ; π₂ = π₂ ; ⟨_,_⟩ = ⟨_,_⟩ ; project₁ = project₁ ; project₂ = project₂ ; unique = unique } (mp ⇆ md) = let
-  emp ⇆ emd = ev {A} {B}
-  -- mkpoly h m = Product.A×B p
-  -- hmm : position X → position A → position (X * A)
-  -- hmm posX posA = posX , posA
-  -- hmmm : position (X * A) → position (Product.A×B (prod {X} {A}))
-  -- hmmm p = p
-  help : position A×B
-  help = {!  !}
-  in
-  (\ x i → mp help , {!   !}) ⇆ {!   !} 
-
-exp : {A B : Polynomial} → Exponential A B
-exp {A} {B} = record
-    { B^A = rtoq B A
-    ; product = prod
-    ; eval = ev
-    ; λg = \ { {X} record { A×B = A×B ; π₁ = π₁ ; π₂ = π₂ ; ⟨_,_⟩ = ⟨_,_⟩ ; project₁ = project₁ ; project₂ = project₂ ; unique = unique } (f ⇆ f♯) → (λ x i → {! f  !}) ⇆ {!   !}}
-    ; β = {!   !}
-    ; λ-unique = {!   !}
-    }
-      
