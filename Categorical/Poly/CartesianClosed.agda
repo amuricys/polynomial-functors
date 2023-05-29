@@ -207,7 +207,7 @@ three' {p} {q} {r} = π≡ (funExt (λ x → π≡ (funExt (λ y → lemma x y))
         lemma : (x : position p) (y : position q)
             → (r ◂ Y + Constant (direction q y)) ⦅ direction p x ⦆
             ≡ (Σ[ k ∈ position r ]  (direction r k → direction p x ⊎ direction q y))
-        lemma x y = yo ∙ cong (Σ (position r)) (funExt (λ z → katt x y z)) -- yo ∙ cong (Σ (position r)) (funExt (λ z → lemma2 x y z)) -- yoyo ∙ π≡ (funExt (λ t → yoyoyo x y z t)))) --  toPathP {! !}
+        lemma x y = yo ∙ cong (Σ (position r)) (funExt (λ z → katt' )) -- yo ∙ cong (Σ (position r)) (funExt (λ z → lemma2 x y z)) -- yoyo ∙ π≡ (funExt (λ t → yoyoyo x y z t)))) --  toPathP {! !}
             where
 
 
@@ -234,18 +234,39 @@ three' {p} {q} {r} = π≡ (funExt (λ x → π≡ (funExt (λ y → lemma x y))
                         --     ≡ a
                         -- lamma (x , y) = ΣPathTransport→PathΣ ((forgetLeft (recoverLeft' x y) , keepLeft' (recoverLeft' x y))) ((x , y)) (forgetRecoverLeft' , keepRecoverLeft'' {x = x} {f = y}) -- {! (forgetRecoverLeft' {x = x} {f = y} , ?)  !} --   ?
 
-                katt : {B : Set} (x : position p) (y : position q) (z : position r)
-                 → (Σ[ b ∈ (direction r z → ⊤ ⊎ B) ]
-                    ( Σ[ a ∈ (direction r z) ] ([ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) → direction p x))
-                    ≡ (direction r z → direction p x ⊎ B)
-                katt {B} x y z = {! katt2 {B = B} x y z  !}
-                    where
+                -- finalPiece : {A B X : Set} → Σ[ b ∈ (X → ⊤ ⊎ B) ]
+                --     (Σ[ a ∈ X ] (([ (λ _ → ⊤) , (λ _ → ⊥) ] (b a))) → A)
+                --     ≡ (X → Σ[ b ∈ (⊤ ⊎ B) ] (([ (λ _ → ⊤) , (λ _ → ⊥) ] b) → A))
+                -- finalPiece = {!   !}
 
-                        katt2 : {B : Set} (x : position p) (y : position q) (z : position r)
-                            → (direction r z → Σ[ b ∈ (⊤ ⊎ B) ]
-                            ( ([ (λ _ → ⊤) , (λ _ → ⊥) ] b) → direction p x))
-                            ≡ (direction r z → direction p x ⊎ B)
-                        katt2 {B} x y z = π≡ (funExt λ x → isSame)
+                finalPiece' : {A B X : Set}
+                    → (Σ[ b ∈ (X → ⊤ ⊎ B) ]
+                         (Σ[ a ∈ X ]
+                            ([ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) → A))
+                       ≡ (X → Σ[ b ∈ (⊤ ⊎ B) ] (([ (λ _ → ⊤) , (λ _ → ⊥) ] b) → A))
+                    
+                    -- Σ[ b ∈ (X → ⊤ ⊎ B) ]
+                    -- (Σ[ a ∈ X ] (([ (λ _ → ⊤) , (λ _ → ⊥) ] (b a))) → A)
+                    -- ≡ (X → Σ[ b ∈ (⊤ ⊎ B) ] (([ (λ _ → ⊤) , (λ _ → ⊥) ] b) → A))
+                finalPiece' = isoToPath (iso (λ (x , y) z → x z , λ c → y (z , c)) (λ d → (λ e → fst (d e)) , λ (f , g) → snd (d f) g) (λ b  → refl) λ a → refl)
+
+                katt' : {A B X : Set}
+                    → (Σ[ b ∈ (X → ⊤ ⊎ B) ] (Σ[ a ∈ X ] ([ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) → A))
+                        ≡ (X → A ⊎ B)
+                katt' = finalPiece' ∙ π≡ (funExt (λ x → isSame))
+
+                -- katt : {B : Set} (x : position p) (y : position q) (z : position r)
+                --  → (Σ[ b ∈ (direction r z → ⊤ ⊎ B) ]
+                --     ( Σ[ a ∈ (direction r z) ] ([ (λ _ → ⊤) , (λ _ → ⊥) ] (b a)) → direction p x))
+                --     ≡ (direction r z → direction p x ⊎ B)
+                -- katt {B} x y z = {! finalPiece {A = direction p x} {B = B} {X = direction r z}  !} ∙ {!   !} -- {! katt2 {B = B} x y z  !}
+                --     where
+
+                --         katt2 : {B : Set} (x : position p) (y : position q) (z : position r)
+                --             → (direction r z → Σ[ b ∈ (⊤ ⊎ B) ]
+                --             ( ([ (λ _ → ⊤) , (λ _ → ⊥) ] b) → direction p x))
+                --             ≡ (direction r z → direction p x ⊎ B)
+                --         katt2 {B} x y z = π≡ (funExt λ x → isSame)
                     -- where
                     --     go : Σ (⊤ ⊎ B) (λ b → [ (λ _ → ⊤) , (λ _ → ⊥) ] b → direction p x) → direction p x ⊎ B
                     --     go (a , b) = recoverLeft' a b
