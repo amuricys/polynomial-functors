@@ -120,6 +120,20 @@ representablePolyCompPararell {A} {p} = poly≡∀ pos≡ dir≡
         dir≡ : ((posB : position (p ⊗ representable A) ) → subst (λ x → x → Type) pos≡ (direction (p ◂ representable A)) posB ≡ direction (p ⊗ representable A) posB)
         dir≡ (posP , tt) = apply (λ a → Σ (direction p a) (λ x → A)) (transportRefl posP)
 
+-- Helper
+yi : {A C : Set} {B : A → Set} {D : C → Set} → ((Σ A B) ⊎ (Σ C D)) ≡ (Σ (A ⊎ C) λ {(inj₁ x) → B x
+                                                                                ; (inj₂ y) → D y})
+yi = isoToPath  (iso (λ {(inj₁ x) → (inj₁ (fst x)) , snd x 
+                        ; (inj₂ y) → (inj₂ (fst y)) , (snd y)}) (λ {(inj₁ x , snd₁) → inj₁ (x , snd₁) 
+                                                                    ; (inj₂ y , snd₁) → inj₂ (y , snd₁)}) (λ {(inj₁ x , snd₁) →  refl
+                                                                                                            ; (inj₂ y , snd₁) → refl}) λ {(inj₁ x) → refl   
+                                                                                                                                        ; (inj₂ y) → refl})
+ΣLemma : {A B : Set} {C : A → Set} {D : B → Set} → (pr₁ : A ≡ B) → (C ≡ λ a → D (transport pr₁ a)) → Σ A C ≡ Σ B D
+ΣLemma pr₁ pr₂ = cong (λ {(A , B) → Σ A B}) (ΣPathP (pr₁ , (toPathP⁻ pr₂)))
+
+→≡ : {A B C D : Set} → A ≡ B → C ≡ D → (A → C) ≡ (B → D) 
+→≡ p b i = p i → b i
+
 prodDistOverComp : {p q r : Polynomial} → (p * q) ◂ r ≡ (p ◂ r) * (q ◂ r)
 prodDistOverComp {p} {q} {r} = poly≡∀ (isoToPath (iso (λ x → ((fst (fst x)) , yo (snd x)) , (snd (fst x)) , ya (snd x)) (λ x → ((fst (fst x)) , fst (snd x)) , (snd (fst x) ++ (snd (snd x)))) (λ _ → refl) λ {(x , snd₁) → ΣPathP (refl , funExt (λ {(inj₁ x) → refl
                                                                                                                                                                                                                                         ; (inj₂ y) → refl})) })) λ {((fst₁ , snd₂) , fst₂ , snd₁) → ΣLemma (⊎≡ (cong (direction p) (transportRefl fst₁)) (cong (direction q) (transportRefl fst₂))) (funExt (λ {(inj₁ x) → cong (direction r) (transportRefl (snd₂
@@ -142,16 +156,19 @@ prodDistOverComp {p} {q} {r} = poly≡∀ (isoToPath (iso (λ x → ((fst (fst x
         ye : {A B : Set} {a a₁ : A} {b b₁ : B} → (a ≡ a₁) → (b ≡ b₁) → (a , b) ≡ (a₁ , b₁)
         ye p b i = (p i , b i)
 
-        ΣLemma : {A B : Set} {C : A → Set} {D : B → Set} → (pr₁ : A ≡ B) → (C ≡ λ a → D (transport pr₁ a)) → Σ A C ≡ Σ B D
-        ΣLemma pr₁ pr₂ = cong (λ {(A , B) → Σ A B}) (ΣPathP (pr₁ , (toPathP⁻ pr₂)))
 
-        yi : {A C : Set} {B : A → Set} {D : C → Set} → ((Σ A B) ⊎ (Σ C D)) ≡ (Σ (A ⊎ C) λ {(inj₁ x) → B x
-                                                                                      ; (inj₂ y) → D y})
-        yi = isoToPath  (iso (λ {(inj₁ x) → (inj₁ (fst x)) , snd x 
-                               ; (inj₂ y) → (inj₂ (fst y)) , (snd y)}) (λ {(inj₁ x , snd₁) → inj₁ (x , snd₁) 
-                                                                         ; (inj₂ y , snd₁) → inj₂ (y , snd₁)}) (λ {(inj₁ x , snd₁) →  refl
-                                                                                                                 ; (inj₂ y , snd₁) → refl}) λ {(inj₁ x) → refl   
-                                                                                                                                             ; (inj₂ y) → refl})
 
         ⊎≡ : {A B C D : Set} → (A ≡ B) → (C ≡ D) → (A ⊎ C) ≡ (B ⊎ D)
         ⊎≡ p1 p2 i = p1 i ⊎ p2 i
+
+sumDistOverComp : {p q r : Polynomial} → (p + q) ◂ r ≡ (p ◂ r) + (q ◂ r)
+sumDistOverComp {p} {q} {r} = poly≡∀ (isoToPath (iso (λ {(inj₁ x , snd₁) →  inj₁ (x , snd₁) 
+                                                       ; (inj₂ y , snd₁) → inj₂ (y , snd₁)}) (λ {(inj₁ x) → (inj₁ (proj₁ x)) , (snd x)
+                                                                                               ; (inj₂ y) → (inj₂ (proj₁ y)) , (snd y)}) (λ {(inj₁ x) → refl
+                                                                                                                                           ; (inj₂ y) → refl}) λ {(inj₁ x , snd₁) →  refl 
+                                                                                                                                                                ; (inj₂ y , snd₁) →  refl})) λ {(inj₁ x) → ΣLemma (cong (direction p) (transportRefl (proj₁ x))) (funExt (λ x₁ → cong (direction r) (transportRefl  (snd x
+       (transp (λ j → direction p (transp (λ i → position p) j (proj₁ x)))
+        i0 x₁))))) 
+                                                                                                                                                                                              ; (inj₂ y) →  ΣLemma (cong (direction q) (transportRefl (proj₁ y))) (funExt (λ x → cong (direction r) (transportRefl (snd y
+       (transp (λ j → direction q (transp (λ i → position q) j (proj₁ y)))
+        i0 x)))))}

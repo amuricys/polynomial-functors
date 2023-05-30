@@ -33,6 +33,8 @@ selfMonomial S = monomial S S
 purePower : Set → Polynomial
 purePower power = monomial ⊤ power
 
+representable = purePower
+
 -- | p(y) = A*y
 linear : (A : Set) → Polynomial
 linear A = monomial A ⊤ 

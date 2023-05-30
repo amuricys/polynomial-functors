@@ -87,14 +87,6 @@ three : ((i : position p) (j : position q) → (r ◂ Y + Constant (direction q 
        ≡ ((i : position p) (j : position q) → Σ[ k ∈ position r ] ((direction r k) → (direction p i) ⊎ (direction q j)))
 three {p} {q} {r} = π≡ (funExt (λ x → π≡ (funExt (λ y → lemma x y)))) 
     where
-        ΣAssoc : {A : Set} {B : A → Set} {C : (Σ A B) → Set} → (Σ (Σ A B) C) ≡ (Σ[ a ∈ A ] Σ[ b ∈ (B a) ] C (a , b)) 
-        ΣAssoc {A} {B} {C} = isoToPath (iso go back (λ b → refl) λ a → refl)
-            where
-                go : Σ (Σ A B) C → Σ A (λ a → Σ (B a) (λ b → C (a , b)))
-                go ((a , b) , c) = a , b , c
-
-                back : Σ A (λ a → Σ (B a) (λ b → C (a , b))) → Σ (Σ A B) C
-                back (a , b , c) = (a , b) , c
 
         lemma : (x : position p) (y : position q)
             → (r ◂ Y + Constant (direction q y)) ⦅ direction p x ⦆

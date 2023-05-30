@@ -331,3 +331,12 @@ linear^linear≡pos→pos = isoToPath (iso (λ l x → fst (mapPosition l tt x))
                                        (λ f → (λ _ index → (f index) , inj₂) ⇆ λ { fromPos () })
                                        (λ b → refl)
                                        λ a → {!   !}) -- it's actually kind of hard to prove this
+
+ΣAssoc : {A : Set} {B : A → Set} {C : (Σ A B) → Set} → (Σ (Σ A B) C) ≡ (Σ[ a ∈ A ] Σ[ b ∈ (B a) ] C (a , b)) 
+ΣAssoc {A} {B} {C} = isoToPath (iso go back (λ b → refl) λ a → refl)
+    where
+        go : Σ (Σ A B) C → Σ A (λ a → Σ (B a) (λ b → C (a , b)))
+        go ((a , b) , c) = a , b , c
+
+        back : Σ A (λ a → Σ (B a) (λ b → C (a , b))) → Σ (Σ A B) C
+        back (a , b , c) = (a , b) , c
