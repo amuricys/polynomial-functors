@@ -171,7 +171,13 @@ open import CategoryData.Composition
 assoc : {p q r : Polynomial} → (p ◂ q) ◂ r ≡ p ◂ (q ◂ r)
 assoc {p} {q} {r} = poly≡∀ mapPos≡₂ mapDir≡ 
   where
-
+    ΣAssoc : {A : Set} {B : A → Set} {C : (Σ A B) → Set} → (Σ (Σ A B) C) ≡ (Σ[ a ∈ A ] Σ[ b ∈ (B a) ] C (a , b)) 
+    ΣAssoc {A} {B} {C} = isoToPath (iso go back (λ b → refl) λ a → refl)
+        where
+            go : Σ (Σ A B) C → Σ A (λ a → Σ (B a) (λ b → C (a , b)))
+            go ((a , b) , c) = a , b , c
+            back : Σ A (λ a → Σ (B a) (λ b → C (a , b))) → Σ (Σ A B) C
+            back (a , b , c) = (a , b) , c
     extractFunction : {A B X : Set} {C : B → Set}
       → (Σ[ f ∈ (A → B) ] (Σ[ a ∈ A ] (C (f a)) → X)) ≡ (A → Σ[ b ∈ B ] ((C b) → X))
     extractFunction {A} {B} {X} {C} = isoToPath (iso go back (λ a → refl) λ a → refl)

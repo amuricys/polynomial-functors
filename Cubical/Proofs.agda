@@ -194,8 +194,8 @@ lensToYIsChoiceOfDirection {p} = isoToPath (iso (λ { (_ ⇆ md) pos → md pos 
                                                  (λ b → refl) 
                                                  (λ { (mp ⇆ md) → λ _ → const tt ⇆ md }) )   
 
-open import Data.Fin renaming (zero to z ; suc to s)
-open import Data.Bool
+open import Data.Fin renaming (zero to z ; suc to s) using (Fin)
+open import Data.Bool hiding (_∨_ ; _∧_)
 
 ex⦅2⦆≡4 : ex ⦅ Bool ⦆ ≡ Fin 6
 ex⦅2⦆≡4 = isoToPath $
@@ -324,8 +324,14 @@ open import Cubical.Data.Equality using (pathToEq ; eqToPath) renaming (_≡_ to
             (λ index →
               Σ ⊥ (λ a → [ (λ _ → ⊤) , (λ _ → ⊥) ] (snd (posA index) a)))
             ≡ ⊥
-        dir≡ p = isoToPath (iso (λ { () }) (λ ()) (λ ()) λ { () i })
+        dir≡ p = isoToPath (iso (λ { () }) (λ ()) (λ ()) λ { () _ })
+open import Cubical.Foundations.Path using ( toPathP⁻ )
 
+open Iso
+-- (iso (λ l x → fst (mapPosition l tt x))
+--                                        (λ f → (λ _ index → (f index) , inj₂) ⇆ λ { fromPos () })
+--                                        (λ b → refl)
+--                                        λ a → {!   !})
 linear^linear≡pos→pos : {A B : Set} → Lens 𝟙 (linear B ^ linear A) ≡ (A → B)
 linear^linear≡pos→pos = isoToPath (iso (λ l x → fst (mapPosition l tt x))
                                        (λ f → (λ _ index → (f index) , inj₂) ⇆ λ { fromPos () })
@@ -340,3 +346,65 @@ linear^linear≡pos→pos = isoToPath (iso (λ l x → fst (mapPosition l tt x))
 
         back : Σ A (λ a → Σ (B a) (λ b → C (a , b))) → Σ (Σ A B) C
         back (a , b , c) = (a , b) , c
+linear^linear≡pos→pos {A} {B} = isoToPath is
+  where is : Iso (Lens 𝟙 (linear B ^ linear A)) (A → B)
+        fun is l x = fst (mapPosition l tt x)
+        inv is f = (λ _ index → (f index) , inj₂) ⇆ λ { fromPos () }
+        rightInv is b = refl
+        leftInv is (mpa ⇆ mda) = lens≡ₚ {!   !} {!   !}
+        -- it's actually kind of hard to prove this
+ΣLemma : {A B : Set} {C : A → Set} {D : B → Set} → (pr₁ : A ≡ B) → (C ≡ λ a → D (transport pr₁ a)) → Σ A C ≡ Σ B D
+ΣLemma pr₁ pr₂ = cong (λ {(A , B) → Σ A B}) (ΣPathP (pr₁ , (toPathP⁻ pr₂)))
+
+leftDistribute◂ : {p q r : Polynomial} → (p + q) ◂ r ≡ (p ◂ r) + (q ◂ r)
+leftDistribute◂ {p} {q} {r} = poly≡∀ pos≡ dir≡
+  where pos≡ : position ((p + q) ◂ r) ≡ position (p ◂ r + q ◂ r)
+        pos≡ = isoToPath (iso (λ { (inj₁ posp , dirpAtPosPtoR) → inj₁ (posp , dirpAtPosPtoR)
+                                 ; (inj₂ posq , dirqAtPosQtoR) → inj₂ (posq , dirqAtPosQtoR) }) 
+                              (λ { (inj₁ (posp , dirpAtPosPtoR)) → (inj₁ posp) , dirpAtPosPtoR
+                                 ; (inj₂ (posq , dirqAtPosQtoR)) → (inj₂ posq) , dirqAtPosQtoR }) 
+                              (λ { (inj₁ x) → refl
+                                 ; (inj₂ y) → refl } ) 
+                              λ { (inj₁ x , _) → refl 
+                                ; (inj₂ y , _) → refl })
+        dir≡ : (posB : position (p ◂ r) ⊎ position (q ◂ r)) → 
+              subst (λ x → x → Type) pos≡ (dir (p + q) r) posB ≡ 
+              [ direction (p ◂ r) , direction (q ◂ r) ] posB
+        dir≡ (inj₁ x) = isoToPath (iso (λ { (dp , dr) → 
+                                            subst (direction p) (transportRefl (proj₁ x)) dp , 
+                                            subst (direction r) (transportRefl ((snd x (transp (λ j → direction p (transp (λ i → position p) j (proj₁ x))) i0 dp)))) dr })
+                                       (λ { (dp , dr) → 
+                                            subst (direction p) (sym (transportRefl (proj₁ x))) dp , 
+                                            let sndtransp = (snd x
+                                                            (transport (λ j → direction p (transp (λ i → position p) j (proj₁ x)))
+                                                            (transport
+                                                              (λ i → direction p (transp (λ _ → position p) (~ i) (proj₁ x)))
+                                                              dp)))
+                                                myeq : transport 
+                                                       (λ j → direction p (transp (λ _ → position p) j (proj₁ x))) 
+                                                       (transport 
+                                                        (λ j → direction p (transp (λ _ → position p) (~ j) (proj₁ x))) dp)
+                                                      ≡ dp
+                                                myeq i = transp (λ j → direction p (transp (λ _ → position p) (i ∨ j) (proj₁ x))) i
+                                                         (transp (λ j → direction p (transp (λ _ → position p) (i ∨ ~ j) (proj₁ x))) i dp)
+                                                sndtranspiseq : snd x dp ≡ sndtransp
+                                                sndtranspiseq = cong (snd x) (sym myeq)
+                                                  -- λ i → 
+                                                  -- transport (λ j → direction p (transp (λ _ → position p) {!  !} (proj₁ x)))
+                                                  --           {!   !}
+                                                k : direction r (snd x dp) ≡ direction r
+                                                      (transport (λ i → position r)
+                                                       (snd x
+                                                        (transport (λ j → direction p (transp (λ i → position p) j (proj₁ x)))
+                                                         (transport
+                                                          (λ i → direction p (transp (λ _ → position p) (~ i) (proj₁ x)))
+                                                          dp))))
+                                                k = cong (direction r) (sndtranspiseq ∙ sym (transportRefl sndtransp)  )
+                                            in transport k dr }) 
+                                            (λ { (b₁ , b₂) → ΣPathP ((λ i → transp (λ i₃ → direction p (transp (λ _ → position p) (i₃ ∨ i) (proj₁ x)))
+                                                                                      i 
+                                                                                      (transp  (λ i₃ → direction p (transp (λ _ → position p) (i ∨ ~ i₃) (proj₁ x))) i b₁)) 
+                                                                                      , 
+                                                                      toPathP λ bigi → {!   !} ) }) 
+                                            λ a → {!   !})
+        dir≡ (inj₂ y) = {!   !}   

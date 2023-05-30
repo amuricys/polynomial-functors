@@ -23,7 +23,7 @@ dir p q (i , j) = Σ[ a ∈ direction p i ] direction q (j a)
 _◂_ : Polynomial → Polynomial → Polynomial
 p ◂ q = mkpoly (pos p q) (dir p q)
 
-infixl 27 _◂_
+infixl 32 _◂_
 
 compositionUnit : Polynomial
 compositionUnit = Y
@@ -42,7 +42,14 @@ compositePower p (suc n) = p ◂ (compositePower p n)
 ⟨_◂_⟩ : {p q r w : Polynomial} → Lens p r → Lens q w → Lens (p ◂ q) (r ◂ w)
 ⟨_◂_⟩ {p} {q} {r} {w} (f ⇆ f♯) (g ⇆ g♯) = mapPos ⇆ mapDir
   where mapPos : position (p ◂ q) → position (r ◂ w)
-        mapPos (posP , dirPToPosQ) = f posP , g ∘ dirPToPosQ ∘ f♯ posP
+        mapPos (posP , dirPToPosQ) = f posP , λ a' → (g ∘ dirPToPosQ) (f♯ posP a')
         mapDir : (fromPos : position (p ◂ q)) → direction (r ◂ w) (mapPos fromPos) → direction (p ◂ q) fromPos
         mapDir (posP , dirPToPosQ) (dirR , dirW) = (f♯ posP dirR) , g♯ (dirPToPosQ (f♯ posP dirR)) dirW
 infixl 28 ⟨_◂_⟩
+
+speedup◂ : {p : Polynomial} {S : Set} → Lens (selfMonomial S) p → Lens (selfMonomial S) (p ◂ p)
+speedup◂ {p} {S} l = dup ∘ₚ fixState
+  where dup : Lens ((selfMonomial S) ◂ (selfMonomial S)) (p ◂ p)
+        dup = ⟨ l ◂ l ⟩
+        fixState : Lens (selfMonomial S) (selfMonomial S ◂ selfMonomial S)
+        fixState = (λ s₀ → s₀ , λ s₁ → s₁) ⇆ λ { s₀ (s₁ , s₂) → s₂ } 

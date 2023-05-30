@@ -7,6 +7,7 @@ open import Relation.Nullary
 open import Agda.Builtin.Nat renaming (_+_ to _+ℕ_)
 open import CategoryData.Polynomial
 open import CategoryData.Lens
+open import CategoryData.Composition
 open import Codata.Stream
 open import Codata.Thunk
 open import Data.List hiding (take; _++_)
@@ -18,6 +19,7 @@ open import Data.Sum
 open import Data.Unit
 open import Data.Empty
 open import CategoryData.Everything
+open import Function
 
 -- Creating dynamical systems.
 record DynamicalSystem : Set₁ where
@@ -64,7 +66,8 @@ auto = encloseFunction λ _ → tt
 constI : {m : Set} → (i : m) → enclose (selfMonomial m)
 constI i = encloseFunction λ _ → i
 
-
+speedup : DynamicalSystem → DynamicalSystem
+speedup (mkdyn S p dynamics₁) = mkdyn S (p ◂ p) (speedup◂ dynamics₁)
 
 open import Data.Nat using (ℕ; zero; suc)
 
@@ -110,4 +113,4 @@ run d e initialState =  [ output ] ++ (run d e next)
         output : Polynomial.position (DynamicalSystem.interface d)
         output = (Lens.mapPosition (DynamicalSystem.dynamics d) initialState)
         next : DynamicalSystem.state d
-        next = Lens.mapDirection (DynamicalSystem.dynamics d) initialState (Lens.mapDirection e output tt)
+        next = Lens.mapDirection (DynamicalSystem.dynamics d) initialState (Lens.mapDirection e output tt) 
