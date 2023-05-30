@@ -333,28 +333,12 @@ open Iso
 --                                        (λ b → refl)
 --                                        λ a → {!   !})
 linear^linear≡pos→pos : {A B : Set} → Lens 𝟙 (linear B ^ linear A) ≡ (A → B)
-linear^linear≡pos→pos = isoToPath (iso (λ l x → fst (mapPosition l tt x))
-                                       (λ f → (λ _ index → (f index) , inj₂) ⇆ λ { fromPos () })
-                                       (λ b → refl)
-                                       λ a → {!   !}) -- it's actually kind of hard to prove this
-
-ΣAssoc : {A : Set} {B : A → Set} {C : (Σ A B) → Set} → (Σ (Σ A B) C) ≡ (Σ[ a ∈ A ] Σ[ b ∈ (B a) ] C (a , b)) 
-ΣAssoc {A} {B} {C} = isoToPath (iso go back (λ b → refl) λ a → refl)
-    where
-        go : Σ (Σ A B) C → Σ A (λ a → Σ (B a) (λ b → C (a , b)))
-        go ((a , b) , c) = a , b , c
-
-        back : Σ A (λ a → Σ (B a) (λ b → C (a , b))) → Σ (Σ A B) C
-        back (a , b , c) = (a , b) , c
 linear^linear≡pos→pos {A} {B} = isoToPath is
   where is : Iso (Lens 𝟙 (linear B ^ linear A)) (A → B)
         fun is l x = fst (mapPosition l tt x)
         inv is f = (λ _ index → (f index) , inj₂) ⇆ λ { fromPos () }
         rightInv is b = refl
         leftInv is (mpa ⇆ mda) = lens≡ₚ {!   !} {!   !}
-        -- it's actually kind of hard to prove this
-ΣLemma : {A B : Set} {C : A → Set} {D : B → Set} → (pr₁ : A ≡ B) → (C ≡ λ a → D (transport pr₁ a)) → Σ A C ≡ Σ B D
-ΣLemma pr₁ pr₂ = cong (λ {(A , B) → Σ A B}) (ΣPathP (pr₁ , (toPathP⁻ pr₂)))
 
 leftDistribute◂ : {p q r : Polynomial} → (p + q) ◂ r ≡ (p ◂ r) + (q ◂ r)
 leftDistribute◂ {p} {q} {r} = poly≡∀ pos≡ dir≡

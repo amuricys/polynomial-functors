@@ -223,6 +223,9 @@ assoc {p} {q} {r} = poly≡∀ mapPos≡₂ mapDir≡
         ΣLemma : {A B : Set} {C : A → Set} {D : B → Set} → (pr₁ : A ≡ B) → (C ≡ λ a → D (transport pr₁ a)) → Σ A C ≡ Σ B D
         ΣLemma pr₁ pr₂ = cong (λ {(A , B) → Σ A B}) (ΣPathP (pr₁ , (toPathP⁻ pr₂)))
 
+assoc⇆ : {c : Polynomial} → Lens c (c ◂ c ◂ c) ≡ Lens c (c ◂ (c ◂ c))
+assoc⇆ {c} = cong (Lens c) (assoc {c} {c} {c})
+
 -- open Functor
 -- open import Function
 -- bifunctor : Bifunctor Poly Poly Poly
