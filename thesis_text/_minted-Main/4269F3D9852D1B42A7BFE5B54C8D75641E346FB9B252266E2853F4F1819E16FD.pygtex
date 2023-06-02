@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{eval}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{((}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }*\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }q
+eval\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}q\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mapPos\PYG{+w}{ }⇆\PYG{+w}{ }mapDir
+\PYG{+w}{  }\PYG{k+kr}{where}
+\PYG{+w}{        }\PYG{n+nf}{mapPos}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{((}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }*\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }position\PYG{+w}{ }q
+\PYG{+w}{        }mapPos\PYG{+w}{ }\PYG{o}{(}posQ\PYGZca{}P\PYG{+w}{ },\PYG{+w}{ }posP\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }fst\PYG{+w}{ }\PYG{o}{(}posQ\PYGZca{}P\PYG{+w}{ }posP\PYG{o}{)}
+
+\PYG{+w}{        }\PYG{n+nf}{mapDir}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}pos\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{((}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }*\PYG{+w}{ }p\PYG{o}{))}
+\PYG{+w}{            }\PYG{o+ow}{→}\PYG{+w}{ }direction\PYG{+w}{ }q\PYG{+w}{ }\PYG{o}{(}mapPos\PYG{+w}{ }pos\PYG{o}{)}
+\PYG{+w}{            }\PYG{o+ow}{→}\PYG{+w}{ }direction\PYG{+w}{ }\PYG{o}{((}q\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }*\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }pos
+\PYG{+w}{        }mapDir\PYG{+w}{ }\PYG{o}{(}posQ\PYGZca{}P\PYG{+w}{ },\PYG{+w}{ }posP\PYG{o}{)}\PYG{+w}{ }dir
+\PYG{+w}{          }\PYG{o+ow}{=}\PYG{+w}{ }recoverLeft\PYG{+w}{ }\PYG{o}{(}snd\PYG{+w}{ }\PYG{o}{(}posQ\PYGZca{}P\PYG{+w}{ }posP\PYG{o}{)}\PYG{+w}{ }dir\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }x\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }posP\PYG{+w}{ },\PYG{+w}{ }dir\PYG{+w}{ },\PYG{+w}{ }x
+\end{Verbatim}

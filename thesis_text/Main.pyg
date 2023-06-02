@@ -1,0 +1,12 @@
+horizontalComposition : {p₁ p₂ p₃ p₄ p₅ p₆ : Polynomial}
+    (f : Chart p₁ p₂) (g : Chart p₃ p₄) (h : Chart p₂ p₅) (r : Chart p₄ p₆)
+    (w : Lens p₁ p₃) (v : Lens p₂ p₄) (m : Lens p₅ p₆)
+    → LensChartCommute w v f g → LensChartCommute v m h r
+    → LensChartCommute w m (h ∘c  f) (r ∘c g)
+
+
+verticalComposition : {p₁ p₂ p₃ p₄ p₅ p₆ : Polynomial}
+    (f : Chart p₁ p₂) (g : Chart p₃ p₄) (r : Chart p₅ p₆) (h : Lens p₃ p₅)
+    (w : Lens p₁ p₃) (v : Lens p₂ p₄) (m : Lens p₄ p₆)
+    → LensChartCommute w v f g → LensChartCommute h m g r
+    → LensChartCommute (h ∘ₚ w) (m ∘ₚ v) f r

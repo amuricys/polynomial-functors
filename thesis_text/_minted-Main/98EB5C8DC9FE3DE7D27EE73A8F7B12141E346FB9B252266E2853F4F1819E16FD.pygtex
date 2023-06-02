@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{ChartAsΣ}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Type
+ChartAsΣ\PYG{+w}{ }p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Σ[\PYG{+w}{ }mapPos\PYG{+w}{ }∈\PYG{+w}{ }\PYG{o}{(}position\PYG{+w}{ }p\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }position\PYG{+w}{ }q\PYG{o}{)}\PYG{+w}{ }]
+\PYG{+w}{                    }\PYG{o}{((}i\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }direction\PYG{+w}{ }p\PYG{+w}{ }i\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }direction\PYG{+w}{ }q\PYG{+w}{ }\PYG{o}{(}mapPos\PYG{+w}{ }i\PYG{o}{))}
+
+\PYG{n+nf}{chartAsΣToChart}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ChartAsΣ\PYG{+w}{ }p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Chart\PYG{+w}{ }p\PYG{+w}{ }q
+chartAsΣToChart\PYG{+w}{ }\PYG{o}{(}mapPos\PYG{+w}{ },\PYG{+w}{ }mapDir\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mapPos\PYG{+w}{ }⇉\PYG{+w}{ }mapDir
+
+\PYG{n+nf}{chartToChartAsΣ}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Chart\PYG{+w}{ }p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ChartAsΣ\PYG{+w}{ }p\PYG{+w}{ }q
+chartToChartAsΣ\PYG{+w}{ }\PYG{o}{(}mapPos\PYG{+w}{ }⇉\PYG{+w}{ }mapDir\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mapPos\PYG{+w}{ },\PYG{+w}{ }mapDir
+
+\PYG{n+nf}{chartAsΣ≡Chart}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ChartAsΣ\PYG{+w}{ }p\PYG{+w}{ }q\PYG{+w}{ }≡\PYG{+w}{ }Chart\PYG{+w}{ }p\PYG{+w}{ }q
+chartAsΣ≡Chart\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}q\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }isoToPath
+\PYG{+w}{    }\PYG{o}{(}iso\PYG{+w}{ }chartAsΣToChart\PYG{+w}{ }chartToChartAsΣ\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }b\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }refl\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }a\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }refl\PYG{o}{)}
+\end{Verbatim}

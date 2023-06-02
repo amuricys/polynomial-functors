@@ -20,6 +20,7 @@ monomial : (A B : Set) → Polynomial
 monomial A B = mkpoly A (λ _ → B)
 
 _y^_ = monomial
+infix 50 _y^_
 
 -- | p(y) = A
 Constant : (A : Set) → Polynomial

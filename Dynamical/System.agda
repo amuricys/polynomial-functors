@@ -54,8 +54,12 @@ haltingEmitter A B = mkpoly (A ⊎ B) halting
           halting (inj₁ _) = ⊥
           halting (inj₂ _) = ⊤
 
-install : (d : DynamicalSystem) → (a : Polynomial) → Lens (DynamicalSystem.interface d) a → DynamicalSystem
-install d a l = mkdyn (DynamicalSystem.state d) a (l ∘ₚ (DynamicalSystem.dynamics d))
+install : (d : DynamicalSystem) →                -- contains dynamics
+          (p : Polynomial) →                     -- outer polynomial
+          Lens (DynamicalSystem.interface d) p → -- wiring
+          DynamicalSystem
+install d p l = 
+    mkdyn (DynamicalSystem.state d) p (l ∘ₚ (DynamicalSystem.dynamics d))
 
 encloseFunction : {t u : Set} → (t → u) → Lens (monomial t u) Y
 encloseFunction f = (λ _ → tt) ⇆ (λ fromPos _ → f fromPos)
@@ -77,6 +81,15 @@ record Dimension (A : Set) : Set where
     dim : ℕ
 
 open Dimension public
+
+wiring : {A B C : Set} → let p = (B × A) y^ A ; q = C y^ (B × C) in 
+    Lens (p ⊗ q) (A y^ (A × B × C))
+wiring {A} {B} {C} = fillOutputs ⇆ fillInputs
+  where fillOutputs : ((B × A) × C) → A
+        fillOutputs ((b , a ) , c ) = a
+        fillInputs : ((B × A) × C) → (A × B × C) → A × B × C
+        fillInputs ((b₁ , a₁ ) , c₁ ) (aₒᵤₜ , bₒᵤₜ , cₒᵤₜ) = aₒᵤₜ , bₒᵤₜ , cₒᵤₜ
+
 
 -- dimProd : ∀ {A B} {{dimA : Dimension A}} {{dimB : Dimension B}} → Dimension (A × B)
 -- dimProd {A} {B} {{dimA}} {{dimB}} = Dim (dim dimA +ℕ dim dimB)

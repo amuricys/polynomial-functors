@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{poly≡}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}a\PYG{+w}{ }b\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}fstA≡fstB\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }a\PYG{+w}{ }≡\PYG{+w}{ }position\PYG{+w}{ }b\PYG{o}{)}
+\PYG{+w}{    }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}subst\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }x\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }x\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Type\PYG{o}{)}\PYG{+w}{ }fstA≡fstB\PYG{+w}{ }\PYG{o}{(}direction\PYG{+w}{ }a\PYG{o}{))}\PYG{+w}{ }≡\PYG{+w}{ }direction\PYG{+w}{ }b
+\PYG{+w}{    }\PYG{o+ow}{→}\PYG{+w}{ }a\PYG{+w}{ }≡\PYG{+w}{ }b
+poly≡\PYG{+w}{ }\PYG{o}{\PYGZob{}}a\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}b\PYG{o}{\PYGZcb{}}\PYG{+w}{ }fstA≡fstB\PYG{+w}{ }sndA≡sndB\PYG{+w}{ }i
+\PYG{+w}{  }\PYG{o+ow}{=}\PYG{+w}{ }polyFromSigma\PYG{+w}{ }\PYG{o}{(}polySigmas≡\PYG{+w}{ }\PYG{o}{(}polyToSigma\PYG{+w}{ }a\PYG{o}{)}
+\PYG{+w}{                               }\PYG{o}{(}polyToSigma\PYG{+w}{ }b\PYG{o}{)}
+\PYG{+w}{                               }fstA≡fstB
+\PYG{+w}{                               }sndA≡sndB
+\PYG{+w}{                               }i\PYG{o}{)}
+\end{Verbatim}

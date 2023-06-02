@@ -1,0 +1,6 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{record}\PYG{+w}{ }SetLens\PYG{+w}{ }\PYG{o}{(}from\PYG{+w}{ }to\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }SetPolynomial\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{k+kr}{constructor}\PYG{+w}{ }⇆ˢ
+\PYG{+w}{    }\PYG{k+kr}{field}
+\PYG{+w}{        }\PYG{n+nf}{lens}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}poly\PYG{+w}{ }from\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}poly\PYG{+w}{ }to\PYG{o}{)}
+\end{Verbatim}

@@ -22,6 +22,18 @@ record SetPolynomial : Set₁ where
 PolyAsSigma : Set₁
 PolyAsSigma = Σ[ position ∈ Set ] (position → Set)
 
+PolyAsPi : Set₁
+PolyAsPi = (A : Set) → (a : A) → Set
+
+polyToPi : Polynomial → PolyAsPi
+polyToPi (mkpoly pos dir) = λ A a → {!  !}
+
+-- piToPoly : {A : Set} → PolyAsPi {A} → Polynomial
+-- piToPoly {A} pip = mkpoly A pip
+
+poly≡polyPi : Polynomial ≡ PolyAsPi
+poly≡polyPi = isoToPath (iso (λ p → {!  (pos : position p) → direction p pos !}) {!   !} {!   !} {!   !}) 
+
 polyToSigma : Polynomial → PolyAsSigma
 polyToSigma (mkpoly position direction) = position , direction
     
@@ -36,13 +48,19 @@ SetPolyAsSigma = Σ[ poly ∈ Polynomial ]
                 Σ[ isPosSet ∈ isSet (position poly) ] 
                     (∀ {p : position poly} → isSet (direction poly p))
 
-isSetPolyAsSigma : isSet SetPolyAsSigma
-isSetPolyAsSigma = isSetΣ {!   !} {!   !} -- Hard
+SetPolyAsSigma2 : Set₁
+SetPolyAsSigma2 = Σ[ pos ∈ Set ]
+                  Σ[ dir ∈ (pos → Set) ]
+                  Σ[ isPosSet ∈ isSet pos ]
+                  (∀ {p : pos} → isSet (dir p)) 
+
+isSetPolyAsSigma : isSet SetPolyAsSigma2
+isSetPolyAsSigma = λ x y → isOfHLevelPath {!   !}  {!   !} {!   !}
 
 open SetPolynomial
 
 isSetPoly : isSet SetPolynomial
-isSetPoly a@(mksetpoly  poly₁ isPosSet₁ isDirSet₁) b@(mksetpoly  poly₂ isPosSet₂ isDirSet₂) = {!   !}
+isSetPoly a@(mksetpoly  poly₁ isPosSet₁ isDirSet₁) b@(mksetpoly  poly₂ isPosSet₂ isDirSet₂) = isOfHLevelPath {!   !} {!  is !} {!   !}
 
 -- position (poly (y₁ i)) != position (poly (x₁ i)) of type Type
 record SetLens (from to : SetPolynomial) : Set where

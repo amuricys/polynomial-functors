@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{data}\PYG{+w}{ }\PYG{k+kt}{P}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{Fst}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{k+kt}{Snd}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{k+kt}{Trd}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{k+kt}{Frth}
+\PYG{+w}{  }\PYG{k+kr}{deriving}\PYG{+w}{ }\PYG{k+kt}{Functor}
+\end{Verbatim}

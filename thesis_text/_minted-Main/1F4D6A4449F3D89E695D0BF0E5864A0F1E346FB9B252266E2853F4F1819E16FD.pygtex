@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{\PYGZus{}∘c\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }r\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Chart\PYG{+w}{ }q\PYG{+w}{ }r\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Chart\PYG{+w}{ }p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Chart\PYG{+w}{ }p\PYG{+w}{ }r
+\PYG{o}{(}f\PYG{+w}{ }⇉\PYG{+w}{ }f♭\PYG{o}{)}\PYG{+w}{ }∘c\PYG{+w}{ }\PYG{o}{(}g\PYG{+w}{ }⇉\PYG{+w}{ }g♭\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }∘\PYG{+w}{ }g\PYG{o}{)}\PYG{+w}{ }⇉\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }i\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }f♭\PYG{+w}{ }\PYG{o}{(}g\PYG{+w}{ }i\PYG{o}{)}\PYG{+w}{ }∘\PYG{+w}{ }g♭\PYG{+w}{ }i\PYG{o}{)}
+\end{Verbatim}

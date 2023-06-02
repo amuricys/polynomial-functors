@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{⟨\PYGZus{}×\PYGZus{}⟩}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}a\PYG{+w}{ }b\PYG{+w}{ }c\PYG{+w}{ }d\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }a\PYG{+w}{ }c\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}g\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }b\PYG{+w}{ }d\PYG{o}{)}
+\PYG{+w}{    }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}a\PYG{+w}{ }*\PYG{+w}{ }b\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}c\PYG{+w}{ }*\PYG{+w}{ }d\PYG{o}{)}
+⟨\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }⇆\PYG{+w}{ }f♯\PYG{o}{)}\PYG{+w}{ }×\PYG{+w}{ }\PYG{o}{(}g\PYG{+w}{ }⇆\PYG{+w}{ }g♯\PYG{o}{)}\PYG{+w}{ }⟩
+\PYG{+w}{    }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}(}a\PYG{+w}{ },\PYG{+w}{ }b\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }f\PYG{+w}{ }a\PYG{+w}{ },\PYG{+w}{ }g\PYG{+w}{ }b\PYG{o}{\PYGZcb{})}\PYG{+w}{ }⇆
+\PYG{+w}{        }\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}(}a\PYG{+w}{ },\PYG{+w}{ }b\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}inj₁\PYG{+w}{ }dirC\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }inj₁\PYG{+w}{ }\PYG{o}{(}f♯\PYG{+w}{ }a\PYG{+w}{ }dirC\PYG{o}{)}
+\PYG{+w}{         };\PYG{+w}{ }\PYG{o}{(}a\PYG{+w}{ },\PYG{+w}{ }b\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}inj₂\PYG{+w}{ }dirD\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }inj₂\PYG{+w}{ }\PYG{o}{(}g♯\PYG{+w}{ }b\PYG{+w}{ }dirD\PYG{o}{)\PYGZcb{}}
+\end{Verbatim}

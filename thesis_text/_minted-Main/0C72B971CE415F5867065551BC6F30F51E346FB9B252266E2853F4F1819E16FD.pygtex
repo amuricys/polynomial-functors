@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{F\PYGZhy{}resp}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }B\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}f\PYG{+w}{ }g\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }A\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }B\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}x\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }p\PYG{+w}{ }⦅\PYG{+w}{ }A\PYG{+w}{ }⦆\PYG{+w}{ }\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{    }f\PYG{+w}{ }≡\PYG{+w}{ }g\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }applyFn\PYG{+w}{ }p\PYG{+w}{ }f\PYG{+w}{ }x\PYG{+w}{ }≡\PYG{+w}{ }applyFn\PYG{+w}{ }p\PYG{+w}{ }g\PYG{+w}{ }x
+F\PYGZhy{}resp\PYG{+w}{ }\PYG{o}{\PYGZob{}}x\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }posApp\PYG{+w}{ },\PYG{+w}{ }dirApp\PYG{o}{\PYGZcb{}}\PYG{+w}{ }pr\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }i\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }posApp\PYG{+w}{ },\PYG{+w}{ }\PYG{o}{(}pr\PYG{+w}{ }i\PYG{o}{)}\PYG{+w}{ }∘\PYG{+w}{  }dirApp
+
+\PYG{n+nf}{conv}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }B\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}f\PYG{+w}{ }g\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }A\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }B\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(\PYGZob{}}x\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }A\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }f\PYG{+w}{ }x\PYG{+w}{ }Eq.≡\PYG{+w}{ }g\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }f\PYG{+w}{ }≡\PYG{+w}{ }g
+conv\PYG{+w}{ }p\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }funExt\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }eqToPath\PYG{+w}{ }p
+
+\PYG{n+nf}{asEndo}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Functor\PYG{+w}{ }\PYG{o}{(}Sets\PYG{+w}{ }zero\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}Sets\PYG{+w}{ }zero\PYG{o}{)}
+asEndo\PYG{+w}{ }p\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}
+\PYG{+w}{    }\PYG{o}{\PYGZob{}}\PYG{+w}{ }F₀\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }x\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }p\PYG{+w}{ }⦅\PYG{+w}{ }x\PYG{+w}{ }⦆
+\PYG{+w}{    };\PYG{+w}{ }F₁\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }f\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }applyFn\PYG{+w}{ }p\PYG{+w}{ }f
+\PYG{+w}{    };\PYG{+w}{ }identity\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Eq.refl
+\PYG{+w}{    };\PYG{+w}{ }homomorphism\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Eq.refl
+\PYG{+w}{    };\PYG{+w}{ }F\PYGZhy{}resp\PYGZhy{}≈\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYGZus{}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYGZus{}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}f\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}g\PYG{o}{\PYGZcb{}}\PYG{+w}{ }proof\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{        }pathToEq\PYG{+w}{ }\PYG{o}{(}F\PYGZhy{}resp\PYG{+w}{ }\PYG{o}{\PYGZob{}}f\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }f\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}g\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }g\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{(}conv\PYG{+w}{ }proof\PYG{o}{))}
+\PYG{+w}{    }\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{asNatTransChart}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{    }Chart\PYG{+w}{ }p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{    }NaturalTransformation\PYG{+w}{ }\PYG{o}{(}asEndo\PYG{+w}{ }p\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}asEndo\PYG{+w}{ }q\PYG{o}{)}
+asNatTransChart\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }⇉\PYG{+w}{ }f♯\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}\PYG{+w}{ }\PYG{o}{\PYGZob{}}
+\PYG{+w}{    }η\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }X\PYG{+w}{ }\PYG{o}{(}posP\PYG{+w}{ },\PYG{+w}{ }dirP\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }posP\PYG{o}{)}\PYG{+w}{ },\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }x\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }dirP\PYG{+w}{ }\PYG{c+cDirective}{\PYGZob{}!   !\PYGZcb{}}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{\PYGZcb{}}\PYG{+w}{ };
+\PYG{+w}{    }\PYG{o+ow}{...}
+\PYG{+w}{    }\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

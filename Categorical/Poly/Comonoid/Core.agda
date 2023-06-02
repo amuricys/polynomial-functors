@@ -1,6 +1,16 @@
 {-# OPTIONS --cubical  --without-K #-}
 module Categorical.Poly.Comonoid.Core where
 
+open import Data.Bool
+open import Data.Unit
+open import CategoryData.Polynomial
+
+data Four : Set where a b c d : Four
+data Five : Set where 𝟙 𝟚 𝟛 𝟜 𝟝 : Five
+
+p : Polynomial
+p = mkpoly Four λ { a → Five ; b → Bool ; c → Bool ; d → ⊤}
+
 open import Categories.Category.Core
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
@@ -10,6 +20,8 @@ open import Data.Unit
 open import Function
 
 open import Level
+
+
 
 record Comonoid (c : Polynomial) : Set where
   constructor Com

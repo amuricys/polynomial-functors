@@ -1,0 +1,10 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{mpe}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{(}eqObj\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }position\PYG{+w}{ }p
+mpe\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }fst
+\PYG{n+nf}{mde}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}fromPos\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{(}poly\PYG{+w}{ }eqObj\PYG{o}{))}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{      }direction\PYG{+w}{ }p\PYG{+w}{ }\PYG{o}{(}mpe\PYG{+w}{ }fromPos\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{      }direction\PYG{+w}{ }\PYG{o}{(}poly\PYG{+w}{ }eqObj\PYG{o}{)}\PYG{+w}{ }fromPos
+mde\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }dir\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }inc\PYG{+w}{ }dir
+\PYG{n+nf}{eqLens}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }SetLens\PYG{+w}{ }eqObj\PYG{+w}{ }pˢ
+eqLens\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }⇆ˢ\PYG{+w}{ }\PYG{o}{(}mpe\PYG{+w}{ }⇆\PYG{+w}{ }mde\PYG{o}{)}
+\end{Verbatim}

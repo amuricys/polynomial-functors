@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{isConstant}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Type₁
+isConstant\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }pos\PYG{+w}{ }dir\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }pos\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }dir\PYG{+w}{ }p\PYG{+w}{ }≡\PYG{+w}{ }⊥
+
+\PYG{n+nf}{constantClosedUnderPlus}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{    }isConstant\PYG{+w}{ }p\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{    }isConstant\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{    }isConstant\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }+\PYG{+w}{ }q\PYG{o}{)}
+constantClosedUnderPlus\PYG{+w}{ }isConstantP\PYG{+w}{ }isConstantQ\PYG{+w}{ }\PYG{o}{(}inj₁\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }isConstantP\PYG{+w}{ }x
+constantClosedUnderPlus\PYG{+w}{ }isConstantP\PYG{+w}{ }isConstantQ\PYG{+w}{ }\PYG{o}{(}inj₂\PYG{+w}{ }y\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }isConstantQ\PYG{+w}{ }y
+\end{Verbatim}

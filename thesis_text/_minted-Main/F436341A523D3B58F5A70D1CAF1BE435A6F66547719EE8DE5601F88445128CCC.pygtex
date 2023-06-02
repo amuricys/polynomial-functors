@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{esc}{$\mathbb{0}$}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial
+\PYG{esc}{$\mathbb{0}$}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkpoly\PYG{+w}{ }⊥\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{(}\PYG{o}{)}
+\end{Verbatim}

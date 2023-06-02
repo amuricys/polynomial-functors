@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{natOrBool}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}b\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Bool\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }if\PYG{+w}{ }b\PYG{+w}{ }then\PYG{+w}{ }ℕ\PYG{+w}{ }else\PYG{+w}{ }Bool
+natOrBool\PYG{+w}{ }true\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}
+natOrBool\PYG{+w}{ }false\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }true
+\end{Verbatim}

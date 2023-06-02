@@ -1,0 +1,22 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Categorical/Poly/Monoidal/Coproduct.agda}
+
+\PYG{k+kr}{open}\PYG{+w}{ }\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n}{Categories.Category.Monoidal}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n}{Categories.Category.Cocartesian}\PYG{+w}{ }as\PYG{+w}{ }Cocartesian
+
+\PYG{n+nf}{binaryCoproducts}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Cocartesian.BinaryCoproducts\PYG{+w}{ }Poly
+binaryCoproducts\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }coproduct\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }coprod\PYG{+w}{ }\PYG{o}{\PYGZcb{}}
+
+\PYG{n+nf}{coproductCocartesian}\PYG{+w}{  }\PYG{o+ow}{:}\PYG{+w}{ }Cocartesian.Cocartesian\PYG{+w}{ }Poly
+coproductCocartesian\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }initial\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }initialZero\PYG{+w}{ };
+\PYG{+w}{                                }coproducts\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }binaryCoproducts\PYG{+w}{ }\PYG{o}{\PYGZcb{}}
+
+\PYG{n+nf}{coproductMonoidal}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Monoidal\PYG{+w}{ }Poly
+coproductMonoidal\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{  }Cocartesian.CocartesianMonoidal.+\PYGZhy{}monoidal\PYG{+w}{ }Poly\PYG{+w}{ }coproductCocartesian
+
+\PYG{k+kr}{open}\PYG{+w}{ }\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n}{Categories.Category.Monoidal.Symmetric}\PYG{+w}{ }coproductMonoidal
+\PYG{n+nf}{productSymmetricMonoidal}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Symmetric
+productSymmetricMonoidal\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{  }Cocartesian.CocartesianSymmetricMonoidal.+\PYGZhy{}symmetric\PYG{+w}{ }Poly\PYG{+w}{ }coproductCocartesian
+\end{Verbatim}

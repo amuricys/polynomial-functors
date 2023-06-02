@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{ΣPoly}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Σ[\PYG{+w}{ }indexType\PYG{+w}{ }∈\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }]\PYG{+w}{ }\PYG{o}{(}indexType\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial
+ΣPoly\PYG{+w}{ }\PYG{o}{(}indexType\PYG{+w}{ },\PYG{+w}{ }generatePoly\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkpoly\PYG{+w}{ }pos\PYG{+w}{ }dir
+\PYG{+w}{  }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} It is the positions of one of the polynomials}
+\PYG{+w}{    }\PYG{n+nf}{pos}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}
+\PYG{+w}{    }pos\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Σ[\PYG{+w}{ }index\PYG{+w}{ }∈\PYG{+w}{ }indexType\PYG{+w}{ }]\PYG{+w}{ }\PYG{o}{(}position\PYG{+w}{ }\PYG{o}{(}generatePoly\PYG{+w}{ }index\PYG{o}{))}
+
+\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} It is the direction of the polynomial for the position}
+\PYG{+w}{    }\PYG{n+nf}{dir}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }pos\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{k+kt}{Set}
+\PYG{+w}{    }dir\PYG{+w}{ }\PYG{o}{(}index\PYG{+w}{ },\PYG{+w}{ }positionAtIndex\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }direction\PYG{+w}{ }\PYG{o}{(}generatePoly\PYG{+w}{ }index\PYG{o}{)}
+\PYG{+w}{                                              }positionAtIndex
+\end{Verbatim}

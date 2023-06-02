@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{\PYGZus{}*\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial
+\PYG{o}{(}mkpoly\PYG{+w}{ }posP\PYG{+w}{ }dirP\PYG{o}{)}\PYG{+w}{ }*\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }posQ\PYG{+w}{ }dirQ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }mkpoly\PYG{+w}{ }\PYG{o}{(}posP\PYG{+w}{ }×\PYG{+w}{ }posQ\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}(}posP\PYG{+w}{ },\PYG{+w}{ }posQ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}dirP\PYG{+w}{ }posP\PYG{o}{)}\PYG{+w}{ }⊎\PYG{+w}{ }\PYG{o}{(}dirQ\PYG{+w}{ }posQ\PYG{o}{)\PYGZcb{})}
+\end{Verbatim}

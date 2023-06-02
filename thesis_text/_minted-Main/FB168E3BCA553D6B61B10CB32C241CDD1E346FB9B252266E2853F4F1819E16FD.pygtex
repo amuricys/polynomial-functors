@@ -1,0 +1,18 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{LensAsSigma}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Type
+LensAsSigma\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }posP\PYG{+w}{ }dirP\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }posQ\PYG{+w}{ }dirQ\PYG{o}{)}
+\PYG{+w}{    }\PYG{o+ow}{=}\PYG{+w}{ }Σ[\PYG{+w}{ }mapPos\PYG{+w}{ }∈\PYG{+w}{ }\PYG{o}{(}posP\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }posQ\PYG{o}{)}\PYG{+w}{ }]
+\PYG{+w}{    }\PYG{o}{((}fromPos\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }posP\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }dirQ\PYG{+w}{ }\PYG{o}{(}mapPos\PYG{+w}{ }fromPos\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }dirP\PYG{+w}{ }fromPos\PYG{o}{)}
+
+\PYG{n+nf}{sigmaToLens}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }LensAsSigma\PYG{+w}{ }p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }q
+sigmaToLens\PYG{+w}{ }\PYG{o}{(}mapPos\PYG{+w}{ },\PYG{+w}{ }mapDir\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mapPos\PYG{+w}{ }⇆\PYG{+w}{ }mapDir
+
+\PYG{n+nf}{lensToSigma}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }LensAsSigma\PYG{+w}{ }p\PYG{+w}{ }q
+lensToSigma\PYG{+w}{  }\PYG{o}{(}mapPos\PYG{+w}{ }⇆\PYG{+w}{ }mapDir\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mapPos\PYG{+w}{ },\PYG{+w}{ }mapDir
+
+\PYG{n+nf}{lens≡lensSigma}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}Lens\PYG{+w}{ }p\PYG{+w}{ }q\PYG{o}{)}\PYG{+w}{ }≡\PYG{+w}{ }\PYG{o}{(}LensAsSigma\PYG{+w}{ }p\PYG{+w}{ }q\PYG{o}{)}
+lens≡lensSigma\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }isoToPath\PYG{+w}{ }\PYG{o}{(}iso\PYG{+w}{ }lensToSigma
+\PYG{+w}{                                }sigmaToLens
+\PYG{+w}{                                }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }refl\PYG{o}{)}
+\PYG{+w}{                                }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }refl\PYG{o}{))}
+\end{Verbatim}

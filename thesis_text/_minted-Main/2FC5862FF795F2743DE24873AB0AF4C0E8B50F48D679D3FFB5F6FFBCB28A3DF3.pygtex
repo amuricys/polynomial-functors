@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{type}\PYG{+w}{ }\PYG{k+kt}{Lens}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{q}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{forall}\PYG{+w}{ }\PYG{n}{y}\PYG{o}{.}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{n}{y}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{q}\PYG{+w}{ }\PYG{n}{y}
+\end{Verbatim}

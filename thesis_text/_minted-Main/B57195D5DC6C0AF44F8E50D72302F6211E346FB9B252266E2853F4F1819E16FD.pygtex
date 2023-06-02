@@ -1,0 +1,5 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Page 131}
+\PYG{n+nf}{cartesianClosed}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }r\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }\PYG{o}{(}r\PYG{+w}{ }\PYGZca{}\PYG{+w}{ }q\PYG{o}{)}\PYG{+w}{ }≡\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }*\PYG{+w}{ }q\PYG{o}{)}\PYG{+w}{ }r
+cartesianClosed\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }zero\PYG{+w}{ }∙\PYG{+w}{ }one\PYG{+w}{ }∙\PYG{+w}{ }two\PYG{+w}{ }∙\PYG{+w}{ }three\PYG{+w}{ }∙\PYG{+w}{ }four\PYG{+w}{ }∙\PYG{+w}{ }five
+\end{Verbatim}

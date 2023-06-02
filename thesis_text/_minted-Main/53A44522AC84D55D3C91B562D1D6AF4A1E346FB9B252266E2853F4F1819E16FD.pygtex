@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{record}\PYG{+w}{ }Action\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Type\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{  }\PYG{k+kr}{constructor}\PYG{+w}{ }mkAction
+\PYG{+w}{  }\PYG{k+kr}{field}
+\PYG{+w}{    }\PYG{n+nf}{write}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Alphabet
+\PYG{+w}{    }\PYG{n+nf}{move}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Movement
+\end{Verbatim}

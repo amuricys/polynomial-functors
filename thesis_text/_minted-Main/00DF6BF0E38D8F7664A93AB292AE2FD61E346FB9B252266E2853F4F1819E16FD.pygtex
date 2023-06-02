@@ -1,0 +1,16 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{PolyAsSigma}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set₁}
+PolyAsSigma\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Σ[\PYG{+w}{ }position\PYG{+w}{ }∈\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }]\PYG{+w}{ }\PYG{o}{(}position\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{)}
+
+\PYG{n+nf}{polyToSigma}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }PolyAsSigma
+polyToSigma\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }position\PYG{+w}{ }direction\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }position\PYG{+w}{ },\PYG{+w}{ }direction
+
+\PYG{n+nf}{polyFromSigma}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }PolyAsSigma\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial
+polyFromSigma\PYG{+w}{ }\PYG{o}{(}position\PYG{+w}{ },\PYG{+w}{ }direction\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkpoly\PYG{+w}{ }position\PYG{+w}{ }direction
+
+\PYG{n+nf}{poly≡polySigma}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{+w}{ }≡\PYG{+w}{ }PolyAsSigma
+poly≡polySigma\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }isoToPath\PYG{+w}{ }\PYG{o}{(}iso\PYG{+w}{ }polyToSigma
+\PYG{+w}{                                }polyFromSigma
+\PYG{+w}{                                }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }refl\PYG{o}{)}
+\PYG{+w}{                                }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }refl\PYG{o}{))}
+\end{Verbatim}

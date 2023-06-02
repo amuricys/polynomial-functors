@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{LensChartCommute}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p₁\PYG{+w}{ }p₂\PYG{+w}{ }p₃\PYG{+w}{ }p₄\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{(}w\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }p₁\PYG{+w}{ }p₃\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}v\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }p₂\PYG{+w}{ }p₄\PYG{o}{)}
+\PYG{+w}{    }\PYG{o}{(}f\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Chart\PYG{+w}{ }p₁\PYG{+w}{ }p₂\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}g\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Chart\PYG{+w}{ }p₃\PYG{+w}{ }p₄\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Type
+LensChartCommute\PYG{+w}{ }\PYG{o}{\PYGZob{}}p₁\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p₂\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p₃\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p₄\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{(}w\PYG{+w}{ }⇆\PYG{+w}{ }w♯\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}v\PYG{+w}{ }⇆\PYG{+w}{ }v♯\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }⇉\PYG{+w}{ }f♭\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}g\PYG{+w}{ }⇉\PYG{+w}{ }g♭\PYG{o}{)}
+\PYG{+w}{    }\PYG{o+ow}{=}\PYG{+w}{ }Σ\PYG{+w}{ }mapPos≡\PYG{+w}{ }mapDir≡
+\PYG{+w}{    }\PYG{k+kr}{where}
+\PYG{+w}{        }\PYG{n+nf}{mapPos≡}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Type
+\PYG{+w}{        }mapPos≡\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o}{(}i\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }p₁\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }v\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }i\PYG{o}{)}\PYG{+w}{ }≡\PYG{+w}{ }g\PYG{+w}{ }\PYG{o}{(}w\PYG{+w}{ }i\PYG{o}{)}
+
+\PYG{+w}{        }\PYG{n+nf}{mapDir≡}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }mapPos≡\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Type
+\PYG{+w}{        }mapDir≡\PYG{+w}{ }p≡\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o}{(}i\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }p₁\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}x\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }direction\PYG{+w}{ }p₃\PYG{+w}{ }\PYG{o}{(}w\PYG{+w}{ }i\PYG{o}{))}
+\PYG{+w}{            }\PYG{o+ow}{→}\PYG{+w}{ }f♭\PYG{+w}{ }i\PYG{+w}{ }\PYG{o}{(}w♯\PYG{+w}{ }i\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }≡
+\PYG{+w}{                }v♯\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }i\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}subst\PYG{+w}{ }\PYG{o}{(}direction\PYG{+w}{ }p₄\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}sym\PYG{+w}{ }\PYG{o}{(}p≡\PYG{+w}{ }i\PYG{o}{))}\PYG{+w}{ }\PYG{o}{(}g♭\PYG{+w}{ }\PYG{o}{(}w\PYG{+w}{ }i\PYG{o}{)}\PYG{+w}{ }x\PYG{o}{))}
+\end{Verbatim}

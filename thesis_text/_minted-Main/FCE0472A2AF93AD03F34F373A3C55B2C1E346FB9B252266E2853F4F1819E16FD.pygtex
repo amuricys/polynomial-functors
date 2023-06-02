@@ -1,0 +1,11 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{⟨\PYGZus{}⊗\PYGZus{}⟩}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }r\PYG{+w}{ }w\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }p\PYG{+w}{ }r\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Lens\PYG{+w}{ }q\PYG{+w}{ }w\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{      }Lens\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }⊗\PYG{+w}{ }q\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}r\PYG{+w}{ }⊗\PYG{+w}{ }w\PYG{o}{)}
+⟨\PYGZus{}⊗\PYGZus{}⟩\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}q\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}r\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}w\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }⇆\PYG{+w}{ }f♯\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}g\PYG{+w}{ }⇆\PYG{+w}{ }g♯\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mp\PYG{+w}{ }⇆\PYG{+w}{ }md
+\PYG{+w}{  }\PYG{k+kr}{where}\PYG{+w}{ }mp\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }⊗\PYG{+w}{ }q\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{(}r\PYG{+w}{ }⊗\PYG{+w}{ }w\PYG{o}{)}
+\PYG{+w}{        }mp\PYG{+w}{ }\PYG{o}{(}posp\PYG{+w}{ },\PYG{+w}{ }posq\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }f\PYG{+w}{ }posp\PYG{+w}{ },\PYG{+w}{ }g\PYG{+w}{ }posq
+\PYG{+w}{        }\PYG{n+nf}{md}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}fromPos\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }position\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }⊗\PYG{+w}{ }q\PYG{o}{))}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{             }direction\PYG{+w}{ }\PYG{o}{(}r\PYG{+w}{ }⊗\PYG{+w}{ }w\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}mp\PYG{+w}{ }fromPos\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{             }direction\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }⊗\PYG{+w}{ }q\PYG{o}{)}\PYG{+w}{ }fromPos
+\PYG{+w}{        }md\PYG{+w}{ }\PYG{o}{(}posp\PYG{+w}{ },\PYG{+w}{ }posq\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}dirr\PYG{+w}{ },\PYG{+w}{ }dirw\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }f♯\PYG{+w}{ }posp\PYG{+w}{ }dirr\PYG{+w}{ },\PYG{+w}{ }g♯\PYG{+w}{ }posq\PYG{+w}{ }dirw
+\end{Verbatim}

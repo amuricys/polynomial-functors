@@ -25,14 +25,15 @@ prefib : DynamicalSystem
 prefib = plus &&& delay Nat
 
 fibWiringDiagram : Lens (DynamicalSystem.interface prefib) (emitter Nat)
-fibWiringDiagram = (λ {(sumOutput , idOutput) → idOutput}) ⇆ (λ {(sumOutput , idOutput) l → (idOutput , sumOutput) , sumOutput })
+fibWiringDiagram = (λ {(sumOutput , idOutput) → idOutput})
+                   ⇆ 
+                   (λ {(sumOutput , idOutput) l → (idOutput , sumOutput) , sumOutput })
 
 fibonacci : DynamicalSystem
 fibonacci = install prefib (emitter Nat) fibWiringDiagram
 
 FibSeq : Stream Nat _
 FibSeq = run fibonacci auto (1 , 1)
-
 fibList : Vec Nat 50
 fibList = take 50 FibSeq
 

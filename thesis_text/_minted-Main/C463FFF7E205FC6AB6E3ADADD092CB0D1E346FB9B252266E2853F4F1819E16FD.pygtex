@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{productIsΠPoly}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{o+ow}{→}\PYG{+w}{ }ΠPoly\PYG{+w}{ }\PYG{o}{(}Bool\PYG{+w}{ },\PYG{+w}{ }tupleToFunFromBool\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ },\PYG{+w}{ }q\PYG{o}{))}\PYG{+w}{ }≡\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }*\PYG{+w}{ }q\PYG{o}{)}
+productIsΠPoly\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o+ow}{...}
+
+\PYG{n+nf}{tupleToFunFromBool}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}ℓ\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Level\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }ℓ\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}A\PYG{+w}{ }×\PYG{+w}{ }A\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Bool\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }A
+tupleToFunFromBool\PYG{+w}{ }\PYG{o}{(}a\PYG{+w}{ },\PYG{+w}{ }b\PYG{o}{)}\PYG{+w}{ }true\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }a
+tupleToFunFromBool\PYG{+w}{ }\PYG{o}{(}a\PYG{+w}{ },\PYG{+w}{ }b\PYG{o}{)}\PYG{+w}{ }false\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }b
+\end{Verbatim}

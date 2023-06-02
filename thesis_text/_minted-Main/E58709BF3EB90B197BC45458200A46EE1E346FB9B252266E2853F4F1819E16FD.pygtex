@@ -1,0 +1,17 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Proposition 5.2, page 158. Note: not same definition used.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} We here treat positions  as inhabitants of the same set,}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} which makes a lot of proofs easier down the line.}
+\PYG{n+nf}{\PYGZus{}◂\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial
+p\PYG{+w}{ }◂\PYG{+w}{ }q\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkpoly\PYG{+w}{ }pos\PYG{+w}{ }dir
+\PYG{+w}{  }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{k+kr}{module}\PYG{+w}{ }\PYG{n}{p}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Polynomial\PYG{+w}{ }p
+\PYG{+w}{    }\PYG{k+kr}{module}\PYG{+w}{ }\PYG{n}{q}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Polynomial\PYG{+w}{ }q
+
+\PYG{+w}{    }\PYG{n+nf}{pos}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}
+\PYG{+w}{    }pos\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o}{(}Σ[\PYG{+w}{ }i\PYG{+w}{ }∈\PYG{+w}{ }p.position\PYG{+w}{ }]\PYG{+w}{ }\PYG{o}{(}p.direction\PYG{+w}{ }i\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }q.position\PYG{o}{))}
+
+\PYG{+w}{    }\PYG{n+nf}{dir}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }pos\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{k+kt}{Set}
+\PYG{+w}{    }dir\PYG{+w}{ }\PYG{o}{(}i\PYG{+w}{ },\PYG{+w}{ }j\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Σ[\PYG{+w}{ }a\PYG{+w}{ }∈\PYG{+w}{ }p.direction\PYG{+w}{ }i\PYG{+w}{ }]\PYG{+w}{ }q.direction\PYG{+w}{ }\PYG{o}{(}j\PYG{+w}{ }a\PYG{o}{)}
+\PYG{k+kr}{infixl}\PYG{+w}{ }\PYG{l+m+mi}{27}\PYG{+w}{ }\PYGZus{}◂\PYGZus{}
+\end{Verbatim}

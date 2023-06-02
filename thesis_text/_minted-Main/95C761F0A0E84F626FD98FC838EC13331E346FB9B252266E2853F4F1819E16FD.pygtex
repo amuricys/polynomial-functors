@@ -1,0 +1,24 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Categorical/Poly/Instance.agda}
+\PYG{n+nf}{∘\PYGZhy{}resp\PYGZhy{}≈}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }B\PYG{+w}{ }C\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}
+\PYG{+w}{           }\PYG{o}{\PYGZob{}}f\PYG{+w}{ }h\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }B\PYG{+w}{ }C\PYG{o}{\PYGZcb{}}
+\PYG{+w}{           }\PYG{o}{\PYGZob{}}g\PYG{+w}{ }i\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }A\PYG{+w}{ }B\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{           }f\PYG{+w}{ }≡\PYG{+w}{ }h\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }g\PYG{+w}{ }≡\PYG{+w}{ }i\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}f\PYG{+w}{ }∘ₚ\PYG{+w}{ }g\PYG{o}{)}\PYG{+w}{ }≡\PYG{+w}{ }\PYG{o}{(}h\PYG{+w}{ }∘ₚ\PYG{+w}{ }i\PYG{o}{)}
+∘\PYGZhy{}resp\PYGZhy{}≈\PYG{+w}{  }p\PYG{+w}{ }q\PYG{+w}{ }ii\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }ii\PYG{o}{)}\PYG{+w}{ }∘ₚ\PYG{+w}{ }\PYG{o}{(}q\PYG{+w}{ }ii\PYG{o}{)}
+
+\PYG{n+nf}{Poly}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Category\PYG{+w}{ }\PYG{o}{(}lsuc\PYG{+w}{ }lzero\PYG{o}{)}\PYG{+w}{ }lzero\PYG{+w}{ }lzero
+Poly\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}
+\PYG{+w}{    }\PYG{o}{\PYGZob{}}\PYG{+w}{ }Obj\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Polynomial
+\PYG{+w}{    };\PYG{+w}{ }\PYGZus{}⇒\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }Lens
+\PYG{+w}{    };\PYG{+w}{ }\PYGZus{}≈\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYGZus{}≡\PYGZus{}
+\PYG{+w}{    };\PYG{+w}{ }id\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }idLens
+\PYG{+w}{    };\PYG{+w}{ }\PYGZus{}∘\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYGZus{}∘ₚ\PYGZus{}
+\PYG{+w}{    };\PYG{+w}{ }assoc\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }refl
+\PYG{+w}{    };\PYG{+w}{ }sym\PYGZhy{}assoc\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }refl
+\PYG{+w}{    };\PYG{+w}{ }identityˡ\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }refl
+\PYG{+w}{    };\PYG{+w}{ }identityʳ\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }refl
+\PYG{+w}{    };\PYG{+w}{ }identity²\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }refl
+\PYG{+w}{    };\PYG{+w}{ }equiv\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kr}{record}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }refl\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }refl\PYG{+w}{ };\PYG{+w}{ }sym\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }sym\PYG{+w}{ };\PYG{+w}{ }trans\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYGZus{}∙\PYGZus{}\PYG{+w}{ }\PYG{o}{\PYGZcb{}}
+\PYG{+w}{    };\PYG{+w}{ }∘\PYGZhy{}resp\PYGZhy{}≈\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }∘\PYGZhy{}resp\PYGZhy{}≈
+\PYG{+w}{    }\PYG{o}{\PYGZcb{}}
+\end{Verbatim}
