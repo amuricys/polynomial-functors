@@ -7,22 +7,23 @@ open import Cubical.Foundations.Prelude
 open import Cubical.LensEquality
 open import Categorical.Poly.Monoidal.CompositionProduct hiding (assoc)
 open import Data.Unit
-open import Function
-
+open import Function hiding (id)
 open import Level
 
-record Comonoid (c : Polynomial) : Set where
+record Comonoid : Set₁ where
   constructor Com
   field
+    c : Polynomial
     ε : Lens c Y
     δ : Lens c (c ◂ c)
     coassoc : ⟨ idLens {c} ◂ δ ⟩ ∘ₚ δ ≡ transport (assoc⇆ {c}) (⟨ δ ◂ idLens {c} ⟩ ∘ₚ δ)
     leftCounit :  ~ᴸ ≡ ⟨ ε ◂ idLens {c} ⟩ ∘ₚ δ
     rightCounit : ~ᴿ ≡ ⟨ idLens {c} ◂ ε ⟩ ∘ₚ δ
 
-comonoidsAreCategories : {emanator : Polynomial} → Comonoid emanator → Category zero zero
-comonoidsAreCategories {em@(mkpoly pos dir)} (Com (ε₁ ⇆ ε♯) (δ₁ ⇆ δ♯) coassoc leftCounit rightCounit) = cat
-  where mpeq = lens≡→mapPos≡ rightCounit
+comonoidsAreCategories : Comonoid → Category zero zero
+comonoidsAreCategories (Com (em@(mkpoly pos dir)) (ε₁ ⇆ ε♯) (δ₁ ⇆ δ♯) coassoc leftCounit rightCounit) = cat
+  where mpeq : (_, (λ _ → tt)) ≡ (λ x → fst (δ₁ x) , (λ a' → ε₁ (snd (δ₁ x) a')))
+        mpeq = lens≡→mapPos≡ rightCounit
         bookkeeping : {A : pos} → fst (δ₁ A) ≡ A
         bookkeeping {x} = funExt⁻ (sym (cong (fst ∘_) mpeq)) x
         leftCoMpeq = lens≡→mapPos≡ leftCounit
@@ -47,32 +48,33 @@ comonoidsAreCategories {em@(mkpoly pos dir)} (Com (ε₁ ⇆ ε♯) (δ₁ ⇆ �
         Category.ob cat = pos 
         Category.Hom[_,_] cat = λ x y → Σ[ f ∈ dir x ] (cod f ≡ y)
         Category.id cat {A} = ε♯ A tt , actualneed
-        Category._⋆_ cat {A} {B} {C} (dira , diraisb) (dirb , dirbisc) = 
-                   δ♯ A ((subst dir (sym bookkeeping) dira) , 
-                          subst dir (sym diraisb) dirb) , 
-                         step1 ∙ dirbisc
-            where ihavethis : 
-                    ((λ x → fst (δ₁ x) , (λ a' → δ₁ (snd (δ₁ x) a'))) ⇆
-                      (λ i x → δ♯ i (fst x , δ♯ (snd (δ₁ i) (fst x)) (snd x))))
+        Category._⋆_ cat {A} {B} {C} (dira , diraisb) (dirb , dirbisc) = {!   !} , {!   !}
+                  --  δ♯ A ((subst dir (sym bookkeeping) dira) , 
+                  --         subst dir (sym diraisb) dirb) , 
+                  --        step1 ∙ dirbisc
+            where ihavethis : let
+                    -- lhs : {! position em → position (em ◂ em)  !}
+                    lhs : Lens em (em ◂ (em ◂ em))
+                    lhs = ((λ x → fst (δ₁ x) , (λ a' → δ₁ (snd (δ₁ x) a'))) ⇆
+                            (λ i x → δ♯ i (fst x , δ♯ (snd (δ₁ i) (fst x)) (snd x))))
+                    rhs : Lens em (em ◂ em ◂ em)
+                    rhs = ((λ x → δ₁ (fst (δ₁ x)) , (λ a' → snd (δ₁ x) (δ♯ (fst (δ₁ x)) a')))
+                          ⇆ (λ i x → δ♯ i (δ♯ (fst (δ₁ i)) (fst x) , snd x)))
+                    in
+                    lhs
                     ≡
-                    transport assoc⇆
-                    ((λ x → δ₁ (fst (δ₁ x)) , (λ i₄ → snd (δ₁ x) (δ♯ (fst (δ₁ x)) i₄)))
-                      ⇆ (λ i x → δ♯ i (δ♯ (fst (δ₁ i)) (fst x) , snd x)))
+                    transport assoc⇆ rhs
                   ihavethis = coassoc
-                  -- verysimpleihave : 
-                  --   ((λ x → fst (δ₁ x) , (λ a' → δ₁ (snd (δ₁ x) a'))) ⇆
-                  --     (λ i x → δ♯ i (fst x , δ♯ (snd (δ₁ i) (fst x)) (snd x))))
-                  --   ≡
-                  --   transport someSimpleEquality
-                  --   ((λ x → δ₁ (fst (δ₁ x)) , (λ i₄ → snd (δ₁ x) (δ♯ (fst (δ₁ x)) i₄)))
-                  --     ⇆ (λ i x → δ♯ i (δ♯ (fst (δ₁ i)) (fst x) , snd x)))
-                  -- verysimpleihave = ?
-                  -- alsohavethis : 
-                  --   (\x → (λ a' → δ₁ (snd (δ₁ x) a')))
-                  --   ≡ 
-                  --   transport {!   !}
-                  --   (\x → (λ i₄ → snd (δ₁ x) (δ♯ (fst (δ₁ x)) i₄)))
-                  -- alsohavethis = cong (snd ∘_ ) (lens≡→mapPos≡ ihavethis)
+                  mapPosEqDup : let
+                    lhs : (position em → position (em ◂ (em ◂ em)))
+                    lhs x = fst (δ₁ x) , (λ a' → δ₁ (snd (δ₁ x) a'))
+                    rhs : position em → position (em ◂ em ◂ em)
+                    rhs x = δ₁ (fst (δ₁ x)) , (λ a' → snd (δ₁ x) (δ♯ (fst (δ₁ x)) a'))
+                    in
+                    lhs
+                    ≡
+                    transport assocPos rhs
+                  mapPosEqDup = lens≡→mapPos≡ coassoc
                   step1 : snd (δ₁ A)
                          (transport (λ i → dir (fst (mpeq i A)))
                          (δ♯ A
@@ -81,10 +83,33 @@ comonoidsAreCategories {em@(mkpoly pos dir)} (Com (ε₁ ⇆ ε♯) (δ₁ ⇆ �
                          ≡
                          snd (δ₁ B)
                               (transport (λ i → dir (fst (mpeq i B))) dirb)
-                  step1 = {!  !}
+                  step1 = {! mpeq !}
         Category.⋆IdL cat = {!   !}
         Category.⋆IdR cat = {!   !}
         Category.⋆Assoc cat = {!   !}
         Category.isSetHom cat = {!   !}
--- categoriesAreComonoids : {emanator : Polynomial} → Category zero zero zero → Comonoid emanator
--- categoriesAreComonoids cat = {!   !}    
+
+categoriesAreComonoids : Category zero zero → Comonoid
+categoriesAreComonoids record { 
+    ob = ob ;
+    Hom[_,_] = Hom[_,_] ;
+    id = id ;
+    _⋆_ = _⋆_ ;
+    ⋆IdL = idₗ ;
+    ⋆IdR = idᵣ ;
+    ⋆Assoc = ⋆Assoc ;
+    isSetHom = isSetHom } = 
+  Com emanator 
+      ε
+      δ
+      {!   !}
+      {!   !}
+      rightCounit
+  where emanator : Polynomial
+        emanator = mkpoly ob λ { dom → Σ[ cod ∈ ob ] Hom[ dom , cod ] }
+        ε : Lens emanator Y
+        ε = ((λ _ → tt) ⇆ λ { fromPos tt → fromPos , id })
+        δ : Lens emanator (emanator ◂ emanator)
+        δ = (λ x → x , fst) ⇆ λ { a ((b , froma) , (c , fromb)) → c , (froma ⋆ fromb) }
+        rightCounit : ~ᴿ ≡ ⟨ idLens ◂ ε ⟩ ∘ₚ δ
+        rightCounit = {! idᵣ  !}

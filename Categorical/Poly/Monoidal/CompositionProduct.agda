@@ -167,55 +167,51 @@ halp {p} {posp} {dirp} = sym (aa {B = direction p} ∙ bbb ∙ ccc)
 apply : {A : Set} (f : A → Set) → {a₁ a₂ : A} (p : a₁ ≡ a₂) → (f a₁ ≡ f a₂)
 apply f p i = f (p i) 
 
+ΣAssoc : {A : Set} {B : A → Set} {C : (Σ A B) → Set} → (Σ (Σ A B) C) ≡ (Σ[ a ∈ A ] Σ[ b ∈ (B a) ] C (a , b)) 
+ΣAssoc {A} {B} {C} = isoToPath (iso go back (λ b → refl) λ a → refl)
+    where
+        go : Σ (Σ A B) C → Σ A (λ a → Σ (B a) (λ b → C (a , b)))
+        go ((a , b) , c) = a , b , c
+        back : Σ A (λ a → Σ (B a) (λ b → C (a , b))) → Σ (Σ A B) C
+        back (a , b , c) = (a , b) , c
+extractFunction : {A B X : Set} {C : B → Set}
+  → (Σ[ f ∈ (A → B) ] (Σ[ a ∈ A ] (C (f a)) → X)) ≡ (A → Σ[ b ∈ B ] ((C b) → X))
+extractFunction {A} {B} {X} {C} = isoToPath (iso go back (λ a → refl) λ a → refl)
+  where
+    go : Σ[ f ∈ (A → B) ] (Σ[ a ∈ A ] (C (f a)) → X) → (A → Σ[ b ∈ B ] (C b → X))
+    go (f , g) = λ a → (f a) , λ x → g (a , x)
+
+    back : (A → Σ[ b ∈ B ] (C b → X)) → Σ[ f ∈ (A → B) ] (Σ[ a ∈ A ] (C (f a)) → X)  
+    back a = (λ x → fst (a x)) , λ { (x , y) → snd (a x) y}
+
+mapPos≡₂ : {p q r : Polynomial} → position (p ◂ q ◂ r) ≡ position (p ◂ (q ◂ r))
+mapPos≡₂ {p} {q} {r} = isoToPath (iso go back (λ b → refl) (λ a → refl))
+  where
+    go :  Σ (Σ (position p) (λ i → direction p i → position q))
+            (λ i → Σ (direction p (fst i)) (λ a → direction q (snd i a))
+                    → position r)
+          →
+          Σ (position p)
+            (λ i →
+                direction p i →
+                Σ (position q) (λ i₃ → direction q i₃ → position r))
+    go ((posp , dirptoposq) , fromdirandfunctoposr) = posp , (λ dirp → (dirptoposq dirp) , (λ dirqatthatpos → fromdirandfunctoposr (dirp , dirqatthatpos)))
+    back : Σ (position p)
+            (λ i →
+                direction p i →
+                Σ (position q) (λ i₃ → direction q i₃ → position r)) 
+          → 
+          Σ (Σ (position p) (λ i → direction p i → position q))
+            (λ i → Σ (direction p (fst i)) (λ a → direction q (snd i a))
+                    → position r)
+    back (posp , postodir) = 
+      (posp , (λ dirp → fst (postodir dirp))) , λ { (dirp , dirq) → snd (postodir dirp) dirq }
 open import CategoryData.Composition
 assoc : {p q r : Polynomial} → (p ◂ q) ◂ r ≡ p ◂ (q ◂ r)
-assoc {p} {q} {r} = poly≡∀ mapPos≡₂ mapDir≡ 
+assoc {p} {q} {r} = poly≡∀ (mapPos≡₂ {p} {q} {r}) mapDir≡ 
   where
-    ΣAssoc : {A : Set} {B : A → Set} {C : (Σ A B) → Set} → (Σ (Σ A B) C) ≡ (Σ[ a ∈ A ] Σ[ b ∈ (B a) ] C (a , b)) 
-    ΣAssoc {A} {B} {C} = isoToPath (iso go back (λ b → refl) λ a → refl)
-        where
-            go : Σ (Σ A B) C → Σ A (λ a → Σ (B a) (λ b → C (a , b)))
-            go ((a , b) , c) = a , b , c
-            back : Σ A (λ a → Σ (B a) (λ b → C (a , b))) → Σ (Σ A B) C
-            back (a , b , c) = (a , b) , c
-    extractFunction : {A B X : Set} {C : B → Set}
-      → (Σ[ f ∈ (A → B) ] (Σ[ a ∈ A ] (C (f a)) → X)) ≡ (A → Σ[ b ∈ B ] ((C b) → X))
-    extractFunction {A} {B} {X} {C} = isoToPath (iso go back (λ a → refl) λ a → refl)
-      where
-        go : Σ[ f ∈ (A → B) ] (Σ[ a ∈ A ] (C (f a)) → X) → (A → Σ[ b ∈ B ] (C b → X))
-        go (f , g) = λ a → (f a) , λ x → g (a , x)
-
-        back : (A → Σ[ b ∈ B ] (C b → X)) → Σ[ f ∈ (A → B) ] (Σ[ a ∈ A ] (C (f a)) → X)  
-        back a = (λ x → fst (a x)) , λ { (x , y) → snd (a x) y}
-
-    mapPos≡ : position (p ◂ q ◂ r) ≡ position (p ◂ (q ◂ r))
-    mapPos≡ = ΣAssoc ∙ cong (Σ (position p)) (funExt (λ x → extractFunction)) 
-
-    mapPos≡₂ : position (p ◂ q ◂ r) ≡ position (p ◂ (q ◂ r))
-    mapPos≡₂ = isoToPath (iso go back (λ b → refl) (λ a → refl))
-      where
-        go :  Σ (Σ (position p) (λ i → direction p i → position q))
-                (λ i → Σ (direction p (fst i)) (λ a → direction q (snd i a))
-                        → position r)
-              →
-              Σ (position p)
-                (λ i →
-                    direction p i →
-                    Σ (position q) (λ i₃ → direction q i₃ → position r))
-        go ((posp , dirptoposq) , fromdirandfunctoposr) = posp , (λ dirp → (dirptoposq dirp) , (λ dirqatthatpos → fromdirandfunctoposr (dirp , dirqatthatpos)))
-        back : Σ (position p)
-                (λ i →
-                    direction p i →
-                    Σ (position q) (λ i₃ → direction q i₃ → position r)) 
-              → 
-              Σ (Σ (position p) (λ i → direction p i → position q))
-                (λ i → Σ (direction p (fst i)) (λ a → direction q (snd i a))
-                        → position r)
-        back (posp , postodir) = 
-          (posp , (λ dirp → fst (postodir dirp))) , λ { (dirp , dirq) → snd (postodir dirp) dirq }
-
     mapDir≡ : (posB : Σ (position p) (λ i → direction p i → position (q ◂ r)))
-      → subst (λ x → x → Type) mapPos≡₂ (dir (p ◂ q) r) posB
+      → subst (λ x → x → Type) (mapPos≡₂ {p} {q} {r}) (dir (p ◂ q) r) posB
       ≡ dir p (q ◂ r) posB
     mapDir≡ (posP , dirF) = ΣAssoc ∙ ΣLemma (cong (direction p) (transportRefl posP)) (funExt (λ x → ΣLemma (cong (direction q) (transportRefl (fst (dirF (transp (λ j → direction p (transp (λ i → position p) j posP)) i0 x))))) (funExt (λ x₁ → cong (direction r) (transportRefl ((snd (dirF (transp (λ j → direction p (transp (λ i → position p) j posP)) i0 x)) (transp (λ j → direction q (transp (λ i → position q) j (fst (dirF (transp (λ j₁ → direction p (transp (λ i → position p) j₁ posP)) i0 x))))) i0 x₁))))))))
       where
@@ -225,6 +221,9 @@ assoc {p} {q} {r} = poly≡∀ mapPos≡₂ mapDir≡
 
 assoc⇆ : {c : Polynomial} → Lens c (c ◂ c ◂ c) ≡ Lens c (c ◂ (c ◂ c))
 assoc⇆ {c} = cong (Lens c) (assoc {c} {c} {c})
+-- postulate assoc⇆ : {c : Polynomial} → Lens c (c ◂ c ◂ c) ≡ Lens c (c ◂ (c ◂ c))
+assocPos : {c : Polynomial} → (position c → position (c ◂ c ◂ c)) ≡ (position c → position (c ◂ (c ◂ c)))
+assocPos {c} = cong (λ a → (position c → a)) (mapPos≡₂ {c} {c} {c})
 
 -- open Functor
 -- open import Function
@@ -276,4 +275,4 @@ assoc⇆ {c} = cong (Lens c) (assoc {c} {c} {c})
 --     ; triangle = refl
 --     ; pentagon = refl
 --     }
- 
+   
