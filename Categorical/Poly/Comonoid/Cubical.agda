@@ -4,10 +4,13 @@ module Categorical.Poly.Comonoid.Cubical where
 open import Cubical.Categories.Category
 open import CategoryData.Everything
 open import Cubical.Foundations.Prelude
+open import Cubical.Foundations.Transport
+open import Cubical.Foundations.Isomorphism
+open import Cubical.Data.Sigma.Properties
 open import Cubical.LensEquality
 open import Categorical.Poly.Monoidal.CompositionProduct hiding (assoc)
 open import Data.Unit
-open import Function hiding (id)
+open import Function renaming (id to idᶠ)
 open import Level
 
 record Comonoid : Set₁ where
@@ -83,11 +86,16 @@ comonoidsAreCategories (Com (em@(mkpoly pos dir)) (ε₁ ⇆ ε♯) (δ₁ ⇆ �
                          ≡
                          snd (δ₁ B)
                               (transport (λ i → dir (fst (mpeq i B))) dirb)
-                  step1 = {! mpeq !}
+                  step1 = {! (δ₁ A) !}
         Category.⋆IdL cat = {!   !}
         Category.⋆IdR cat = {!   !}
         Category.⋆Assoc cat = {!   !}
         Category.isSetHom cat = {!   !}
+
+nestedTransportRefl : {A : Set} {a : A} → transp (λ _ → A) i0 (transp (λ _ → A) i0 a) ≡ a
+nestedTransportRefl {a = a} = lem ∙ transportRefl a
+  where lem : {B : Set} {b : B} → transp (λ _ → B) i0 b ≡ b
+        lem {b = b} = transportRefl b
 
 categoriesAreComonoids : Category zero zero → Comonoid
 categoriesAreComonoids record { 
@@ -101,15 +109,49 @@ categoriesAreComonoids record {
     isSetHom = isSetHom } = 
   Com emanator 
       ε
-      δ
-      {!   !}
-      {!   !}
-      rightCounit
+      δ -- transp (λ i → ob) i0 (transp (λ j → ob) i0 x)
+      (lens≡ₚ (funExt (λ x → ΣPathP (sym nestedTransportRefl , toPathP {!   !}))) {!   !})
+      (sym leftCounit)
+      (sym rightCounit)
   where emanator : Polynomial
         emanator = mkpoly ob λ { dom → Σ[ cod ∈ ob ] Hom[ dom , cod ] }
         ε : Lens emanator Y
         ε = ((λ _ → tt) ⇆ λ { fromPos tt → fromPos , id })
         δ : Lens emanator (emanator ◂ emanator)
         δ = (λ x → x , fst) ⇆ λ { a ((b , froma) , (c , fromb)) → c , (froma ⋆ fromb) }
-        rightCounit : ~ᴿ ≡ ⟨ idLens ◂ ε ⟩ ∘ₚ δ
-        rightCounit = {! idᵣ  !}
+        
+        rightCounit : ⟨ idLens ◂ ε ⟩ ∘ₚ δ ≡ ~ᴿ
+        rightCounit = want
+          where want : ((λ (x : ob) → x , (λ _ → tt)) ⇆
+                        (λ (i : ob) (x : Σ (Σ ob (Hom[_,_] i)) (λ a → ⊤)) → fst (fst x) , (snd (fst x) ⋆ id)))
+                       ≡ ((_, (λ _ → tt)) ⇆ (λ _ → fst))
+                want = lens≡ₚ refl λ x y → ΣPathP ((transportRefl (fst (fst y))) , toPathP (dir≡ x y))
+                  where dir≡ : (x : ob) → (y : Σ (Σ ob (Hom[_,_] x)) (λ a → ⊤)) → 
+                              -- this is inverse constant transps along the same equality
+                              transp (λ i → Hom[ x , transp (λ _ → ob) i (fst (fst y)) ])
+                                i0
+                                (transp (λ i → Hom[ x , transp (λ _ → ob) (~ i) (fst (fst y)) ])
+                                i0 (snd (fst y))
+                                ⋆ id)
+                                ≡ snd (fst y)
+                        dir≡ x y = removeConsts ∙ idᵣ (snd (fst y))
+                          where removeConsts : transport (λ i → Hom[ x , transp (λ _ → ob) i (fst (fst y)) ])
+                                  (transport (λ i → Hom[ x , transp (λ _ → ob) (~ i) (fst (fst y)) ])
+                                  (snd (fst y)) ⋆ id)
+                                  ≡
+                                  (snd (fst y) ⋆ id)
+                                removeConsts = {!   !} -- transport⁻Transport  {!   !} (snd (fst y) ⋆ id)
+        leftCounit : ⟨ ε ◂ idLens ⟩ ∘ₚ δ ≡ ~ᴸ
+        leftCounit = want
+          where want :  
+                    ((λ x → tt , (λ _ → x)) ⇆
+                    (λ (i : ob) x → fst (snd x) , (id ⋆ snd (snd x))))
+                    ≡ 
+                    ((λ x → tt , (λ _ → x)) ⇆ 
+                    (λ _ → snd))
+                   
+                want = lens≡ₚ refl λ x y → {!   !}
+
+is : Comonoid ≡ Category zero zero
+is = isoToPath (iso comonoidsAreCategories 
+                    categoriesAreComonoids {!   !} {!   !})
