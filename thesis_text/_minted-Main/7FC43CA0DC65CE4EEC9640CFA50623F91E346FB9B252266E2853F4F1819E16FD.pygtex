@@ -1,0 +1,33 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{lrWiringDiagram}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}numNodes\PYG{+w}{ }trainingSteps\PYG{+w}{ }touchSteps\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℕ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                  }\PYG{o}{(}dt\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                  }\PYG{o}{(}iw\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }InputWeights\PYG{+w}{ }numNodes\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                  }\PYG{o}{(}rw\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ReservoirWeights\PYG{+w}{ }numNodes\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                  }Lens\PYG{+w}{ }\PYG{o}{(}interface\PYG{+w}{ }\PYG{o}{(}preLorRes\PYG{+w}{ }numNodes
+\PYG{+w}{                                             }trainingSteps
+\PYG{+w}{                                             }touchSteps
+\PYG{+w}{                                             }dt
+\PYG{+w}{                                             }iw
+\PYG{+w}{                                             }rw\PYG{o}{))}
+\PYG{+w}{                       }\PYG{o}{(}emitter\PYG{+w}{ }\PYG{o}{(}ReservoirOutput\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{+w}{ }×\PYG{+w}{ }\PYG{o}{(}X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{o}{)))}\PYGZbs{}
+lrWiringDiagram\PYG{+w}{ }numNodes\PYG{+w}{ }trainingSteps\PYG{+w}{ }touchSteps\PYG{+w}{ }dt\PYG{+w}{ }iw\PYG{+w}{ }rw\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }outerOutputsFrom\PYG{+w}{ }⇆\PYG{+w}{ }innerInputsFrom
+\PYG{+w}{    }\PYG{k+kr}{where}\PYG{+w}{ }outerOutputsFrom\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{o}{)}\PYG{+w}{ }×
+\PYG{+w}{                             }\PYG{o}{(}X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{o}{)}\PYG{+w}{ }×
+\PYG{+w}{                             }ReservoirOutput\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                             }ReservoirOutput\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{+w}{ }×\PYG{+w}{ }\PYG{o}{(}X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{o}{)}
+\PYG{+w}{          }outerOutputsFrom\PYG{+w}{ }\PYG{o}{(}\PYGZus{}\PYG{+w}{ },\PYG{+w}{ }test\PYG{+w}{ },\PYG{+w}{ }ro\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }ro\PYG{+w}{ },\PYG{+w}{ }test
+\PYG{+w}{          }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Provide inputs from different sources}
+\PYG{+w}{          }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} depending on reservoir\PYGZsq{}s output}
+\PYG{+w}{          }\PYG{n+nf}{innerInputsFrom}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{o}{)}\PYG{+w}{ }×
+\PYG{+w}{                            }\PYG{o}{(}X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{o}{)}\PYG{+w}{ }×
+\PYG{+w}{                            }ReservoirOutput\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                            }⊤\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                            }\PYG{o}{(}⊤\PYG{+w}{ }×\PYG{+w}{ }⊤\PYG{+w}{ }×\PYG{+w}{ }Vec\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{o}{)}
+\PYG{+w}{          }innerInputsFrom\PYG{+w}{ }\PYG{o}{(}lorOut\PYG{+w}{ },\PYG{+w}{ }lorTestOut\PYG{+w}{ },\PYG{+w}{ }stillColl\PYG{o}{)}\PYG{+w}{ }tt\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{            }tt\PYG{+w}{ },\PYG{+w}{ }tt\PYG{+w}{ },\PYG{+w}{ }Lorenz.outToVec\PYG{+w}{ }lorOut
+\PYG{+w}{          }innerInputsFrom\PYG{+w}{ }\PYG{o}{(}lorOut\PYG{+w}{ },\PYG{+w}{ }lorTestOut\PYG{+w}{ },\PYG{+w}{ }stillTouch\PYG{o}{)}\PYG{+w}{ }tt\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{            }tt\PYG{+w}{ },\PYG{+w}{ }tt\PYG{+w}{ },\PYG{+w}{ }Lorenz.outToVec\PYG{+w}{ }lorTestOut
+\PYG{+w}{          }innerInputsFrom\PYG{+w}{ }\PYG{o}{(}lorOut\PYG{+w}{ },\PYG{+w}{ }lorTestOut\PYG{+w}{ },\PYG{+w}{ }predicting\PYG{+w}{ }x\PYG{o}{)}\PYG{+w}{ }tt\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{            }tt\PYG{+w}{ },\PYG{+w}{ }tt\PYG{+w}{ },\PYG{+w}{ }x
+\end{Verbatim}

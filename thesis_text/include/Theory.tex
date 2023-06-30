@@ -1247,6 +1247,7 @@ The parallel product also enables turning to lenses, between individual polynomi
 This particular action will have deep implications in the applications chapter.
 
 \section{Composition product}
+\label{section:composition}
 Since polynomials are functors, and in fact \textit{endo}functors, they can be composed to give rise to new polynomial functors. The composition operator is given by the symbol ◂. Here we can recover high-school algebra intuition. Composing functors corresponds to plugging in entire expressions, instead of numbers, into a polynomial. For instance, given $p(y) = y^2$ and $q(y) = y^2 + 3y$, the composition product is given as $(p \triangleleft q)(y) = (y^2 + 3y)^2$.
 
 \begin{minted}{agda}
@@ -1460,7 +1461,7 @@ five : ...
        Lens (p * q) r
 \end{minted}
 
-Under the hood, many different lemmas and helper function are needed for the proof. This includes the yoneda lemma for \textbf{Poly}, generalized universal product (and coproduct) property, and a whole file (\texttt{Cubical/Utils/CoproductUtils}) with lemmas about the coproduct, which is needed due to how the exponential object is defined. 
+Under the hood, many different lemmas and helper function are needed for the proof. This includes the Yoneda lemma for \textbf{Poly}, generalized universal product (and coproduct) property, and a whole file (\texttt{Cubical/Utils/CoproductUtils}) with lemmas about the coproduct, which is needed due to how the exponential object is defined. 
 
 The exponential object implies the existence of the canonical evaluation lens - one that takes an exponential object paired with its argument to the output object. Its implementation is as follows:
 
@@ -1622,7 +1623,7 @@ Other proofs of this kind are provided in the files \texttt{Cubical/Proofs.agda}
     \item The product is the generalized product indexed by \underline{2}.
     \item A sum of two linear polynomials is still linear.
     \item A multiplication of two monomials is still a monomial.
-    \item A lens to $y$ is the same thing as a function from positions to directions. The idea is that the map on positions has no choice (a single position), and the map on directions is then a choice of position in the source polynomial.
+    \item A lens from a polynomial $p$ to $y$ is the same thing as a function from positions to directions in $p$. The idea is that the map on positions has no choice (a single position), and the map on directions then picks out a direction in the source polynomial.
     \item Given $p(y) = y^2 + y$, $p(\underline{2}) = \underline{6}$.
     \item $p(1)$ is equal to the set of positions of $p$.
     \item Given two constant polynomials $p(y) = \underline{3}$ and $q(y) = \underline{2}$, $p^q(y) = \underline{9}$.

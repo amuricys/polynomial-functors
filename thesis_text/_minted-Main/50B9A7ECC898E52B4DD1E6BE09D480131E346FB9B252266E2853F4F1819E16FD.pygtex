@@ -1,0 +1,14 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{+w}{    }\PYG{n+nf}{speedup◂}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}S\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                }Lens\PYG{+w}{ }\PYG{o}{(}selfMonomial\PYG{+w}{ }S\PYG{o}{)}\PYG{+w}{ }p\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                }Lens\PYG{+w}{ }\PYG{o}{(}selfMonomial\PYG{+w}{ }S\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}p\PYG{+w}{ }◂\PYG{+w}{ }p\PYG{o}{)}
+\PYG{+w}{    }speedup◂\PYG{+w}{ }\PYG{o}{\PYGZob{}}p\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o}{\PYGZob{}}S\PYG{o}{\PYGZcb{}}\PYG{+w}{ }l\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }dup\PYG{+w}{ }∘ₚ\PYG{+w}{ }fixState
+\PYG{+w}{      }\PYG{k+kr}{where}\PYG{+w}{ }dup\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{((}selfMonomial\PYG{+w}{ }S\PYG{o}{)}\PYG{+w}{ }◂\PYG{+w}{ }\PYG{o}{(}selfMonomial\PYG{+w}{ }S\PYG{o}{))}
+\PYG{+w}{                       }\PYG{o}{(}p\PYG{+w}{ }◂\PYG{+w}{ }p\PYG{o}{)}
+\PYG{+w}{            }dup\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }⟨\PYG{+w}{ }l\PYG{+w}{ }◂\PYG{+w}{ }l\PYG{+w}{ }⟩
+\PYG{+w}{            }\PYG{n+nf}{fixState}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}selfMonomial\PYG{+w}{ }S\PYG{o}{)}
+\PYG{+w}{                            }\PYG{o}{(}selfMonomial\PYG{+w}{ }S\PYG{+w}{ }◂\PYG{+w}{ }selfMonomial\PYG{+w}{ }S\PYG{o}{)}
+\PYG{+w}{            }fixState\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }s₀\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }s₀\PYG{+w}{ },\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }s₁\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }s₁\PYG{o}{)}
+\PYG{+w}{                        }⇆
+\PYG{+w}{                        }\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }s₀\PYG{+w}{ }\PYG{o}{(}s₁\PYG{+w}{ },\PYG{+w}{ }s₂\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }s₂\PYG{+w}{ }\PYG{o}{\PYGZcb{}}
+\end{Verbatim}

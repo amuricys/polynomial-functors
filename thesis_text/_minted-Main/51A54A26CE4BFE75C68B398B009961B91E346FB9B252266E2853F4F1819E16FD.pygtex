@@ -1,0 +1,30 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{preHH}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+preHH\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }voltage\PYG{+w}{ }dt\PYG{+w}{ }\PYGZam{}\PYGZam{}\PYGZam{}
+\PYG{+w}{           }potassiumActivation\PYG{+w}{ }dt\PYG{+w}{ }\PYGZam{}\PYGZam{}\PYGZam{}
+\PYG{+w}{           }sodiumActivation\PYG{+w}{ }dt\PYG{+w}{ }\PYGZam{}\PYGZam{}\PYGZam{}
+\PYG{+w}{           }sodiumInactivation\PYG{+w}{ }dt
+
+\PYG{n+nf}{hodgkinHuxleyWiringDiagram}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}interface\PYG{+w}{ }\PYG{o}{(}preHH\PYG{+w}{ }\PYGZus{}\PYG{o}{))}\PYG{+w}{ }\PYG{o}{(}selfMonomial\PYG{+w}{ }ℝ\PYG{o}{)}
+hodgkinHuxleyWiringDiagram\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}(}v\PYG{+w}{ },\PYG{+w}{ }m\PYG{+w}{ },\PYG{+w}{ }h\PYG{+w}{ },\PYG{+w}{ }n\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }v\PYG{+w}{ }\PYG{o}{\PYGZcb{})}\PYG{+w}{ }⇆
+\PYG{+w}{    }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}((}v\PYG{+w}{ },\PYG{+w}{ }m\PYG{+w}{ },\PYG{+w}{ }h\PYG{+w}{ },\PYG{+w}{ }n\PYG{o}{))}\PYG{+w}{ }Ie\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}Ie\PYG{+w}{ },\PYG{+w}{ }m\PYG{+w}{ },\PYG{+w}{ }h\PYG{+w}{ },\PYG{+w}{ }n\PYG{o}{)}\PYG{+w}{ },\PYG{+w}{ }v\PYG{+w}{ },\PYG{+w}{ }v\PYG{+w}{ },\PYG{+w}{ }v\PYG{+w}{ }\PYG{o}{\PYGZcb{})}
+
+\PYG{n+nf}{hodgkinHuxley}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+hodgkinHuxley\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }install\PYG{+w}{ }\PYG{o}{(}preHH\PYG{+w}{ }dt\PYG{o}{)}
+\PYG{+w}{                           }\PYG{o}{(}selfMonomial\PYG{+w}{ }ℝ\PYG{o}{)}
+\PYG{+w}{                           }hodgkinHuxleyWiringDiagram
+
+\PYG{n+nf}{hhSeq}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Stream\PYG{+w}{ }ℝ\PYG{+w}{ }\PYGZus{}
+hhSeq\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }run\PYG{+w}{ }\PYG{o}{(}hodgkinHuxley\PYG{+w}{ }dt\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}constI\PYG{+w}{ }Ie\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}V₀\PYG{+w}{ },\PYG{+w}{ }m∞\PYG{+w}{ },\PYG{+w}{ }n∞\PYG{+w}{ },\PYG{+w}{ }h∞\PYG{o}{)}
+\PYG{+w}{  }\PYG{k+kr}{where}\PYG{+w}{ }V₀\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ
+\PYG{+w}{        }V₀\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYGZhy{}70.0
+\PYG{+w}{        }\PYG{n+nf}{m∞}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ
+\PYG{+w}{        }m∞\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mf}{0.05}
+\PYG{+w}{        }\PYG{n+nf}{n∞}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ
+\PYG{+w}{        }n∞\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mf}{0.54}
+\PYG{+w}{        }\PYG{n+nf}{h∞}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ
+\PYG{+w}{        }h∞\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mf}{0.34}
+\PYG{+w}{        }\PYG{n+nf}{Ie}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ
+\PYG{+w}{        }Ie\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mf}{10.0}
+\end{Verbatim}

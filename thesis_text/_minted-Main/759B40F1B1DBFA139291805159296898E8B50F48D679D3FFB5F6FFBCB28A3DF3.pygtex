@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{o}{...}
+\PYG{k+kr}{import}\PYG{+w}{ }\PYG{n+nn}{Numeric.LinearAlgebra}\PYG{+w}{ }\PYG{n}{qualified}\PYG{+w}{ }\PYG{n}{as}\PYG{+w}{ }\PYG{k+kt}{HMat}
+\PYG{o}{...}
+\PYG{n+nf}{invertMatrixAsList}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{p}{[[}\PYG{k+kt}{Double}\PYG{p}{]]}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{p}{[[}\PYG{k+kt}{Double}\PYG{p}{]]}
+\PYG{n+nf}{invertMatrixAsList}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{HMat}\PYG{o}{.}\PYG{n}{toLists}\PYG{+w}{ }\PYG{o}{.}\PYG{+w}{ }\PYG{k+kt}{HMat}\PYG{o}{.}\PYG{n}{pinv}\PYG{+w}{ }\PYG{o}{.}\PYG{+w}{ }\PYG{k+kt}{HMat}\PYG{o}{.}\PYG{n}{fromLists}
+\end{Verbatim}

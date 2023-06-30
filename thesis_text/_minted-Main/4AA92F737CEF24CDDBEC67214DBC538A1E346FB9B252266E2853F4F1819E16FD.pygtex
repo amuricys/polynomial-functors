@@ -1,0 +1,8 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{\PYGZus{}\PYGZam{}\PYGZam{}\PYGZam{}\PYGZus{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }DynamicalSystem\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+mkdyn\PYG{+w}{ }stateA\PYG{+w}{ }interfaceA\PYG{+w}{ }dynamicsA\PYG{+w}{ }\PYGZam{}\PYGZam{}\PYGZam{}\PYG{+w}{ }mkdyn\PYG{+w}{ }stateB\PYG{+w}{ }interfaceB\PYG{+w}{ }dynamicsB
+\PYG{+w}{    }\PYG{o+ow}{=}\PYG{+w}{ }mkdyn\PYG{+w}{ }\PYG{o}{(}stateA\PYG{+w}{ }×\PYG{+w}{ }stateB\PYG{o}{)}
+\PYG{+w}{            }\PYG{o}{(}interfaceA\PYG{+w}{ }⊗\PYG{+w}{ }interfaceB\PYG{o}{)}
+\PYG{+w}{            }⟨\PYG{+w}{ }dynamicsA\PYG{+w}{ }⊗\PYG{+w}{ }dynamicsB\PYG{+w}{ }⟩
+
+\end{Verbatim}

@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{emitter}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial
+emitter\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }linear
+\end{Verbatim}

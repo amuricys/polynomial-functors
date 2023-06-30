@@ -374,6 +374,22 @@ constI : {m : Set} → (i : m) → enclose (selfMonomial m)
 constI i = encloseFunction λ _ → i
 \end{minted}
     One can easily imagine extending \texttt{constI} to taking a function that operates on the number of timesteps so as to vary the input over time as well. This is something that is done in dynamical systems theory in a very informal capacity, under the intuition that the parameters of the system vary "slowly" with respect to the timescale of the state updates. With this framework, we gain the ability of making it precise for free. Of course, if we wanted to make the parameter variation respond to the system's dynamics, we would need to make it a system in itself; this is a design consideration that we hope future developers take into account. We take a mix of these two approaches for example \ref{section:hh}.
+    \item Speedup of dynamics. The composition product can be thought of as a way to speedup the dynamics of a system: since it accounts for all possible inputs (recall the corolla forest visualization in \ref{section:composition}), a step in a dynamical system that has as interface a composite of two polynomials can be thought of as a step in its root polynomial, \textit{then} a step in the top polynomial. The code for it is this:
+\begin{minted}{agda}
+    speedup◂ : {p : Polynomial} {S : Set} → 
+                Lens (selfMonomial S) p → 
+                Lens (selfMonomial S) (p ◂ p)
+    speedup◂ {p} {S} l = dup ∘ₚ fixState
+      where dup : Lens ((selfMonomial S) ◂ (selfMonomial S))
+                       (p ◂ p)
+            dup = ⟨ l ◂ l ⟩
+            fixState : Lens (selfMonomial S)
+                            (selfMonomial S ◂ selfMonomial S)
+            fixState = (λ s₀ → s₀ , λ s₁ → s₁) 
+                        ⇆ 
+                        λ { s₀ (s₁ , s₂) → s₂ } 
+\end{minted} 
+    An example usage of this speedup functionality is provided in the Fibonacci example \ref{section:fib}.
     \item Finally, there is a function that does what one accustomed to dynamical systems simulations would expect: given an abstract representation of a dynamical system (a value of type \texttt{DynamicalSystem} in our case), and an initial condition, it produces an infinite stream of outputs.
 \begin{minted}{agda}
 {-# TERMINATING #-}
@@ -401,6 +417,7 @@ There are more helpers and utilities peppered throughout the code, but this is t
 We split the example implementations in the class of discrete- and continuous-time. As mentioned previously, all examples are in the strict sense discrete; the continuous ones are simply discretized with some $dt$. However, the split is still valid if one considers the spirit of the implementations.
 
 \subsubsection{Fibonacci}
+\label{section:fib}
 We start with the most basic example of all: a Fibonacci sequence generator implemented as a dynamical system in \textbf{Poly}. The wiring diagram of this system is as follows:
 
 \begin{equation}\label{eqn.control_diag}

@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} First order differential equations}
+\PYG{n+nf}{x}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+x\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkdyn\PYG{+w}{ }X\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }X\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Y\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}readout\PYG{+w}{ }⇆\PYG{+w}{ }update\PYG{o}{)}
+\PYG{+w}{  }\PYG{k+kr}{where}\PYG{+w}{ }readout\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }X\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }X
+\PYG{+w}{        }readout\PYG{+w}{ }state\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }state
+\PYG{+w}{        }\PYG{n+nf}{update}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }X\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Y\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }X
+\PYG{+w}{        }update\PYG{+w}{ }\PYG{o}{(}xnt\PYG{+w}{ }state\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}ynt\PYG{+w}{ }y\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{            }xnt\PYG{+w}{ }\PYG{o}{(}state\PYG{+w}{ }+\PYG{+w}{ }dt\PYG{+w}{ }*\PYG{+w}{ }\PYG{o}{(}σ\PYG{+w}{ }*\PYG{+w}{ }\PYG{o}{(}y\PYG{+w}{ }\PYGZhy{}\PYG{+w}{ }state\PYG{o}{)))}
+
+\PYG{n+nf}{y}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+y\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkdyn\PYG{+w}{ }Y\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }Y\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }X\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}readout\PYG{+w}{ }⇆\PYG{+w}{ }update\PYG{o}{)}
+\PYG{+w}{  }\PYG{k+kr}{where}\PYG{+w}{ }readout\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Y\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Y
+\PYG{+w}{        }readout\PYG{+w}{ }state\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }state
+\PYG{+w}{        }\PYG{n+nf}{update}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Y\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }X\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Y
+\PYG{+w}{        }update\PYG{+w}{ }\PYG{o}{(}ynt\PYG{+w}{ }state\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}\PYG{+w}{ }xnt\PYG{+w}{ }x\PYG{+w}{ },\PYG{+w}{ }znt\PYG{+w}{ }z\PYG{+w}{ }\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{            }ynt\PYG{+w}{ }\PYG{o}{(}state\PYG{+w}{ }+\PYG{+w}{ }dt\PYG{+w}{ }*\PYG{+w}{ }\PYG{o}{(}x\PYG{+w}{ }*\PYG{+w}{ }\PYG{o}{(}ρ\PYG{+w}{ }\PYGZhy{}\PYG{+w}{ }z\PYG{o}{)}\PYG{+w}{ }\PYGZhy{}\PYG{+w}{ }state\PYG{o}{))}
+
+\PYG{n+nf}{z}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+z\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkdyn\PYG{+w}{ }Z\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }Z\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}readout\PYG{+w}{ }⇆\PYG{+w}{ }update\PYG{o}{)}
+\PYG{+w}{  }\PYG{k+kr}{where}\PYG{+w}{ }readout\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Z\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Z
+\PYG{+w}{        }readout\PYG{+w}{ }state\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }state
+\PYG{+w}{        }\PYG{n+nf}{update}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Z\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Z
+\PYG{+w}{        }update\PYG{+w}{ }\PYG{o}{(}znt\PYG{+w}{ }state\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}xnt\PYG{+w}{ }x\PYG{+w}{ },\PYG{+w}{ }ynt\PYG{+w}{ }y\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{            }znt\PYG{+w}{ }\PYG{o}{(}state\PYG{+w}{ }+\PYG{+w}{ }dt\PYG{+w}{ }*\PYG{+w}{ }\PYG{o}{(}x\PYG{+w}{ }*\PYG{+w}{ }y\PYG{+w}{ }\PYGZhy{}\PYG{+w}{ }β\PYG{+w}{ }*\PYG{+w}{ }state\PYG{o}{))}
+\end{Verbatim}

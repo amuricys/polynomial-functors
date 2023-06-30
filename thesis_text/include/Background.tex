@@ -1,6 +1,6 @@
 % CREATED BY DAVID FRISK, 2016
 \chapter{Background}\label{chapter:background}
-This chapter gives a short introduction to the technology used, as well as the different areas of knowledge needed to understand this thesis. For the technology, \textbf{Agda} and \textbf{Cubical Agda} are explained, as they provide the framework for the implementation. For the theory, a brief explanation of \textbf{Category Theory} is given, as well as some references to previous work on the main category of this thesis, \textbf{Poly}. Introducing the concepts of \textbf{Poly} is done in the theory section.
+This chapter gives a short introduction to the technology used, as well as the different areas of knowledge needed to understand this thesis. For the technology, \textbf{Agda} and \textbf{Cubical Agda} are explained, as they provide the framework for the implementation. For the theory, a brief explanation of \textbf{Category Theory} is given, as well as some references to previous work on the main category of this thesis, \textbf{Poly}. Introducing the concepts of \textbf{Poly} and \textbf{Chart} is done in their respective theory sections.
 
 Some topics are not introduced in the background but at the point where they are used. There are also many citations and references to deeper explorations of most concepts mentioned.
 
@@ -165,7 +165,7 @@ A \textit{category} $\mathcal{C}$ consists of the following data:
 
 \begin{enumerate}
   \item A collection of objects Ob($\mathcal{C}$).
-  \item For every two objects $A$ and $B$, a set of \textit{arrows} (also called \textit{morphisms} or \textit{maps}) between them denoted by $\mathcal{C}$(A , B). Individual arrows, are written like: $f : A \rightarrow B $.
+  \item For every two objects $A$ and $B$, a set of \textit{arrows} (also called \textit{morphisms} or \textit{maps}) between them denoted by $\mathcal{C}$(A , B). Individual arrows, when they need to be named, are written like this: $f : A \rightarrow B $.
   \item For every object $A$, an identity arrow $id : A \rightarrow A$. 
   \item A composition operator $ \circ $ , that gives rise to new arrows. For any three objects $A$, $B$ and $C$ and arrows $f : A \rightarrow B $ and $g : B \rightarrow C $, there exists an arrow $g \circ f : A \rightarrow C $.
 \end{enumerate}

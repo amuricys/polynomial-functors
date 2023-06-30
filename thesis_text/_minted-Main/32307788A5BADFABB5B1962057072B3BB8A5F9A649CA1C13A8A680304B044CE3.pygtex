@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{+w}{    }./Plot\PYG{+w}{ }LotkaVolterra\PYG{+w}{ }\PYGZhy{}\PYGZhy{}alpha\PYG{+w}{ }\PYG{l+m}{0}.2\PYG{+w}{ }\PYGZhy{}\PYGZhy{}beta\PYG{+w}{ }\PYG{l+m}{0}.2\PYG{+w}{ }\PYGZhy{}\PYGZhy{}delta\PYG{+w}{ }\PYG{l+m}{0}.5\PYG{+w}{ }\PYG{l+s+se}{\PYGZbs{}}
+\PYG{+w}{                         }\PYGZhy{}\PYGZhy{}gamma\PYG{+w}{ }\PYG{l+m}{0}.4\PYG{+w}{ }\PYGZhy{}\PYGZhy{}r0\PYG{+w}{ }\PYG{l+m}{1}.0\PYG{+w}{ }\PYGZhy{}\PYGZhy{}f0\PYG{+w}{ }\PYG{l+m}{0}.9\PYG{+w}{ }\PYGZhy{}\PYGZhy{}dt\PYG{+w}{ }\PYG{l+m}{0}.1
+\end{Verbatim}

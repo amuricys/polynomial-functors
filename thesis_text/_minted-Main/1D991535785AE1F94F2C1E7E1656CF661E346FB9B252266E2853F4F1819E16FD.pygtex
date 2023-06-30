@@ -1,0 +1,45 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{data}\PYG{+w}{ }Switch\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{n+nf}{on}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Switch
+\PYG{+w}{    }\PYG{n+nf}{off}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Switch
+
+\PYG{n+nf}{toggle}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Switch\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Switch
+toggle\PYG{+w}{ }on\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }off
+toggle\PYG{+w}{ }off\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }on
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} | Commonly used where input to enclosed dynamical system where}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}   updateState only depends on current state.}
+\PYG{n+nf}{ignoreUnitInput}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }B\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}A\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }B\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }A\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }⊤\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }B
+ignoreUnitInput\PYG{+w}{ }f\PYG{+w}{ }a\PYG{+w}{ }tt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }f\PYG{+w}{ }a
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} | Note: linear interface is used to accept only 1 possible input.}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{}   Readout defined as id to expose state.}
+\PYG{n+nf}{flipFlop}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }DynamicalSystem
+flipFlop\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkdyn\PYG{+w}{ }Switch\PYG{+w}{ }\PYG{o}{(}linear\PYG{+w}{ }Switch\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}id\PYG{+w}{ }⇆\PYG{+w}{ }ignoreUnitInput\PYG{+w}{ }toggle\PYG{o}{)}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} | Result is: on, off, on, off...}
+\PYG{n+nf}{flipFlopRan}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Vec\PYG{+w}{ }Switch\PYG{+w}{ }\PYG{l+m+mi}{10}
+flipFlopRan\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }take\PYG{+w}{ }\PYG{l+m+mi}{10}\PYG{+w}{ }\PYGZdl{}\PYG{+w}{ }run\PYG{+w}{ }flipFlop\PYG{+w}{ }auto\PYG{+w}{ }on
+
+\PYG{n+nf}{modNat}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Nat\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Switch
+modNat\PYG{+w}{ }n\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }if\PYG{+w}{ }n\PYG{+w}{ }\PYGZpc{}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{+w}{ }\PYG{o+ow}{==}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{+w}{ }then\PYG{+w}{ }on\PYG{+w}{ }else\PYG{+w}{ }off
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} | To compare flipFlop and counter they need to have the same interface.}
+\PYG{n+nf}{counter}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }DynamicalSystem
+counter\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkdyn\PYG{+w}{ }Nat\PYG{+w}{ }\PYG{o}{(}linear\PYG{+w}{ }Switch\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}modNat\PYG{+w}{ }⇆\PYG{+w}{ }ignoreUnitInput\PYG{+w}{ }suc\PYG{o}{)}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} | Result is: on, off, on, off...}
+\PYG{n+nf}{counterRan}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Vec\PYG{+w}{ }Switch\PYG{+w}{ }\PYG{l+m+mi}{10}
+counterRan\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }take\PYG{+w}{ }\PYG{l+m+mi}{10}\PYG{+w}{ }\PYGZdl{}\PYG{+w}{ }run\PYG{+w}{ }counter\PYG{+w}{ }auto\PYG{+w}{ }\PYG{l+m+mi}{0}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} | Morphism between p dynamicalSystems with states Nat and Switch.}
+\PYG{n+nf}{morphSystem}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Nat\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Switch
+morphSystem\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }modNat
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} | The square expressing the simulation.}
+\PYG{n+nf}{square}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }LensChartCommute\PYG{+w}{ }\PYG{o}{(}dynamics\PYG{+w}{ }counter\PYG{o}{)}
+\PYG{+w}{                          }\PYG{o}{(}dynamics\PYG{+w}{ }flipFlop\PYG{o}{)}
+\PYG{+w}{                          }\PYG{o}{(}morphSystem\PYG{+w}{ }⇉\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }morphSystem\PYG{o}{)}
+\PYG{+w}{                          }idChart
+square\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }law₁\PYG{+w}{ },\PYG{+w}{ }law₂
+\end{Verbatim}

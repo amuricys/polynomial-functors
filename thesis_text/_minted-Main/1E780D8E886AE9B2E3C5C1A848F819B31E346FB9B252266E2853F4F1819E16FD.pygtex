@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{record}\PYG{+w}{ }MooreMachine\PYG{+w}{ }\PYG{o}{\PYGZob{}}State\PYG{+w}{ }Input\PYG{+w}{ }Output\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{k+kr}{constructor}\PYG{+w}{ }mkmoore
+\PYG{+w}{    }\PYG{k+kr}{field}
+\PYG{+w}{        }\PYG{n+nf}{readout}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }State\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Output
+\PYG{+w}{        }\PYG{n+nf}{update}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }State\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Input\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }State
+
+\PYG{k+kr}{record}\PYG{+w}{ }MealyMachine\PYG{+w}{ }\PYG{o}{\PYGZob{}}State\PYG{+w}{ }Input\PYG{+w}{ }Output\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{    }\PYG{k+kr}{constructor}\PYG{+w}{ }mkmealy
+\PYG{+w}{    }\PYG{k+kr}{field}
+\PYG{+w}{        }\PYG{n+nf}{updateRead}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }State\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Input\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}State\PYG{+w}{ }×\PYG{+w}{ }Output\PYG{o}{)}
+\end{Verbatim}

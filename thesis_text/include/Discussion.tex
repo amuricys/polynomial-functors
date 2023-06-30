@@ -98,7 +98,6 @@ Another construct covered in the poly-book is bicomodules, which relate to comon
 The commuting squares between charts and lenses have been defined as \mintinline{agda}{LensChartCommute}. Showing that these squares compose both horizontally and vertically is an important step in finalizing the formalization of the double category between charts and lenses. The proof that the map on positions of the squares composes is done, but the proof for map on directions remains undone, due to an explosion of subst's.
 
 \subsection{Consistency of distributed data types}
-
 There is some speculation that polynomial functors can be a good model of consistent distributed data storage, like Conflict-Free Replicated Data Types, so the categorical setting could be fruitful for proving the consistency of CRDTs.
 
 \subsection{Other categorical properties}
@@ -109,10 +108,10 @@ This thesis implements several dynamical systems, but it is a large field. Syste
 
 \subsection{Interaction between different fields that Poly models}
 
-\textbf{Poly} is good at modeling databases, dynamical systems, and information theory, three fields that are loosely connected. \textbf{Poly} could be a setting in which to deepen these connections.
+\textbf{Poly} is good at modeling databases, dynamical systems, and information theory, three fields that are loosely connected. \textbf{Poly} could be a setting in which to deepen these connections. \textbf{Poly} and coalgebras on it have also shown some promise in deep learning.
 
 \subsection{Building programming languages on top of Poly}
-As we've seen, \textbf{Poly} is cartesian closed, meaning it can model the Simply-Typed Lambda Calculus. One could pursue the development of programming languages with the primitives of \textbf{Poly} that have access to the modeling power of the category natively. 
+As we've seen, \textbf{Poly} is cartesian closed, meaning it can model the Simply-Typed Lambda Calculus. One could pursue the development of programming languages with the primitives of \textbf{Poly} that have access to the modeling power of the category natively. \textbf{Poly} also naturally models Turing machines and is suited to imperative programming - since the STLC is equivalent in expressive power to Universal Turing machines, \textbf{Poly} can also remain the setting where the equivalence between imperative and declarative programs is formally proved.
 % \subsection{\textbf{Poly} in software engineering}
 % An interesting research area is how \textbf{Poly} can be used in software engineering. Whether the tools provided by \textbf{Poly} can aid in the modeling of domain logic or state machines, or help software engineers in any other way. Perhaps mode dependence can add another dimension to state machines.
 

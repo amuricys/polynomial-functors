@@ -1,0 +1,31 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} FOREIGN GHC}
+\PYG{c+cm}{import OptparseHs}
+\PYG{c+cm}{\PYGZsh{}\PYGZhy{}\PYGZcb{}}
+
+\PYG{k+kr}{data}\PYG{+w}{ }SystemParams\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{  }\PYG{n+nf}{ReservoirParams}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}rdim\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℕ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                    }\PYG{o}{(}trainSteps\PYG{+w}{ }touchSteps\PYG{+w}{ }outputLength\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℕ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                    }\PYG{o}{(}lorinitx\PYG{+w}{ }lorinity\PYG{+w}{ }lorinitz\PYG{+w}{ }dt\PYG{+w}{ }variance\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Float\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                    }SystemParams
+\PYG{+w}{  }\PYG{n+nf}{LorenzParams}\PYG{+w}{    }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}lorinitx\PYG{+w}{ }lorinity\PYG{+w}{ }lorinitz\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Float\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }SystemParams
+\PYG{+w}{  }\PYG{n+nf}{HodgkinHuxleyParams}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}dt\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Float\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }SystemParams
+\PYG{+w}{  }\PYG{n+nf}{LotkaVolterraParams}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}α\PYG{+w}{ }β\PYG{+w}{ }δ\PYG{+w}{ }γ\PYG{+w}{ }r0\PYG{+w}{ }f0\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Float\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }SystemParams
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} COMPILE GHC SystemParams = data SystemParams}
+\PYG{c+cm}{   (ReservoirParams |}
+\PYG{c+cm}{    LorenzParams |}
+\PYG{c+cm}{    HodgkinHuxleyParams |}
+\PYG{c+cm}{    LotkaVolterraParams) \PYGZsh{}\PYGZhy{}\PYGZcb{}}
+
+\PYG{k+kr}{record}\PYG{+w}{ }Options\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{  }\PYG{k+kr}{constructor}\PYG{+w}{ }mkopt
+\PYG{+w}{  }\PYG{k+kr}{field}
+\PYG{+w}{    }\PYG{n+nf}{system}\PYG{+w}{  }\PYG{o+ow}{:}\PYG{+w}{ }SystemParams
+
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} COMPILE GHC Options = data Options (Options) \PYGZsh{}\PYGZhy{}\PYGZcb{}}
+
+\PYG{k+kr}{postulate}
+\PYG{+w}{  }\PYG{n+nf}{parseOptions}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }IO\PYG{+w}{ }Options
+\PYG{c+cm}{\PYGZob{}\PYGZhy{}\PYGZsh{} COMPILE GHC parseOptions = parseOptions \PYGZsh{}\PYGZhy{}\PYGZcb{}}
+\end{Verbatim}

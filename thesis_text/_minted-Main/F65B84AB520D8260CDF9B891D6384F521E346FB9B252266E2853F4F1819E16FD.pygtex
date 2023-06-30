@@ -1,0 +1,19 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{preLorenz}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+preLorenz\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }x\PYG{+w}{ }dt\PYG{+w}{ }\PYGZam{}\PYGZam{}\PYGZam{}\PYG{+w}{ }y\PYG{+w}{ }dt\PYG{+w}{ }\PYGZam{}\PYGZam{}\PYGZam{}\PYG{+w}{ }z\PYG{+w}{ }dt
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Wiring diagram is an lens between monomials}
+\PYG{n+nf}{lorenzWiringDiagram}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}interface\PYG{+w}{ }\PYG{o}{(}preLorenz\PYG{+w}{ }\PYGZus{}\PYG{o}{))}
+\PYG{+w}{                           }\PYG{o}{(}emitter\PYG{+w}{ }\PYG{o}{(}X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{o}{))}
+lorenzWiringDiagram\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mp\PYG{+w}{ }⇆\PYG{+w}{ }md
+\PYG{+w}{  }\PYG{k+kr}{where}\PYG{+w}{ }mp\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{+w}{ }×\PYG{+w}{ }Z
+\PYG{+w}{        }mp\PYG{+w}{ }\PYG{o}{(}x\PYG{+w}{ },\PYG{+w}{ }y\PYG{+w}{ },\PYG{+w}{ }z\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }x\PYG{+w}{ },\PYG{+w}{ }y\PYG{+w}{ },\PYG{+w}{ }z
+\PYG{+w}{        }\PYG{n+nf}{md}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }⊤\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Y\PYG{+w}{ }×\PYG{+w}{ }\PYG{o}{(}X\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{o}{)}\PYG{+w}{ }×\PYG{+w}{ }\PYG{o}{(}X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{o}{)}
+\PYG{+w}{        }md\PYG{+w}{ }\PYG{o}{(}x\PYG{+w}{ },\PYG{+w}{ }y\PYG{+w}{ },\PYG{+w}{ }z\PYG{o}{)}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }y\PYG{+w}{ },\PYG{+w}{ }\PYG{o}{(}x\PYG{+w}{ },\PYG{+w}{ }z\PYG{o}{)}\PYG{+w}{ },\PYG{+w}{ }\PYG{o}{(}x\PYG{+w}{ },\PYG{+w}{ }y\PYG{o}{)}
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Final system is composition of wiring diagram and dynamics}
+\PYG{n+nf}{lorenz}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+lorenz\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }install\PYG{+w}{ }\PYG{o}{(}preLorenz\PYG{+w}{ }dt\PYG{o}{)}
+\PYG{+w}{                    }\PYG{o}{(}emitter\PYG{+w}{ }\PYG{o}{(}X\PYG{+w}{ }×\PYG{+w}{ }Y\PYG{+w}{ }×\PYG{+w}{ }Z\PYG{o}{))}
+\PYG{+w}{                    }lorenzWiringDiagram
+\end{Verbatim}

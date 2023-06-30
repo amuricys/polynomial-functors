@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{lorenzParamsParser}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{SystemParams}\PYG{+w}{ }\PYG{k+kt}{LorenzParamsType}\PYG{p}{)}
+\PYG{n+nf}{lorenzParamsParser}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{LorenzParams}
+\PYG{+w}{  }\PYG{o}{\PYGZlt{}\PYGZdl{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{option}\PYG{+w}{ }\PYG{n}{auto}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{long}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}x0\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{short}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}x\PYGZsq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{metavar}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}X0\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}
+\PYG{+w}{    }\PYG{n}{help}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Initial x value\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{  }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{option}\PYG{+w}{ }\PYG{n}{auto}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{long}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}y0\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{short}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}y\PYGZsq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{metavar}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Y0\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}
+\PYG{+w}{    }\PYG{n}{help}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Initial y value\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} \PYGZlt{}*\PYGZgt{} option auto (long \PYGZdq{}z0\PYGZdq{} \PYGZlt{}\PYGZgt{} short \PYGZsq{}z\PYGZsq{} \PYGZlt{}\PYGZgt{} metavar \PYGZdq{}Z0\PYGZdq{} \PYGZlt{}\PYGZgt{}}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{}  help \PYGZdq{}Initial z value\PYGZdq{}) error! (SystemParams LorenzParamsType)}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} expects this float}
+\PYG{+w}{  }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{option}\PYG{+w}{ }\PYG{n}{auto}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{long}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}dt\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{short}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}t\PYGZsq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{metavar}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}DT\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}
+\PYG{+w}{    }\PYG{n}{help}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Time step\PYGZdq{}}\PYG{p}{)}
+\end{Verbatim}

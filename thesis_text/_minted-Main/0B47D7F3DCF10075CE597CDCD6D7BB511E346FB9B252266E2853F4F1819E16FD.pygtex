@@ -1,0 +1,20 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{hhWithInputWiring}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }\PYG{o}{(}interface\PYG{+w}{ }\PYG{o}{(}preHHWithInput\PYG{+w}{ }\PYG{l+m+mf}{0.0}\PYG{o}{))}\PYG{+w}{ }\PYG{o}{(}emitter\PYG{+w}{ }ℝ\PYG{o}{)}
+hhWithInputWiring\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{    }\PYG{o}{(}\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }\PYG{o}{(}hhOut\PYG{+w}{ },\PYG{+w}{ }\PYGZus{}\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }hhOut\PYG{o}{\PYGZcb{})}\PYG{+w}{ }⇆
+\PYG{+w}{     }\PYG{o+ow}{λ}\PYG{+w}{ }\PYG{o}{\PYGZob{}}\PYG{+w}{ }\PYG{o}{(}hhOut\PYG{+w}{ },\PYG{+w}{ }fnOut\PYG{o}{)}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }fnOut\PYG{+w}{ },\PYG{+w}{ }fnOut\PYG{+w}{ }\PYG{o}{\PYGZcb{}}
+
+\PYG{n+nf}{hhWithInput}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+hhWithInput\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }install\PYG{+w}{ }\PYG{o}{(}preHHWithInput\PYG{+w}{ }dt\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}emitter\PYG{+w}{ }ℝ\PYG{o}{)}\PYG{+w}{ }hhWithInputWiring
+
+\PYG{n+nf}{hhSeqWithInput}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Stream\PYG{+w}{ }ℝ\PYG{+w}{ }\PYGZus{}
+hhSeqWithInput\PYG{+w}{ }dt\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }run\PYG{+w}{ }\PYG{o}{(}hhWithInput\PYG{+w}{ }dt\PYG{o}{)}\PYG{+w}{ }auto\PYG{+w}{ }\PYG{o}{((}V₀\PYG{+w}{ },\PYG{+w}{ }m∞\PYG{+w}{ },\PYG{+w}{ }n∞\PYG{+w}{ },\PYG{+w}{ }h∞\PYG{o}{)}\PYG{+w}{ },\PYG{+w}{ }\PYGZhy{}5.0\PYG{o}{)}
+\PYG{+w}{  }\PYG{k+kr}{where}\PYG{+w}{ }V₀\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ
+\PYG{+w}{        }V₀\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYGZhy{}70.0
+\PYG{+w}{        }\PYG{n+nf}{m∞}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ
+\PYG{+w}{        }m∞\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mf}{0.05}
+\PYG{+w}{        }\PYG{n+nf}{n∞}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ
+\PYG{+w}{        }n∞\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mf}{0.54}
+\PYG{+w}{        }\PYG{n+nf}{h∞}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ
+\PYG{+w}{        }h∞\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{l+m+mf}{0.34}
+\end{Verbatim}

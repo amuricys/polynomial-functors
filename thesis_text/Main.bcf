@@ -2399,3 +2399,51 @@
     <bcf:citekey order="32" intorder="1">code</bcf:citekey>
     <bcf:citekey order="33" intorder="1">daig</bcf:citekey>
     <bcf:citekey order="34" intorder="1">css</bcf:citekey>
+    <bcf:citekey order="35" intorder="1">operadwd</bcf:citekey>
+    <bcf:citekey order="36" intorder="1">conceptwithattitude</bcf:citekey>
+    <bcf:citekey order="37" intorder="1">css</bcf:citekey>
+    <bcf:citekey order="38" intorder="1">optparse</bcf:citekey>
+    <bcf:citekey order="39" intorder="1">chart-lib</bcf:citekey>
+    <bcf:citekey order="40" intorder="1">hmatrix</bcf:citekey>
+    <bcf:citekey order="41" intorder="1">blas</bcf:citekey>
+    <bcf:citekey order="42" intorder="1">Murray2002</bcf:citekey>
+    <bcf:citekey order="43" intorder="1">lorenz1963</bcf:citekey>
+    <bcf:citekey order="44" intorder="1">hodgkin1952quantitative</bcf:citekey>
+    <bcf:citekey order="45" intorder="1">gerstner2014neuronal</bcf:citekey>
+    <bcf:citekey order="46" intorder="1">reservoiroverview</bcf:citekey>
+    <bcf:citekey order="47" intorder="1">windspeedreservoir</bcf:citekey>
+    <bcf:citekey order="48" intorder="1">jaeger2002adaptive</bcf:citekey>
+    <bcf:citekey order="49" intorder="1">Cucchi_2022</bcf:citekey>
+    <bcf:citekey order="50" intorder="1">Cucchi_2022</bcf:citekey>
+    <bcf:citekey order="51" intorder="1">Cucchi_2022</bcf:citekey>
+    <bcf:citekey order="52" intorder="1">jaeger2001echo</bcf:citekey>
+    <bcf:citekey order="53" intorder="1">strogatz2001nonlinear</bcf:citekey>
+    <bcf:citekey order="54" intorder="1">bicomodulesBlog</bcf:citekey>
+    <bcf:citekey order="55" intorder="1">nix</bcf:citekey>
+    <bcf:citekey order="56" intorder="1">hmatrix</bcf:citekey>
+    <bcf:citekey order="57" intorder="1">chart</bcf:citekey>
+    <bcf:citekey order="58" intorder="1">optparse-applicative</bcf:citekey>
+    <bcf:citekey order="59" intorder="1">ghc-gadts</bcf:citekey>
+    <bcf:citekey order="60" intorder="1">ghc-data-kinds</bcf:citekey>
+    <bcf:citekey order="61" intorder="1">nix</bcf:citekey>
+  </bcf:section>
+  <!-- SORTING TEMPLATES -->
+  <bcf:sortingtemplate name="none">
+    <bcf:sort order="1">
+      <bcf:sortitem order="1">citeorder</bcf:sortitem>
+    </bcf:sort>
+    <bcf:sort order="2">
+      <bcf:sortitem order="1">intciteorder</bcf:sortitem>
+    </bcf:sort>
+  </bcf:sortingtemplate>
+  <!-- DATALISTS -->
+  <bcf:datalist section="0"
+                name="none/global//global/global"
+                type="entry"
+                sortingtemplatename="none"
+                sortingnamekeytemplatename="global"
+                labelprefix=""
+                uniquenametemplatename="global"
+                labelalphanametemplatename="global">
+  </bcf:datalist>
+</bcf:controlfile>

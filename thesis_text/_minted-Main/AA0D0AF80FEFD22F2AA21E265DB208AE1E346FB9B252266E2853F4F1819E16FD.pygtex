@@ -1,0 +1,19 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{data}\PYG{+w}{ }ReservoirState\PYG{+w}{ }\PYG{o}{(}numNodes\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℕ\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}systemDim\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℕ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{  }\PYG{n+nf}{Coll}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}nodeStates\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Vec\PYG{+w}{ }ℝ\PYG{+w}{ }numNodes\PYG{o}{)}
+\PYG{+w}{         }\PYG{o}{(}counter\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℕ\PYG{o}{)}
+\PYG{+w}{         }\PYG{o}{(}statesHistory\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Vec\PYG{+w}{ }\PYG{o}{(}Vec\PYG{+w}{ }ℝ\PYG{+w}{ }numNodes\PYG{o}{)}\PYG{+w}{ }counter\PYG{o}{)}
+\PYG{+w}{         }\PYG{o}{(}systemHistory\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Vec\PYG{+w}{ }\PYG{o}{(}Vec\PYG{+w}{ }ℝ\PYG{+w}{ }systemDim\PYG{o}{)}\PYG{+w}{ }counter\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{         }ReservoirState\PYG{+w}{ }numNodes\PYG{+w}{ }systemDim
+\PYG{+w}{  }\PYG{n+nf}{Touch}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}nodeStates\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Vec\PYG{+w}{ }ℝ\PYG{+w}{ }numNodes\PYG{o}{)}
+\PYG{+w}{          }\PYG{o}{(}counter\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℕ\PYG{o}{)}
+\PYG{+w}{          }\PYG{o}{(}outputWeights\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }OutputWeights\PYG{+w}{ }numNodes\PYG{+w}{ }systemDim\PYG{o}{)}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} should be}
+\PYG{+w}{                                                             }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} immutable!}
+\PYG{+w}{          }\PYG{o+ow}{→}
+\PYG{+w}{          }ReservoirState\PYG{+w}{ }numNodes\PYG{+w}{ }systemDim
+\PYG{+w}{  }\PYG{n+nf}{Go}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}nodeStates\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Vec\PYG{+w}{ }ℝ\PYG{+w}{ }numNodes\PYG{o}{)}
+\PYG{+w}{       }\PYG{o}{(}outputWeights\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }OutputWeights\PYG{+w}{ }numNodes\PYG{+w}{ }systemDim\PYG{o}{)}\PYG{+w}{    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} should be}
+\PYG{+w}{                                                             }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} immutable!}
+\PYG{+w}{       }\PYG{o+ow}{→}
+\PYG{+w}{       }ReservoirState\PYG{+w}{ }numNodes\PYG{+w}{ }systemDim
+\end{Verbatim}

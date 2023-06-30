@@ -1,0 +1,7 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{haltingEmitter}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}A\PYG{+w}{ }B\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }Polynomial
+haltingEmitter\PYG{+w}{ }A\PYG{+w}{ }B\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkpoly\PYG{+w}{ }\PYG{o}{(}A\PYG{+w}{ }⊎\PYG{+w}{ }B\PYG{o}{)}\PYG{+w}{ }halting
+\PYG{+w}{    }\PYG{k+kr}{where}\PYG{+w}{ }halting\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{\PYGZob{}}A\PYG{+w}{ }B\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set}\PYG{o}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{o}{(}A\PYG{+w}{ }⊎\PYG{+w}{ }B\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }\PYG{k+kt}{Set}
+\PYG{+w}{          }halting\PYG{+w}{ }\PYG{o}{(}inj₁\PYG{+w}{ }\PYGZus{}\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }⊥
+\PYG{+w}{          }halting\PYG{+w}{ }\PYG{o}{(}inj₂\PYG{+w}{ }\PYGZus{}\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }⊤
+\end{Verbatim}

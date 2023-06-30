@@ -1,0 +1,9 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{n+nf}{rabbits}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }DynamicalSystem
+rabbits\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }mkdyn\PYG{+w}{ }\PYG{esc}{$\mathbb{ℝ}$}\PYG{+w}{ }\PYG{o}{(}mkpoly\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{λ}\PYG{+w}{ }\PYGZus{}\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ℝ\PYG{+w}{ }×\PYG{+w}{ }ℝ\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}readout\PYG{+w}{ }⇆\PYG{+w}{ }update\PYG{o}{)}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{k+kr}{where}\PYG{+w}{ }readout\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ℝ
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }readout\PYG{+w}{ }state\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }state
+\PYG{+w}{        }\PYG{n+nf}{update}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ℝ\PYG{+w}{ }×\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ℝ
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }update\PYG{+w}{ }state\PYG{+w}{ }\PYG{o}{(}birthRabbits\PYG{+w}{ },\PYG{+w}{ }deathRabbits\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }\PYG{+w}{ }state\PYG{+w}{ }+\PYG{+w}{ }dt\PYG{+w}{ }*\PYG{+w}{ }\PYG{o}{(}state\PYG{+w}{ }\PYG{+w}{ }*\PYG{+w}{ }\PYG{o}{(}birthRabbits\PYG{+w}{ }\PYGZhy{}\PYG{+w}{ }deathRabbits\PYG{o}{)}\PYG{o}{)}
+\end{Verbatim}

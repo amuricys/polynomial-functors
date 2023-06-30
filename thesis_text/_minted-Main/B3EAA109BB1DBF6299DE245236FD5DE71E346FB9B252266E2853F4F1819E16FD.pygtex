@@ -1,0 +1,25 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{preLV}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }DynamicalSystem
+preLV\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }rabbits\PYG{+w}{ }\PYGZam{}\PYGZam{}\PYGZam{}\PYG{+w}{ }foxes
+
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Wiring diagram is an lens between monomials}
+\PYG{n+nf}{lotkaVolterraWiringDiagram}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{    }Lens\PYG{+w}{ }\PYG{o}{(}DynamicalSystem.interface\PYG{+w}{ }preLV\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}selfMonomial\PYG{+w}{ }\PYG{o}{(}ℝ\PYG{+w}{ }×\PYG{+w}{ }ℝ\PYG{o}{))}
+lotkaVolterraWiringDiagram\PYG{+w}{ }foxPerCapDeath\PYG{+w}{ }foxHunger\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{  }outerOutput\PYG{+w}{ }⇆\PYG{+w}{ }innerInput
+\PYG{+w}{    }\PYG{k+kr}{where}\PYG{+w}{ }outerOutput\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }×\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ℝ\PYG{+w}{ }×\PYG{+w}{ }ℝ
+\PYG{+w}{          }outerOutput\PYG{+w}{ }\PYG{o}{(}rabbitOutput\PYG{+w}{ },\PYG{+w}{ }foxOutput\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{            }rabbitOutput\PYG{+w}{ },\PYG{+w}{ }foxOutput
+\PYG{+w}{          }\PYG{n+nf}{innerInput}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{o}{(}outputs\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }×\PYG{+w}{ }ℝ\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                       }direction\PYG{+w}{ }\PYG{o}{(}selfMonomial\PYG{+w}{ }\PYG{o}{(}ℝ\PYG{+w}{ }×\PYG{+w}{ }ℝ\PYG{o}{))}
+\PYG{+w}{                                 }\PYG{o}{(}outerOutput\PYG{+w}{ }outputs\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{→}
+\PYG{+w}{                       }direction\PYG{+w}{ }\PYG{o}{(}interface\PYG{+w}{ }preLV\PYG{o}{)}\PYG{+w}{ }outputs
+\PYG{+w}{          }innerInput\PYG{+w}{ }\PYG{o}{(}r\PYG{+w}{ },\PYG{+w}{ }f\PYG{o}{)}\PYG{+w}{ }\PYG{o}{(}rabMaxPerCapGrowth\PYG{+w}{ },\PYG{+w}{ }howNutritiousRabbitsAre\PYG{o}{)}\PYG{+w}{ }\PYG{o+ow}{=}
+\PYG{+w}{            }\PYG{o}{(}rabMaxPerCapGrowth\PYG{+w}{ },\PYG{+w}{ }foxHunger\PYG{+w}{ }*\PYG{+w}{ }f\PYG{o}{)}\PYG{+w}{ },
+\PYG{+w}{            }\PYG{o}{(}foxPerCapDeath\PYG{+w}{ }*\PYG{+w}{ }r\PYG{+w}{ },\PYG{+w}{ }howNutritiousRabbitsAre\PYG{o}{)}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Final system is composition of wiring diagram and dynamics}
+\PYG{n+nf}{lotkaVolterra}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }ℝ\PYG{+w}{ }\PYG{o+ow}{→}\PYG{+w}{ }DynamicalSystem
+lotkaVolterra\PYG{+w}{ }β\PYG{+w}{ }γ\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }install\PYG{+w}{ }preLV
+\PYG{+w}{                            }\PYG{o}{(}selfMonomial\PYG{+w}{ }\PYG{o}{(}ℝ\PYG{+w}{ }×\PYG{+w}{ }ℝ\PYG{o}{))}
+\PYG{+w}{                            }\PYG{o}{(}lotkaVolterraWiringDiagram\PYG{+w}{ }β\PYG{+w}{ }γ\PYG{o}{)}
+\end{Verbatim}

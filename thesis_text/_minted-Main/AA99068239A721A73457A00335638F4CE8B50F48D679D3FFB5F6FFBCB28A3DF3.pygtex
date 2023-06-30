@@ -1,0 +1,15 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kr}{data}\PYG{+w}{ }\PYG{k+kt}{SystemParams}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{p}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{ParamType}\PYG{p}{)}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{  }\PYG{k+kt}{ReservoirParams}\PYG{+w}{ }\PYG{o+ow}{::}
+\PYG{+w}{    }\PYG{p}{\PYGZob{}}\PYG{+w}{ }\PYG{n}{rdimf}\PYG{+w}{         }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Integer}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{trainStepsf}\PYG{+w}{   }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Integer}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{touchStepsf}\PYG{+w}{   }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Integer}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{outputLengthf}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Integer}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{lorinitx}\PYG{+w}{      }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{lorinity}\PYG{+w}{      }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{lorinitz}\PYG{+w}{      }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{dt}\PYG{+w}{            }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{,}\PYG{+w}{ }\PYG{n}{variance}\PYG{+w}{       }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Double}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{o+ow}{\PYGZhy{}\PYGZgt{}}\PYG{+w}{ }\PYG{k+kt}{SystemParams}\PYG{+w}{ }\PYG{k+kt}{ReservoirParamsType}
+\PYG{+w}{    }\PYG{o}{...}\PYG{+w}{ }\PYG{n}{other}\PYG{+w}{ }\PYG{n}{constructors}
+\end{Verbatim}

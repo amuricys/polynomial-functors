@@ -1,0 +1,26 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{n+nf}{systemParser}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{SystemParams}
+\PYG{n+nf}{systemParser}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{n}{hsubparser}\PYG{+w}{ }\PYG{o}{\PYGZdl{}}
+\PYG{+w}{     }\PYG{n}{command}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Reservoir\PYGZdq{}}
+\PYG{+w}{        }\PYG{p}{(}\PYG{n}{info}\PYG{+w}{ }\PYG{n}{reservoirParamsParser}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{progDesc}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Reservoir system\PYGZdq{}}\PYG{p}{))}
+\PYG{+w}{  }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{command}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Lorenz\PYGZdq{}}
+\PYG{+w}{        }\PYG{p}{(}\PYG{n}{info}\PYG{+w}{ }\PYG{n}{lorenzParamsParser}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{progDesc}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Lorenz system\PYGZdq{}}\PYG{p}{))}
+\PYG{+w}{  }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{command}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}HodgkinHuxley\PYGZdq{}}
+\PYG{+w}{        }\PYG{p}{(}\PYG{n}{info}\PYG{+w}{ }\PYG{n}{hodgkinHuxleyParamsParser}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{progDesc}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Hodgkin\PYGZhy{}Huxley system\PYGZdq{}}\PYG{p}{))}
+\PYG{+w}{  }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{command}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}LotkaVolterra\PYGZdq{}}
+\PYG{+w}{        }\PYG{p}{(}\PYG{n}{info}\PYG{+w}{ }\PYG{n}{lotkaVolterraParamsParser}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{progDesc}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Lotka\PYGZhy{}Volterra system\PYGZdq{}}\PYG{p}{))}
+
+\PYG{n+nf}{reservoirParamsParser}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{SystemParams}
+\PYG{n+nf}{reservoirParamsParser}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{ReservoirParams}
+\PYG{+w}{  }\PYG{o}{\PYGZlt{}\PYGZdl{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{option}\PYG{+w}{ }\PYG{n}{auto}
+\PYG{+w}{    }\PYG{p}{(}\PYG{n}{long}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}numNodes\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{short}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}n\PYGZsq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{metavar}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}NUMNODES\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}
+\PYG{+w}{        }\PYG{n}{help}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Number of nodes in the reservoir\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{  }\PYG{o}{\PYGZlt{}*\PYGZgt{}}\PYG{+w}{ }\PYG{n}{option}\PYG{+w}{ }\PYG{n}{auto}
+\PYG{+w}{    }\PYG{p}{(}\PYG{n}{long}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}trainingSteps\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{short}\PYG{+w}{ }\PYG{l+s+sc}{\PYGZsq{}t\PYGZsq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}\PYG{+w}{ }\PYG{n}{metavar}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}TRAINSTEPS\PYGZdq{}}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZgt{}}
+\PYG{+w}{        }\PYG{n}{help}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Number of data points to train on\PYGZdq{}}\PYG{p}{)}
+\PYG{+w}{  }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} ... other params}
+
+\PYG{n+nf}{lorenzParamsParser}\PYG{+w}{ }\PYG{o+ow}{::}\PYG{+w}{ }\PYG{k+kt}{Parser}\PYG{+w}{ }\PYG{k+kt}{SystemParams}
+\PYG{n+nf}{lorenzParamsParser}\PYG{+w}{ }\PYG{o+ow}{=}\PYG{+w}{ }\PYG{k+kt}{LorenzParams}\PYG{+w}{ }\PYG{o}{\PYGZlt{}\PYGZdl{}\PYGZgt{}}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} ... params}
+\PYG{c+c1}{\PYGZhy{}\PYGZhy{} other systems with a similar type signature}
+\end{Verbatim}
