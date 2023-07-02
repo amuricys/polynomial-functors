@@ -425,8 +425,8 @@ poly≡polySigma = isoToPath (iso polyToSigma
 
 Equality for the Σ-type is then implemented by using \mintinline{agda}{ΣPathTransport→PathΣ} from the Cubical library.
 It is important to note that an equality of a Σ-type is a Σ of equalities.
-This means that a proof that the map on positions is equals is needed, as well as a proof that the map on directions is equal.
-Subst is needed for the proof on the directions to make the types match.
+This means that a proof that the map on positions is equal is needed, as well as a proof that the map on directions is equal.
+Substitution is needed for the proof on the directions to make the types match.
 
 \begin{minted}{agda}
 polySigmas≡ : (a b : PolyAsSigma)
@@ -437,7 +437,7 @@ polySigmas≡ a b fstA≡fstB sndA≡sndB
   = ΣPathTransport→PathΣ a b (fstA≡fstB , sndA≡sndB)
 \end{minted}
 
-This definition of equality is then transferred to the record definition of Polynomials leading to the final characterization of polynomials equality:
+This definition of equality is then transferred to the record definition of Polynomials leading to the final characterization of polynomial equality:
 \begin{minted}{agda}
 poly≡ : {a b : Polynomial}
     → (fstA≡fstB : position a ≡ position b)
@@ -451,7 +451,7 @@ poly≡ {a} {b} fstA≡fstB sndA≡sndB i
                                i)
 \end{minted}
 
-In addition, an all quantified version of equality is used which simplifies some proofs:
+In addition, a forall-quantified version of equality is provided, which simplifies some proofs:
 \begin{minted}{agda}
 poly≡∀ : {a b : Polynomial}
     → (fstA≡fstB : position a ≡ position b)
@@ -463,8 +463,7 @@ poly≡∀ {a} {b} fstA≡fstB sndA≡sndB
 \end{minted}
 
 \section{Lens equality}
-In category theory, it is frequently of interest to know when two morphisms are equal. Therefore, also a characterization of equality for lenses are needed. 
-This characterization of equality needs to be convenient enough to be usable in practical proofs.
+In category theory, it is frequently of interest to know when two morphisms are equal. Therefore, a characterization of equality for lenses is also needed, and it should be convenient enough to be usable in practical proofs.
 
 A lens consists of two components, with the second component depending on the first. 
 This suggests a Σ-type structure, which leads to a strategy similar to polynomial equality, but in lenses things are more complicated, since the underlying types are functions instead of simple sets.
@@ -522,10 +521,9 @@ An all quantified version of lens equality is provided as well, named \mintinlin
 
 Both \mintinline{agda}{lens≡} and \mintinline{agda}{lens≡∀∀} provide a way to prove equalities between lenses.
 However, in some cases they are limited and almost impossible to use.
-The reason is that subst is not very deep in the term, and the subst is of a complicated dependent function type, where the dependent function returns a new function with the domain varying.
-Often, it is possible to use subst laws to push subst further into the term, which would make the type easier to use.
-This idea is captured by the more powerful variant of lens equality, \mintinline{agda}{lens≡ₚ}.
-For \mintinline{agda}{lens≡ₚ}, subst is pushed further into the term making it much more practical to use in proofs.
+The reason is that \texttt{subst} is not very deep in the term, and the \texttt{subst} is of a complicated dependent function type, where the dependent function returns a new function with a varying domain.
+Often, it is possible to use laws to push the \texttt{subst} operation further into the term, which makes lemmas easier to use.
+This idea is captured by the more powerful variant of lens equality below, \mintinline{agda}{lens≡ₚ}. In it, \texttt{subst} is pushed further into the term making it more practical to use in proofs.
 
 \begin{minted}{agda}
 lens≡ₚ : {p q : Polynomial} {f g : Lens p q}
@@ -579,14 +577,14 @@ lensFromZero : {p : Polynomial} → Lens |$\mathbb{0}$| p
 lensFromZero = (λ ()) ⇆ (λ ())
 \end{minted}
 
-The final step is to show that this lensFromZero from $\mathbb{0}$ to $p$ is unique. This is done by assuming that there exists another lens $f$ from $\mathbb{0}$ to $p$ and then prove that $f$ actually is the same lens as lensFromZero. 
+The final step is to show that this lensFromZero from $\mathbb{0}$ to $p$ is unique. This is done by assuming that there exists another lens $f$ from $\mathbb{0}$ to $p$, and then proving that $f$ actually is the same lens as \texttt{lensFromZero}. 
 
 \begin{minted}[escapeinside=||]{agda}
 lensFromZeroUnique : {p : Polynomial} (f : Lens |$\mathbb{0}$| p) → lensFromZero ≡ f
 lensFromZeroUnique _ = lens≡ (funExt λ ()) (funExt λ ())
 \end{minted}
 
-This is implemented by using the lens equality function and the fact that the absurd function (from the empty type) is unique utilizing function extensionality. We plug these proofs into the \texttt{agda-categories} characterization of the initial object:
+This is implemented by using the lens equality function and the fact that the absurd function (from the empty type) is unique, utilizing function extensionality. We then plug these proofs into the \texttt{agda-categories} characterization of the initial object:
 
 \begin{minted}[escapeinside=||]{agda}
 open import Categories.Object.Initial Poly
@@ -601,23 +599,23 @@ initialZero = record { ⊥ = |$\mathbb{0}$| ; ⊥-is-initial = zeroIsInitial }
 
 
 \section{Terminal object}
-Dually to the initial object, the terminal object is an object such that there is a unique arrow from every other object in the category to it. In \textbf{Poly}, the terminal object is defined as the polynomial with a single position, but no directions for that position. It is the functor that sends all sets to the singleton set.
+Dually to the initial object, the terminal object is an object such that there is a unique arrow from every other object in the category to it. In \textbf{Poly}, the terminal object is defined as the polynomial with a single position, but no directions for that position. It is the functor that sends any set to the singleton set.
 
 \begin{minted}[escapeinside=||]{agda}
 |$\mathbb{1}$| : Polynomial
 |$\mathbb{1}$| = mkpoly ⊤ (λ _ → ⊥)
 \end{minted}
 
-Similarly to the initial object, to show that $\mathbb{1}$ is a terminal object is to first construct a lens \textbf{from} every other object, and to show that each of these lenses is unique.
+Similarly to the initial object, to show that $\mathbb{1}$ is a terminal object amounts to first constructing a lens \textbf{from} every other object, and then showing that each of these lenses is unique.
 
-The map on positions from any other polynomial to $\mathbb{1}$ is the function always returning unit (often also named unit). For this position, the map on directions goes from $\bot$ since $\mathbb{1}$ has no directions, thus the map on directions is again the absurd function.
+The map on positions from any other polynomial to $\mathbb{1}$ is the function always returning \texttt{tt}, the unique inhabitant of the singleton set $\top$. The function itself is also often called \textit{unit}. For this position, the map on directions goes from $\bot$ since $\mathbb{1}$ has no directions, thus the map on directions is again the absurd function.
 
 \begin{minted}[escapeinside=||]{agda}
 lensToOne : {p : Polynomial} → Lens p |$\mathbb{1}$|
 lensToOne = (λ _ → tt) ⇆ λ _ ()
 \end{minted}
 
-Finally, for uniqueness, any other lens $f$ from $p$ to $\mathbb{1}$ is the same as lensToOne. For map on positions equality, refl is used to show that any two functions (with same domain) to $\top$ is the same. For map on directions equality, uniqueness of the absurd function is used, as in the initial object. The more advanced version of lens equality is used to do the function extensionality in the background, allowing for more concise syntax.
+Finally, for uniqueness, any other lens $f$ from $p$ to $\mathbb{1}$ is the same as \texttt{lensToOne}. For map on positions equality, \texttt{refl} is used to show that any two functions (with same domain) to $\top$ is the same. For map on directions equality, uniqueness of the absurd function is used, as in the initial object. The more advanced version of lens equality is used to do the function extensionality in the background, allowing for more concise syntax.
 
 \begin{minted}[escapeinside=||]{agda}
 lensToOneUnique : {p : Polynomial} (f : Lens p |$\mathbb{1}$|) →  lensToOne ≡ f
