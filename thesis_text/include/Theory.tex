@@ -1492,7 +1492,7 @@ eval' {p} {q} = subst (λ x → x) path idLens'
 
 The cartesian closure of \textbf{Poly} has interesting implications, which we will consider when we talk about future work possibilities from this thesis.
 
-\section{Quadruple adjunction}
+\section{Quadruple adjunction with Set}
 
 \textbf{Poly} has a deep relationship with \textbf{Set}. One place where this is reflected is with the connection between the following functors:
 
@@ -1505,7 +1505,7 @@ The cartesian closure of \textbf{Poly} has interesting implications, which we wi
 
 Note that the notation $p(1)$ here is being used to represent a functor from \textbf{Poly} to \textbf{Set}, but most of the time it is used to talk about the set of positions directly.
 
-These functors turn out to form a chain of adjunctions: $L \dashv p(1) \dashv C \dashv p(0)$. Adjunctions are forms of weak equivalences between categories, given by pairs of functors: the left and right adjoints. The intuition is that the left adjoint "adds as much information" as possible to the objects and morphisms it acts on, whereas the right adjoint "removes as little information" as possible in order to make the objects and morphisms it acts on "fit" in its target category. In the case of the relationship between \textbf{Poly} and \textbf{Set}, there are two functors putting different copies of \textbf{Set} inside \textbf{Poly} (the fully faithful ones), and two functors that "forget" that they act on something \textit{contains} sets. 
+These functors turn out to form a chain of adjunctions: $L \dashv p(1) \dashv C \dashv p(0)$. Adjunctions are forms of weak equivalences between categories, given by pairs of functors: the left and right adjoints. The intuition is that the left adjoint "adds as much information" as possible to the objects and morphisms it acts on, whereas the right adjoint "removes as little information" as possible in order to make the objects and morphisms it acts on "fit" in its target category. In the case of the relationship between \textbf{Poly} and \textbf{Set}, there are two functors putting different copies of \textbf{Set} inside \textbf{Poly} (the fully faithful ones), and two functors that "forget" that they act on something \textit{containing} sets. 
 
 For an illustration of what is meant by "forgetting", take the the first adjoint pair $L \dashv p(1)$ as an example. It acts the following way: $p(1)$ makes a polynomial functor "forget" it's a functor, while $L$ "reminds" a set of "how to be" a functor.
 
