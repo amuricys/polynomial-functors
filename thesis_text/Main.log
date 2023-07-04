@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/nixos.org) (preloaded format=pdflatex 1980.1.1)  30 JUN 2023 17:48
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022/nixos.org) (preloaded format=pdflatex 1980.1.1)  5 JUL 2023 00:38
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -2021,7 +2021,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 39--43
 
  []
 
-<figure/auxiliary/frontpage_gu_eng_vec_m2.pdf, id=437, 597.23125pt x 845.15756p
+<figure/auxiliary/frontpage_gu_eng_vec_m2.pdf, id=441, 597.23125pt x 845.15756p
 t>
 File: figure/auxiliary/frontpage_gu_eng_vec_m2.pdf Graphic file (type pdf)
 <use figure/auxiliary/frontpage_gu_eng_vec_m2.pdf>
@@ -2042,7 +2042,7 @@ Package microtype Info: Character `029' is missing
 Package microtype Info: Character `029' is missing
 (microtype)             in font `T1/lmr/m/sc/14.4'.
 (microtype)             Ignoring protrusion settings for this character.
-<figure/auxiliary/ChGULogoHog.pdf, id=456, 142.26349pt x 199.1691pt>
+<figure/auxiliary/ChGULogoHog.pdf, id=460, 142.26349pt x 199.1691pt>
 File: figure/auxiliary/ChGULogoHog.pdf Graphic file (type pdf)
 <use figure/auxiliary/ChGULogoHog.pdf>
 Package pdftex.def Info: figure/auxiliary/ChGULogoHog.pdf  used on input line 7
@@ -2419,7 +2419,7 @@ D.pygtex)
 
 (./_minted-Main/D65B8630B5B7B4F9995906F8E73150321E346FB9B252266E2853F4F1819E16F
 D.pygtex)
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 7504) has occurred while \output is active []
 
  [16]
 \openout4 = `Main.pyg'.
@@ -2446,11 +2446,6 @@ D.pygtex)
 
 
 (./_minted-Main/7A3C409A84155C075DFF2A9BA2A972861E346FB9B252266E2853F4F1819E16F
-D.pygtex)
-\openout5 = `Main.pyg'.
-
-
-(./_minted-Main/F928FBA23514710C82DA5EDF972149CF1E346FB9B252266E2853F4F1819E16F
 D.pygtex)
 \openout5 = `Main.pyg'.
 
@@ -2488,9 +2483,9 @@ D.pygtex)
 (./_minted-Main/ED4EB8976880C2AB4F5DB57CF4B89E271E346FB9B252266E2853F4F1819E16F
 D.pygtex)
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <14.4> on input line 560.
+(Font)              <14.4> on input line 558.
 
-Underfull \vbox (badness 8170) has occurred while \output is active []
+Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [18]
 \openout4 = `Main.pyg'.
@@ -2542,7 +2537,10 @@ C.pygtex) [20]
 
 
 (./_minted-Main/BCF39002D2379C7A45BBE98F531F6A2E1E346FB9B252266E2853F4F1819E16F
-D.pygtex) [21]
+D.pygtex)
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [21]
 \openout4 = `Main.pyg'.
 
 
@@ -2557,12 +2555,12 @@ D.pygtex)
 
 
 (./_minted-Main/92F70BFF95F5DF8649C827582D4C0BB61E346FB9B252266E2853F4F1819E16F
-D.pygtex)
+D.pygtex [22])
 \openout4 = `Main.pyg'.
 
 
 (./_minted-Main/E482FA0573BF1FD71D399C97C8CB25E41E346FB9B252266E2853F4F1819E16F
-D.pygtex [22])
+D.pygtex)
 \openout4 = `Main.pyg'.
 
 
@@ -2582,7 +2580,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 Package microtype Info: Character `texttrademark ' is missing
 (microtype)             in font `TS1/lmtt/m/it/12'.
 (microtype)             Ignoring protrusion settings for this character.
-)
+) [23]
 \openout4 = `Main.pyg'.
 
 
@@ -2593,9 +2591,6 @@ D.pygtex)
 
 (./_minted-Main/F89AF5F8B571E90A696608EA2FDA17DD1E346FB9B252266E2853F4F1819E16F
 D.pygtex)
-Underfull \vbox (badness 4792) has occurred while \output is active []
-
- [23]
 \openout4 = `Main.pyg'.
 
 
@@ -2693,13 +2688,13 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1399 \begin{equation}
+l.1397 \begin{equation}
                        \label{eqn.exponential}
 ? 
 ! Missing \endgroup inserted.
 <inserted text> 
                 \endgroup 
-l.1401 \end{equation}
+l.1399 \end{equation}
                      
 ? 
 
@@ -2709,25 +2704,25 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.1401 \end{equation}
+l.1399 \end{equation}
                      
 ? 
 ! Extra \endgroup.
 <recently read> \endgroup 
                           
-l.1401 \end{equation}
+l.1399 \end{equation}
                      
 ? 
 ! Missing $ inserted.
 <inserted text> 
                 $
-l.1403 
+l.1401 
        
 ? 
 ! Display math should end with $$.
 <to be read again> 
                    \tex_par:D 
-l.1403 
+l.1401 
        
 ? 
 \openout4 = `Main.pyg'.
@@ -2793,9 +2788,36 @@ D.pygtex)
 
 
 (./_minted-Main/1D030F1D15D90C3B61B3BB63A67AE1E71E346FB9B252266E2853F4F1819E16F
-D.pygtex [36])) (./include/TheoryCharts.tex [37] [38
+D.pygtex [36])
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <17.28> on input line 1631.
 
-]
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 1631.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 1631.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 1631.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\triangleleft' on input line 1631.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 1631.
+
+[37]
+\openout4 = `Main.pyg'.
+
+
+(./_minted-Main/5439C013D72D95E07C8BA21021DAB3F21E346FB9B252266E2853F4F1819E16F
+D.pygtex)) (./include/TheoryCharts.tex [38]
 Chapter 4.
 Package hyperref Info: bookmark level for unknown todo defaults to 0 on input l
 ine 3.
@@ -2808,7 +2830,9 @@ D.pygtex)
 
 
 (./_minted-Main/094DD366E74C17B60BD9716EC11F4B1E1E346FB9B252266E2853F4F1819E16F
-D.pygtex [39])
+D.pygtex [39
+
+])
 \openout5 = `Main.pyg'.
 
 
@@ -3120,7 +3144,7 @@ D.pygtex [66])
 
 (./_minted-Main/32307788A5BADFABB5B1962057072B3BB8A5F9A649CA1C13A8A680304B044CE
 3.pygtex)
-<figure/lotka_volterra.png, id=1108, 803.0pt x 602.25pt>
+<figure/lotka_volterra.png, id=1113, 803.0pt x 602.25pt>
 File: figure/lotka_volterra.png Graphic file (type png)
 <use figure/lotka_volterra.png>
 Package pdftex.def Info: figure/lotka_volterra.png  used on input line 965.
@@ -3129,7 +3153,7 @@ Package pdftex.def Info: figure/lotka_volterra.png  used on input line 965.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
  [67 <./figure/lotka_volterra.png>]
-<figure/lorenzbutterfly.png, id=1118, 760.7622pt x 792.561pt>
+<figure/lorenzbutterfly.png, id=1123, 760.7622pt x 792.561pt>
 File: figure/lorenzbutterfly.png Graphic file (type png)
 <use figure/lorenzbutterfly.png>
 Package pdftex.def Info: figure/lorenzbutterfly.png  used on input line 991.
@@ -3144,12 +3168,12 @@ D.pygtex [68] [69 <./figure/lorenzbutterfly.png (PNG copy)>])
 
 (./_minted-Main/F65B84AB520D8260CDF9B891D6384F521E346FB9B252266E2853F4F1819E16F
 D.pygtex)
-<figure/lorenz_dynamics.png, id=1133, 803.0pt x 602.25pt>
+<figure/lorenz_dynamics.png, id=1138, 803.0pt x 602.25pt>
 File: figure/lorenz_dynamics.png Graphic file (type png)
 <use figure/lorenz_dynamics.png>
 Package pdftex.def Info: figure/lorenz_dynamics.png  used on input line 1051.
 (pdftex.def)             Requested size: 384.1096pt x 288.08423pt.
-<figure/x25.png, id=1137, 592.2125pt x 199.74625pt>
+<figure/x25.png, id=1142, 592.2125pt x 199.74625pt>
 File: figure/x25.png Graphic file (type png)
 <use figure/x25.png>
 Package pdftex.def Info: figure/x25.png  used on input line 1063.
@@ -3177,7 +3201,7 @@ Underfull \hbox (badness 1342) in paragraph at lines 1089--1089
 
 (./_minted-Main/51A54A26CE4BFE75C68B398B009961B91E346FB9B252266E2853F4F1819E16F
 D.pygtex [72])
-<figure/hodgkin-huxley_dynamics.png, id=1165, 803.0pt x 602.25pt>
+<figure/hodgkin-huxley_dynamics.png, id=1170, 803.0pt x 602.25pt>
 File: figure/hodgkin-huxley_dynamics.png Graphic file (type png)
 <use figure/hodgkin-huxley_dynamics.png>
 Package pdftex.def Info: figure/hodgkin-huxley_dynamics.png  used on input line
@@ -3193,7 +3217,7 @@ D.pygtex)
 
 (./_minted-Main/0B47D7F3DCF10075CE597CDCD6D7BB511E346FB9B252266E2853F4F1819E16F
 D.pygtex [73])
-<figure/hodgkin-huxley_dynamics-input.png, id=1173, 803.0pt x 602.25pt>
+<figure/hodgkin-huxley_dynamics-input.png, id=1178, 803.0pt x 602.25pt>
 File: figure/hodgkin-huxley_dynamics-input.png Graphic file (type png)
 <use figure/hodgkin-huxley_dynamics-input.png>
 Package pdftex.def Info: figure/hodgkin-huxley_dynamics-input.png  used on inpu
@@ -3201,7 +3225,7 @@ t line 1169.
 (pdftex.def)             Requested size: 384.1096pt x 288.08423pt.
  [74 <./figure/hodgkin-huxley_dynamics.png>] [75 <./figure/hodgkin-huxley_dynam
 ics-input.png>]
-<figure/reservoir_setup.png, id=1189, 1072.005pt x 231.86626pt>
+<figure/reservoir_setup.png, id=1194, 1072.005pt x 231.86626pt>
 File: figure/reservoir_setup.png Graphic file (type png)
 <use figure/reservoir_setup.png>
 Package pdftex.def Info: figure/reservoir_setup.png  used on input line 1180.
@@ -3236,7 +3260,7 @@ D.pygtex)
 
 (./_minted-Main/7FC43CA0DC65CE4EEC9640CFA50623F91E346FB9B252266E2853F4F1819E16F
 D.pygtex [79])
-<figure/reservoir_computer.png, id=1221, 803.0pt x 602.25pt>
+<figure/reservoir_computer.png, id=1226, 803.0pt x 602.25pt>
 File: figure/reservoir_computer.png Graphic file (type png)
 <use figure/reservoir_computer.png>
 Package pdftex.def Info: figure/reservoir_computer.png  used on input line 1426
@@ -3421,8 +3445,14 @@ D.pygtex)
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package rerunfilecheck Info: File `Main.out' has not changed.
-(rerunfilecheck)             Checksum: 707B4F755BD293A7EDD4E73096CA214D;16654.
+
+Package rerunfilecheck Warning: File `Main.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `Main.out':
+(rerunfilecheck)             Before: 8F14B36FB8E61C15EA63DCBCF84D4F90;17001
+(rerunfilecheck)             After:  000946B93A554F59944D21ECD4702A2C;17001.
 runsystem(rm Main.pyg)...executed.
 
 Package logreq Info: Writing requests to 'Main.run.xml'.
@@ -3430,11 +3460,11 @@ Package logreq Info: Writing requests to 'Main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 51946 strings out of 476024
- 1167994 string characters out of 5764067
- 1909388 words of memory out of 5000000
- 70187 multiletter control sequences out of 15000+600000
- 657513 words of font info for 335 fonts, out of 8000000 for 9000
+ 51974 strings out of 476024
+ 1168727 string characters out of 5764067
+ 1905388 words of memory out of 5000000
+ 70205 multiletter control sequences out of 15000+600000
+ 662017 words of font info for 344 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  107i,17n,107p,1863b,2266s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {/nix/store/vd1mrc6rzk09n20n40kwlfpy9l2003a8-texlive-combined-full-2022-final
@@ -3491,10 +3521,10 @@ dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></nix/store/vd1mrc6rzk09n20
 n40kwlfpy9l2003a8-texlive-combined-full-2022-final-texmfdist/fonts/type1/urw/he
 lvetic/uhvb8a.pfb></nix/store/vd1mrc6rzk09n20n40kwlfpy9l2003a8-texlive-combined
 -full-2022-final-texmfdist/fonts/type1/urw/helvetic/uhvr8a.pfb>
-Output written on Main.pdf (116 pages, 2728870 bytes).
+Output written on Main.pdf (116 pages, 2734342 bytes).
 PDF statistics:
- 1633 PDF objects out of 1728 (max. 8388607)
- 1394 compressed objects within 14 object streams
- 339 named destinations out of 1000 (max. 500000)
- 90055 words of extra memory for PDF output out of 106986 (max. 10000000)
+ 1638 PDF objects out of 1728 (max. 8388607)
+ 1399 compressed objects within 14 object streams
+ 340 named destinations out of 1000 (max. 500000)
+ 92111 words of extra memory for PDF output out of 106986 (max. 10000000)
 

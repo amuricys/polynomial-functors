@@ -1,0 +1,13 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{+w}{  }\PYG{k+kr}{record}\PYG{+w}{ }Comonoid\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYG{k+kt}{Set₁}\PYG{+w}{ }\PYG{k+kr}{where}
+\PYG{+w}{  }\PYG{k+kr}{constructor}\PYG{+w}{ }Com
+\PYG{+w}{  }\PYG{k+kr}{field}
+\PYG{+w}{    }\PYG{n+nf}{c}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Polynomial
+\PYG{+w}{    }\PYG{n+nf}{ε}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }c\PYG{+w}{ }Y
+\PYG{+w}{    }\PYG{n+nf}{δ}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }Lens\PYG{+w}{ }c\PYG{+w}{ }\PYG{o}{(}c\PYG{+w}{ }◂\PYG{+w}{ }c\PYG{o}{)}
+\PYG{+w}{    }\PYG{n+nf}{coassoc}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }⟨\PYG{+w}{ }idLens\PYG{+w}{ }\PYG{o}{\PYGZob{}}c\PYG{o}{\PYGZcb{}}\PYG{+w}{ }◂\PYG{+w}{ }δ\PYG{+w}{ }⟩\PYG{+w}{ }∘ₚ\PYG{+w}{ }δ
+\PYG{+w}{              }≡
+\PYG{+w}{              }transport\PYG{+w}{ }\PYG{o}{(}assoc⇆\PYG{+w}{ }\PYG{o}{\PYGZob{}}c\PYG{o}{\PYGZcb{})}\PYG{+w}{ }\PYG{o}{(}⟨\PYG{+w}{ }δ\PYG{+w}{ }◂\PYG{+w}{ }idLens\PYG{+w}{ }\PYG{o}{\PYGZob{}}c\PYG{o}{\PYGZcb{}}\PYG{+w}{ }⟩\PYG{+w}{ }∘ₚ\PYG{+w}{ }δ\PYG{o}{)}
+\PYG{+w}{    }\PYG{n+nf}{leftCounit}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{  }\PYGZti{}ᴸ\PYG{+w}{ }≡\PYG{+w}{ }⟨\PYG{+w}{ }ε\PYG{+w}{ }◂\PYG{+w}{ }idLens\PYG{+w}{ }\PYG{o}{\PYGZob{}}c\PYG{o}{\PYGZcb{}}\PYG{+w}{ }⟩\PYG{+w}{ }∘ₚ\PYG{+w}{ }δ
+\PYG{+w}{    }\PYG{n+nf}{rightCounit}\PYG{+w}{ }\PYG{o+ow}{:}\PYG{+w}{ }\PYGZti{}ᴿ\PYG{+w}{ }≡\PYG{+w}{ }⟨\PYG{+w}{ }idLens\PYG{+w}{ }\PYG{o}{\PYGZob{}}c\PYG{o}{\PYGZcb{}}\PYG{+w}{ }◂\PYG{+w}{ }ε\PYG{+w}{ }⟩\PYG{+w}{ }∘ₚ\PYG{+w}{ }δ
+\end{Verbatim}

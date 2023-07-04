@@ -29,7 +29,7 @@
 \contentsline {section}{\numberline {3.4}Initial object}{19}{section.3.4}%
 \contentsline {section}{\numberline {3.5}Terminal object}{20}{section.3.5}%
 \contentsline {section}{\numberline {3.6}Product}{20}{section.3.6}%
-\contentsline {subsection}{\numberline {3.6.1}Productized lens}{22}{subsection.3.6.1}%
+\contentsline {subsection}{\numberline {3.6.1}Productized lens}{23}{subsection.3.6.1}%
 \contentsline {subsection}{\numberline {3.6.2}Generalized product}{23}{subsection.3.6.2}%
 \contentsline {subsection}{\numberline {3.6.3}Monoid}{24}{subsection.3.6.3}%
 \contentsline {section}{\numberline {3.7}Coproduct}{25}{section.3.7}%
@@ -44,9 +44,10 @@
 \contentsline {subsection}{\numberline {3.9.2}Composition lens}{30}{subsection.3.9.2}%
 \contentsline {subsection}{\numberline {3.9.3}Composite power}{31}{subsection.3.9.3}%
 \contentsline {section}{\numberline {3.10}Cartesian closure}{31}{section.3.10}%
-\contentsline {section}{\numberline {3.11}Quadruple adjunction}{33}{section.3.11}%
+\contentsline {section}{\numberline {3.11}Quadruple adjunction with Set}{33}{section.3.11}%
 \contentsline {section}{\numberline {3.12}Equalizer}{34}{section.3.12}%
 \contentsline {section}{\numberline {3.13}Various properties of polynomials}{36}{section.3.13}%
+\contentsline {section}{\numberline {3.14}Comonoids in \textbf {Poly}($y$, $\triangleleft $) are small categories}{37}{section.3.14}%
 \contentsline {chapter}{\numberline {4}Theory: Charts}{39}{chapter.4}%
 \contentsline {section}{\numberline {4.1}The category \textbf {Chart}}{39}{section.4.1}%
 \contentsline {subsection}{\numberline {4.1.1}Chart}{39}{subsection.4.1.1}%
@@ -95,7 +96,7 @@
 \contentsline {section}{\numberline {6.4}Mixing Cubical Agda with \texttt {agda-categories}}{86}{section.6.4}%
 \contentsline {section}{\numberline {6.5}Wild polynomials}{86}{section.6.5}%
 \contentsline {section}{\numberline {6.6}Future work}{87}{section.6.6}%
-\contentsline {subsection}{\numberline {6.6.1}Comonoids are small categories}{87}{subsection.6.6.1}%
+\contentsline {subsection}{\numberline {6.6.1}Comonoids and small categories}{87}{subsection.6.6.1}%
 \contentsline {subsection}{\numberline {6.6.2}Bicomodules are parametric right adjoints}{87}{subsection.6.6.2}%
 \contentsline {subsection}{\numberline {6.6.3}Composition of squares between charts and lenses}{87}{subsection.6.6.3}%
 \contentsline {subsection}{\numberline {6.6.4}Consistency of distributed data types}{87}{subsection.6.6.4}%

@@ -1627,3 +1627,40 @@ Other proofs of this kind are provided in the files \texttt{Cubical/Proofs.agda}
     \item Given two constant polynomials $p(y) = \underline{3}$ and $q(y) = \underline{2}$, $p^q(y) = \underline{9}$.
     \item Definition of cartesian and vertical lenses and some related properties.
 \end{itemize}
+
+\section{Comonoids in \textbf{Poly}($y$, $\triangleleft$) are small categories}
+
+A fact that the book spends a lot of time on is that comonoids in the monoidal category \textbf{Poly}($\triangleleft$, $y$) are isomorphic to small categories (categories where the collection of objects forms a set). This means that within \textbf{Poly}, at least the objects of the category \textbf{Cat} of small categories exist, and indeed there is an unusual category of categories called \textbf{Cat$\sharp$} that can be modeled in \textbf{Poly}, where the morphisms are \textit{co}functors, the duals to functors. This is a deep fact, and suggests that \textbf{Poly} is a setting in which a considerable amount of category theory itself can be studied.
+
+A comonoid in this monoidal category, as the dual to the monoid structure, consists of the following data:
+\begin{itemize}
+  \item A polynomial $c$, called the \textit{carrier}.
+  \item A morphism $\delta : c \rightarrow c \triangleleft c$ called the the \textit{duplicator}.
+  \item A morphism $\epsilon : c \rightarrow y$, called the \textit{eraser}.
+\end{itemize}
+And the following laws:
+\begin{itemize}
+  \item $\langle \text{id}_c \triangleleft \delta \rangle \circ \delta = \langle \delta \triangleleft \text{id}_c \rangle \circ \delta$, called the \textit{coassociativity} law. It is the dual to a monoid's associativity law, and means that there is no difference between duplicating, then duplicating on the left and duplicating, then duplicating on the right.
+  \item $\sim^L = \langle \epsilon \triangleleft \text{id}_c \rangle \circ \delta$, the left counit law, saying that duplicating then erasing the left is the same as not doing anything.
+  \item $\sim^R = \langle \text{id}_c \triangleleft \epsilon \rangle \circ \delta$, the right counit law, saying that duplicating then erasing the right is the same as not doing anything.
+\end{itemize}
+
+The lenses $\sim^R : c \rightarrow c \triangleleft y$ and $\sim^L : c \rightarrow y \triangleleft c$ are just putting its source polynomial (in this case the carrier) in the right or left of the $\triangleleft$ product with a $y$, but because $y$ is the monoidal unit for this product, this is roughly the same as not doing anything.
+
+In Agda, the data is defined like the following type:
+
+\begin{minted}{agda}
+  record Comonoid : Set₁ where
+  constructor Com
+  field
+    c : Polynomial
+    ε : Lens c Y
+    δ : Lens c (c ◂ c)
+    coassoc : ⟨ idLens {c} ◂ δ ⟩ ∘ₚ δ
+              ≡
+              transport (assoc⇆ {c}) (⟨ δ ◂ idLens {c} ⟩ ∘ₚ δ)
+    leftCounit :  ~ᴸ ≡ ⟨ ε ◂ idLens {c} ⟩ ∘ₚ δ
+    rightCounit : ~ᴿ ≡ ⟨ idLens {c} ◂ ε ⟩ ∘ₚ δ
+\end{minted}
+
+The \texttt{transport} uses the proof of associativity of the $\triangleleft$ operation to send the right-hand side to the same type as the left side. This proof is complicated, and makes this record hard to work with. We were therefore not able to complete this proof, but our attempt is included in the code. It consists of constructing an \texttt{Iso} value, with the two legs \texttt{comonoidsAreCategories : Category zero zero zero → Comonoid} and \texttt{categoriesAreComonoids : Comonoid → Category zero zero zero} being mutual inverses. The attempt includes most of the second leg and parts of the first leg.

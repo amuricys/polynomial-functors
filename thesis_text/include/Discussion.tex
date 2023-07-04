@@ -88,8 +88,8 @@ Both variants of polynomials are provided in the code, but wild polynomials are 
 \section{Future work}
 There are many areas for future work formalizing \textbf{Poly}. 
 
-\subsection{Comonoids are small categories}
-The poly-book explains how comonoids in \textbf{Poly} are isomorphic to small categories. It would be interesting to implement this isomorphism in Agda. An initial attempt exists in the code, with the correspondence of objects with positions, and arrows with directions, also dealing with the codomain mismatch. But the correspondence between the comonoid laws and the category laws still needs to be completed.
+\subsection{Comonoids and small categories}
+Finishing this isomorphism would be interesting - the existing attempt fails when translating the comonoid laws into category laws, mostly due to how difficult it is to work with the associativity proof. This suggests that a different formulation of comonoids, that does not need \texttt{transport}, might be fruitful.
 
 \subsection{Bicomodules are parametric right adjoints}
 Another construct covered in the poly-book is bicomodules, which relate to comonoids. Bicomodules have a practical use as data migration for databases \cite{bicomodulesBlog} as well as effect handlers. Therefore, implementing and using bicomodules should be of particular interest to software developers.
