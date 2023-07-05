@@ -120,10 +120,10 @@ A final property, which is used heftily in this thesis, is substitution. Substit
 subst : {A : Type} {x y : A} {B : A → Type} → (x ≡ y) → B x → B y
 \end{minted}
 
-The next subsection gives some more examples of Cubical Agda. Further information about Cubical Agda and HoTT can be found in  \cite{cubicalPaper} and \cite{hottBook}.
+The next subsection gives two more examples of Cubical Agda. Further information about Cubical Agda and HoTT can be found in  \cite{cubicalPaper} and \cite{hottBook}.
 
 \subsection{Cubical examples}
-The first example is to show that the absurd function, defined before, is unique. Given any other function from the empty type, it is the same function as absurd. Function extensionality is used to prove an equality between functions. Finally, the lemma is easily proved by pattern matching on the empty type.
+The first example shows that the absurd function, defined before, is unique. Given any other function from the empty type, it is the same function as absurd. Function extensionality is used to prove an equality between functions. Finally, the lemma is easily proved by pattern matching on the empty type.
 
 \begin{minted}{agda}
 absurdUnique : {A : Type} → (f : ⊥ → A) → f ≡ absurd
@@ -222,7 +222,7 @@ There are many constructions and structures in CT which would not be feasible to
 
 \subsection{In code: Agda's \texttt{agda-categories} library}
 
-The poly-book demonstrates many category-theoretic constructs in the context of \textbf{Poly}, but this thesis is limited to the most essential ones. These tend to be quite ubiquitous, and as such, there are formulations of many of them in the Agda ecosystem: the three main ones are the 1lab \cite{1lab}, the Cubical library's own \cite{cubical-cat}, and the \texttt{agda-categories} \cite{agda-cats} library. For this thesis, the third one is picked for a few reasons: firstly, it is very well documented, with a sensible user interface and active community. Secondly, it has more constructs: for example, it is the only one of the three in which the exponential object, a key feature of \textbf{Poly}, is present. Thirdly, it is interoperable with Cubical, since the definition of a category requires a user to provide an equivalence relation to express equality between arrows, where cubical equality can be supplied.
+The poly-book demonstrates many category-theoretic constructs in the context of \textbf{Poly}, but this thesis is limited to the most essential ones. These tend to be quite ubiquitous, and as such, there are formulations of many of them in the Agda ecosystem: the three main ones are the 1lab \cite{1lab}, the Cubical library's own \cite{cubical-cat}, and the \texttt{agda-categories} \cite{agda-cats} library. For this thesis, the third one is picked for a few reasons: firstly, it is very well documented, with a sensible user interface and active community. Secondly, it has more constructs: for example, it is the only one of the three in which the exponential object, a key feature of \textbf{Poly}, is present. Thirdly, it is interoperable with Cubical, cubical equality can be supplied as the equivalence relation between arrows required by each category defined with agda-categories. %can be supplied as  since the definition of a category requires a user to provide an equivalence relation to express equality between arrows, where cubical equality can be supplied.
 %\texttt{Agda-categories} provides a general scaffolidng making sure the formalizations of the categorical concepts in \textbf{Poly} are correct. % Sometimes, it also helps by providing pre-existing implementations of categories; for instance, polynomials are functors, and so we will often rely on the provided instance of the category of \textbf{Set} of sets and functions.
 
 \section{Previous work on Polynomial Functors}

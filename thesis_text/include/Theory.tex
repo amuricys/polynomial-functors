@@ -8,7 +8,7 @@ This chapter covers the first theoretical part of the work, consisting mainly of
 The category \textbf{Poly} is the category of polynomial endofunctors in \textbf{Set}, with morphisms as natural transformations. They are called \textit{Polynomial} because these functors can be written down as high-school algebraic expressions, like:
 $$p(y) = y^2 +4y + 10$$
 But instead of handling numbers, these polynomial expressions have \textit{sets} plugged into the variable \textit{y}.
-Sum, multiplication, exponentiation, and numeric literals, are all considered in the context of sets. A numeric literal such as $7$ represents the set $\underline{7}$, a set with 7 elements. A $+$ symbol corresponds to \textit{the categorical coproduct}, multiplication  corresponds to \textit{the categorical product} and exponentiation to the exponential object: in this context, it is the type of functions from the exponent to the base of the term. For example, $ f : 7^2 \cong f : 2 \rightarrow 7$. This way of thinking algebraically is very convenient, because plugging in "numbers" into the polynomial expressions to get "numbers" back will turn out to be a very useful kind of operation.
+Sum, multiplication, exponentiation, and numeric literals, are all considered in the context of sets. A numeric literal such as $7$ represents the set $\underline{7}$, a set with 7 elements. The $+$ symbol corresponds to \textit{the categorical coproduct}, multiplication  corresponds to \textit{the categorical product} and exponentiation to the exponential object: in this context, it is the type of functions from the exponent to the base of the term. For example, $ f : 7^2 \cong f : 2 \rightarrow 7$. This way of thinking algebraically is very convenient, because plugging in "numbers" into the polynomial expressions to get "numbers" back will turn out to be a very useful kind of operation.
 
 \subsection{Objects are polynomial functors}
 
@@ -346,7 +346,7 @@ asNatTransLens (f ⇆ f♯) = record {
 Two more pieces of data are needed to form a valid category: the identity arrow and composition. 
 
 \subsubsection{The identity lens}
-The identity lens leaves the polynomial untouched in both the positions and the direction at each position, which is implemented by the identity function.
+The identity lens leaves the polynomial untouched in both the positions and the direction at each position, which is implemented with the identity function.
 
 \begin{minted}{agda}
 idLens : {A : Polynomial} → Lens A A
@@ -397,7 +397,7 @@ A more detailed overview of the design decisions of \texttt{agda-categories} can
 
 \section{Polynomial equality}
 There are some occasions where polynomials need to be compared for equality.
-For example, to prove the right unit law for the parallel product (explained later) $\otimes$ with Y as unit: \mintinline{agda}{rightUnit : (p q : Polynomial) → p ⊗ Y ≡ p}.
+For example, to prove the right unit law for the parallel product (explained later) $\otimes$ with Y as unit: \mintinline{agda}{rightUnit : (p : Polynomial) → p ⊗ Y ≡ p}.
 % aw a convenient way of characterizing monoidal structures in \textbf{Poly} is by simply expressing the laws on types,
 %  which requires polynomials to be compared; for instance, the right unit 
 %(in the case of monoidal structures, we stick to the \texttt{agda-categories} framework and don't rely on equality of objects at all, but polynomial equality is both useful elsewhere and an illuminating exercise).

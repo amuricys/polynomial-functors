@@ -24,7 +24,7 @@ Cubical Agda provides some very useful features, such as:
 However, some aspects of it are not as smooth. No pattern matching on \texttt{refl} sometimes complicates proofs, constant transports are not always equal to \texttt{refl} for subtle technical reasons, nested \texttt{subst} and \texttt{transport} are very difficult to deal with, introducing interval variables in proof definitions leads to warnings that make for a noisy IDE experience, and the names of lemmas and their documentation in the standard library are not informative enough. The issue of nested transports is a particularly thorny one: very often, an equality type states something that a human can verify informally quite easily, but doing the needed plumbing to get a proof to compute is difficult and results in extremely long proofs that are actually simple in idea.
 
 \section{Challenges in implementing dynamical systems}
-The implementation of a couple of dynamical systems has led us, the authors of the thesis, to an impression of how it is to use polynomial functors in a practical implementation. A few different aspects stand out when it comes to writing dynamical systems in Agda using polynomial functors.
+The implementation of a couple of dynamical systems has led us to an impression of how it is to use polynomial functors in a practical implementation. A few different aspects stand out when it comes to writing dynamical systems in Agda using polynomial functors.
 
 \subsection{Datatypes in Agda}
 
